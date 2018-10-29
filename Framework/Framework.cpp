@@ -2,7 +2,9 @@
 //
 
 #include "stdafx.h"
-
+#include <fstream>
+#include <iostream>
+using namespace std;
 
 int main()
 {
@@ -12,6 +14,7 @@ int main()
 	// Read config file
 
 	// Initialise population
+	InitPopulation()
 
 	// Load Modules
 
@@ -62,3 +65,31 @@ int main()
     return 0;
 }
 
+void InitPopulation(char *populationFilename)
+{
+	// Initialise variables
+	ifstream popFile;
+
+	// Open population file
+	popFile.open(populationFilename);
+
+	// Read population data object by object
+		// Create object
+
+		// Add object to population
+
+	// Close file
+	popfile.close();
+}
+
+class DebrisObject
+{
+	public:
+	int id;
+
+	// Constructor
+	DebrisObject()
+	{
+		std::vector<double> elements;
+	}
+};
