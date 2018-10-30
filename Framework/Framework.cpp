@@ -4,7 +4,10 @@
 #include "stdafx.h"
 #include <fstream>
 #include <iostream>
+#include <vector>
 using namespace std;
+
+void InitPopulation(string populationFilename);
 
 int main()
 {
@@ -12,9 +15,10 @@ int main()
 	// ------ Initialisation ------
 	// ----------------------------
 	// Read config file
+	string populationFilename;
 
 	// Initialise population
-	InitPopulation()
+	InitPopulation(populationFilename);
 
 	// Load Modules
 
@@ -65,13 +69,13 @@ int main()
     return 0;
 }
 
-void InitPopulation(char *populationFilename)
+void InitPopulation(string populationFilename)
 {
 	// Initialise variables
 	ifstream popFile;
 
 	// Open population file
-	popFile.open(populationFilename);
+	popFile.open(populationFilename.c_str());
 
 	// Read population data object by object
 		// Create object
@@ -79,7 +83,7 @@ void InitPopulation(char *populationFilename)
 		// Add object to population
 
 	// Close file
-	popfile.close();
+	popFile.close();
 }
 
 class DebrisObject
@@ -90,6 +94,7 @@ class DebrisObject
 	// Constructor
 	DebrisObject()
 	{
-		std::vector<double> elements;
+		std::vector<double> elements(5);
+		std::vector<double> anomalies(3);
 	}
 };
