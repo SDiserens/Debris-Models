@@ -7,6 +7,7 @@
 #include <vector>
 using namespace std;
 
+int objectSEQ = 0;
 void InitPopulation(string populationFilename);
 
 int main()
@@ -88,13 +89,28 @@ void InitPopulation(string populationFilename)
 
 class DebrisObject
 {
-	public:
-	int id;
+public:
+	long objectID;
+
+private:
+	std::vector<double> elements(5); // semi-major axis, eccentricity, inclination, right ascension of ascending node, arguement of perigee
+	std::vector<double> anomalies(3); // mean anomaly, eccentric anomaly, true anomaly
+	float radius, mass, length, meanAnomalyEpoch;
+	long parentID, sourceID;
 
 	// Constructor
-	DebrisObject()
+	DebrisObject(float init_radius, float init_mass, float init_length, double semiMajorAxis, double eccentricity, double inclination,
+				 double rightAscension, double argPerigee, double init_meanAnomaly)
 	{
-		std::vector<double> elements(5);
-		std::vector<double> anomalies(3);
+		objectID = ++objectSEQ; // This should be generating a unique ID per object incl. when threading
+		radius = init_radius;
+		mass = init_mass;
+		length = init_length;
+		elements[0] = semiMajorAxis;
+		elements[1] = eccentricity;
+		elements[2] = inclination;
+		elements[3] = rightAscension;
+		elements[4] = argPerigee;
+		meanAnomalyEpoch = anomalies[0] = init_meanAnomaly;
 	}
 };
