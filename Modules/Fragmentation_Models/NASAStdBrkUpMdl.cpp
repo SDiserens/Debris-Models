@@ -3,7 +3,18 @@
 
 #include "stdafx.h"
 
-int mainBreakup()
+class debrisObject;
+class fragmentCloud;
+
+int mainBreakup(debrisObject targetObject, debrisObject projectileObject=NULL)
 {
-	return 0;
+    // Initialise Variables
+    bool explosion;
+    
+    
+    if projectileObject is NULL:
+        explosion = TRUE;
+    else:
+        explosion = FALSE;
+	return ;
 }
