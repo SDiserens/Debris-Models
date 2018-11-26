@@ -1,7 +1,7 @@
 // CUBE.cpp : contains the implementation of the CUBE algorithm.
 //
 
-#include "stdafx.h"
+#include "../../Framework/stdafx.h"
 
 int mainCollision()
 {
