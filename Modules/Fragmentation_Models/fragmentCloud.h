@@ -1,8 +1,10 @@
 #pragma once
-class fragmentCloud
+class FragmentCloud
 {
 public:
-	fragmentCloud();
-	~fragmentCloud();
+	FragmentCloud();
+	~FragmentCloud();
+	int debrisCount;
+	float totalMass, minLength, maxLength;
 };
 

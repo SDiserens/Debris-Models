@@ -24,10 +24,22 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="debrisObject.h">
+    <ClInclude Include="DebrisPopulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Modules\Fragmentation_Models\fragmentCloud.h">
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Modules\Fragmentation_Models\fragmentation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Modules\Fragmentation_Models\FragmentCloud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DebrisObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Modules\Fragmentation_Models\NSBM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,11 +56,22 @@
     <ClCompile Include="..\Modules\Collision_Algorithms\CUBE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="debrisObject.cpp">
+    <ClCompile Include="DebrisPopulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Modules\Fragmentation_Models\fragmentCloud.cpp">
+    <ClCompile Include="..\Modules\Fragmentation_Models\FragmentationFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Modules\Fragmentation_Models\FragmentCloud.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebrisObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Framework.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

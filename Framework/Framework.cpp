@@ -7,7 +7,7 @@
 #include <vector>
 using namespace std;
 
-void InitPopulation(string populationFilename);
+void InitPopulation(string populationFilename, DebrisPopulation population);
 
 int main()
 {
@@ -18,7 +18,8 @@ int main()
 	string populationFilename;
 
 	// Initialise population
-	initPopulation(populationFilename);
+	DebrisPopulation environmentPopulation;
+	InitPopulation(populationFilename, environmentPopulation);
 
 	// Load Modules
 
@@ -69,7 +70,7 @@ int main()
     return 0;
 }
 
-void initPopulation(string populationFilename)
+void InitPopulation(string populationFilename, DebrisPopulation population)
 {
 	// Initialise variables
 	ifstream popFile;

@@ -13,4 +13,5 @@
 
 
 // TODO: reference additional headers your program requires here
-#include "debrisObject.h"
+#include "DebrisObject.h"
+#include "DebrisPopulation.h"

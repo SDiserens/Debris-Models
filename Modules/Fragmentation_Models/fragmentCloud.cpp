@@ -1,13 +1,13 @@
 
 #include "../../Framework/stdafx.h"
-#include "fragmentCloud.h"
+#include "FragmentCloud.h"
 
 
-fragmentCloud::fragmentCloud()
+FragmentCloud::FragmentCloud()
 {
 }
 
 
-fragmentCloud::~fragmentCloud()
+FragmentCloud::~FragmentCloud()
 {
 }
