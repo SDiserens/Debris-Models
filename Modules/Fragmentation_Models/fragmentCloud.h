@@ -2,9 +2,16 @@
 class FragmentCloud
 {
 public:
-	FragmentCloud();
-	~FragmentCloud();
+	// Initialise object variables
 	int debrisCount;
-	float totalMass, minLength, maxLength;
+	double totalMass, minLength, maxLength;
+	
+	// Object Constructors
+	FragmentCloud(double minLength, double maxLength);
+	~FragmentCloud();
+
+	// Pre-define object functions
+	void AddFragment(DebrisObject fragment);
+	void AddCloud(FragmentCloud fragmentCloud);
 };
 

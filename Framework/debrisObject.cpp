@@ -23,3 +23,8 @@ DebrisObject::DebrisObject(float init_radius, float init_mass, float init_length
 DebrisObject::~DebrisObject()
 {
 }
+
+void DebrisObject::UpdateOrbitalElements(double deltaV)
+{
+
+}

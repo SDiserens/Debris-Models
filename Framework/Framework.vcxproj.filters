@@ -68,6 +68,9 @@
     <ClCompile Include="DebrisObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Modules\Fragmentation_Models\NSBM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Framework.rc">

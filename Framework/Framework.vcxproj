@@ -72,6 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -152,6 +153,7 @@
     <ClCompile Include="..\Modules\Fragmentation_Models\FragmentationFunctions.cpp" />
     <ClCompile Include="..\Modules\Fragmentation_Models\FragmentCloud.cpp" />
     <ClCompile Include="..\Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp" />
+    <ClCompile Include="..\Modules\Fragmentation_Models\NSBM.cpp" />
     <ClCompile Include="DebrisObject.cpp" />
     <ClCompile Include="DebrisPopulation.cpp" />
     <ClCompile Include="Framework.cpp" />

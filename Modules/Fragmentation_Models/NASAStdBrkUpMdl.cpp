@@ -1,12 +1,12 @@
 // NASAStdBrkUpMdl.cpp : Contains the implementation of the original NASA Standard Breakup Model.
 //
 
+#include "stdafx.h"
 #include "fragmentation.h"
 #include "NSBM.h"
 
 FragmentCloud GenerateExplosionDebris(DebrisObject& targetObject, float minLength);
 FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& projectileObject, float minLength);
-DebrisObject GenerateDebrisObject();
 
 int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer=NULL, float minLength=0.001)
 {
@@ -84,8 +84,8 @@ FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& 
 	// Identify key variables
 	totalMass = targetObject.mass;
 	maxLength = targetObject.length;
-	kineticEnergy = ;
-	energyMassRatio = ;
+	kineticEnergy = 0;
+	energyMassRatio = 0;
 
 	// Create Cloud object
 
@@ -113,27 +113,54 @@ FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& 
 
 	// Check conservation of Mass, Momentum and Energy within limits
 
-	return DebrisObject;
-}
-
-DebrisObject GenerateDebrisObject()
-{
-
+	return debrisCloud;
 }
 
 
-class ExplosionCloud
+//DebrisObject GenerateDebrisObject()
+
+
+NSBMFragmentCloud::NSBMFragmentCloud(bool explosion, double minLength, double maxLength)
 {
-	ExplosionCloud()
-	{
 
-	}
-};
+	
+}
 
-class CollisionCloud 
+void NSBMFragmentCloud::SetExplosionAreaMassParameters()
 {
-	CollisionCloud()
-	{
+}
 
-	}
-};
+void NSBMFragmentCloud::SetCollisionAreaMassParameters()
+{
+}
+
+int NSBMFragmentCloud::NumberOfFragments(double length)
+{
+
+}
+
+NSBMDebrisFragment::NSBMDebrisFragment(double init_length)
+{
+
+}
+
+NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass)
+{
+
+}
+
+void NSBMDebrisFragment::CalculateAreaToMass()
+{
+
+}
+
+void NSBMDebrisFragment::CalculateArea()
+{
+
+}
+
+void NSBMDebrisFragment::CalculateVelocity()
+{
+
+}
+
