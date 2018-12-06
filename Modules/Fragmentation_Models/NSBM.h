@@ -21,4 +21,5 @@ class NSBMDebrisFragment : public DebrisObject
 	void CalculateArea();
 	void CalculateVelocity();
 	void CalculateAreaToMass();
+	void CalculateMass();
 };

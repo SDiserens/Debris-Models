@@ -9,9 +9,11 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
-
+#include <math.h>
+#include <stdexcept>
+using namespace std;
 
 // TODO: reference additional headers your program requires here
-#include "DebrisObject.h"
-#include "DebrisPopulation.h"
+#include "Utilities/OrbitalUtilities.h"
+#include "Utilities/DebrisObject.h"
+#include "Utilities/DebrisPopulation.h"

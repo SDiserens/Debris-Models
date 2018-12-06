@@ -142,20 +142,18 @@
     <ClInclude Include="..\Modules\Fragmentation_Models\fragmentation.h" />
     <ClInclude Include="..\Modules\Fragmentation_Models\FragmentCloud.h" />
     <ClInclude Include="..\Modules\Fragmentation_Models\NSBM.h" />
-    <ClInclude Include="DebrisObject.h" />
-    <ClInclude Include="DebrisPopulation.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Utilities\DebrisObject.h" />
+    <ClInclude Include="Utilities\DebrisPopulation.h" />
+    <ClInclude Include="Utilities\OrbitalUtilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Modules\Collision_Algorithms\CUBE.cpp" />
     <ClCompile Include="..\Modules\Fragmentation_Models\FragmentationFunctions.cpp" />
     <ClCompile Include="..\Modules\Fragmentation_Models\FragmentCloud.cpp" />
     <ClCompile Include="..\Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp" />
-    <ClCompile Include="..\Modules\Fragmentation_Models\NSBM.cpp" />
-    <ClCompile Include="DebrisObject.cpp" />
-    <ClCompile Include="DebrisPopulation.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -163,9 +161,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Utilities\DebrisObject.cpp" />
+    <ClCompile Include="Utilities\DebrisPopulation.cpp" />
+    <ClCompile Include="Utilities\OrbitalUtilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Framework.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,9 +5,12 @@ public:
 	// Initialise object variables
 	int debrisCount;
 	double totalMass, minLength, maxLength;
+	std::vector<FragmentCloud> fragmentBuckets;
+	std::vector<DebrisObject> fragments;
 	
 	// Object Constructors
-	FragmentCloud(double minLength, double maxLength);
+	FragmentCloud();
+	FragmentCloud(double minLength, double maxLength, int buckets);
 	~FragmentCloud();
 
 	// Pre-define object functions

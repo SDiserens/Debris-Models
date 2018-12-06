@@ -1,5 +1,5 @@
 ﻿  NASAStdBrkUpMdl.cpp
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(45): warning C4101: 'assignedMass': unreferenced local variable
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(83): warning C4101: 'assignedMass': unreferenced local variable
+e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(44): warning C4101: 'assignedMass': unreferenced local variable
+e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(82): warning C4101: 'assignedMass': unreferenced local variable
   Framework.vcxproj -> E:\Work\Modelling Framework\Framework\Debug\Framework.exe
   Framework.vcxproj -> E:\Work\Modelling Framework\Framework\Debug\Framework.pdb (Partial PDB)

@@ -13,68 +13,98 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\03 Fragmentation">
+      <UniqueIdentifier>{4310c3d5-455e-4e3f-b7f1-6c97004a1106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\04 Collisions">
+      <UniqueIdentifier>{3d07d6a1-482f-4598-b366-4de2a29bc739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\01 Framework">
+      <UniqueIdentifier>{1aca592e-aae9-44c5-916f-b25fb193bf29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\02 Utilities">
+      <UniqueIdentifier>{06cc0276-08ea-4951-8e2f-0c6ac364b1f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\01 Framework">
+      <UniqueIdentifier>{84034ba1-18fa-4f30-842b-8c34aff6cf10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\02 Utilities">
+      <UniqueIdentifier>{80046dff-2b50-4915-a744-4ba355d83643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\04 Collision">
+      <UniqueIdentifier>{fba1f8ea-7553-41ab-8318-d99aa04ca7b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\03 Fragmentation">
+      <UniqueIdentifier>{e6b7ad93-cdcc-4295-8999-36acb42152b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DebrisPopulation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Modules\Fragmentation_Models\fragmentation.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\03 Fragmentation</Filter>
     </ClInclude>
     <ClInclude Include="..\Modules\Fragmentation_Models\FragmentCloud.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DebrisObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\03 Fragmentation</Filter>
     </ClInclude>
     <ClInclude Include="..\Modules\Fragmentation_Models\NSBM.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\03 Fragmentation</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files\01 Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files\01 Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files\01 Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DebrisObject.h">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DebrisPopulation.h">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\OrbitalUtilities.h">
+      <Filter>Header Files\02 Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Modules\Collision_Algorithms\CUBE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DebrisPopulation.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\04 Collisions</Filter>
     </ClCompile>
     <ClCompile Include="..\Modules\Fragmentation_Models\FragmentationFunctions.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\03 Fragmentation</Filter>
     </ClCompile>
     <ClCompile Include="..\Modules\Fragmentation_Models\FragmentCloud.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\03 Fragmentation</Filter>
     </ClCompile>
-    <ClCompile Include="DebrisObject.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp">
+      <Filter>Source Files\03 Fragmentation</Filter>
     </ClCompile>
-    <ClCompile Include="..\Modules\Fragmentation_Models\NSBM.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Framework.cpp">
+      <Filter>Source Files\01 Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files\01 Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\DebrisObject.cpp">
+      <Filter>Source Files\02 Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\DebrisPopulation.cpp">
+      <Filter>Source Files\02 Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\OrbitalUtilities.cpp">
+      <Filter>Source Files\02 Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Framework.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

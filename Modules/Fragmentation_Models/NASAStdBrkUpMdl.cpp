@@ -84,7 +84,9 @@ FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& 
 	// Identify key variables
 	totalMass = targetObject.mass;
 	maxLength = targetObject.length;
-	kineticEnergy = 0;
+	vector3D velocity = targetObject.GetVelocity();
+	vector3D relativeVelocity = velocity.CalculateRelativeVector(projectileObject.GetVelocity());
+	kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.mass);
 	energyMassRatio = 0;
 
 	// Create Cloud object
@@ -122,7 +124,10 @@ FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& 
 
 NSBMFragmentCloud::NSBMFragmentCloud(bool explosion, double minLength, double maxLength)
 {
-
+	if (explosion)
+		SetExplosionAreaMassParameters();
+	else
+		SetCollisionAreaMassParameters();
 	
 }
 
@@ -136,7 +141,8 @@ void NSBMFragmentCloud::SetCollisionAreaMassParameters()
 
 int NSBMFragmentCloud::NumberOfFragments(double length)
 {
-
+	int numFrag = 0;
+	return numFrag;
 }
 
 NSBMDebrisFragment::NSBMDebrisFragment(double init_length)
@@ -152,6 +158,10 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass)
 void NSBMDebrisFragment::CalculateAreaToMass()
 {
 
+}
+
+void NSBMDebrisFragment::CalculateMass()
+{
 }
 
 void NSBMDebrisFragment::CalculateArea()
