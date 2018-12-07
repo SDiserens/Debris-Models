@@ -87,7 +87,7 @@ FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& 
 	vector3D velocity = targetObject.GetVelocity();
 	vector3D relativeVelocity = velocity.CalculateRelativeVector(projectileObject.GetVelocity());
 	kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.mass);
-	energyMassRatio = 0;
+	energyMassRatio = CalculateEnergyToMass(kineticEnergy, totalMass);
 
 	// Create Cloud object
 
@@ -124,20 +124,10 @@ FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& 
 
 NSBMFragmentCloud::NSBMFragmentCloud(bool explosion, double minLength, double maxLength)
 {
-	if (explosion)
-		SetExplosionAreaMassParameters();
-	else
-		SetCollisionAreaMassParameters();
 	
 }
 
-void NSBMFragmentCloud::SetExplosionAreaMassParameters()
-{
-}
 
-void NSBMFragmentCloud::SetCollisionAreaMassParameters()
-{
-}
 
 int NSBMFragmentCloud::NumberOfFragments(double length)
 {
@@ -145,14 +135,122 @@ int NSBMFragmentCloud::NumberOfFragments(double length)
 	return numFrag;
 }
 
-NSBMDebrisFragment::NSBMDebrisFragment(double init_length)
+NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool explosion) 
+{
+	length = init_length;
+	lambda = log10(length);
+	if (explosion)
+	{
+		sourceType = 1;
+		SetExplosionAreaMassParameters();
+	}
+	else
+	{
+		sourceType = 2;
+		SetCollisionAreaMassParameters();
+	}
+
+}
+
+NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, bool explosion)
 {
 
 }
 
-NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass)
+void NSBMDebrisFragment::SetExplosionAreaMassParameters()
 {
+	// alpha
+	if (lambda <= -1.4)
+		alpha = 1;
+	else if (lambda >= 0)
+		alpha = 0.5;
+	else
+		alpha = 1 - 0.3571 * (lambda + 1.4);
 
+	// mu_1
+	if (lambda <= -0.5)
+		mu_1 = -0.45;
+	else if (lambda >= 0)
+		mu_1 = -0.9;
+	else
+		mu_1 = -0.45 - 0.9 * (lambda + 0.5);
+
+	// sigma_1
+	sigma_1 = 0.55;
+
+	// mu_2
+	mu_2 = -0.9;
+
+	// sigma_2
+	if (lambda <= -1.0)
+		sigma_2 = 0.28;
+	else if (lambda >= 0.1)
+		sigma_2 = 0.1;
+	else
+		sigma_2 = 0.28 - 0.1636 * (lambda + 1);
+}
+
+void NSBMDebrisFragment::SetCollisionAreaMassParameters()
+{
+	// alpha
+	if (lambda <= -1.95)
+		alpha = 0;
+	else if (lambda >= 0.55)
+		alpha = 1.0;
+	else
+		alpha = 0.3 + 0.4 * (lambda + 1.2);
+
+		// mu_1
+	if (lambda <= -1.1)
+		mu_1 = -0.6;
+	else if (lambda >= 0)
+		mu_1 = -0.95;
+	else
+		mu_1 = -0.6 - 0.318 * (lambda + 1.1);
+
+		// sigma_1
+	if (lambda <= -1.3)
+		sigma_1 = 0.1;
+	else if (lambda >= -0.3)
+		sigma_1 = 0.3;
+	else
+		sigma_1 = 0.1 + 0.2 * (lambda + 1.3);
+
+		// mu_2
+	if (lambda <= 0.7)
+		mu_2 = -1.2;
+	else if (lambda >= -0.1)
+		mu_2 = -2.0;
+	else
+		mu_2 = -1.2 - 1.333 * (lambda + 0.7);
+
+		// sigma_2
+	if (lambda <= -0.5)
+		sigma_2 = 0.5;
+	else if (lambda >= -0.3)
+		sigma_2 = 0.3;
+	else
+		sigma_2 = 0.5 - 1 * (lambda + 0.5);
+}
+
+void NSBMDebrisFragment::SetSmallAreaMassParameters()
+{
+	alpha = 1;
+
+	if (lambda <= -1.75)
+		mu_1 = -0.3;
+	else if (lambda >= -1.25)
+		mu_1 = -1.0;
+	else
+		mu_1 = -0.3 - 1.4 * (lambda + 1.75);
+
+	if (lambda <= -3.5)
+		sigma_1 = 0.2;
+	else
+		sigma_1 = 0.2 + 0.1333 * (lambda + 3.5);
+
+	mu_2 = 0;
+	sigma_2 = 1;
 }
 
 void NSBMDebrisFragment::CalculateAreaToMass()

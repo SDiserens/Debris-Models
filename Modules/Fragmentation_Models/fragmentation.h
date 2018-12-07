@@ -8,3 +8,5 @@
 // Declaration of generic fragmentation functions - definition in FragmentationFunctions.cpp
 
 void MergeFragmentPopulations(DebrisPopulation population, FragmentCloud cloud);
+
+float CalculateEnergyToMass(float kineticEnergy, float mass);

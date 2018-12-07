@@ -13,7 +13,8 @@ DebrisObject::DebrisObject(float init_radius, float init_mass, float init_length
 	length = init_length;
 	OrbitalElements elements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee);
 	OrbitalAnomalies anomalies;
-	meanAnomalyEpoch = anomalies.meanAnomaly = init_meanAnomaly;
+	meanAnomalyEpoch = init_meanAnomaly;
+	anomalies.SetMeanAnomaly(init_meanAnomaly);
 }
 
 
