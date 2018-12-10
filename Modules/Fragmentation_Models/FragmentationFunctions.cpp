@@ -8,8 +8,8 @@ void MergeFragmentPopulations(DebrisPopulation population, FragmentCloud cloud)
 
 }
 
-float CalculateEnergyToMass(float kineticEnergy, float mass) // Returns E/m ratio in J/g
+double CalculateEnergyToMass(double kineticEnergy, double mass) // Returns E/m ratio in J/g
 {
-	float energyToMass = kineticEnergy / (1000 * mass);
+	double energyToMass = kineticEnergy / (1000 * mass);
 	return energyToMass;
 }

@@ -5,8 +5,8 @@
 #include "fragmentation.h"
 #include "NSBM.h"
 
-FragmentCloud GenerateExplosionDebris(DebrisObject& targetObject, float minLength);
-FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& projectileObject, float minLength);
+FragmentCloud GenerateExplosionDebris(DebrisObject& targetObject, double minLength);
+FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength);
 
 int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer=NULL, float minLength=0.001)
 {
@@ -38,14 +38,14 @@ int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, Debris
 	return 0;
 }
 
-FragmentCloud GenerateExplosionDebris(DebrisObject& targetObject, float minLength)
+FragmentCloud GenerateExplosionDebris(DebrisObject& targetObject, double minLength)
 {
 	FragmentCloud debrisCloud;
-	float totalMass, maxLength, assignedMass;
+	double totalMass, maxLength, assignedMass;
 
 	// Identify key variables
-	totalMass = targetObject.mass;
-	maxLength = targetObject.length;
+	totalMass = targetObject.GetMass();
+	maxLength = targetObject.GetLength();
 
 	// Create Cloud object
 
@@ -76,17 +76,17 @@ FragmentCloud GenerateExplosionDebris(DebrisObject& targetObject, float minLengt
 	return debrisCloud;
 }
 
-FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& projectileObject, float minLength)
+FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength)
 {
 	FragmentCloud debrisCloud;
-	float totalMass, maxLength, assignedMass, kineticEnergy, energyMassRatio;
+	double totalMass, maxLength, assignedMass, kineticEnergy, energyMassRatio;
 
 	// Identify key variables
-	totalMass = targetObject.mass;
-	maxLength = targetObject.length;
+	totalMass = targetObject.GetMass();
+	maxLength = targetObject.GetLength();
 	vector3D velocity = targetObject.GetVelocity();
 	vector3D relativeVelocity = velocity.CalculateRelativeVector(projectileObject.GetVelocity());
-	kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.mass);
+	kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
 	energyMassRatio = CalculateEnergyToMass(kineticEnergy, totalMass);
 
 	// Create Cloud object
@@ -135,10 +135,13 @@ int NSBMFragmentCloud::NumberOfFragments(double length)
 	return numFrag;
 }
 
-NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool explosion) 
+NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion)
 {
 	length = init_length;
 	lambda = log10(length);
+	explosion = init_explosion;
+	CalculateArea();
+
 	if (explosion)
 	{
 		sourceType = 1;
@@ -149,12 +152,29 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool explosion)
 		sourceType = 2;
 		SetCollisionAreaMassParameters();
 	}
-
+	GenerateAreaToMassValue();
+	CalculateMassFromArea();
 }
 
-NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, bool explosion)
+NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion)
 {
+	length = init_length;
+	lambda = log10(length);
+	mass = init_mass;
+	explosion = init_explosion;
+	CalculateArea();
 
+	if (explosion)
+	{
+		sourceType = 1;
+		//SetExplosionAreaMassParameters();
+	}
+	else
+	{
+		sourceType = 2;
+		//SetCollisionAreaMassParameters();
+	}
+	CalculateAreaToMass();
 }
 
 void NSBMDebrisFragment::SetExplosionAreaMassParameters()
@@ -253,18 +273,18 @@ void NSBMDebrisFragment::SetSmallAreaMassParameters()
 	sigma_2 = 1;
 }
 
-void NSBMDebrisFragment::CalculateAreaToMass()
+void NSBMDebrisFragment::GenerateAreaToMassValue()
 {
 
 }
 
-void NSBMDebrisFragment::CalculateMass()
-{
-}
 
 void NSBMDebrisFragment::CalculateArea()
 {
-
+	if (length < 0.00167)
+		area = 0.540424 * length * length;
+	else
+		area = 0.556945 * pow(length, 2.0047077);
 }
 
 void NSBMDebrisFragment::CalculateVelocity()

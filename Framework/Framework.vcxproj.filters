@@ -69,6 +69,12 @@
     <ClInclude Include="Utilities\OrbitalUtilities.h">
       <Filter>Header Files\02 Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities\OrbitalAnomalies.h">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\OrbitalElements.h">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Modules\Collision_Algorithms\CUBE.cpp">
@@ -96,6 +102,12 @@
       <Filter>Source Files\02 Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Utilities\OrbitalUtilities.cpp">
+      <Filter>Source Files\02 Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\OrbitalAnomalies.cpp">
+      <Filter>Source Files\02 Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\OrbitalElements.cpp">
       <Filter>Source Files\02 Utilities</Filter>
     </ClCompile>
   </ItemGroup>

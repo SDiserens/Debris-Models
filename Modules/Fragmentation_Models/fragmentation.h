@@ -9,4 +9,4 @@
 
 void MergeFragmentPopulations(DebrisPopulation population, FragmentCloud cloud);
 
-float CalculateEnergyToMass(float kineticEnergy, float mass);
+double CalculateEnergyToMass(double kineticEnergy, double mass);

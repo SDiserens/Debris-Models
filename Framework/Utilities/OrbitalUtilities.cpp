@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-float CalculateKineticEnergy(vector3D relativeVelocity, float mass)
+double CalculateKineticEnergy(vector3D relativeVelocity, double mass)
 {
-	float kineticEnergy = 0.5 * mass * relativeVelocity.vectorNorm2();
+	double kineticEnergy = 0.5 * mass * relativeVelocity.vectorNorm2();
 	return kineticEnergy;
 }
 
@@ -39,51 +39,3 @@ vector3D vector3D::CalculateRelativeVector(vector3D vectorB)
 	return vector3D(X, Y, Z);
 }
 
-// Elements functions
-OrbitalElements::OrbitalElements() {}
-
-OrbitalElements::OrbitalElements(double a, double e, double i, double ra, double ap)
-{
-	semiMajorAxis = a;
-	eccentricity = e;
-	inclination = i;
-	rightAscension = ra;
-	argPerigee = ap;
-}
-
-// Anomalies Functions
-void OrbitalAnomalies::SetMeanAnomaly(double M)
-{
-	meanAnomaly = M;
-	synchronised = false;
-	priority = 0;
-}
-
-void OrbitalAnomalies::SetTrueAnomaly(double v)
-{
-	meanAnomaly = v;
-	synchronised = false;
-	priority = 2;
-}
-
-void OrbitalAnomalies::SetEccentricAnomaly(double E)
-{
-	meanAnomaly = E;
-	synchronised = false;
-	priority = 1;
-}
-
-double OrbitalAnomalies::GetMeanAnomaly()
-{
-	return 0.0;
-}
-
-double OrbitalAnomalies::GetTrueAnomaly()
-{
-	return 0.0;
-}
-
-double OrbitalAnomalies::GetEccentricAnomaly()
-{
-	return 0.0;
-}
