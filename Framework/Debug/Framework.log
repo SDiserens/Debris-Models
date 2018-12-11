@@ -1,16 +1,5 @@
-﻿  stdafx.cpp
-  OrbitalUtilities.cpp
-  OrbitalElements.cpp
-  OrbitalAnomalies.cpp
-  DebrisPopulation.cpp
-  DebrisObject.cpp
-  Framework.cpp
-  NASAStdBrkUpMdl.cpp
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(44): warning C4101: 'assignedMass': unreferenced local variable
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(82): warning C4101: 'assignedMass': unreferenced local variable
-  FragmentCloud.cpp
-  FragmentationFunctions.cpp
-  CUBE.cpp
-  Generating Code...
+﻿  NASAStdBrkUpMdl.cpp
+e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(41): warning C4101: 'assignedMass': unreferenced local variable
+e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(60): warning C4101: 'assignedMass': unreferenced local variable
   Framework.vcxproj -> E:\Work\Modelling Framework\Framework\Debug\Framework.exe
   Framework.vcxproj -> E:\Work\Modelling Framework\Framework\Debug\Framework.pdb (Partial PDB)

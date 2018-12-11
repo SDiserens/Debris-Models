@@ -7,11 +7,23 @@ class NSBMFragmentCloud : public FragmentCloud
 {
 public:
 	bool explosion;
-public:
-	NSBMFragmentCloud(bool explosion, double minLength, double maxLength);
-	int NumberOfFragments(double length);
+	double scaling, impactMass, nFragExponent, nFragCoefficient;
 
-private:
+public:
+	// Constructors
+	NSBMFragmentCloud(DebrisObject& targetObject, double minLength); // Explosion contructor
+	NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength); // Collision Constructor
+	NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength); // Bucket Constructor
+
+	// Functions
+	void SetNumberFragmentParametersExplosion();
+	void SetNumberFragmentParametersCollision();
+	void SetNumberFragmentParametersCatastrophicCollision();
+	int CalculateNumberOfFragments(double length);
+	int CalculateBucketFragments(double lowerLength, double upperLength);
+	void SetNumberOfFragments(int nFrag);
+	void GenerateDebrisFragments();
+
 };
 
 class NSBMDebrisFragment : public DebrisObject

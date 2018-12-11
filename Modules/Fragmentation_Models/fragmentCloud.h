@@ -9,6 +9,8 @@ public:
 	double totalMass, minLength, maxLength;
 	std::vector<FragmentCloud> fragmentBuckets;
 	std::vector<DebrisObject> fragments;
+	vector3D relativeVelocity;
+	vector3D velocity;
 	
 	// Object Constructors
 	FragmentCloud();

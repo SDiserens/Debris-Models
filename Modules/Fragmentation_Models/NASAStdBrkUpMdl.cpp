@@ -5,9 +5,6 @@
 #include "fragmentation.h"
 #include "NSBM.h"
 
-FragmentCloud GenerateExplosionDebris(DebrisObject& targetObject, double minLength);
-FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength);
-
 int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer=NULL, float minLength=0.001)
 {
     // Initialise Variables
@@ -19,7 +16,7 @@ int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, Debris
 	if (projectilePointer == NULL)
 	{
 		explosion = true;
-		targetDebrisCloud = GenerateExplosionDebris(targetObject, minLength);
+		targetDebrisCloud = NSBMFragmentCloud(targetObject, minLength);
 		MergeFragmentPopulations(population, targetDebrisCloud);
 	}
 
@@ -28,119 +25,147 @@ int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, Debris
 		explosion = false;
 		DebrisObject& projectileObject = *projectilePointer;
 		delete projectilePointer;
-		targetDebrisCloud = GenerateCollisionDebris(targetObject, projectileObject, minLength);
-		projectileDebrisCloud = GenerateCollisionDebris(projectileObject, targetObject, minLength);
+		targetDebrisCloud = NSBMFragmentCloud(targetObject, projectileObject, minLength);
+		projectileDebrisCloud = NSBMFragmentCloud(projectileObject, targetObject, minLength);
 		MergeFragmentPopulations(population, targetDebrisCloud);
 		MergeFragmentPopulations(population, projectileDebrisCloud);
 	}
 
-
 	return 0;
 }
 
-FragmentCloud GenerateExplosionDebris(DebrisObject& targetObject, double minLength)
+
+NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double minLength) //Create an explosion Cloud
 {
-	FragmentCloud debrisCloud;
+	
 	double totalMass, maxLength, assignedMass;
 
 	// Identify key variables
 	totalMass = targetObject.GetMass();
 	maxLength = targetObject.GetLength();
 
-	// Create Cloud object
+	SetNumberFragmentParametersExplosion();
+	SetNumberOfFragments(CalculateNumberOfFragments(minLength));
 
 	// Identify different size buckets for fragments
 
 	// Create ExplosionCloud for each bucket
 
 		// Generate debris in each bucket
-		
-			// Assign fragment length
 
-			// Calculate area-to-mass ratio
-
-			// Calculate mass
-
-			// Calculate Velocity
-
-			// Identify updated orbital elements
-
-			// Create new DebrisObject
-
-		// Update FragmentCloud variables for bucket
-
-	// Update overall FragmentCloud variables
+		// Update overall FragmentCloud variables
 
 	// Check conservation of Mass, Momentum and Energy within limits
 
-	return debrisCloud;
 }
 
-FragmentCloud GenerateCollisionDebris(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength)
+NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength) //Create a collision Cloud
 {
-	FragmentCloud debrisCloud;
-	double totalMass, maxLength, assignedMass, kineticEnergy, energyMassRatio;
+	
+	double totalMass, maxLength, assignedMass, kineticEnergy, energyMassRatio, impactMass;
 
 	// Identify key variables
 	totalMass = targetObject.GetMass();
 	maxLength = targetObject.GetLength();
+	impactMass = projectileObject.GetMass();
 	vector3D velocity = targetObject.GetVelocity();
 	vector3D relativeVelocity = velocity.CalculateRelativeVector(projectileObject.GetVelocity());
 	kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
 	energyMassRatio = CalculateEnergyToMass(kineticEnergy, totalMass);
 
-	// Create Cloud object
+	if (energyMassRatio > 40)
+		SetNumberFragmentParametersCatastrophicCollision();
+	else
+		SetNumberFragmentParametersCollision();
+
+	SetNumberOfFragments(CalculateNumberOfFragments(minLength));
 
 	// Identify different size buckets for fragments
 
 	// Create CollisionCloud for each bucket
-
+		
 		// Generate debris in each bucket
 
-			// Assign fragment length
-
-			// Calculate area-to-mass ratio
-
-			// Calculate mass
-
-			// Calculate Velocity
-
-			// Identify updated orbital elements
-
-			// Create new DebrisObject
-
-		// Update FragmentCloud variables for bucket
-
-	// Update overall FragmentCloud variables
+		// Update overall FragmentCloud variables
 
 	// Check conservation of Mass, Momentum and Energy within limits
 
-	return debrisCloud;
 }
 
 
 //DebrisObject GenerateDebrisObject()
-
-
-NSBMFragmentCloud::NSBMFragmentCloud(bool explosion, double minLength, double maxLength)
+NSBMFragmentCloud::NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength) // Generates a fragment size bucket
 {
-	
+	explosion = init_explosion;
+	maxLength = init_maxLength;
+	minLength = init_minLength;
 }
 
-
-
-int NSBMFragmentCloud::NumberOfFragments(double length)
+void NSBMFragmentCloud::GenerateDebrisFragments()
 {
-	int numFrag = 0;
+	// Assign fragment length
+
+	// Calculate area-to-mass ratio
+
+	// Calculate mass
+
+	// Calculate Velocity
+
+	// Identify updated orbital elements
+
+	// Create new DebrisObject
+
+	// Update FragmentCloud variables for bucket
+}
+
+int NSBMFragmentCloud::CalculateNumberOfFragments(double length)
+{
+	int numFrag = nFragCoefficient * pow(length, nFragExponent);
 	return numFrag;
 }
 
+int NSBMFragmentCloud::CalculateBucketFragments(double lowerLength, double upperLength)
+{
+	int nFrag = CalculateNumberOfFragments(lowerLength) - CalculateNumberOfFragments(upperLength);
+	return nFrag;
+}
+
+void NSBMFragmentCloud::SetNumberFragmentParametersExplosion()
+{
+	nFragExponent = -1.6;
+	nFragCoefficient = scaling * 6;
+}
+
+void NSBMFragmentCloud::SetNumberFragmentParametersCollision()
+{
+	double ejectaMass = impactMass * 0.000001 * relativeVelocity.vectorNorm2();
+	nFragCoefficient = 0.1 * pow(ejectaMass, 0.75);
+	nFragExponent = -1.71;
+}
+
+void NSBMFragmentCloud::SetNumberFragmentParametersCatastrophicCollision()
+{
+
+	double ejectaMass = totalMass;
+	nFragCoefficient = 0.1 * pow(ejectaMass, 0.75);
+	nFragExponent = -1.71;
+}
+
+void NSBMFragmentCloud::SetNumberOfFragments(int nFrag)
+{
+	int numFrag = nFrag;
+}
+
+
+// Debris Fragments
 NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion)
 {
 	length = init_length;
 	lambda = log10(length);
 	explosion = init_explosion;
 	CalculateArea();
+	
+	//SetSmallAreaMassParameters()
 
 	if (explosion)
 	{
