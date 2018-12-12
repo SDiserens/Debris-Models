@@ -11,6 +11,7 @@
 #include <tchar.h>
 #include <math.h>
 #include <stdexcept>
+#include <random>
 using namespace std;
 
 // TODO: reference additional headers your program requires here

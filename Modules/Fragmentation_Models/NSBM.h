@@ -8,6 +8,8 @@ class NSBMFragmentCloud : public FragmentCloud
 public:
 	bool explosion;
 	double scaling, impactMass, nFragExponent, nFragCoefficient;
+	int nFrag;
+	std::default_random_engine generator;
 
 public:
 	// Constructors
@@ -23,6 +25,7 @@ public:
 	int CalculateBucketFragments(double lowerLength, double upperLength);
 	void SetNumberOfFragments(int nFrag);
 	void GenerateDebrisFragments();
+	double GenerateFragmentLength();
 
 };
 
@@ -33,6 +36,7 @@ public:
 	bool explosion;
 	// A/m Distribution parameters
 	double alpha, mu_1, sigma_1, mu_2, sigma_2;
+	std::default_random_engine generator;
 
 public:
 	NSBMDebrisFragment(double init_length, bool init_explosion);

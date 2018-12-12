@@ -7,9 +7,10 @@ public:
 	OrbitalAnomalies anomalies; // mean anomaly, eccentric anomaly, true anomaly
 	
 protected:
-	double meanAnomalyEpoch, radius, mass, length, area, areaToMass;
+	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, velocityNorm;
 	long parentID, sourceID, objectID;
 	int sourceType; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
+	vector3D velocity;
 
 public:
 	DebrisObject();
@@ -22,7 +23,8 @@ public:
 	double GetArea();
 	double GetAreaToMass();
 	vector3D GetVelocity();
-
+	
+	void SetVelocity();
 	void UpdateOrbitalElements(double deltaV);
 
 protected:

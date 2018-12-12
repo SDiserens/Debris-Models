@@ -30,10 +30,13 @@ void DebrisObject::UpdateOrbitalElements(double deltaV)
 
 vector3D DebrisObject::GetVelocity()
 {
-	vector3D velocity(0.0, 0.0, 0.0);
 	return velocity;
 }
 
+void DebrisObject::SetVelocity()
+{
+	velocity = vector3D(0.0, 0.0, 0.0);
+}
 
 void DebrisObject::CalculateMassFromArea()
 {
