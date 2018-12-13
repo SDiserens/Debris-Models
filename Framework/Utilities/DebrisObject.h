@@ -1,5 +1,6 @@
 #pragma once
 
+
 class DebrisObject
 {
 public:
@@ -7,10 +8,11 @@ public:
 	OrbitalAnomalies anomalies; // mean anomaly, eccentric anomaly, true anomaly
 	
 protected:
+	static int objectSEQ;
 	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, velocityNorm;
 	long parentID, sourceID, objectID;
 	int sourceType; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
-	vector3D velocity;
+	vector3D velocity, position;
 
 public:
 	DebrisObject();
@@ -23,9 +25,13 @@ public:
 	double GetArea();
 	double GetAreaToMass();
 	vector3D GetVelocity();
+	vector3D GetPosition();
 	
-	void SetVelocity();
-	void UpdateOrbitalElements(double deltaV);
+	void SetVelocity(double vX, double vY, double vZ);
+	void SetVelocity(vector3D inputVelocity);
+	void SetPosition(double X, double Y, double Z);
+	void SetPosition(vector3D inputPosition);
+	void UpdateOrbitalElements(vector3D deltaV);
 
 protected:
 	void CalculateMassFromArea();

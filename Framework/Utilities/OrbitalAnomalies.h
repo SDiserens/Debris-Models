@@ -11,8 +11,18 @@ public:
 	void SetMeanAnomaly(double M);
 	void SetTrueAnomaly(double v);
 	void SetEccentricAnomaly(double E);
-	double GetMeanAnomaly();
-	double GetTrueAnomaly();
-	double GetEccentricAnomaly();
+	double GetMeanAnomaly(double eccentricity);
+	double GetTrueAnomaly(double eccentricity);
+	double GetEccentricAnomaly(double eccentricity);
+
+protected:
+	void UpdateAnomaliesFromEccentric(double eccentricity);
+	void UpdateAnomaliesFromMean(double eccentricity);
+	void UpdateAnomaliesFromTrue(double eccentricity);
+	double EccentricToMeanAnomaly(double eccentricity);
+	double EccentricToTrueAnomaly(double eccentricity);
+	double TrueToEccentricAnomaly(double eccentricity);
+	double MeanToEccentricAnomaly(double eccentricity);
+
 };
 

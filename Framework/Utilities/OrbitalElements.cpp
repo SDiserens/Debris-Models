@@ -13,3 +13,8 @@ OrbitalElements::OrbitalElements(double a, double e, double i, double ra, double
 	argPerigee = ap;
 }
 
+
+OrbitalElements::OrbitalElements(vector3D position, vector3D velocity)
+{
+
+}

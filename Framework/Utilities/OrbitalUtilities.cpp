@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+
 double CalculateKineticEnergy(vector3D relativeVelocity, double mass)
 {
 	double kineticEnergy = 0.5 * mass * relativeVelocity.vectorNorm2();
@@ -39,3 +40,9 @@ vector3D vector3D::CalculateRelativeVector(vector3D vectorB)
 	return vector3D(X, Y, Z);
 }
 
+void vector3D::addVector(vector3D vectorB)
+{
+	x += vectorB.x;
+	y += vectorB.y;
+	z += vectorB.z;
+}

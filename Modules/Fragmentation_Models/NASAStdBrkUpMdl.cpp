@@ -2,8 +2,11 @@
 //
 
 #include "stdafx.h"
-#include "fragmentation.h"
 #include "NSBM.h"
+
+std::uniform_real_distribution<double> piDistribution(0, Pi);
+std::uniform_real_distribution<double> tauDistribution(0, Tau);
+std::default_random_engine generator;
 
 int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer=NULL, float minLength=0.001)
 {
@@ -66,29 +69,29 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 
 	// Identify key variables
 	totalMass = targetObject.GetMass();
-maxLength = targetObject.GetLength();
-impactMass = projectileObject.GetMass();
-vector3D velocity = targetObject.GetVelocity();
-vector3D relativeVelocity = velocity.CalculateRelativeVector(projectileObject.GetVelocity());
-kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
-energyMassRatio = CalculateEnergyToMass(kineticEnergy, totalMass);
+	maxLength = targetObject.GetLength();
+	impactMass = projectileObject.GetMass();
+	vector3D velocity = targetObject.GetVelocity();
+	vector3D relativeVelocity = velocity.CalculateRelativeVector(projectileObject.GetVelocity());
+	kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
+	energyMassRatio = CalculateEnergyToMass(kineticEnergy, totalMass);
 
-if (energyMassRatio > 40)
-SetNumberFragmentParametersCatastrophicCollision();
-else
-SetNumberFragmentParametersCollision();
+	if (energyMassRatio > 40)
+	SetNumberFragmentParametersCatastrophicCollision();
+	else
+	SetNumberFragmentParametersCollision();
 
-SetNumberOfFragments(CalculateNumberOfFragments(minLength));
+	SetNumberOfFragments(CalculateNumberOfFragments(minLength));
 
-// Identify different size buckets for fragments
+	// Identify different size buckets for fragments
 
-// Create CollisionCloud for each bucket
+	// Create CollisionCloud for each bucket
 
-	// Generate debris in each bucket
+		// Generate debris in each bucket
 
-	// Update overall FragmentCloud variables
+		// Update overall FragmentCloud variables
 
-// Check conservation of Mass, Momentum and Energy within limits
+	// Check conservation of Mass, Momentum and Energy within limits
 
 }
 
@@ -102,9 +105,8 @@ NSBMFragmentCloud::NSBMFragmentCloud(bool init_explosion, double init_minLength,
 	nFrag = numFrag;
 }
 
-void NSBMFragmentCloud::GenerateDebrisFragments()
+void NSBMFragmentCloud::GenerateDebrisFragments(vector3D SourcePosition, vector3D sourceVelocity)
 {
-	
 	double tempLength;
 	double logMaxLength = log10(maxLength);
 	double logMinLength = log10(minLength);
@@ -116,17 +118,17 @@ void NSBMFragmentCloud::GenerateDebrisFragments()
 		tempLength = pow(10, lengthDistribution(generator));
 	
 		// Create new DebrisObject
-
-		// Calculate area-to-mass ratio
-
-		// Calculate mass
-
-		// Calculate Velocity
+		NSBMDebrisFragment tempFragment(explosion, tempLength);
 
 		// Identify updated orbital elements
+		tempFragment.SetPosition(SourcePosition);
+		tempFragment.SetVelocity(sourceVelocity);
+		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
 
 		// Update FragmentCloud variables for bucket
+
 	}
+
 }
 
 int NSBMFragmentCloud::CalculateNumberOfFragments(double length)
@@ -171,11 +173,13 @@ void NSBMFragmentCloud::SetNumberOfFragments(int nFrag)
 // Debris Fragments
 NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion)
 {
+	objectID = ++objectSEQ;
 	//std::default_random_engine generator;
 	length = init_length;
 	lambda = log10(length);
 	explosion = init_explosion;
 	CalculateArea();
+	
 
 	//Small Fragments
 	if (length < 0.11)
@@ -201,7 +205,7 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion)
 	}
 	GenerateAreaToMassValue();
 	CalculateMassFromArea();
-	CalculateVelocity();
+	CalculateRelativeVelocity();
 }
 
 NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion)
@@ -224,7 +228,7 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, boo
 	}
 	CalculateAreaToMass();
 	chi = log10(areaToMass);
-	CalculateVelocity();
+	CalculateRelativeVelocity();
 }
 
 void NSBMDebrisFragment::SetExplosionAreaMassParameters()
@@ -340,9 +344,9 @@ void NSBMDebrisFragment::CalculateArea()
 		area = 0.556945 * pow(length, 2.0047077);
 }
 
-void NSBMDebrisFragment::CalculateVelocity()
+void NSBMDebrisFragment::CalculateRelativeVelocity()
 {
-	double nu, mu, sigma;
+	double nu, mu, sigma, theta, phi;
 
 	sigma = 0.4;
 	if (explosion)
@@ -351,8 +355,15 @@ void NSBMDebrisFragment::CalculateVelocity()
 		mu = 0.9 * chi + 2.9;
 
 	std::normal_distribution<double> velocityDistribution(mu, sigma);
+
 	nu = velocityDistribution(generator);
 
-	velocityNorm = pow(10, nu);
+	deltaVNorm = pow(10, nu);
+	theta = piDistribution(generator);
+	phi = tauDistribution(generator);
+
+	deltaV = vector3D(velocityNorm * sin(theta) * cos(phi), 
+					   velocityNorm * sin(theta) * sin(phi),
+					   velocityNorm * cos(theta)			);
 }
 

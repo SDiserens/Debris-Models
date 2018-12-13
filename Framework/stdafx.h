@@ -14,6 +14,13 @@
 #include <random>
 using namespace std;
 
+const double NEWTONMAXITERATIONS = 20;
+const double NEWTONTOLERANCE = 1e-13;
+
+const double Pi = _Pi;
+const double Tau = 2 * _Pi;
+
+
 // TODO: reference additional headers your program requires here
 #include "Utilities\OrbitalUtilities.h"
 #include "Utilities\OrbitalElements.h"
