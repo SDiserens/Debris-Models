@@ -4,9 +4,7 @@
 #include "stdafx.h"
 #include "NSBM.h"
 
-std::uniform_real_distribution<double> piDistribution(0, Pi);
-std::uniform_real_distribution<double> tauDistribution(0, Tau);
-std::default_random_engine generator;
+//std::default_random_engine generator;
 
 int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer=NULL, float minLength=0.001)
 {
@@ -40,32 +38,20 @@ int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, Debris
 
 NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double minLength) //Create an explosion Cloud
 {
-	
-	double totalMass, maxLength, assignedMass;
-
 	// Identify key variables
 	totalMass = targetObject.GetMass();
 	maxLength = targetObject.GetLength();
 
+	// Set parameters for computing fragment distribution
 	SetNumberFragmentParametersExplosion();
-	SetNumberOfFragments(CalculateNumberOfFragments(minLength));
 
-	// Identify different size buckets for fragments
-
-	// Create ExplosionCloud for each bucket
-
-		// Generate debris in each bucket
-
-		// Update overall FragmentCloud variables
-
-	// Check conservation of Mass, Momentum and Energy within limits
-
+	// Create Fragment Buckets
+	GenerateFragmentBuckets(targetObject);
 }
 
 NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength) //Create a collision Cloud
 {
-	
-	double totalMass, maxLength, assignedMass, kineticEnergy, energyMassRatio, impactMass;
+	double kineticEnergy;
 
 	// Identify key variables
 	totalMass = targetObject.GetMass();
@@ -76,23 +62,14 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 	kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
 	energyMassRatio = CalculateEnergyToMass(kineticEnergy, totalMass);
 
+	// Set parameters for computing fragment distribution
 	if (energyMassRatio > 40)
-	SetNumberFragmentParametersCatastrophicCollision();
+		SetNumberFragmentParametersCatastrophicCollision();
 	else
-	SetNumberFragmentParametersCollision();
+		SetNumberFragmentParametersCollision();
 
-	SetNumberOfFragments(CalculateNumberOfFragments(minLength));
-
-	// Identify different size buckets for fragments
-
-	// Create CollisionCloud for each bucket
-
-		// Generate debris in each bucket
-
-		// Update overall FragmentCloud variables
-
-	// Check conservation of Mass, Momentum and Energy within limits
-
+	// Create Fragment Buckets
+	GenerateFragmentBuckets(targetObject);
 }
 
 
@@ -102,17 +79,68 @@ NSBMFragmentCloud::NSBMFragmentCloud(bool init_explosion, double init_minLength,
 	explosion = init_explosion;
 	maxLength = init_maxLength;
 	minLength = init_minLength;
-	nFrag = numFrag;
+	debrisCount = numFrag;
 }
 
-void NSBMFragmentCloud::GenerateDebrisFragments(vector3D SourcePosition, vector3D sourceVelocity)
+void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
+{
+	double lowerLength, upperLength, logStep, logLength;
+	int nFrag;
+
+	assignedMass = 0;
+	SetNumberOfFragments(CalculateNumberOfFragments(minLength));
+
+	// Identify different size buckets for fragments
+	nBuckets = numFragBuckets;
+	lowerLength = minLength;
+	logLength = log10(lowerLength);
+	logStep = (-logLength) / (nBuckets - 1.0);
+
+	// Create set of fragment buckets
+	for (int i = 0; i < nBuckets; i++)
+	{
+		// Set upper limits of length
+		logLength = logLength + logStep;
+		upperLength = pow(10, logLength);
+
+		// Create Bucket
+		CreateFragmentBucket(targetObject, lowerLength, upperLength);
+
+		// Update lower limit of length
+		lowerLength = upperLength;
+	}
+
+	// Create bucket for fragments > 1m
+	CreateFragmentBucket(targetObject, 1.0, maxLength);
+
+	// Check conservation of Mass, Momentum and Energy within limits
+}
+
+void NSBMFragmentCloud::CreateFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength)
+{
+	int nFrag = CalculateBucketFragments(lowerLength, upperLength);
+	// Create Fragments 
+	NSBMFragmentCloud tempFragmentCloud(explosion, lowerLength, upperLength, nFrag);
+	// Generate debris in each bucket
+	tempFragmentCloud.GenerateDebrisFragments(targetObject.GetPosition(), targetObject.GetVelocity());
+
+	// Update overall FragmentCloud variables
+	assignedMass += tempFragmentCloud.totalMass;
+	//TODO
+
+	// Store fragment bucket
+	fragmentBuckets.push_back(tempFragmentCloud);
+
+}
+
+void NSBMFragmentCloud::GenerateDebrisFragments(vector3D &SourcePosition, vector3D &sourceVelocity)
 {
 	double tempLength;
 	double logMaxLength = log10(maxLength);
 	double logMinLength = log10(minLength);
 	std::uniform_real_distribution<double> lengthDistribution(logMinLength, logMaxLength);
 
-	for (int i = 0; i < nFrag; i++)
+	for (int i = 0; i < debrisCount; i++)
 	{
 		// Assign fragment length
 		tempLength = pow(10, lengthDistribution(generator));
@@ -127,13 +155,15 @@ void NSBMFragmentCloud::GenerateDebrisFragments(vector3D SourcePosition, vector3
 
 		// Update FragmentCloud variables for bucket
 
+		// Add temp fragment to fragments vector
+		fragments.push_back(tempFragment);
 	}
 
 }
 
 int NSBMFragmentCloud::CalculateNumberOfFragments(double length)
 {
-	int numFrag = nFragCoefficient * pow(length, nFragExponent);
+	int numFrag = round(nFragCoefficient * pow(length, nFragExponent));
 	return numFrag;
 }
 
@@ -359,8 +389,8 @@ void NSBMDebrisFragment::CalculateRelativeVelocity()
 	nu = velocityDistribution(generator);
 
 	deltaVNorm = pow(10, nu);
-	theta = piDistribution(generator);
-	phi = tauDistribution(generator);
+	theta = randomNumberPi();
+	phi = randomNumberTau();
 
 	deltaV = vector3D(velocityNorm * sin(theta) * cos(phi), 
 					   velocityNorm * sin(theta) * sin(phi),

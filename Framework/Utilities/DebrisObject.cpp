@@ -27,6 +27,7 @@ void DebrisObject::UpdateOrbitalElements(vector3D deltaV)
 {
 	velocity.addVector(deltaV);
 	elements = OrbitalElements(position, velocity);
+	anomalies.SetTrueAnomaly(elements.GetTrueAnomaly());
 }
 
 vector3D DebrisObject::GetVelocity()

@@ -2,13 +2,14 @@
 //
 #pragma once
 #include "fragmentation.h"
+const int numFragBuckets = 30;
 
 class NSBMFragmentCloud : public FragmentCloud
 {
 public:
 	bool explosion;
-	double scaling, impactMass, nFragExponent, nFragCoefficient;
-	int nFrag;
+	double scaling, impactMass, nFragExponent, nFragCoefficient, energyMassRatio;
+	int debrisCount;
 	//std::default_random_engine generator;
 
 public:
@@ -24,7 +25,9 @@ public:
 	int CalculateNumberOfFragments(double length);
 	int CalculateBucketFragments(double lowerLength, double upperLength);
 	void SetNumberOfFragments(int nFrag);
-	void GenerateDebrisFragments(vector3D SourcePosition, vector3D sourceVelocity);
+	void GenerateFragmentBuckets(DebrisObject& targetObject);
+	void CreateFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength);
+	void GenerateDebrisFragments(vector3D &SourcePosition, vector3D &sourceVelocity);
 
 };
 

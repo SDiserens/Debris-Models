@@ -5,8 +5,8 @@ class FragmentCloud
 {
 public:
 	// Initialise object variables
-	int debrisCount;
-	double totalMass, averageMass, minLength, maxLength, averageLength;
+	int debrisCount, nBuckets;
+	double totalMass, averageMass, minLength, maxLength, averageLength, assignedMass;
 	std::vector<FragmentCloud> fragmentBuckets;
 	std::vector<DebrisObject> fragments;
 	vector3D relativeVelocity;

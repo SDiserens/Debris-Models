@@ -7,5 +7,10 @@ public:
 public:
 	OrbitalElements();
 	OrbitalElements(double a, double e, double i, double ra, double ap);
-	OrbitalElements(vector3D position, vector3D velocity);
+	OrbitalElements(vector3D &position, vector3D &velocity);
+	double GetTrueAnomaly();
+
+private:
+	double trueAnomaly;
+	vector3D CalculateEccentricityVector(vector3D &position, vector3D &velocity, vector3D &angularMomentum);
 };
