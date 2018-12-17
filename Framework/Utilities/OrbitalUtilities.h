@@ -28,6 +28,7 @@ public:
 };
 
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass);
+double CalculateKineticEnergy(double speed, double mass);
 double randomNumber();
 double randomNumberTau();
 double randomNumberPi();

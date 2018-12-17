@@ -27,6 +27,11 @@ double CalculateKineticEnergy(vector3D& relativeVelocity, double mass)
 	return kineticEnergy;
 }
 
+double CalculateKineticEnergy(double speed, double mass)
+{
+	double kineticEnergy = 0.5 * mass * speed * speed;
+	return kineticEnergy;
+}
 // 3D vector functions
 vector3D::vector3D() {}
 

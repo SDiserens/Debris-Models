@@ -80,6 +80,7 @@ NSBMFragmentCloud::NSBMFragmentCloud(bool init_explosion, double init_minLength,
 	maxLength = init_maxLength;
 	minLength = init_minLength;
 	debrisCount = numFrag;
+	assignedMass = 0;
 }
 
 void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
@@ -113,6 +114,20 @@ void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
 	// Create bucket for fragments > 1m
 	CreateFragmentBucket(targetObject, 1.0, maxLength);
 
+	double ratio = 1 / debrisCount;
+
+	averageMass = assignedMass * ratio;
+	averageKineticEnergy = totalKineticEnergy * ratio;
+	averageVolume = totalVolume * ratio;
+
+	averageLength *= ratio;
+	averageSpeed *= ratio;
+	averageSpeed *= ratio;
+	averageDensity = averageMass / averageVolume;
+
+	averageVelocity = averageVelocity * ratio;
+	averageMomentum = averageMomentum * ratio;
+
 	// Check conservation of Mass, Momentum and Energy within limits
 }
 
@@ -125,8 +140,17 @@ void NSBMFragmentCloud::CreateFragmentBucket(DebrisObject& targetObject, double 
 	tempFragmentCloud.GenerateDebrisFragments(targetObject.GetPosition(), targetObject.GetVelocity());
 
 	// Update overall FragmentCloud variables
-	assignedMass += tempFragmentCloud.totalMass;
-	//TODO
+	debrisCount += tempFragmentCloud.debrisCount;
+	assignedMass += tempFragmentCloud.assignedMass;
+	totalKineticEnergy += tempFragmentCloud.totalKineticEnergy;
+	totalVolume += tempFragmentCloud.totalVolume;
+
+	averageLength += tempFragmentCloud.averageLength * nFrag;
+	averageSpeed += tempFragmentCloud.averageSpeed * nFrag;
+	averageSpeed += tempFragmentCloud.averageSpeed * nFrag;
+
+	averageVelocity = averageVelocity + tempFragmentCloud.averageVelocity * nFrag;
+	averageMomentum = averageMomentum + tempFragmentCloud.averageMomentum * nFrag;
 
 	// Store fragment bucket
 	fragmentBuckets.push_back(tempFragmentCloud);
@@ -154,10 +178,31 @@ void NSBMFragmentCloud::GenerateDebrisFragments(vector3D &SourcePosition, vector
 		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
 
 		// Update FragmentCloud variables for bucket
+		assignedMass += tempFragment.GetMass();
+		totalKineticEnergy += tempFragment.kineticEnergy;
+		totalVolume += tempFragment.volume;
+		averageLength += tempFragment.GetLength();
+		averageSpeed += tempFragment.deltaVNorm;
+		averageVelocity = averageVelocity + tempFragment.deltaV;
+		averageMomentum = averageMomentum + tempFragment.deltaV * tempFragment.GetMass();
 
 		// Add temp fragment to fragments vector
 		fragments.push_back(tempFragment);
 	}
+
+	double ratio = 1 / debrisCount;
+
+	averageMass = assignedMass * ratio;
+	averageKineticEnergy = totalKineticEnergy * ratio;
+	averageVolume = totalVolume * ratio;
+
+	averageLength *= ratio;
+	averageSpeed *= ratio;
+	averageSpeed *= ratio;
+	averageDensity = averageMass / averageVolume;
+
+	averageVelocity = averageVelocity * ratio;
+	averageMomentum = averageMomentum * ratio;
 
 }
 
@@ -196,7 +241,7 @@ void NSBMFragmentCloud::SetNumberFragmentParametersCatastrophicCollision()
 
 void NSBMFragmentCloud::SetNumberOfFragments(int nFrag)
 {
-	int numFrag = nFrag;
+	numFrag = nFrag;
 }
 
 
@@ -236,6 +281,8 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion)
 	GenerateAreaToMassValue();
 	CalculateMassFromArea();
 	CalculateRelativeVelocity();
+	kineticEnergy = CalculateKineticEnergy(deltaVNorm, GetMass());
+	CalculateVolume();
 }
 
 NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion)
@@ -259,6 +306,8 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, boo
 	CalculateAreaToMass();
 	chi = log10(areaToMass);
 	CalculateRelativeVelocity();
+	kineticEnergy = CalculateKineticEnergy(deltaVNorm, GetMass());
+	CalculateVolume();
 }
 
 void NSBMDebrisFragment::SetExplosionAreaMassParameters()
@@ -392,8 +441,13 @@ void NSBMDebrisFragment::CalculateRelativeVelocity()
 	theta = randomNumberPi();
 	phi = randomNumberTau();
 
-	deltaV = vector3D(velocityNorm * sin(theta) * cos(phi), 
-					   velocityNorm * sin(theta) * sin(phi),
-					   velocityNorm * cos(theta)			);
+	deltaV = vector3D(deltaVNorm * sin(theta) * cos(phi),
+					  deltaVNorm * sin(theta) * sin(phi),
+					  deltaVNorm * cos(theta)			);
 }
 
+void NSBMDebrisFragment::CalculateVolume()
+{
+	volume = length * length * length;
+	density = mass / density;
+}

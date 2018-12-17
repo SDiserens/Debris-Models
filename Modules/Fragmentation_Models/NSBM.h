@@ -9,7 +9,7 @@ class NSBMFragmentCloud : public FragmentCloud
 public:
 	bool explosion;
 	double scaling, impactMass, nFragExponent, nFragCoefficient, energyMassRatio;
-	int debrisCount;
+	int numFrag;
 	//std::default_random_engine generator;
 
 public:
@@ -34,11 +34,12 @@ public:
 class NSBMDebrisFragment : public DebrisObject
 {
 public:
-	double lambda, chi, deltaVNorm;
+	double lambda, chi, deltaVNorm, kineticEnergy, volume, density;
 	bool explosion;
 	// A/m Distribution parameters
 	double alpha, mu_1, sigma_1, mu_2, sigma_2;
 	vector3D deltaV;
+	vector3D momentum;
 
 
 public:
@@ -47,6 +48,7 @@ public:
 	void CalculateArea();
 	void CalculateRelativeVelocity();
 	void GenerateAreaToMassValue();
+	void CalculateVolume();
 
 private:
 	void SetSmallAreaMassParameters();
