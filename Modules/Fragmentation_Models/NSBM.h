@@ -4,33 +4,6 @@
 #include "fragmentation.h"
 const int numFragBuckets = 30;
 
-class NSBMFragmentCloud : public FragmentCloud
-{
-public:
-	bool explosion;
-	double scaling, impactMass, nFragExponent, nFragCoefficient, energyMassRatio;
-	int numFrag;
-	//std::default_random_engine generator;
-
-public:
-	// Constructors
-	NSBMFragmentCloud(DebrisObject& targetObject, double minLength); // Explosion contructor
-	NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength); // Collision Constructor
-	NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength, int numFrag); // Bucket Constructor
-
-	// Functions
-	void SetNumberFragmentParametersExplosion();
-	void SetNumberFragmentParametersCollision();
-	void SetNumberFragmentParametersCatastrophicCollision();
-	int CalculateNumberOfFragments(double length);
-	int CalculateBucketFragments(double lowerLength, double upperLength);
-	void SetNumberOfFragments(int nFrag);
-	void GenerateFragmentBuckets(DebrisObject& targetObject);
-	void CreateFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength);
-	void GenerateDebrisFragments(vector3D &SourcePosition, vector3D &sourceVelocity);
-
-};
-
 class NSBMDebrisFragment : public DebrisObject
 {
 public:
@@ -54,4 +27,35 @@ private:
 	void SetSmallAreaMassParameters();
 	void SetExplosionAreaMassParameters();
 	void SetCollisionAreaMassParameters();
+};
+
+class NSBMFragmentCloud : public FragmentCloud
+{
+public:
+	bool explosion, maxBucket;
+	double scaling, impactMass, nFragExponent, nFragCoefficient, energyMassRatio;
+	int numFrag;
+	//std::default_random_engine generator;
+
+public:
+	// Constructors
+	NSBMFragmentCloud(); // Default contructor
+	NSBMFragmentCloud(DebrisObject& targetObject, double minLength); // Explosion contructor
+	NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength); // Collision Constructor
+	NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength, int numFrag, double init_mass); // Bucket Constructor
+
+	// Functions
+	void SetNumberFragmentParametersExplosion();
+	void SetNumberFragmentParametersCollision();
+	void SetNumberFragmentParametersCatastrophicCollision();
+	int CalculateNumberOfFragments(double length);
+	int CalculateBucketFragments(double lowerLength, double upperLength);
+	void SetNumberOfFragments(int nFrag);
+	void GenerateFragmentBuckets(DebrisObject& targetObject);
+	void CreateFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength);
+	void CreateTopFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength);
+	void GenerateDebrisFragments(vector3D &SourcePosition, vector3D &sourceVelocity);
+	void StoreFragmentVariables(NSBMDebrisFragment& tempFragment);
+	void StoreFragmentVariables(NSBMFragmentCloud& tempFragmentCloud);
+	void UpdateAverageVariables();
 };

@@ -36,6 +36,10 @@ int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, Debris
 }
 
 
+NSBMFragmentCloud::NSBMFragmentCloud() // DEfault Constructor
+{
+}
+
 NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double minLength) //Create an explosion Cloud
 {
 	// Identify key variables
@@ -63,7 +67,7 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 	energyMassRatio = CalculateEnergyToMass(kineticEnergy, totalMass);
 
 	// Set parameters for computing fragment distribution
-	if (energyMassRatio > 40)
+	if (energyMassRatio > catastrophicThreshold)
 		SetNumberFragmentParametersCatastrophicCollision();
 	else
 		SetNumberFragmentParametersCollision();
@@ -74,19 +78,20 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 
 
 //DebrisObject GenerateDebrisObject()
-NSBMFragmentCloud::NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength, int numFrag) // Generates a fragment size bucket
+NSBMFragmentCloud::NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength, int init_numFrag, double init_mass) // Generates a fragment size bucket
 {
 	explosion = init_explosion;
 	maxLength = init_maxLength;
 	minLength = init_minLength;
-	debrisCount = numFrag;
+	numFrag = init_numFrag;
+	totalMass = init_mass;
 	assignedMass = 0;
 }
+
 
 void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
 {
 	double lowerLength, upperLength, logStep, logLength;
-	int nFrag;
 
 	assignedMass = 0;
 	SetNumberOfFragments(CalculateNumberOfFragments(minLength));
@@ -112,45 +117,66 @@ void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
 	}
 
 	// Create bucket for fragments > 1m
-	CreateFragmentBucket(targetObject, 1.0, maxLength);
-
-	double ratio = 1 / debrisCount;
-
-	averageMass = assignedMass * ratio;
-	averageKineticEnergy = totalKineticEnergy * ratio;
-	averageVolume = totalVolume * ratio;
-
-	averageLength *= ratio;
-	averageSpeed *= ratio;
-	averageSpeed *= ratio;
-	averageDensity = averageMass / averageVolume;
-
-	averageVelocity = averageVelocity * ratio;
-	averageMomentum = averageMomentum * ratio;
+	CreateTopFragmentBucket(targetObject, 1.0, maxLength);
+	UpdateAverageVariables();
 
 	// Check conservation of Mass, Momentum and Energy within limits
+}
+void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength)
+{
+	int nFrag = -1;
+	double remainingMass = totalMass - assignedMass;
+
+	 NSBMFragmentCloud tempFragmentCloud(explosion, lowerLength, upperLength, nFrag, remainingMass);
+
+	if (explosion)
+	{
+		// Up to 8 fragments
+		tempFragmentCloud.numFrag = 8;
+		tempFragmentCloud.GenerateDebrisFragments(targetObject.GetPosition(), targetObject.GetVelocity());
+	}
+	else if (energyMassRatio < catastrophicThreshold)
+	{
+		// Single large fragment
+		tempFragmentCloud.numFrag = 1;
+		NSBMDebrisFragment tempFragment(upperLength, remainingMass, explosion);
+
+		tempFragment.SetPosition(targetObject.GetPosition());
+		tempFragment.SetVelocity(targetObject.GetVelocity());
+		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
+
+		tempFragmentCloud.StoreFragmentVariables(tempFragment);
+		tempFragmentCloud.UpdateAverageVariables();
+
+		tempFragmentCloud.fragments.push_back(tempFragment);
+	}
+	else
+	{
+		// Assign fragments until mass depleted
+		tempFragmentCloud.numFrag = 1;
+		while (tempFragmentCloud.assignedMass < remainingMass)
+			tempFragmentCloud.GenerateDebrisFragments(targetObject.GetPosition(), targetObject.GetVelocity());
+
+	}
+
+	StoreFragmentVariables(tempFragmentCloud);
+
+	// Store fragment bucket
+	fragmentBuckets.push_back(tempFragmentCloud);
 }
 
 void NSBMFragmentCloud::CreateFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength)
 {
+	double remainingMass = totalMass - assignedMass;
+
+	// Create Fragments
 	int nFrag = CalculateBucketFragments(lowerLength, upperLength);
-	// Create Fragments 
-	NSBMFragmentCloud tempFragmentCloud(explosion, lowerLength, upperLength, nFrag);
+	NSBMFragmentCloud tempFragmentCloud(explosion, lowerLength, upperLength, nFrag, remainingMass);
+	
 	// Generate debris in each bucket
 	tempFragmentCloud.GenerateDebrisFragments(targetObject.GetPosition(), targetObject.GetVelocity());
 
-	// Update overall FragmentCloud variables
-	debrisCount += tempFragmentCloud.debrisCount;
-	assignedMass += tempFragmentCloud.assignedMass;
-	totalKineticEnergy += tempFragmentCloud.totalKineticEnergy;
-	totalVolume += tempFragmentCloud.totalVolume;
-
-	averageLength += tempFragmentCloud.averageLength * nFrag;
-	averageSpeed += tempFragmentCloud.averageSpeed * nFrag;
-	averageSpeed += tempFragmentCloud.averageSpeed * nFrag;
-
-	averageVelocity = averageVelocity + tempFragmentCloud.averageVelocity * nFrag;
-	averageMomentum = averageMomentum + tempFragmentCloud.averageMomentum * nFrag;
+	StoreFragmentVariables(tempFragmentCloud);
 
 	// Store fragment bucket
 	fragmentBuckets.push_back(tempFragmentCloud);
@@ -164,7 +190,7 @@ void NSBMFragmentCloud::GenerateDebrisFragments(vector3D &SourcePosition, vector
 	double logMinLength = log10(minLength);
 	std::uniform_real_distribution<double> lengthDistribution(logMinLength, logMaxLength);
 
-	for (int i = 0; i < debrisCount; i++)
+	for (int i = 0; i < numFrag; i++)
 	{
 		// Assign fragment length
 		tempLength = pow(10, lengthDistribution(generator));
@@ -178,18 +204,52 @@ void NSBMFragmentCloud::GenerateDebrisFragments(vector3D &SourcePosition, vector
 		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
 
 		// Update FragmentCloud variables for bucket
-		assignedMass += tempFragment.GetMass();
-		totalKineticEnergy += tempFragment.kineticEnergy;
-		totalVolume += tempFragment.volume;
-		averageLength += tempFragment.GetLength();
-		averageSpeed += tempFragment.deltaVNorm;
-		averageVelocity = averageVelocity + tempFragment.deltaV;
-		averageMomentum = averageMomentum + tempFragment.deltaV * tempFragment.GetMass();
+		StoreFragmentVariables(tempFragment);
 
 		// Add temp fragment to fragments vector
 		fragments.push_back(tempFragment);
+
+		if (assignedMass >= totalMass) // Control maximum mass
+			break;
 	}
 
+	UpdateAverageVariables();
+}
+
+void NSBMFragmentCloud::StoreFragmentVariables(NSBMFragmentCloud& tempFragmentCloud)
+{
+	int nFrag = tempFragmentCloud.debrisCount;
+	// Update overall FragmentCloud variables
+	debrisCount += nFrag;
+	assignedMass += tempFragmentCloud.assignedMass;
+	totalKineticEnergy += tempFragmentCloud.totalKineticEnergy;
+	totalVolume += tempFragmentCloud.totalVolume;
+
+	averageLength += tempFragmentCloud.averageLength * nFrag;
+	averageSpeed += tempFragmentCloud.averageSpeed * nFrag;
+	averageSpeed += tempFragmentCloud.averageSpeed * nFrag;
+
+	averageVelocity = averageVelocity + tempFragmentCloud.averageVelocity * nFrag;
+	averageMomentum = averageMomentum + tempFragmentCloud.averageMomentum * nFrag;
+}
+
+
+void NSBMFragmentCloud::StoreFragmentVariables(NSBMDebrisFragment& tempFragment)
+{
+	// Update FragmentCloud variables for bucket
+	debrisCount++;
+	assignedMass += tempFragment.GetMass();
+	totalKineticEnergy += tempFragment.kineticEnergy;
+	totalVolume += tempFragment.volume;
+	averageLength += tempFragment.GetLength();
+	averageSpeed += tempFragment.deltaVNorm;
+	averageVelocity = averageVelocity + tempFragment.deltaV;
+	averageMomentum = averageMomentum + tempFragment.deltaV * tempFragment.GetMass();
+}
+
+
+void NSBMFragmentCloud::UpdateAverageVariables()
+{
 	double ratio = 1 / debrisCount;
 
 	averageMass = assignedMass * ratio;
@@ -206,10 +266,12 @@ void NSBMFragmentCloud::GenerateDebrisFragments(vector3D &SourcePosition, vector
 
 }
 
+
+
 int NSBMFragmentCloud::CalculateNumberOfFragments(double length)
 {
-	int numFrag = round(nFragCoefficient * pow(length, nFragExponent));
-	return numFrag;
+	int nFrag = round(nFragCoefficient * pow(length, nFragExponent));
+	return nFrag;
 }
 
 int NSBMFragmentCloud::CalculateBucketFragments(double lowerLength, double upperLength)

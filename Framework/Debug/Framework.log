@@ -1,19 +1,4 @@
-﻿  stdafx.cpp
-  OrbitalUtilities.cpp
-  OrbitalElements.cpp
-  OrbitalAnomalies.cpp
-  DebrisPopulation.cpp
-  DebrisObject.cpp
-  Framework.cpp
-  NASAStdBrkUpMdl.cpp
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(42): warning C4101: 'assignedMass': unreferenced local variable
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(140): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  FragmentationFunctions.cpp
-  FragmentCloud.cpp
-  CUBE.cpp
-  Generating Code...
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(89): warning C4700: uninitialized local variable 'nFrag' used
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(89): warning C4700: uninitialized local variable 'upperLength' used
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(89): warning C4700: uninitialized local variable 'lowerLength' used
+﻿  NASAStdBrkUpMdl.cpp
+e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(273): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   Framework.vcxproj -> E:\Work\Modelling Framework\Framework\Debug\Framework.exe
   Framework.vcxproj -> E:\Work\Modelling Framework\Framework\Debug\Framework.pdb (Partial PDB)
