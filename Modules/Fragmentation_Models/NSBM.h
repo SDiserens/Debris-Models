@@ -16,17 +16,19 @@ public:
 
 
 public:
-	NSBMDebrisFragment(double init_length, bool init_explosion);
-	NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion);
+	NSBMDebrisFragment(double init_length, bool init_explosion, int source);
+	NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion, int source);
 	void CalculateArea();
 	void CalculateRelativeVelocity();
 	void GenerateAreaToMassValue();
 	void CalculateVolume();
 
+	
 private:
 	void SetSmallAreaMassParameters();
-	void SetExplosionAreaMassParameters();
-	void SetCollisionAreaMassParameters();
+	void SetBridgeAreaMassParameters();
+	void SetUpperStageAreaMassParameters();
+	void SetSpacecraftAreaMassParameters();
 };
 
 class NSBMFragmentCloud : public FragmentCloud
@@ -38,24 +40,34 @@ public:
 	//std::default_random_engine generator;
 
 public:
-	// Constructors
+	// -- Constructors
 	NSBMFragmentCloud(); // Default contructor
 	NSBMFragmentCloud(DebrisObject& targetObject, double minLength); // Explosion contructor
 	NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength); // Collision Constructor
 	NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength, int numFrag, double init_mass); // Bucket Constructor
 
-	// Functions
+	// -- Functions for breakup parameters
 	void SetNumberFragmentParametersExplosion();
 	void SetNumberFragmentParametersCollision();
 	void SetNumberFragmentParametersCatastrophicCollision();
+
+	// -- Functions For number of fragments
 	int CalculateNumberOfFragments(double length);
 	int CalculateBucketFragments(double lowerLength, double upperLength);
 	void SetNumberOfFragments(int nFrag);
+
+	// -- Functions for generating buckets and fragments
 	void GenerateFragmentBuckets(DebrisObject& targetObject);
 	void CreateFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength);
 	void CreateTopFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength);
-	void GenerateDebrisFragments(vector3D &SourcePosition, vector3D &sourceVelocity);
+	void GenerateDebrisFragments(DebrisObject& targetObject);
+	
+	// -- Functions for updating cloud parameters
 	void StoreFragmentVariables(NSBMDebrisFragment& tempFragment);
 	void StoreFragmentVariables(NSBMFragmentCloud& tempFragmentCloud);
 	void UpdateAverageVariables();
+	
+	// -- Functions for validating physical behaviour
+	void ApplyConservationOfMass();
+	void ApplyConservationOfMomentum();
 };

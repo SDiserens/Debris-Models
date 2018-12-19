@@ -11,7 +11,8 @@ protected:
 	static int objectSEQ;
 	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, velocityNorm;
 	long parentID, sourceID, objectID;
-	int sourceType; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
+	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
+	int sourceType, objectType; // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
 	vector3D velocity, position;
 
 public:
@@ -20,13 +21,20 @@ public:
 		double argPerigee, double init_meanAnomaly);
 	~DebrisObject();
 
+	long GetID();
+	long GetSourceID();
+	int GetType();
+	int GetSourceType();
+	int GetSourceEvent();
 	double GetMass();
 	double GetLength();
 	double GetArea();
 	double GetAreaToMass();
 	vector3D GetVelocity();
 	vector3D GetPosition();
-	
+
+	void SetSourceID(long ID);
+	void SetParentID(long ID);
 	void SetVelocity(double vX, double vY, double vZ);
 	void SetVelocity(vector3D inputVelocity);
 	void SetPosition(double X, double Y, double Z);

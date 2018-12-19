@@ -55,7 +55,7 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double minLengt
 
 NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength) //Create a collision Cloud
 {
-	double kineticEnergy;
+	double collisionKineticEnergy;
 
 	// Identify key variables
 	totalMass = targetObject.GetMass();
@@ -63,8 +63,8 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 	impactMass = projectileObject.GetMass();
 	vector3D velocity = targetObject.GetVelocity();
 	vector3D relativeVelocity = velocity.CalculateRelativeVector(projectileObject.GetVelocity());
-	kineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
-	energyMassRatio = CalculateEnergyToMass(kineticEnergy, totalMass);
+	collisionKineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
+	energyMassRatio = CalculateEnergyToMass(collisionKineticEnergy, totalMass);
 
 	// Set parameters for computing fragment distribution
 	if (energyMassRatio > catastrophicThreshold)
@@ -121,7 +121,28 @@ void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
 	UpdateAverageVariables();
 
 	// Check conservation of Mass, Momentum and Energy within limits
+	ApplyConservationOfMass();
+	ApplyConservationOfMomentum();
 }
+
+void NSBMFragmentCloud::ApplyConservationOfMass()
+{
+	// Test involved mass vs assigned mass
+
+	// If too little mass
+		// Distribute mass as required
+
+	// If too much mass
+		// Scale fragments accordingly
+
+}
+
+void NSBMFragmentCloud::ApplyConservationOfMomentum()
+{
+	// Check magnitude of momentum vector compared to average momenmtum
+}
+
+
 void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength)
 {
 	int nFrag = -1;
@@ -133,7 +154,7 @@ void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, doub
 	{
 		// Up to 8 fragments
 		tempFragmentCloud.numFrag = 8;
-		tempFragmentCloud.GenerateDebrisFragments(targetObject.GetPosition(), targetObject.GetVelocity());
+		tempFragmentCloud.GenerateDebrisFragments(targetObject);
 	}
 	else if (energyMassRatio < catastrophicThreshold)
 	{
@@ -155,7 +176,7 @@ void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, doub
 		// Assign fragments until mass depleted
 		tempFragmentCloud.numFrag = 1;
 		while (tempFragmentCloud.assignedMass < remainingMass)
-			tempFragmentCloud.GenerateDebrisFragments(targetObject.GetPosition(), targetObject.GetVelocity());
+			tempFragmentCloud.GenerateDebrisFragments(targetObject);
 
 	}
 
@@ -174,7 +195,7 @@ void NSBMFragmentCloud::CreateFragmentBucket(DebrisObject& targetObject, double 
 	NSBMFragmentCloud tempFragmentCloud(explosion, lowerLength, upperLength, nFrag, remainingMass);
 	
 	// Generate debris in each bucket
-	tempFragmentCloud.GenerateDebrisFragments(targetObject.GetPosition(), targetObject.GetVelocity());
+	tempFragmentCloud.GenerateDebrisFragments(targetObject);
 
 	StoreFragmentVariables(tempFragmentCloud);
 
@@ -183,7 +204,7 @@ void NSBMFragmentCloud::CreateFragmentBucket(DebrisObject& targetObject, double 
 
 }
 
-void NSBMFragmentCloud::GenerateDebrisFragments(vector3D &SourcePosition, vector3D &sourceVelocity)
+void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 {
 	double tempLength;
 	double logMaxLength = log10(maxLength);
@@ -196,11 +217,12 @@ void NSBMFragmentCloud::GenerateDebrisFragments(vector3D &SourcePosition, vector
 		tempLength = pow(10, lengthDistribution(generator));
 	
 		// Create new DebrisObject
-		NSBMDebrisFragment tempFragment(explosion, tempLength);
-
+		NSBMDebrisFragment tempFragment(explosion, tempLength, targetObject.GetType());
+		tempFragment.SetSourceID(targetObject.GetSourceID());
+		tempFragment.SetParentID(targetObject.GetID());
 		// Identify updated orbital elements
-		tempFragment.SetPosition(SourcePosition);
-		tempFragment.SetVelocity(sourceVelocity);
+		tempFragment.SetPosition(targetObject.GetPosition());
+		tempFragment.SetVelocity(targetObject.GetVelocity());
 		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
 
 		// Update FragmentCloud variables for bucket
@@ -227,7 +249,7 @@ void NSBMFragmentCloud::StoreFragmentVariables(NSBMFragmentCloud& tempFragmentCl
 
 	averageLength += tempFragmentCloud.averageLength * nFrag;
 	averageSpeed += tempFragmentCloud.averageSpeed * nFrag;
-	averageSpeed += tempFragmentCloud.averageSpeed * nFrag;
+	averageMomentumNorm += tempFragmentCloud.averageMomentumNorm * nFrag;
 
 	averageVelocity = averageVelocity + tempFragmentCloud.averageVelocity * nFrag;
 	averageMomentum = averageMomentum + tempFragmentCloud.averageMomentum * nFrag;
@@ -241,8 +263,11 @@ void NSBMFragmentCloud::StoreFragmentVariables(NSBMDebrisFragment& tempFragment)
 	assignedMass += tempFragment.GetMass();
 	totalKineticEnergy += tempFragment.kineticEnergy;
 	totalVolume += tempFragment.volume;
+
 	averageLength += tempFragment.GetLength();
 	averageSpeed += tempFragment.deltaVNorm;
+	averageMomentumNorm += tempFragment.deltaVNorm * tempFragment.GetMass();
+
 	averageVelocity = averageVelocity + tempFragment.deltaV;
 	averageMomentum = averageMomentum + tempFragment.deltaV * tempFragment.GetMass();
 }
@@ -258,7 +283,7 @@ void NSBMFragmentCloud::UpdateAverageVariables()
 
 	averageLength *= ratio;
 	averageSpeed *= ratio;
-	averageSpeed *= ratio;
+	averageMomentumNorm *= ratio;
 	averageDensity = averageMass / averageVolume;
 
 	averageVelocity = averageVelocity * ratio;
@@ -308,38 +333,42 @@ void NSBMFragmentCloud::SetNumberOfFragments(int nFrag)
 
 
 // Debris Fragments
-NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion)
+NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion, int source)
 {
 	objectID = ++objectSEQ;
+	sourceType = source;
 	//std::default_random_engine generator;
 	length = init_length;
 	lambda = log10(length);
 	explosion = init_explosion;
 	CalculateArea();
-	
+
+	if (explosion)
+		sourceEvent = 1;
+	else
+		sourceEvent = 2;
 
 	//Small Fragments
-	if (length < 0.11)
+	if (length < 0.08)
 	{
 		SetSmallAreaMassParameters();
-		// TODO - Bridging function
-		if (explosion)
-			sourceType = 1;
-		else
-			sourceType = 2;
 	}
-	// Explosion Fragments
-	else if (explosion)
+	//Bridged Fragments
+	else if (length < 0.11)
 	{
-		sourceType = 1;
-		SetExplosionAreaMassParameters();
+		SetBridgeAreaMassParameters();	
 	}
-	// Collisions Fragments
+	// UpperStage Fragments
+	else if (sourceType == 0)
+	{
+		SetUpperStageAreaMassParameters();
+	}
+	// Spacecraft Fragments
 	else
 	{
-		sourceType = 2;
-		SetCollisionAreaMassParameters();
+		SetSpacecraftAreaMassParameters();
 	}
+
 	GenerateAreaToMassValue();
 	CalculateMassFromArea();
 	CalculateRelativeVelocity();
@@ -347,7 +376,7 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion)
 	CalculateVolume();
 }
 
-NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion)
+NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion, int source)
 {
 	length = init_length;
 	lambda = log10(length);
@@ -356,15 +385,13 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, boo
 	CalculateArea();
 
 	if (explosion)
-	{
-		sourceType = 1;
-		//SetExplosionAreaMassParameters();
-	}
+		sourceEvent = 1;
 	else
-	{
-		sourceType = 2;
-		//SetCollisionAreaMassParameters();
-	}
+		sourceEvent = 2;
+
+	objectType = source;
+	sourceType = source;
+
 	CalculateAreaToMass();
 	chi = log10(areaToMass);
 	CalculateRelativeVelocity();
@@ -372,8 +399,9 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, boo
 	CalculateVolume();
 }
 
-void NSBMDebrisFragment::SetExplosionAreaMassParameters()
+void NSBMDebrisFragment::SetUpperStageAreaMassParameters()
 {
+	objectType = 0;
 	// alpha
 	if (lambda <= -1.4)
 		alpha = 1;
@@ -405,8 +433,9 @@ void NSBMDebrisFragment::SetExplosionAreaMassParameters()
 		sigma_2 = 0.28 - 0.1636 * (lambda + 1);
 }
 
-void NSBMDebrisFragment::SetCollisionAreaMassParameters()
+void NSBMDebrisFragment::SetSpacecraftAreaMassParameters()
 {
+	objectType = 1;
 	// alpha
 	if (lambda <= -1.95)
 		alpha = 0;
@@ -432,7 +461,7 @@ void NSBMDebrisFragment::SetCollisionAreaMassParameters()
 		sigma_1 = 0.1 + 0.2 * (lambda + 1.3);
 
 		// mu_2
-	if (lambda <= 0.7)
+	if (lambda <= -0.7)
 		mu_2 = -1.2;
 	else if (lambda >= -0.1)
 		mu_2 = -2.0;
@@ -448,8 +477,17 @@ void NSBMDebrisFragment::SetCollisionAreaMassParameters()
 		sigma_2 = 0.5 - 1 * (lambda + 0.5);
 }
 
+void NSBMDebrisFragment::SetBridgeAreaMassParameters()
+{
+	objectType = 2;
+	// TODO - Bridging function
+	SetSmallAreaMassParameters();
+}
+
 void NSBMDebrisFragment::SetSmallAreaMassParameters()
 {
+	objectType = 2;
+
 	alpha = 1;
 
 	if (lambda <= -1.75)
@@ -513,3 +551,4 @@ void NSBMDebrisFragment::CalculateVolume()
 	volume = length * length * length;
 	density = mass / density;
 }
+

@@ -23,6 +23,31 @@ DebrisObject::~DebrisObject()
 {
 }
 
+long DebrisObject::GetID()
+{
+	return objectID;
+}
+
+long DebrisObject::GetSourceID()
+{
+	return sourceID;
+}
+
+int DebrisObject::GetType()
+{
+	return objectType;
+}
+
+int DebrisObject::GetSourceType()
+{
+	return sourceType;
+}
+
+int DebrisObject::GetSourceEvent()
+{
+	return sourceEvent;
+}
+
 void DebrisObject::UpdateOrbitalElements(vector3D deltaV)
 {
 	velocity.addVector(deltaV);
@@ -96,3 +121,13 @@ double DebrisObject::GetAreaToMass()
 	return areaToMass;
 }
 
+
+void DebrisObject::SetSourceID(long ID)
+{
+	sourceID = ID;
+}
+
+void DebrisObject::SetParentID(long ID)
+{
+	parentID = ID;
+}
