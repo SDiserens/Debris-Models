@@ -1,0 +1,14 @@
+﻿  stdafx.cpp
+  NASA Standard Breakup Model.cpp
+  OrbitalUtilities.cpp
+  OrbitalElements.cpp
+  OrbitalAnomalies.cpp
+  DebrisPopulation.cpp
+  DebrisObject.cpp
+  NASAStdBrkUpMdl.cpp
+e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(298): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  FragmentCloud.cpp
+  FragmentationFunctions.cpp
+  Generating Code...
+  NASA Standard Breakup Model.vcxproj -> E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\Debug\NASA Standard Breakup Model.exe
+  NASA Standard Breakup Model.vcxproj -> E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\Debug\NASA Standard Breakup Model.pdb (Partial PDB)
