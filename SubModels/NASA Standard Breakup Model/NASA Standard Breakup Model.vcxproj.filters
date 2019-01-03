@@ -36,29 +36,29 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Modules\Fragmentation_Models\fragmentation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Modules\Fragmentation_Models\FragmentCloud.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Modules\Fragmentation_Models\NSBM.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Utilities\DebrisObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Utilities\DebrisPopulation.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Fragmentation_Models\fragmentation.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Fragmentation_Models\FragmentCloud.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Fragmentation_Models\NSBM.h">
+      <Filter>Header Files\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Utilities\OrbitalAnomalies.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Utilities\OrbitalElements.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Utilities\OrbitalUtilities.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,29 +68,29 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Modules\Fragmentation_Models\FragmentationFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Modules\Fragmentation_Models\FragmentCloud.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Utilities\DebrisObject.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Fragmentation_Models\FragmentationFunctions.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Fragmentation_Models\FragmentCloud.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp">
+      <Filter>Source Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Utilities\OrbitalAnomalies.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Utilities\OrbitalElements.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Utilities\OrbitalUtilities.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
