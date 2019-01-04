@@ -60,6 +60,9 @@
     <ClInclude Include="..\..\Utilities\OrbitalUtilities.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NASA Standard Breakup Model.cpp">
@@ -92,5 +95,17 @@
     <ClCompile Include="..\..\Utilities\OrbitalUtilities.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="config.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Scenarios\basicExplosion.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Scenarios\basicCollision.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

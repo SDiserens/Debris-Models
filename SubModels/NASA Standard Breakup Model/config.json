@@ -1,0 +1,4 @@
+{
+  "minLength": 0.001,
+  "scenarioFilename": "basicExplosion.json" // "basicCollision.json"
+}

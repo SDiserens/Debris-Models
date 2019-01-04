@@ -4,6 +4,8 @@
 #include "fragmentation.h"
 const int numFragBuckets = 30;
 
+int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL, float minLength = 0.001);
+
 class NSBMDebrisFragment : public DebrisObject
 {
 public:
