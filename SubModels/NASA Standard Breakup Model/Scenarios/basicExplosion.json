@@ -1,9 +1,17 @@
 {
-  "primaryObject": {
-
-  },
-
-  "secondaryObject": {
-
-  }
+  "objects": [
+    {
+      "mass": 1000,
+      "radius": 1,
+      "length": 2,
+      "orbitalElements": {
+        "a": 7000,
+        "e": 0,
+        "i": 0,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    }
+  ]
 }

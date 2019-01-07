@@ -123,6 +123,7 @@ void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
 	// Check conservation of Mass, Momentum and Energy within limits
 	ApplyConservationOfMass();
 	ApplyConservationOfMomentum();
+	ApplyConservationOfEnergy();
 }
 
 void NSBMFragmentCloud::ApplyConservationOfMass()
@@ -139,9 +140,20 @@ void NSBMFragmentCloud::ApplyConservationOfMass()
 
 void NSBMFragmentCloud::ApplyConservationOfMomentum()
 {
-	// Check magnitude of momentum vector compared to average momenmtum
+	float momentumNorm = totalMomentum.vectorNorm();
+	if (momentumNorm > NEWTONTOLERANCE)
+	{
+		float normalisedMomentum = momentumNorm / averageMomentumNorm;
+		// Check magnitude of momentum vector compared to average momenmtum
+		if (normalisedMomentum < NEWTONTOLERANCE)
+			consMomentumFlag = true;
+	}
 }
 
+void NSBMFragmentCloud::ApplyConservationOfEnergy()
+{
+	// No way to do this currently as no knowledge about the stored energy involved
+}
 
 void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, double lowerLength, double upperLength)
 {
@@ -252,7 +264,7 @@ void NSBMFragmentCloud::StoreFragmentVariables(NSBMFragmentCloud& tempFragmentCl
 	averageMomentumNorm += tempFragmentCloud.averageMomentumNorm * nFrag;
 
 	averageVelocity = averageVelocity + tempFragmentCloud.averageVelocity * nFrag;
-	averageMomentum = averageMomentum + tempFragmentCloud.averageMomentum * nFrag;
+	totalMomentum = totalMomentum + tempFragmentCloud.totalMomentum;
 }
 
 
@@ -269,7 +281,7 @@ void NSBMFragmentCloud::StoreFragmentVariables(NSBMDebrisFragment& tempFragment)
 	averageMomentumNorm += tempFragment.deltaVNorm * tempFragment.GetMass();
 
 	averageVelocity = averageVelocity + tempFragment.deltaV;
-	averageMomentum = averageMomentum + tempFragment.deltaV * tempFragment.GetMass();
+	totalMomentum = totalMomentum + tempFragment.deltaV * tempFragment.GetMass();
 }
 
 
@@ -287,8 +299,7 @@ void NSBMFragmentCloud::UpdateAverageVariables()
 	averageDensity = averageMass / averageVolume;
 
 	averageVelocity = averageVelocity * ratio;
-	averageMomentum = averageMomentum * ratio;
-
+	averageMomentum = totalMomentum * ratio;
 }
 
 

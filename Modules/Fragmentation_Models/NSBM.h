@@ -72,4 +72,5 @@ public:
 	// -- Functions for validating physical behaviour
 	void ApplyConservationOfMass();
 	void ApplyConservationOfMomentum();
+	void ApplyConservationOfEnergy();
 };

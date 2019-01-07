@@ -5,7 +5,10 @@
 
 void MergeFragmentPopulations(DebrisPopulation population, FragmentCloud cloud)
 {
+	if (cloud.consMomentumFlag)
+	{
 
+	}
 }
 
 double CalculateEnergyToMass(double kineticEnergy, double mass) // Returns E/m ratio in J/g
