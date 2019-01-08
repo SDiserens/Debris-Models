@@ -6,7 +6,7 @@
 
 //std::default_random_engine generator;
 
-int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer=NULL, float minLength=0.001)
+int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer, double minLength)
 {
     // Initialise Variables
     bool explosion;
@@ -25,7 +25,7 @@ int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, Debris
 	{
 		explosion = false;
 		DebrisObject& projectileObject = *projectilePointer;
-		delete projectilePointer;
+		//delete projectilePointer;
 		targetDebrisCloud = NSBMFragmentCloud(targetObject, projectileObject, minLength);
 		projectileDebrisCloud = NSBMFragmentCloud(projectileObject, targetObject, minLength);
 		MergeFragmentPopulations(population, targetDebrisCloud);
@@ -103,7 +103,7 @@ void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
 	logStep = (-logLength) / (nBuckets - 1.0);
 
 	// Create set of fragment buckets
-	for (int i = 0; i < nBuckets; i++)
+	for (int i = 1; i < nBuckets; i++)
 	{
 		// Set upper limits of length
 		logLength = logLength + logStep;
@@ -117,7 +117,7 @@ void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
 	}
 
 	// Create bucket for fragments > 1m
-	CreateTopFragmentBucket(targetObject, 1.0, maxLength);
+	CreateTopFragmentBucket(targetObject, lowerLength, maxLength);
 	UpdateAverageVariables();
 
 	// Check conservation of Mass, Momentum and Energy within limits
@@ -140,10 +140,10 @@ void NSBMFragmentCloud::ApplyConservationOfMass()
 
 void NSBMFragmentCloud::ApplyConservationOfMomentum()
 {
-	float momentumNorm = totalMomentum.vectorNorm();
+	double momentumNorm = totalMomentum.vectorNorm();
 	if (momentumNorm > NEWTONTOLERANCE)
 	{
-		float normalisedMomentum = momentumNorm / averageMomentumNorm;
+		double normalisedMomentum = momentumNorm / averageMomentumNorm;
 		// Check magnitude of momentum vector compared to average momenmtum
 		if (normalisedMomentum < NEWTONTOLERANCE)
 			consMomentumFlag = true;
@@ -363,24 +363,27 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion, 
 	if (length < 0.08)
 	{
 		SetSmallAreaMassParameters();
+		GenerateAreaToMassValue();
 	}
 	//Bridged Fragments
 	else if (length < 0.11)
 	{
-		SetBridgeAreaMassParameters();	
+		AreaMassBridgingFunction();
+		//GenerateAreaToMassValue(); // This is done within set parameter function
 	}
 	// UpperStage Fragments
 	else if (sourceType == 0)
 	{
 		SetUpperStageAreaMassParameters();
+		GenerateAreaToMassValue();
 	}
 	// Spacecraft Fragments
 	else
 	{
 		SetSpacecraftAreaMassParameters();
+		GenerateAreaToMassValue();
 	}
 
-	GenerateAreaToMassValue();
 	CalculateMassFromArea();
 	CalculateRelativeVelocity();
 	kineticEnergy = CalculateKineticEnergy(deltaVNorm, GetMass());
@@ -488,11 +491,57 @@ void NSBMDebrisFragment::SetSpacecraftAreaMassParameters()
 		sigma_2 = 0.5 - 1 * (lambda + 0.5);
 }
 
-void NSBMDebrisFragment::SetBridgeAreaMassParameters()
+void NSBMDebrisFragment::AreaMassBridgingFunction()
 {
+	// Bridging function
+	//string bridgingFunction = "Small";
+	//string bridgingFunction = "Large";
+	//string bridgingFunction = "Mean";
+	//string bridgingFunction = "Weighted";
+
 	objectType = 2;
-	// TODO - Bridging function
 	SetSmallAreaMassParameters();
+
+	if (bridgingFunction != "Small")
+	{
+		// Store small parameters
+		double alphaSmall, mu_1Small, sigma_1Small, mu_2Small, sigma_2Small;
+		alphaSmall = alpha;
+		mu_1Small = mu_1;
+		sigma_1Small = sigma_1;
+		mu_2Small = mu_2;
+		sigma_2Small = sigma_2;
+
+		// Generate large parameters
+		// UpperStage Fragments
+		if (sourceType == 0)
+			SetUpperStageAreaMassParameters();
+		// Spacecraft Fragments
+		else
+			SetSpacecraftAreaMassParameters();
+
+		if (bridgingFunction == "Mean")
+		{	
+			// Average
+			alpha   = (alphaSmall   + alpha)   / 2;
+			mu_1    = (mu_1Small    + mu_1)    / 2;
+			sigma_1 = (sigma_1Small + sigma_1) / 2;
+			mu_2    = (mu_2Small    + mu_2)    / 2;
+			sigma_2 = (sigma_2Small + sigma_2) / 2;
+		}
+
+		else if (bridgingFunction == "Weighted")
+		{
+			// Weighted Average
+			double weight = (length - 0.08) / (0.03);
+			double smallWeight = 1 - weight;
+			alpha   = (smallWeight * alphaSmall   + weight * alpha);
+			mu_1    = (smallWeight * mu_1Small    + weight * mu_1);
+			sigma_1 = (smallWeight * sigma_1Small + weight * sigma_1);
+			mu_2    = (smallWeight * mu_2Small    + weight * mu_2);
+			sigma_2 = (smallWeight * sigma_2Small + weight * sigma_2);
+		}
+	}
 }
 
 void NSBMDebrisFragment::SetSmallAreaMassParameters()

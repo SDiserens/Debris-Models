@@ -2,9 +2,12 @@
 //
 #pragma once
 #include "fragmentation.h"
-const int numFragBuckets = 30;
 
-int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL, float minLength = 0.001);
+// Setting defaults for globals
+int numFragBuckets = 30;
+string bridgingFunction = "Weighted";
+
+int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL, double minLength = 0.001);
 
 class NSBMDebrisFragment : public DebrisObject
 {
@@ -28,7 +31,7 @@ public:
 	
 private:
 	void SetSmallAreaMassParameters();
-	void SetBridgeAreaMassParameters();
+	void AreaMassBridgingFunction();
 	void SetUpperStageAreaMassParameters();
 	void SetSpacecraftAreaMassParameters();
 };
@@ -36,8 +39,8 @@ private:
 class NSBMFragmentCloud : public FragmentCloud
 {
 public:
-	bool explosion, maxBucket;
-	double scaling, impactMass, nFragExponent, nFragCoefficient, energyMassRatio;
+	bool maxBucket;
+	double scaling, impactMass, nFragExponent, nFragCoefficient;
 	int numFrag;
 	//std::default_random_engine generator;
 

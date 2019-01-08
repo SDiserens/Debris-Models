@@ -22,7 +22,7 @@ using namespace std;
 
 
 
-// TODO: reference additional headers your program requires here
+// reference additional headers your program requires here
 #include "Utilities/OrbitalUtilities.h"
 #include "Utilities/OrbitalElements.h"
 #include "Utilities/OrbitalAnomalies.h"

@@ -3,11 +3,25 @@
 #include "stdafx.h"
 #include "fragmentation.h"
 
-void MergeFragmentPopulations(DebrisPopulation population, FragmentCloud cloud)
+void MergeFragmentPopulations(DebrisPopulation currentPopulation, FragmentCloud cloud)
 {
-	if (cloud.consMomentumFlag)
-	{
+	// ToDO - Add event MetaData
+	Event tempEvent(currentPopulation.GetEpoch(),
+					cloud.explosion,
+					cloud.consMomentumFlag, 
+					(cloud.energyMassRatio > catastrophicThreshold),
+					cloud.totalMass,
+					cloud.debrisCount);
 
+	currentPopulation.AddDebrisEvent(tempEvent);
+
+	// Merge population
+	for (auto &bucketCloud : cloud.fragmentBuckets)
+	{
+		for(auto & debris : bucketCloud.fragments)
+		{
+			currentPopulation.AddDebrisObject(debris);
+		}
 	}
 }
 

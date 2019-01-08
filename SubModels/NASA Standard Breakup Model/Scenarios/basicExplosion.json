@@ -1,5 +1,5 @@
 {
-  "objects": [
+  "primaryObject": 
     {
       "mass": 1000,
       "radius": 1,
@@ -13,5 +13,5 @@
       },
       "meanAnomaly": 0
     }
-  ]
+  
 }

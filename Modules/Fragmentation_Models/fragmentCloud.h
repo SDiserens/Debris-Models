@@ -5,10 +5,10 @@ class FragmentCloud
 {
 public:
 	// Initialise object variables
-	bool consMomentumFlag;
+	bool explosion, consMomentumFlag = false;
 	int debrisCount, nBuckets;
 	double totalMass, averageMass, minLength, maxLength, averageLength; // Working variables
-	double assignedMass, averageSpeed, totalKineticEnergy, averageKineticEnergy, totalVolume, averageVolume, averageDensity, averageMomentumNorm; // Recorded variables
+	double assignedMass, averageSpeed, totalKineticEnergy, averageKineticEnergy, totalVolume, averageVolume, averageDensity, averageMomentumNorm, energyMassRatio; // Recorded variables
 	
 	// Working variables
 	vector3D relativeVelocity;
