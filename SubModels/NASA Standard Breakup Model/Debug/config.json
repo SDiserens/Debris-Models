@@ -1,0 +1,7 @@
+{
+  "minLength": 0.001, // Defaults to 0.001
+  "bridgingFunction": "Weighted", // "Small", "Large", "Mean", "Weighted"
+  "numberOfBuckets": 30, // Defaults to 30
+  "catastrophicThreshold": 40,
+  "scenarioFilename": "Scenarios\basicExplosion.json" // "basicCollision.json"
+}

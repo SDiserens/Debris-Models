@@ -36,5 +36,7 @@ public:
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass);
 double CalculateKineticEnergy(double speed, double mass);
 double randomNumber();
+double randomNumber(double max);
+double randomNumber(double min, double max);
 double randomNumberTau();
 double randomNumberPi();

@@ -13,19 +13,22 @@ protected:
 	long parentID, sourceID, objectID;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
 	int sourceType, objectType; // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+	int nFrag;
 	vector3D velocity, position;
 
 public:
 	DebrisObject();
 	DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination, double rightAscension,
-		double argPerigee, double init_meanAnomaly);
+		double argPerigee, double init_meanAnomaly, int type);
 	~DebrisObject();
 
 	long GetID();
 	long GetSourceID();
+	long GetParentID();
 	int GetType();
 	int GetSourceType();
 	int GetSourceEvent();
+	int GetNFrag();
 	double GetMass();
 	double GetLength();
 	double GetArea();

@@ -1,9 +1,9 @@
 {
-  "primaryObject": 
-  {
+  "primaryObject": {
     "mass": 1000,
     "radius": 1,
     "length": 2,
+    "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
     "orbitalElements": {
       "a": 7000,
       "e": 0,
@@ -13,10 +13,11 @@
     },
     "meanAnomaly": 0
   },
- "secondaryObject" : {
+  "secondaryObject": {
     "mass": 1000,
     "radius": 1,
     "length": 2,
+    "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
     "orbitalElements": {
       "a": 7000, // semiMajor Axis
       "e": 0, // Eccentricity

@@ -5,7 +5,7 @@ int DebrisObject::objectSEQ = 0;
 DebrisObject::DebrisObject() {}
 
 DebrisObject::DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination,
-	double rightAscension, double argPerigee, double init_meanAnomaly)
+	double rightAscension, double argPerigee, double init_meanAnomaly, int type)
 {
 	objectID = ++objectSEQ; // This should be generating a unique ID per object incl. when threading (needs revision for multi-thread)
 	radius = init_radius;
@@ -15,6 +15,8 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	OrbitalAnomalies anomalies;
 	meanAnomalyEpoch = init_meanAnomaly;
 	anomalies.SetMeanAnomaly(init_meanAnomaly);
+	nFrag = 1;
+	objectType = type;
 }
 
 
@@ -33,6 +35,11 @@ long DebrisObject::GetSourceID()
 	return sourceID;
 }
 
+long DebrisObject::GetParentID()
+{
+	return parentID;
+}
+
 int DebrisObject::GetType()
 {
 	return objectType;
@@ -46,6 +53,11 @@ int DebrisObject::GetSourceType()
 int DebrisObject::GetSourceEvent()
 {
 	return sourceEvent;
+}
+
+int DebrisObject::GetNFrag()
+{
+	return nFrag;
 }
 
 void DebrisObject::UpdateOrbitalElements(vector3D deltaV)

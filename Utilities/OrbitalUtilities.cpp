@@ -11,6 +11,17 @@ double randomNumber()
 	return uniformDistribution(generator);
 }
 
+double randomNumber(double max)
+{
+	return max * uniformDistribution(generator);
+}
+
+
+double randomNumber(double min, double max)
+{
+	return min + (max - min) * uniformDistribution(generator);
+}
+
 double randomNumberPi()
 {
 	return piDistribution(generator);

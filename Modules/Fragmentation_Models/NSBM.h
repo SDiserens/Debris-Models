@@ -4,8 +4,8 @@
 #include "fragmentation.h"
 
 // Setting defaults for globals
-int numFragBuckets = 30;
-string bridgingFunction = "Weighted";
+extern int numFragBuckets;
+extern string bridgingFunction;
 
 int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL, double minLength = 0.001);
 
@@ -21,8 +21,8 @@ public:
 
 
 public:
-	NSBMDebrisFragment(double init_length, bool init_explosion, int source);
-	NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion, int source);
+	NSBMDebrisFragment(double init_length, bool init_explosion, int source, int numFrag = 1);
+	NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion, int source, int numFrag = 1);
 	void CalculateArea();
 	void CalculateRelativeVelocity();
 	void GenerateAreaToMassValue();
@@ -47,8 +47,8 @@ public:
 public:
 	// -- Constructors
 	NSBMFragmentCloud(); // Default contructor
-	NSBMFragmentCloud(DebrisObject& targetObject, double minLength); // Explosion contructor
-	NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double minLength); // Collision Constructor
+	NSBMFragmentCloud(DebrisObject& targetObject, double init_minLength); // Explosion contructor
+	NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double init_minLength); // Collision Constructor
 	NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength, int numFrag, double init_mass); // Bucket Constructor
 
 	// -- Functions for breakup parameters

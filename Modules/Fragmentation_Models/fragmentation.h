@@ -10,4 +10,4 @@
 void MergeFragmentPopulations(DebrisPopulation population, FragmentCloud cloud);
 
 double CalculateEnergyToMass(double kineticEnergy, double mass);
-const double catastrophicThreshold = 40; // J/g of target mass
+extern double catastrophicThreshold; // J/g of target mass

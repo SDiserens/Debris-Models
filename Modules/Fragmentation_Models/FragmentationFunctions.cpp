@@ -3,9 +3,11 @@
 #include "stdafx.h"
 #include "fragmentation.h"
 
+double  catastrophicThreshold = 40;
+
 void MergeFragmentPopulations(DebrisPopulation currentPopulation, FragmentCloud cloud)
 {
-	// ToDO - Add event MetaData
+	// Add event MetaData
 	Event tempEvent(currentPopulation.GetEpoch(),
 					cloud.explosion,
 					cloud.consMomentumFlag, 

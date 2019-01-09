@@ -1,0 +1,31 @@
+{
+  "primaryObject": {
+    "mass": 1000,
+    "radius": 1,
+    "length": 2,
+    "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+    "orbitalElements": {
+      "a": 7000,
+      "e": 0,
+      "i": 0,
+      "Om": 0,
+      "om": 0
+    },
+    "meanAnomaly": 0
+  },
+  "secondaryObject": {
+    "mass": 1000,
+    "radius": 1,
+    "length": 2,
+    "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+    "orbitalElements": {
+      "a": 7000, // semiMajor Axis
+      "e": 0, // Eccentricity
+      "i": 1.570796, // Inclination
+      "Om": 0, // Right Ascension of Ascending Node
+      "om": 0 // Argument of Perigee
+    },
+    "meanAnomaly": 0
+  }
+  
+}

@@ -73,7 +73,10 @@ string Event::GetEventType()
 	if (eventType == 0)
 		eventName = "Explosion";
 	else if (eventType == 1)
-		eventName = "Collision";
+		if (catastrophic)
+			eventName = "Catastrophic Collision";
+		else
+			eventName = "Non-Catastrophic Collision";
 	else if (eventType == 2)
 		eventName = "Collision Avoidance";
 	return eventName;
