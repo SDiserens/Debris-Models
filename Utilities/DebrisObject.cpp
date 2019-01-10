@@ -2,7 +2,9 @@
 
 int DebrisObject::objectSEQ = 0;
 
-DebrisObject::DebrisObject() {}
+DebrisObject::DebrisObject() 
+{
+}
 
 DebrisObject::DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination,
 	double rightAscension, double argPerigee, double init_meanAnomaly, int type)
@@ -11,14 +13,12 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	radius = init_radius;
 	mass = init_mass;
 	length = init_length;
-	OrbitalElements elements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee);
-	OrbitalAnomalies anomalies;
+	elements.SetOrbitalElements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee);
 	meanAnomalyEpoch = init_meanAnomaly;
 	anomalies.SetMeanAnomaly(init_meanAnomaly);
 	nFrag = 1;
 	objectType = type;
 }
-
 
 
 DebrisObject::~DebrisObject()

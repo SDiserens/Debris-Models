@@ -14,7 +14,7 @@
     "meanAnomaly": 0
   },
   "secondaryObject": {
-    "mass": 1000,
+    "mass": 10,
     "radius": 1,
     "length": 2,
     "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.

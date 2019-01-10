@@ -44,6 +44,7 @@ NSBMFragmentCloud::NSBMFragmentCloud() // DEfault Constructor
 NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double init_minLength) //Create an explosion Cloud
 {
 	// Identify key variables
+	explosion = true;
 	minLength = init_minLength;
 	totalMass = targetObject.GetMass();
 	maxLength = targetObject.GetLength();
@@ -59,6 +60,7 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 {
 	double collisionKineticEnergy;
 
+	explosion = false;
 	minLength = init_minLength;
 	// Identify key variables
 	totalMass = targetObject.GetMass();
@@ -226,7 +228,7 @@ void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 	double logMaxLength = log10(maxLength);
 	double logMinLength = log10(minLength);
 
-	for (int i = 0; i < numFrag; i++)
+	for (int i = 0; i < numFrag; ++i)
 	{
 		// Assign fragment length
 		tempLength = pow(10, randomNumber(logMinLength, logMaxLength));

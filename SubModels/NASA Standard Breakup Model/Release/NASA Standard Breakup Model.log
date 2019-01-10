@@ -1,0 +1,15 @@
+﻿  stdafx.cpp
+  FragmentationFunctions.cpp
+  FragmentCloud.cpp
+  NASAStdBrkUpMdl.cpp
+..\..\Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp(317): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  DebrisObject.cpp
+  DebrisPopulation.cpp
+  OrbitalAnomalies.cpp
+  OrbitalElements.cpp
+  OrbitalUtilities.cpp
+  NASA Standard Breakup Model.cpp
+  Generating code
+  All 891 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  NASA Standard Breakup Model.vcxproj -> E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\Release\NASA Standard Breakup Model.exe

@@ -7,7 +7,7 @@
 
 // Declaration of generic fragmentation functions - definition in FragmentationFunctions.cpp
 
-void MergeFragmentPopulations(DebrisPopulation population, FragmentCloud cloud);
+void MergeFragmentPopulations(DebrisPopulation& population, FragmentCloud& cloud);
 
 double CalculateEnergyToMass(double kineticEnergy, double mass);
 extern double catastrophicThreshold; // J/g of target mass

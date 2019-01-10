@@ -9,6 +9,8 @@ public:
 	OrbitalElements(double a, double e, double i, double ra, double ap);
 	OrbitalElements(vector3D &position, vector3D &velocity);
 	double GetTrueAnomaly();
+	void SetOrbitalElements(double a, double e, double i, double ra, double ap);
+	void SetOrbitalElements(vector3D &position, vector3D &velocity);
 
 private:
 	double trueAnomaly;

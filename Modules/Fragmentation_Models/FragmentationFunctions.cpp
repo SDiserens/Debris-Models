@@ -5,7 +5,7 @@
 
 double  catastrophicThreshold = 40;
 
-void MergeFragmentPopulations(DebrisPopulation currentPopulation, FragmentCloud cloud)
+void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud& cloud)
 {
 	// Add event MetaData
 	Event tempEvent(currentPopulation.GetEpoch(),
@@ -15,14 +15,14 @@ void MergeFragmentPopulations(DebrisPopulation currentPopulation, FragmentCloud 
 					cloud.totalMass,
 					cloud.debrisCount);
 
-	currentPopulation.AddDebrisEvent(tempEvent);
+	currentPopulation.eventLog.push_back(tempEvent);
 
 	// Merge population
 	for (auto &bucketCloud : cloud.fragmentBuckets)
 	{
 		for(auto & debris : bucketCloud.fragments)
 		{
-			currentPopulation.AddDebrisObject(debris);
+			currentPopulation.population.push_back(debris);
 		}
 	}
 }
