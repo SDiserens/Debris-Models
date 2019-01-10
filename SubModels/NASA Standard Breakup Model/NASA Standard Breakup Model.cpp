@@ -25,12 +25,15 @@ int main()
 	Json::Value config, scenario, parsedObject;
 	Json::Reader reader;
 
+	cout << "Reading Config File...";
 	// Read config file
 	ifstream configFile("config.json");
 
 	// Parse config file to identify scenario file and settings
 	reader.parse(configFile, config);
 
+
+	cout << " Parsing Config...";
 	double minLength = config["minLength"].asDouble();
 	scenarioFilename = "Scenarios\\" + config["scenarioFilename"].asString();
 	numFragBuckets = config["numberOfBuckets"].asInt();
@@ -38,9 +41,12 @@ int main()
 	catastrophicThreshold = config["catastrophicThreshold"].asDouble();
 	//TODO - debug assignment of global variables!
 
+
+	cout << " Closing Config File...\n";
 	// Close File
 	configFile.close();
 
+	cout << "Reading Scenario File...";
 	// Read scenario file
 	ifstream scenarioFile(scenarioFilename);
 	if (!scenarioFile.good())
@@ -51,11 +57,15 @@ int main()
 	// Parse scenario file to identify object characteristics
 	reader.parse(scenarioFile, scenario);
 
+	cout << " Parsing Scenario...";
 	// Close File
+
+	cout << " Closing Scenario File...\n";
 	scenarioFile.close();
 
 	// Run simulation
 
+	cout << "Preparing Objects for Breakup...";
 	// Generate population cloud
 	DebrisPopulation fragmentPopulation;
 
@@ -69,8 +79,10 @@ int main()
 		 secondaryPointer = &secondaryObject;
 	}
 
+	cout << "    Simulating Breakup...";
 	mainBreakup(fragmentPopulation, primaryObject, secondaryPointer, minLength);
-	
+	cout << "    Breakup Simulation Complete\n";
+
 	// Store data
 	time_t dateTime = time(NULL);
 	struct tm currtime;
@@ -79,16 +91,20 @@ int main()
 
 	eventType = fragmentPopulation.eventLog[0].GetEventType();
 
-	outputFilename = "Output\\" + string(date) + "_" + eventType + ".out";
+	outputFilename = "Output\\" + string(date) + "_" + eventType + ".csv";
 	while (fileExists(outputFilename))
 	{
 		ID++;
 		outputFilename = "Output\\" + string(date) + "_" + eventType + '_' + to_string(ID) + ".csv";
 	}
-		// Create Output file
+
+	cout << "Creating Data File...";
+	// Create Output file
 	ofstream outputFile(outputFilename, ofstream::out);
 		// Write fragment data into file
+	cout << "  Writing to Data File...";
 	WritePopulationData(outputFile, fragmentPopulation, primaryObject, secondaryPointer);
+	cout << "Finished\n";
 		// Close file
 	outputFile.close();
 	
