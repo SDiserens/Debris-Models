@@ -8,7 +8,7 @@ const double Pi = _Pi;
 const double Tau = 2 * _Pi;
 
 const double massEarth = 5.972e24;  // Mass of earth in Kg
-const double GravitationalConstant = 6.67408e-11;    // Gravitational constant(m ^ 3 kg^-1 s^-2)
+const double GravitationalConstant = 6.67408e-20;    // Gravitational constant(km ^ 3 kg^-1 s^-2)
 const double muGravity = massEarth * GravitationalConstant;    // Combined for simplicity
 
 class vector3D

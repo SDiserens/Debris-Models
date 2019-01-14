@@ -4,18 +4,22 @@
 // Elements functions
 OrbitalElements::OrbitalElements() {}
 
-OrbitalElements::OrbitalElements(double a, double e, double i, double ra, double ap)
+OrbitalElements::OrbitalElements(double a, double e, double i, double ra, double ap, double meanAnomaly)
 {
 	semiMajorAxis = a;
 	eccentricity = e;
 	inclination = i;
 	rightAscension = ra;
 	argPerigee = ap;
+	anomalies.SetMeanAnomaly(meanAnomaly);
+	anomaliesSynced = true;
 }
 
 
 OrbitalElements::OrbitalElements(vector3D &position, vector3D &velocity)
 {
+	double trueAnomaly;
+
 	vector3D angularMomentum = position.VectorCrossProduct(velocity);
 	vector3D node(-1 * angularMomentum.y, angularMomentum.x, 0.0);
 	vector3D eccentricityVector = CalculateEccentricityVector(position, velocity, angularMomentum);
@@ -37,6 +41,9 @@ OrbitalElements::OrbitalElements(vector3D &position, vector3D &velocity)
 	trueAnomaly = acos(eccentricityVector.VectorDotProduct(position) / (eccentricity * position.vectorNorm())); // Returns on [0,PI] range which is incorrect
 	if (position.VectorDotProduct(velocity) < 0)
 		trueAnomaly = Tau - trueAnomaly; // Corrected to [0,Tau] range
+
+	anomalies.SetTrueAnomaly(trueAnomaly);
+	anomaliesSynced = true;
 }
 
 vector3D OrbitalElements::CalculateEccentricityVector(vector3D& position, vector3D& velocity, vector3D &angularMomentum)
@@ -50,9 +57,7 @@ vector3D OrbitalElements::CalculateEccentricityVector(vector3D& position, vector
 
 double OrbitalElements::GetTrueAnomaly()
 {
-	double tempAnomaly = trueAnomaly;
-	trueAnomaly = NULL;
-	return tempAnomaly;
+	return anomalies.GetTrueAnomaly(eccentricity);
 }
 
 void OrbitalElements::SetOrbitalElements(double a, double e, double i, double ra, double ap)
@@ -62,10 +67,13 @@ void OrbitalElements::SetOrbitalElements(double a, double e, double i, double ra
 	inclination = i;
 	rightAscension = ra;
 	argPerigee = ap;
+	anomaliesSynced = false;
 }
 
 void OrbitalElements::SetOrbitalElements(vector3D & position, vector3D & velocity)
 {
+	double trueAnomaly;
+
 	vector3D angularMomentum = position.VectorCrossProduct(velocity);
 	vector3D node(-1 * angularMomentum.y, angularMomentum.x, 0.0);
 	vector3D eccentricityVector = CalculateEccentricityVector(position, velocity, angularMomentum);
@@ -87,4 +95,91 @@ void OrbitalElements::SetOrbitalElements(vector3D & position, vector3D & velocit
 	trueAnomaly = acos(eccentricityVector.VectorDotProduct(position) / (eccentricity * position.vectorNorm())); // Returns on [0,PI] range which is incorrect
 	if (position.VectorDotProduct(velocity) < 0)
 		trueAnomaly = Tau - trueAnomaly; // Corrected to [0,Tau] range
+
+	anomalies.SetTrueAnomaly(trueAnomaly);
+	anomaliesSynced = true;
+}
+
+double OrbitalElements::GetRadialPosition()
+{
+	double radius;
+	double trueAnomaly = anomalies.GetTrueAnomaly(eccentricity);
+		
+	radius = semiMajorAxis * (1 - eccentricity * eccentricity) / (1 + eccentricity * cos(trueAnomaly));
+
+	return radius;
+}
+
+vector3D OrbitalElements::GetPostion()
+{
+	double radius, trueAnomaly, x, y, z;
+	double sinRA, cosRA, sinI, cosI, sinU, cosU;
+	
+	trueAnomaly = anomalies.GetTrueAnomaly(eccentricity);
+	radius = GetRadialPosition();
+
+	sinRA = sin(rightAscension);
+	cosRA = cos(rightAscension);
+	sinI = sin(inclination);
+	cosI = cos(inclination);
+	sinU = sin(argPerigee + trueAnomaly);
+	cosU = cos(argPerigee + trueAnomaly);
+
+	x = radius * (cosRA * cosU - sinRA * sinU * cosI);
+	y = radius * (sinRA * cosU + cosRA * sinU * cosI);
+	z = radius * (sinI * sinU);
+	
+	return vector3D(x, y, z);
+}
+
+vector3D OrbitalElements::GetVelocity()
+{
+	double radius, trueAnomaly, p, h, A, B, x, y, z, vX, vY, vZ;
+	double sinRA, cosRA, sinI, cosI, sinU, cosU;
+
+	radius = GetRadialPosition();
+	trueAnomaly = anomalies.GetTrueAnomaly(eccentricity);
+
+	sinRA = sin(rightAscension);
+	cosRA = cos(rightAscension);
+	sinI = sin(inclination);
+	cosI = cos(inclination);
+	sinU = sin(argPerigee + trueAnomaly);
+	cosU = cos(argPerigee + trueAnomaly);
+
+	p = semiMajorAxis * (1 - eccentricity * eccentricity);
+	h = sqrt(muGravity * p);
+
+	A = sin(trueAnomaly) * h * eccentricity / p;
+	B = h / radius;
+
+	x = (cosRA * cosU - sinRA * sinU * cosI);
+	y = (sinRA * cosU + cosRA * sinU * cosI);
+	z = (sinI * sinU);
+
+	vX = x * A - B * (cosRA * sinU + sinRA * cosU * cosI);
+	vY = y * A - B * (sinRA * sinU - cosRA * cosU * cosI);
+	vZ = z * A + B * (cosU * sinI);
+
+	return vector3D(vX, vY, vZ);
+}
+
+OrbitalAnomalies OrbitalElements::GetAnomalies()
+{
+	return anomalies;
+}
+
+void OrbitalElements::SetMeanAnomaly(double M)
+{
+	anomalies.SetMeanAnomaly(M);
+}
+
+void OrbitalElements::SetTrueAnomaly(double v)
+{
+	anomalies.SetTrueAnomaly(v);
+}
+
+void OrbitalElements::SetEccentricAnomaly(double E)
+{
+	anomalies.SetEccentricAnomaly(E);
 }

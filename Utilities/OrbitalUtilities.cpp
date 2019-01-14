@@ -34,12 +34,13 @@ double randomNumberTau()
 
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass)
 {
-	double kineticEnergy = 0.5 * mass * relativeVelocity.vectorNorm2();
+	double kineticEnergy = 0.5 * mass * relativeVelocity.vectorNorm2() * 1e6;
 	return kineticEnergy;
 }
 
 double CalculateKineticEnergy(double speed, double mass)
 {
+	speed *= 1000; // Convert to M/s
 	double kineticEnergy = 0.5 * mass * speed * speed;
 	return kineticEnergy;
 }

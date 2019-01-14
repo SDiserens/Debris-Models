@@ -66,8 +66,8 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 	totalMass = targetObject.GetMass();
 	maxLength = targetObject.GetLength();
 	impactMass = projectileObject.GetMass();
-	vector3D velocity(targetObject.GetVelocity());
-	vector3D relativeVelocity(velocity.CalculateRelativeVector(projectileObject.GetVelocity()));
+	velocity = vector3D(targetObject.GetVelocity());
+	relativeVelocity = vector3D(velocity.CalculateRelativeVector(projectileObject.GetVelocity()));
 	collisionKineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
 	energyMassRatio = CalculateEnergyToMass(collisionKineticEnergy, totalMass);
 
@@ -90,7 +90,12 @@ NSBMFragmentCloud::NSBMFragmentCloud(bool init_explosion, double init_minLength,
 	minLength = init_minLength;
 	numFrag = init_numFrag;
 	totalMass = init_mass;
+
 	assignedMass = 0;
+	debrisCount = 0;
+	totalKineticEnergy = totalVolume = 0;
+	averageLength = averageSpeed = averageMomentumNorm = 0;
+
 }
 
 
@@ -295,7 +300,11 @@ void NSBMFragmentCloud::StoreFragmentVariables(NSBMDebrisFragment& tempFragment)
 
 void NSBMFragmentCloud::UpdateAverageVariables()
 {
-	double ratio = 1 / debrisCount;
+	double ratio;
+	if (debrisCount == 0)
+		ratio = 0.0;
+	else
+		ratio = 1 / debrisCount;
 
 	averageMass = assignedMass * ratio;
 	averageKineticEnergy = totalKineticEnergy * ratio;
@@ -314,7 +323,7 @@ void NSBMFragmentCloud::UpdateAverageVariables()
 
 int NSBMFragmentCloud::CalculateNumberOfFragments(double length)
 {
-	int nFrag = round(nFragCoefficient * pow(length, nFragExponent));
+	int nFrag = (int)round(nFragCoefficient * pow(length, nFragExponent));
 	return nFrag;
 }
 
@@ -332,7 +341,7 @@ void NSBMFragmentCloud::SetNumberFragmentParametersExplosion()
 
 void NSBMFragmentCloud::SetNumberFragmentParametersCollision()
 {
-	double ejectaMass = impactMass * 0.000001 * relativeVelocity.vectorNorm2();
+	double ejectaMass = impactMass * relativeVelocity.vectorNorm2();
 	nFragCoefficient = 0.1 * pow(ejectaMass, 0.75);
 	nFragExponent = -1.71;
 }

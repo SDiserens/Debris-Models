@@ -4,6 +4,7 @@ int DebrisObject::objectSEQ = 0;
 
 DebrisObject::DebrisObject() 
 {
+	positionSync = velocitySync = false;
 }
 
 DebrisObject::DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination,
@@ -13,11 +14,11 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	radius = init_radius;
 	mass = init_mass;
 	length = init_length;
-	elements.SetOrbitalElements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee);
+	elements = OrbitalElements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly);
 	meanAnomalyEpoch = init_meanAnomaly;
-	anomalies.SetMeanAnomaly(init_meanAnomaly);
 	nFrag = 1;
 	objectType = type;
+	positionSync = velocitySync = false;
 }
 
 
@@ -64,37 +65,72 @@ void DebrisObject::UpdateOrbitalElements(vector3D deltaV)
 {
 	velocity.addVector(deltaV);
 	elements = OrbitalElements(position, velocity);
-	anomalies.SetTrueAnomaly(elements.GetTrueAnomaly());
+}
+
+void DebrisObject::UpdateOrbitalElements(OrbitalElements newElements)
+{
+	elements = OrbitalElements(newElements);
+	positionSync = velocitySync = false;
 }
 
 vector3D DebrisObject::GetVelocity()
 {
+	if (!velocitySync)
+	{
+		velocity = vector3D(elements.GetVelocity());
+		velocitySync = true;
+	}
 	return velocity;
 }
 
 void DebrisObject::SetVelocity(double vX, double vY, double vZ)
 {
 	velocity = vector3D(vX, vY, vZ);
+	elements.SetOrbitalElements(position, velocity);
 }
 
 void DebrisObject::SetVelocity(vector3D inputVelocity)
 {
-	velocity = vector3D(inputVelocity.x, inputVelocity.y, inputVelocity.z);
+	velocity = vector3D(inputVelocity);
+	elements.SetOrbitalElements(position, velocity);
 }
 
 vector3D DebrisObject::GetPosition()
 {
+	if (!positionSync)
+	{
+		position = vector3D(elements.GetPostion());
+		positionSync = true;
+	}
+
 	return position;
 }
 
 void DebrisObject::SetPosition(double X, double Y, double Z)
 {
-	velocity = vector3D(X, Y, Z);
+	position = vector3D(X, Y, Z);
+	elements.SetOrbitalElements(position, velocity);
 }
 
 void DebrisObject::SetPosition(vector3D inputPosition)
 {
-	velocity = vector3D(inputPosition.x, inputPosition.y, inputPosition.z);
+	position = vector3D(inputPosition);
+	elements.SetOrbitalElements(position, velocity);
+}
+
+
+void DebrisObject::SetStateVectors(vector3D inputPosition, vector3D inputVelocity)
+{
+	position = vector3D(inputPosition);
+	velocity = vector3D(inputVelocity);
+	elements.SetOrbitalElements(position, velocity);
+}
+
+void DebrisObject::SetStateVectors(double X, double Y, double Z, double vX, double vY, double vZ)
+{
+	position = vector3D(X, Y, Z);
+	velocity = vector3D(vX, vY, vZ);
+	elements.SetOrbitalElements(position, velocity);
 }
 
 void DebrisObject::CalculateMassFromArea()
@@ -142,4 +178,32 @@ void DebrisObject::SetSourceID(long ID)
 void DebrisObject::SetParentID(long ID)
 {
 	parentID = ID;
+}
+
+OrbitalAnomalies DebrisObject::GetAnomalies()
+{
+	return elements.GetAnomalies();
+}
+
+OrbitalElements DebrisObject::GetElements()
+{
+	return elements;
+}
+
+void DebrisObject::SetMeanAnomaly(double M)
+{
+	elements.SetMeanAnomaly(M);
+	positionSync = velocitySync = false;
+}
+
+void DebrisObject::SetTrueAnomaly(double v)
+{
+	elements.SetTrueAnomaly(v);
+	positionSync = velocitySync = false;
+}
+
+void DebrisObject::SetEccentricAnomaly(double E)
+{
+	elements.SetEccentricAnomaly(E);
+	positionSync = velocitySync = false;
 }

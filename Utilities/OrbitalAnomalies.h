@@ -8,6 +8,8 @@ protected:
 	int priority; // Defines which anomaly has most recently been set: 0, 1, 2 respectively.
 
 public:
+	OrbitalAnomalies();
+	~OrbitalAnomalies();
 	void SetMeanAnomaly(double M);
 	void SetTrueAnomaly(double v);
 	void SetEccentricAnomaly(double E);

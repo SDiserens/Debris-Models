@@ -34,7 +34,7 @@ int main()
 
 
 	cout << " Parsing Config...";
-	double minLength = config["minLength"].asDouble();
+	minLength = config["minLength"].asDouble();
 	scenarioFilename = "Scenarios\\" + config["scenarioFilename"].asString();
 	numFragBuckets = config["numberOfBuckets"].asInt();
 	bridgingFunction = config["bridgingFunction"].asString();
@@ -46,7 +46,7 @@ int main()
 	// Close File
 	configFile.close();
 
-	cout << "Reading Scenario File...";
+	cout << "Reading Scenario File : " + scenarioFilename + "...";
 	// Read scenario file
 	ifstream scenarioFile(scenarioFilename);
 	if (!scenarioFile.good())
@@ -98,9 +98,10 @@ int main()
 		outputFilename = "Output\\" + string(date) + "_" + eventType + '_' + to_string(ID) + ".csv";
 	}
 
-	cout << "Creating Data File...";
+	cout << "Creating Data File : " + outputFilename + "...";
 	// Create Output file
-	ofstream outputFile(outputFilename, ofstream::out);
+	ofstream outputFile;
+	outputFile.open(outputFilename, ofstream::out);
 		// Write fragment data into file
 	cout << "  Writing to Data File...";
 	WritePopulationData(outputFile, fragmentPopulation, primaryObject, secondaryPointer);
@@ -145,20 +146,20 @@ void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, Deb
 	// Define MetaData
 	eventType = population.eventLog[0].GetEventType();
 	if (eventType == "Explosion")
-		metaData = "Breakup Type : " + eventType + ", Mass of Target : " + to_string(targetObject.GetMass()) + "[kg], Mass of Projectile : " + to_string(projectilePointer->GetMass()) + "[kg], Minimum Length : " +
-					to_string(minLength) + "[m], Catastrophic Threshold : " + to_string(catastrophicThreshold) + "[J/g], Bridiging Function :" + bridgingFunction;
+		metaData = "Breakup Type : ," + eventType + "\n Mass of Target :," + to_string(targetObject.GetMass()) + ",[kg]\n Mass of Projectile : ," + to_string(projectilePointer->GetMass()) + ",[kg]\n Minimum Length : ," +
+					to_string(minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + bridgingFunction;
 	else
 	{
 		relativeVelocity = (targetObject.GetVelocity() - projectilePointer->GetVelocity()).vectorNorm();
-		metaData = "Breakup Type : " + eventType + ", Mass of Target : " + to_string(targetObject.GetMass()) + "[kg], Mass of Projectile : " + to_string(projectilePointer->GetMass()) + "[kg], Relative Velocity : " + to_string(relativeVelocity)
-			+ "[km/s], Minimum Length : " + to_string(minLength) + "[m], Catastrophic Threshold : " + to_string(catastrophicThreshold) + "[J/g], Bridiging Function :" + bridgingFunction;
+		metaData = "Breakup Type : ," + eventType + "\n Mass of Target : ," + to_string(targetObject.GetMass()) + ",[kg]\n Mass of Projectile : ," + to_string(projectilePointer->GetMass()) + ",[kg]\n Relative Velocity : ," + to_string(relativeVelocity)
+			+ ",[km/s]\n Minimum Length : ," + to_string(minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + bridgingFunction;
 	}
-	dataFile << metaData;
+	dataFile << metaData + "\n";
 
 	// Define output format
 	/* "(ParentID, ID, nFrag(representative), Length, Mass[kg], Area[m^2], A/m[m^2/kg], Dv[km/s], (dVx, dVy, dVz))" */
 	header = "ParentID, ID, nFrag(representative), Length, Mass[kg], Area[m^2], A/m[m^2/kg], Dv[km/s], (dVx, dVy, dVz)";
-	dataFile << header;
+	dataFile << header + "\n";
 	// Write population data
 	for (auto & debris : population.population)
 	{
@@ -177,11 +178,11 @@ void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, Deb
 		deltaVnorm = deltaV.vectorNorm();
 
 		// Create String
-		tempData = to_string(parentID) + "," + to_string(ID) + "," + to_string(nFrag) + "," + to_string(length) + "," + to_string(mass) + "," + to_string(area) + "," + 
-					to_string(areaToMass) + "," + to_string(deltaVnorm) + "," + to_string(deltaV.x) + "," + to_string(deltaV.y) + "," + to_string(deltaV.z) + "\n";
+		tempData = to_string(parentID) + "," + to_string(ID) + "," + to_string(nFrag) + "," + to_string(length) + "," + to_string(mass) + "," + to_string(area) + "," +
+			to_string(areaToMass) + "," + to_string(deltaVnorm) + "," + to_string(deltaV.x) + "," + to_string(deltaV.y) + "," + to_string(deltaV.z);
 
 		// Pipe output
-		dataFile << tempData;
+		dataFile << tempData + "\n";
 	}
 }
 

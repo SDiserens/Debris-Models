@@ -2,6 +2,14 @@
 #include "OrbitalAnomalies.h"
 
 
+OrbitalAnomalies::OrbitalAnomalies()
+{
+}
+
+OrbitalAnomalies::~OrbitalAnomalies()
+{
+}
+
 // Anomalies Functions
 void OrbitalAnomalies::SetMeanAnomaly(double M)
 {
