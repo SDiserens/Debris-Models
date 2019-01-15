@@ -56,6 +56,12 @@ int DebrisObject::GetSourceEvent()
 	return sourceEvent;
 }
 
+void DebrisObject::RemoveObject(int removeType, double epoch) // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
+{
+	removeEpoch = epoch;
+	removeEvent = removeType;
+}
+
 int DebrisObject::GetNFrag()
 {
 	return nFrag;

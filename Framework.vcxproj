@@ -144,6 +144,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Modules\Collision_Algorithms\Collisions.h" />
+    <ClInclude Include="Modules\Collision_Algorithms\CUBE.h" />
     <ClInclude Include="Modules\Fragmentation_Models\fragmentation.h" />
     <ClInclude Include="Modules\Fragmentation_Models\FragmentCloud.h" />
     <ClInclude Include="Modules\Fragmentation_Models\NSBM.h" />

@@ -21,8 +21,8 @@ class DebrisPopulation
 	long populationCount;
 	double totalMass, currentEpoch, startEpoch;
 public:
-	std::vector<DebrisObject> population;
-	std::vector<Event> eventLog;
+	map<long, DebrisObject> population, removedPopulation;
+	vector<Event> eventLog;
 
 public:
 	DebrisPopulation();
@@ -32,5 +32,8 @@ public:
 	void InitialiseEpoch(double epoch);
 	void AddDebrisObject(DebrisObject debris);
 	void AddDebrisEvent(Event debrisEvent);
+	void DecayObject(long ID);
+	void ExplodeObject(long ID);
+	void CollideObject(long ID);
 };
 

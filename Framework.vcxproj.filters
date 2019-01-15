@@ -75,6 +75,12 @@
     <ClInclude Include="Modules\Fragmentation_Models\NSBM.h">
       <Filter>Header Files\03 Fragmentation</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\Collision_Algorithms\CUBE.h">
+      <Filter>Header Files\04 Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\Collision_Algorithms\Collisions.h">
+      <Filter>Header Files\04 Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp">

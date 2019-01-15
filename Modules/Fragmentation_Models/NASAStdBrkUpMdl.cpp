@@ -7,6 +7,8 @@
 //std::default_random_engine generator;
 int numFragBuckets = 30;
 string bridgingFunction = "Weighted";
+double representativeFragmentThreshold = 0.02;
+int representativeFragmentNumber = 10;
 
 int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer, double minLength)
 {
@@ -15,7 +17,7 @@ int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, Debris
 
 	// Store relevant object variables
     
-	if (projectilePointer == NULL)
+	if (!projectilePointer)
 	{
 		explosion = true;
 		NSBMFragmentCloud targetDebrisCloud(targetObject, minLength);
@@ -228,7 +230,7 @@ void NSBMFragmentCloud::CreateFragmentBucket(DebrisObject& targetObject, double 
 
 void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 {
-	int repFrags;
+	int repFrags, remainingFrags;
 	double tempLength;
 	double logMaxLength = log10(maxLength);
 	double logMinLength = log10(minLength);
@@ -239,8 +241,18 @@ void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 		tempLength = pow(10, randomNumber(logMinLength, logMaxLength));
 	
 		// Create new DebrisObject
-		// TODO - Add representative fragment logic
-		repFrags = 1;
+		// Representative fragment logic
+		if (tempLength >= representativeFragmentThreshold)
+			repFrags = 1;
+		else
+		{
+			remainingFrags = numFrag - i;
+			if (remainingFrags > representativeFragmentNumber)
+				repFrags = representativeFragmentNumber;
+			else
+				repFrags = remainingFrags;
+		}
+
 		NSBMDebrisFragment tempFragment(tempLength, explosion, targetObject.GetType(), repFrags);
 		tempFragment.SetSourceID(targetObject.GetSourceID());
 		tempFragment.SetParentID(targetObject.GetID());

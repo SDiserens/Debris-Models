@@ -22,7 +22,7 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 	{
 		for(auto & debris : bucketCloud.fragments)
 		{
-			currentPopulation.population.push_back(debris);
+			currentPopulation.AddDebrisObject(debris);
 		}
 	}
 }

@@ -31,7 +31,7 @@ void DebrisPopulation::UpdateEpoch(double timeStep)
 
 void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 {
-	population.push_back(debris);
+	population.insert(pair<long, DebrisObject>(debris.GetID(), debris));
 	populationCount++;
 	totalMass += debris.GetMass();
 }
@@ -40,6 +40,30 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 {
 	eventLog.push_back(debrisEvent);
+}
+
+void DebrisPopulation::DecayObject(long ID)
+{
+	DebrisObject tempObject(population[ID]);
+	population.erase(ID);
+	tempObject.RemoveObject(0, currentEpoch);
+	removedPopulation.insert(pair<long, DebrisObject>(ID, tempObject));
+}
+
+void DebrisPopulation::ExplodeObject(long ID)
+{
+	DebrisObject tempObject(population[ID]);
+	population.erase(ID);
+	tempObject.RemoveObject(1, currentEpoch);
+	removedPopulation.insert(pair<long, DebrisObject>(ID, tempObject));
+}
+
+void DebrisPopulation::CollideObject(long ID)
+{
+	DebrisObject tempObject(population[ID]);
+	population.erase(ID);
+	tempObject.RemoveObject(2, currentEpoch);
+	removedPopulation.insert(pair<long, DebrisObject>(ID, tempObject));
 }
 
 Event::Event(double epoch, int type, bool consMomentum, bool catastr, double mass)
