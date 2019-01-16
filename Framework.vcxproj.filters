@@ -116,6 +116,9 @@
     <ClCompile Include="Modules\Collision_Algorithms\CUBE.cpp">
       <Filter>Source Files\04 Collisions</Filter>
     </ClCompile>
+    <ClCompile Include="Modules\Collision_Algorithms\CollisionFunctions.cpp">
+      <Filter>Source Files\04 Collisions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Framework.rc">

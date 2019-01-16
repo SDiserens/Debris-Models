@@ -34,6 +34,7 @@ public:
 	double GetLength();
 	double GetArea();
 	double GetAreaToMass();
+	double GetRadius();
 	vector3D GetVelocity();
 	vector3D GetPosition();
 

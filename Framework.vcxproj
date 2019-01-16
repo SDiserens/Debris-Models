@@ -159,6 +159,7 @@
     <ClInclude Include="Utilities\OrbitalUtilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Modules\Collision_Algorithms\CollisionFunctions.cpp" />
     <ClCompile Include="Modules\Collision_Algorithms\CUBE.cpp" />
     <ClCompile Include="Modules\Fragmentation_Models\FragmentationFunctions.cpp" />
     <ClCompile Include="Modules\Fragmentation_Models\FragmentCloud.cpp" />

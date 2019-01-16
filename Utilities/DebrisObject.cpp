@@ -175,6 +175,11 @@ double DebrisObject::GetAreaToMass()
 	return areaToMass;
 }
 
+double DebrisObject::GetRadius()
+{
+	return radius;
+}
+
 
 void DebrisObject::SetSourceID(long ID)
 {
