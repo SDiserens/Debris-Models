@@ -13,6 +13,7 @@
 #include <math.h>
 #include <stdexcept>
 #include <random>
+#include <algorithm>
 using namespace std;
 
 
