@@ -12,6 +12,8 @@
 #include <math.h>
 #include <stdexcept>
 #include <random>
+#include <algorithm>
+#include <map>
 
 using namespace std;
 

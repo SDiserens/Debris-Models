@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{562c4f97-025d-4347-9cf8-c54a9f45ae5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{471e6535-6b5d-48d9-8fea-1e97a4b003ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CUBE">
+      <UniqueIdentifier>{67ecb1bd-f1d5-457a-8681-64698621c3b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CUBE">
+      <UniqueIdentifier>{d67eb8d5-0d78-40ee-93c0-fd451dff5430}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Utilities\DebrisObject.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\DebrisPopulation.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalElements.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalUtilities.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files\CUBE</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files\CUBE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\Collisions.h">
+      <Filter>Header Files\CUBE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\CUBE.h">
+      <Filter>Header Files\CUBE</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files\CUBE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Utilities\DebrisObject.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Utilities\OrbitalAnomalies.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Utilities\OrbitalElements.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Utilities\OrbitalUtilities.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\CollisionFunctions.cpp">
+      <Filter>Source Files\CUBE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\CUBE.cpp">
+      <Filter>Source Files\CUBE</Filter>
+    </ClCompile>
+    <ClCompile Include="CUBE_Approach.cpp">
+      <Filter>Source Files\CUBE</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Scenarios\JovianMoons.json">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

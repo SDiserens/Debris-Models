@@ -161,8 +161,10 @@ void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, Deb
 	header = "ParentID, ID, nFrag(representative), Length, Mass[kg], Area[m^2], A/m[m^2/kg], Dv[km/s], (dVx, dVy, dVz)";
 	dataFile << header + "\n";
 	// Write population data
-	for (auto & debris : population.population)
+	DebrisObject debris;
+	for (auto const& debrisID : population.population)
 	{
+		debris = DebrisObject(debrisID.second);
 		// Extract Data
 		parentID = debris.GetParentID();
 		ID = debris.GetID();

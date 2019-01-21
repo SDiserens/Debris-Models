@@ -9,7 +9,7 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 {
 	// Add event MetaData
 	Event tempEvent(currentPopulation.GetEpoch(),
-					cloud.explosion,
+					!cloud.explosion,
 					cloud.consMomentumFlag, 
 					(cloud.energyMassRatio > catastrophicThreshold),
 					cloud.totalMass,

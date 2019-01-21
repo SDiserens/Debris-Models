@@ -18,8 +18,10 @@ public:
 
 class DebrisPopulation
 {
+protected:
 	long populationCount;
 	double totalMass, currentEpoch, startEpoch;
+
 public:
 	map<long, DebrisObject> population, removedPopulation;
 	vector<Event> eventLog;

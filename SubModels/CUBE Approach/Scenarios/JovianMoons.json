@@ -1,0 +1,22 @@
+{
+  "centralBody": "Jupiter",
+  "outputScaling" :  10, // collision probabilities of the order of 10^(-outputScaling)
+  "objects": [
+    {
+      "name": "Himalia",
+      "mass": 1000,
+      "radius": 1,
+      "length": 2,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 7000,
+        "e": 0,
+        "i": 0,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    }
+
+  ]
+}

@@ -11,6 +11,8 @@ CUBEApproach::CUBEApproach(double dimension, bool probabilities)
 	outputProbabilities = probabilities;
 }
 
+void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>> hashList, int i, int step);
+
 void CUBEApproach::mainCollision(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate;
@@ -99,7 +101,7 @@ vector<pair<long, long>> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>
 			ID2 = hashList[i + 1].second;
 			pairList.push_back(pair<long, long>(ID1, ID2));
 
-			if (i != 0 & (hashList[i].first == hashList[i - 1].first))
+			if (i != 0 && (hashList[i].first == hashList[i - 1].first))
 				FilterRecursion( pairList, hashList, i+1, 2);
 		}
 		
@@ -121,7 +123,7 @@ void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>
 	ID1 = hashList[i - step].second;
 	ID2 = hashList[i ].second;
 	pairList.push_back(pair<long, long>(ID1, ID2));
-	if (i - step != 0 & (hashList[i].first == hashList[i - step - 1].first))
+	if (i - step != 0 && (hashList[i].first == hashList[i - step - 1].first))
 		FilterRecursion(pairList, hashList, i,  step +1 );
 }
 
