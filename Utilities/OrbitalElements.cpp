@@ -100,6 +100,16 @@ void OrbitalElements::SetOrbitalElements(vector3D & position, vector3D & velocit
 	anomaliesSynced = true;
 }
 
+void OrbitalElements::SetRightAscension(double init_rightAscension)
+{
+	rightAscension = init_rightAscension;
+}
+
+void OrbitalElements::SetArgPerigee(double init_argPerigee)
+{
+	argPerigee = init_argPerigee;
+}
+
 double OrbitalElements::GetRadialPosition()
 {
 	double radius;

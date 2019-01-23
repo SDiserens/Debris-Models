@@ -13,6 +13,8 @@ public:
 	double GetTrueAnomaly();
 	void SetOrbitalElements(double a, double e, double i, double ra, double ap);
 	void SetOrbitalElements(vector3D &position, vector3D &velocity);
+	void SetRightAscension(double init_rightAscension);
+	void SetArgPerigee(double init_argPerigee);
 
 	vector3D GetPostion();
 	vector3D GetVelocity();

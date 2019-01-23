@@ -7,6 +7,7 @@ protected:
 	OrbitalElements elements; // semi-major axis, eccentricity, inclination, right ascension of ascending node, arguement of perigee, anomalies
 	static int objectSEQ;
 	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch;
+	string name;
 	long parentID, sourceID, objectID;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
 	int sourceType, objectType; // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
@@ -28,7 +29,9 @@ public:
 	int GetSourceType();
 	int GetSourceEvent();
 	void RemoveObject(int removeType, double epoch); // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
-
+	
+	void SetName(string init_name);
+	string GetName();
 	int GetNFrag();
 	double GetMass();
 	double GetLength();
@@ -41,6 +44,8 @@ public:
 	OrbitalAnomalies GetAnomalies();
 	OrbitalElements GetElements();
 
+	void RandomiseRAAN();
+	void RandomiseArgP();
 	void SetMeanAnomaly(double M);
 	void SetTrueAnomaly(double v);
 	void SetEccentricAnomaly(double E);

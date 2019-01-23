@@ -1,0 +1,111 @@
+{
+  "centralBody": "Sol",
+  "outputScaling" :  18, // collision probabilities of the order of 10^(-outputScaling)
+  "objects": [
+    {
+      "name": "Astrid",
+      "mass": 1,
+      "radius": 500,
+      "length": 500,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 411400000,
+        "e": 0.2727,
+        "i": 0.27576202181510406,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "1948A",
+      "mass": 1,
+      "radius": 500,
+      "length": 500,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 338544800,
+        "e": 0.605,
+        "i": 0.3226,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Apollo",
+      "mass": 1,
+      "radius": 500,
+      "length": 500,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 221408000,
+        "e": 0.56,
+        "i": 0.1047,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Adonis",
+      "mass": 1,
+      "radius": 500,
+      "length": 500,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 294712000,
+        "e": 0.78,
+        "i": 0.0349,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "1950DA",
+      "mass": 1,
+      "radius": 500,
+      "length": 500,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 253572000,
+        "e": 0.506,
+        "i": 0.2131,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Encke",
+      "mass": 1,
+      "radius": 500,
+      "length": 500,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 331214400,
+        "e": 0.847,
+        "i": 0.216,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Brorsen",
+      "mass": 1,
+      "radius": 500,
+      "length": 500,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 463610400,
+        "e": 0.81,
+        "i": 0.513,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    }
+  ]
+}

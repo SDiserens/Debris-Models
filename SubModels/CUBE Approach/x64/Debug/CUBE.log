@@ -5,11 +5,8 @@
   OrbitalAnomalies.cpp
   DebrisPopulation.cpp
   DebrisObject.cpp
-  CUBE.cpp
   CollisionFunctions.cpp
+  CUBE.cpp
   Generating Code...
-jsoncpp.lib(json_reader.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_reader.obj)' or at 'E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_value.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_value.obj)' or at 'E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_writer.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_writer.obj)' or at 'E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
   CUBE.vcxproj -> E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Debug\CUBE_Approach.exe
   CUBE.vcxproj -> E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Debug\CUBE_Approach.pdb (Partial PDB)

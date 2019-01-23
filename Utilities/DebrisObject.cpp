@@ -62,6 +62,16 @@ void DebrisObject::RemoveObject(int removeType, double epoch) // (0, 1, 2) = (De
 	removeEvent = removeType;
 }
 
+void DebrisObject::SetName(string init_name)
+{
+	name = init_name;
+}
+
+string DebrisObject::GetName()
+{
+	return name;
+}
+
 int DebrisObject::GetNFrag()
 {
 	return nFrag;
@@ -199,6 +209,20 @@ OrbitalAnomalies DebrisObject::GetAnomalies()
 OrbitalElements DebrisObject::GetElements()
 {
 	return elements;
+}
+
+void DebrisObject::RandomiseRAAN()
+{
+	double rightAscension = randomNumberTau();
+	elements.SetRightAscension(rightAscension);
+	positionSync = velocitySync = false;
+}
+
+void DebrisObject::RandomiseArgP()
+{
+	double argPerigee = randomNumberTau();
+	elements.SetArgPerigee(argPerigee);
+	positionSync = velocitySync = false;
 }
 
 void DebrisObject::SetMeanAnomaly(double M)

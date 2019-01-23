@@ -52,8 +52,9 @@ int main()
 	reader.parse(scenarioFile, scenario);
 
 	cout << " Parsing Scenario...";
-	// Close File
+	// TODO - Create population of objects
 
+	// Close File
 	cout << " Closing Scenario File...\n";
 	scenarioFile.close();
 
@@ -94,6 +95,8 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 {
 	double radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly;
 	int type;
+	string name;
+
 	Json::Value elements = parsedObject["orbitalElements"];
 	// Parse Json 
 	radius = parsedObject["radius"].asDouble();
@@ -106,8 +109,10 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 	inclination = elements["i"].asDouble();
 	rightAscension = elements["Om"].asDouble();
 	argPerigee = elements["om"].asDouble();
+	name = parsedObject["name"].asString();;
 	// Generate Object - Possible issue with reconstruction
 	DebrisObject debris(radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type);
+	debris.SetName(name);
 	return debris;
 }
 
