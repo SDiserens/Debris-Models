@@ -13,13 +13,17 @@
 #include <ctime>
 
 
-void WriteCollisionData(ofstream & dataFile);
+void WriteCollisionData(ofstream & dataFile, string metaData);
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
 bool fileExists(const string& name);
 
 int main()
 {
-	string scenarioFilename, outputFilename, eventType;
+	string scenarioFilename, outputFilename, eventType, metaData;
+	int evaluations, evaluationSteps, runMode, scaling;
+	bool probabilityOutput;
+	double timeStep, averageSemiMajorAxis, dimension, cubeDimension;
+
 	char date[100];
 	int ID = 1;
 	Json::Value config, scenario, parsedObject;
@@ -28,20 +32,26 @@ int main()
 	cout << "Reading Config File...";
 	// Read config file
 	ifstream configFile("config.json");
-
 	// Parse config file to identify scenario file and settings
 	reader.parse(configFile, config);
-
-
 	cout << " Parsing Config...";
-	// TODO - Identify config variables
 
-	cout << " Closing Config File...\n";
+	// Identify config variables
+	scenarioFilename = config["scenarioFilename"].asString();
+	runMode = config["runType"].asInt();
+	probabilityOutput = config["probabilityOutput"].asBool();
+	evaluations = config["numberEvaluations"].asInt();
+	evaluationSteps = config["stepsPerEvaluation"].asInt();
+	timeStep = config["stepSize"].asDouble();
+	dimension = config["cubeDimension"].asDouble();
+	
 	// Close File
+	cout << " Closing Config File...\n";
 	configFile.close();
 
-	cout << "Reading Scenario File : " + scenarioFilename + "...";
 	// Read scenario file
+	cout << "Reading Scenario File : " + scenarioFilename + "...";
+
 	ifstream scenarioFile(scenarioFilename);
 	if (!scenarioFile.good())
 	{
@@ -52,13 +62,27 @@ int main()
 	reader.parse(scenarioFile, scenario);
 
 	cout << " Parsing Scenario...";
-	// TODO - Create population of objects
+	SetCentralBody(scenario["centralBody"].asInt());
+	scaling = scenario["outputScaling"].asInt();
+
+	// Create population of objects & Identify average SMA
+	DebrisPopulation objectPopulation;
+	for (Json::Value objectParameters : scenario["objects"])
+	{
+		DebrisObject tempObject(GenerateDebrisObject(objectParameters));
+		averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
+		objectPopulation.AddDebrisObject(tempObject);
+	}
+	averageSemiMajorAxis /= scenario["objects"].size();
+	cubeDimension = averageSemiMajorAxis * dimension;
 
 	// Close File
 	cout << " Closing Scenario File...\n";
 	scenarioFile.close();
 
 	// Run simulation
+	// TODO - Create Cube object
+
 	//TODO - Call CUBE approach
 
 	// Store data
@@ -67,7 +91,7 @@ int main()
 	localtime_s(&currtime, &dateTime);
 	strftime(date, sizeof(date), "%F", &currtime);
 
-	eventType = "Test";
+	eventType = scenarioFilename.substr(0, scenarioFilename.find("."));
 
 	outputFilename = "Output\\" + string(date) + "_" + eventType + ".csv";
 	while (fileExists(outputFilename))
@@ -83,7 +107,11 @@ int main()
 
 	// Write data into file
 	cout << "  Writing to Data File...";
-	WriteCollisionData(outputFile);
+
+	metaData = "Scenario : ," + eventType + "\n  imension : ," + to_string(100 * dimension) + ", % of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + "km \n" + 
+				" Number of evaluations - N: ," + to_string(evaluations) + ",\n Evaluation Steps : ," + to_string(evaluationSteps) + ",\n Step Length : ," + to_string(timeStep) + ",days";
+	WriteCollisionData(outputFile, metaData);
+
 	cout << "Finished\n";
 	// Close file
 	outputFile.close();
@@ -116,12 +144,16 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 	return debris;
 }
 
-void WriteCollisionData(ofstream & dataFile)
+void WriteCollisionData(ofstream & dataFile, string metaData)
 {
 	// Determine output format
 	/* 
 	MetaData = [['Simulation:', 'Jovian_Moons'], ['Cube Dimension', Dim, 'km'], ['Number of sections, N:', N], ['Section length, n:', n, 'days']]
+	*/
+	
+	dataFile << metaData + "\n";
 
+	/*
 	Collision Pairs :-
 	Total Collision Rate per pair :-
 	Total Conjunction Rate per pair :-

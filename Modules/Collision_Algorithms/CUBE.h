@@ -6,7 +6,7 @@
 class CUBEApproach : protected CollisionAlgorithm
 {
 protected:
-	double cubeDimension, cubeVolume;
+	double cubeDimension, cubeVolume, elapsedTime;
 	bool outputProbabilities, relativeGravity = false;
 	int p1 = 73856093;
 	int p2 = 19349663;
@@ -17,6 +17,7 @@ public:
 	void SwitchGravityComponent();
 
 	void mainCollision(DebrisPopulation& population, double timeStep);
+	double GetElapsedTime();
 
 
 protected:

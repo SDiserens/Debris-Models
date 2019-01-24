@@ -1,6 +1,6 @@
 {
-  "centralBody": "Sol",
-  "outputScaling" :  18, // collision probabilities of the order of 10^(-outputScaling)
+  "centralBody": 0,// 0: Sol, 3: Earth, 5: Jupiter
+  "outputScaling": 18, // collision probabilities of the order of 10^(-outputScaling)
   "objects": [
     {
       "name": "Astrid",

@@ -1,5 +1,5 @@
 {
-  "centralBody": "Jupiter",
+  "centralBody": 5, // 0: Sol, 3: Earth, 5: Jupiter
   "outputScaling" :  10, // collision probabilities of the order of 10^(-outputScaling)
   "objects": [
     {

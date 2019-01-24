@@ -7,9 +7,13 @@ const double NEWTONTOLERANCE = 1e-13;
 const double Pi = _Pi;
 const double Tau = 2 * _Pi;
 
+const double massSol = 1.989e30;  // Mass of sun in Kg
 const double massEarth = 5.972e24;  // Mass of earth in Kg
+const double massJupiter = 1.898e27;  // Mass of jupiter in Kg
+
 const double GravitationalConstant = 6.67408e-20;    // Gravitational constant(km ^ 3 kg^-1 s^-2)
-const double muGravity = massEarth * GravitationalConstant;    // Combined for simplicity
+
+double muGravity = massEarth * GravitationalConstant;    // Combined for simplicity
 
 class vector3D
 {
@@ -32,6 +36,8 @@ public:
 	vector3D VectorCrossProduct(vector3D& vectorB) const;
 
 };
+
+void SetCentralBody(int centralBody = 3);
 
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass);
 double CalculateKineticEnergy(double speed, double mass);

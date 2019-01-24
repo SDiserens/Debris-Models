@@ -9,6 +9,7 @@ CUBEApproach::CUBEApproach(double dimension, bool probabilities)
 	cubeDimension = dimension;
 	cubeVolume = dimension * dimension * dimension;
 	outputProbabilities = probabilities;
+	elapsedTime = 0;
 }
 
 void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>> hashList, int i, int step);
@@ -60,6 +61,7 @@ void CUBEApproach::mainCollision(DebrisPopulation& population, double timeStep)
 			// Store Collisions 
 			collisionList.push_back(collisionPair);
 	}
+	elapsedTime += timeStep;
 }
 
 void CUBEApproach::SwitchGravityComponent()
@@ -81,7 +83,7 @@ vector<pair<long, long>> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>
 	vector<pair<long, long>> pairList;
 	vector<pair<long, long>> hashList;
 	long hash, ID1, ID2;
-	//TODO - Cube Filter
+	// Cube Filter
 	// Filter CUBEIDs
 	for (auto cubeID : cubeIDList)
 	{
@@ -147,6 +149,11 @@ double CUBEApproach::CollisionRate(DebrisObject& objectI, DebrisObject& objectJ)
 	collisionCrossSection = gravitationalPerturbation * Pi * boundingRadii * boundingRadii;
 
 	return  collisionCrossSection * relativeVelocity.vectorNorm() / cubeVolume;
+}
+
+double CUBEApproach::GetElapsedTime()
+{
+	return elapsedTime;
 }
 
 tuple<int, int, int> CUBEApproach::IdentifyCube(vector3D& position)

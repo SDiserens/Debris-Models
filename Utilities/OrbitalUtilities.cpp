@@ -32,6 +32,19 @@ double randomNumberTau()
 	return tauDistribution(generator);
 }
 
+void SetCentralBody(int centralBody)
+{
+	double centralMass;
+	if (centralBody == 0)
+		centralMass = massSol;
+	else if (centralBody == 3)
+		centralMass = massEarth;
+	else if (centralBody == 5)
+		centralMass = massJupiter;
+
+	muGravity = centralMass * GravitationalConstant;
+}
+
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass)
 {
 	double kineticEnergy = 0.5 * mass * relativeVelocity.vectorNorm2() * 1e6;
