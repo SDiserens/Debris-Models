@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "Collisions.h"
 
-class CUBEApproach : protected CollisionAlgorithm
+class CUBEApproach : public CollisionAlgorithm
 {
 protected:
 	double cubeDimension, cubeVolume, elapsedTime;
@@ -16,7 +16,7 @@ public:
 	CUBEApproach(double dimension, bool probabilities = false);
 	void SwitchGravityComponent();
 
-	void mainCollision(DebrisPopulation& population, double timeStep);
+	void MainCollision(DebrisPopulation& population, double timeStep);
 	double GetElapsedTime();
 
 

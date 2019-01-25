@@ -5,6 +5,7 @@ std::uniform_real_distribution<double> piDistribution(0, Pi);
 std::uniform_real_distribution<double> tauDistribution(0, Tau);
 std::default_random_engine generator;
 
+double muGravity = GravitationalConstant * massEarth;
 
 double randomNumber()
 {
@@ -41,6 +42,7 @@ void SetCentralBody(int centralBody)
 		centralMass = massEarth;
 	else if (centralBody == 5)
 		centralMass = massJupiter;
+
 
 	muGravity = centralMass * GravitationalConstant;
 }

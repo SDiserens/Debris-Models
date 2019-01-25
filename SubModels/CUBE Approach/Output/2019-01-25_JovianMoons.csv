@@ -1,0 +1,7 @@
+Scenario : ,JovianMoons
+  imension : ,1.000000, % of average semiMajorAxis
+ Cube Dimension : ,115075.000000km 
+ Number of evaluations - N: ,1000000,
+ Evaluation Steps : ,1,
+ Step Length : ,86400.000000,days
+Using a scaling of,-2147483648

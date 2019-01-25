@@ -14,7 +14,7 @@ CUBEApproach::CUBEApproach(double dimension, bool probabilities)
 
 void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>> hashList, int i, int step);
 
-void CUBEApproach::mainCollision(DebrisPopulation& population, double timeStep)
+void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate;
 	DebrisObject objectI, objectJ;
@@ -30,7 +30,7 @@ void CUBEApproach::mainCollision(DebrisPopulation& population, double timeStep)
 		//	-- Generate Mean anomaly (randomTau)
 		M = randomNumberTau();
 		debris.second.SetMeanAnomaly(M);
-		// TODO is this persistent outside of loop
+		// TODO? is this persistent outside of loop?
 
 		//	-- Calculate position & Identify CUBE ID
 		cube = IdentifyCube(debris.second.GetPosition());
@@ -47,7 +47,7 @@ void CUBEApproach::mainCollision(DebrisPopulation& population, double timeStep)
 	{
 		//	-- Calculate collision rate in cube
 		collisionRate = CollisionRate(population.GetObject(collisionPair.first),
-									  population.GetObject(collisionPair.second));
+			population.GetObject(collisionPair.second));
 		tempProbability = timeStep * collisionRate;
 
 		//	-- Determine if collision occurs through MC (random number generation)
@@ -56,10 +56,18 @@ void CUBEApproach::mainCollision(DebrisPopulation& population, double timeStep)
 			//	-- Store collision probability
 			collisionProbabilities.push_back(tempProbability);
 			collisionList.push_back(collisionPair);
+			newCollisionProbabilities.push_back(tempProbability);
+			newCollisionList.push_back(collisionPair);
 		}
-		else if (DetermineCollision(tempProbability))
-			// Store Collisions 
-			collisionList.push_back(collisionPair);
+		else
+		{
+			if (DetermineCollision(tempProbability))
+			{
+				// Store Collisions 
+				collisionList.push_back(collisionPair);
+				newCollisionList.push_back(collisionPair);
+			}
+		}
 	}
 	elapsedTime += timeStep;
 }
@@ -83,6 +91,7 @@ vector<pair<long, long>> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>
 	vector<pair<long, long>> pairList;
 	vector<pair<long, long>> hashList;
 	long hash, ID1, ID2;
+	int i;
 	// Cube Filter
 	// Filter CUBEIDs
 	for (auto cubeID : cubeIDList)
@@ -94,7 +103,7 @@ vector<pair<long, long>> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>
 	//	-- Sort Hash list : sorted by nature of being a map
 	sort(hashList.begin(), hashList.end());
 
-	for (int i=0; i+1 < hashList.size(); i++)
+	for (i=0; i+1 < hashList.size(); i++)
 	{
 		//	-- Identify duplicate hash values
 		if (hashList[i].first == hashList[i + 1].first)
@@ -109,7 +118,7 @@ vector<pair<long, long>> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>
 		
 	}
 	//	-- (Sanitize results to remove hash clashes)
-	for (int i = 0; i + 1 < pairList.size(); )
+	for (i = 0; (i) < pairList.size(); )
 	{
 		if (cubeIDList[pairList[i].first] != cubeIDList[pairList[i].second])
 			pairList.erase(pairList.begin() + i);

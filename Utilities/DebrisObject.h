@@ -44,8 +44,8 @@ public:
 	OrbitalAnomalies GetAnomalies();
 	OrbitalElements GetElements();
 
-	void RandomiseRAAN();
-	void RandomiseArgP();
+	void UpdateRAAN(double rightAscension);
+	void UpdateArgP(double argPerigee);
 	void SetMeanAnomaly(double M);
 	void SetTrueAnomaly(double v);
 	void SetEccentricAnomaly(double E);

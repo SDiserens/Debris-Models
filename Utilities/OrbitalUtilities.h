@@ -6,6 +6,8 @@ const double NEWTONTOLERANCE = 1e-13;
 
 const double Pi = _Pi;
 const double Tau = 2 * _Pi;
+const double secondsDay = 24 * 60 * 60;
+const double secondsYear = secondsDay * 365;
 
 const double massSol = 1.989e30;  // Mass of sun in Kg
 const double massEarth = 5.972e24;  // Mass of earth in Kg
@@ -13,7 +15,28 @@ const double massJupiter = 1.898e27;  // Mass of jupiter in Kg
 
 const double GravitationalConstant = 6.67408e-20;    // Gravitational constant(km ^ 3 kg^-1 s^-2)
 
-double muGravity = massEarth * GravitationalConstant;    // Combined for simplicity
+extern double muGravity;    // Combined for simplicity
+
+class ProgressBar
+{
+public:
+	int n;
+	char display;
+
+	ProgressBar(int n, char d) : n(n), display(d) {}
+
+	void DisplayProgress(int i)
+	{
+		/* A function for displaying a progress bar.
+		*/
+		int percent;
+		if ((i % (n / 2000)) == 0)
+		{
+			percent = (100 * i) / n;
+			cout << '\r' + string(percent, display) + string((100 - percent), ' ') + ": " + to_string(percent) + "%." << flush;
+		}
+	}
+};
 
 class vector3D
 {

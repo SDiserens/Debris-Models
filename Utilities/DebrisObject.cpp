@@ -211,16 +211,14 @@ OrbitalElements DebrisObject::GetElements()
 	return elements;
 }
 
-void DebrisObject::RandomiseRAAN()
+void DebrisObject::UpdateRAAN(double rightAscension)
 {
-	double rightAscension = randomNumberTau();
 	elements.SetRightAscension(rightAscension);
 	positionSync = velocitySync = false;
 }
 
-void DebrisObject::RandomiseArgP()
+void DebrisObject::UpdateArgP(double argPerigee)
 {
-	double argPerigee = randomNumberTau();
 	elements.SetArgPerigee(argPerigee);
 	positionSync = velocitySync = false;
 }

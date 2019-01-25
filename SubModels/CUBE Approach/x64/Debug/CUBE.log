@@ -1,12 +1,3 @@
-﻿  stdafx.cpp
-  CUBE_Approach.cpp
-  OrbitalUtilities.cpp
-  OrbitalElements.cpp
-  OrbitalAnomalies.cpp
-  DebrisPopulation.cpp
-  DebrisObject.cpp
-  CollisionFunctions.cpp
-  CUBE.cpp
-  Generating Code...
+﻿  CUBE.cpp
   CUBE.vcxproj -> E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Debug\CUBE_Approach.exe
   CUBE.vcxproj -> E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Debug\CUBE_Approach.pdb (Partial PDB)

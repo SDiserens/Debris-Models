@@ -6,23 +6,22 @@
 #include <json\json.h>
 
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <ctime>
 
 
+void RandomiseOrbitOrientations(DebrisPopulation& population);
 void WriteCollisionData(ofstream & dataFile, string metaData);
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
 bool fileExists(const string& name);
 
+
 int main()
 {
 	string scenarioFilename, outputFilename, eventType, metaData;
-	int evaluations, evaluationSteps, runMode, scaling;
-	bool probabilityOutput;
-	double timeStep, averageSemiMajorAxis, dimension, cubeDimension;
+	int evaluationBlocks, evaluationSteps, runMode, scalingPower, nObjects;
+	bool probabilityOutput, relativeGravity;
+	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
+	double averageSemiMajorAxis = 0;
+
 
 	char date[100];
 	int ID = 1;
@@ -37,14 +36,17 @@ int main()
 	cout << " Parsing Config...";
 
 	// Identify config variables
-	scenarioFilename = config["scenarioFilename"].asString();
-	runMode = config["runType"].asInt();
+	scenarioFilename =  config["scenarioFilename"].asString();
 	probabilityOutput = config["probabilityOutput"].asBool();
-	evaluations = config["numberEvaluations"].asInt();
-	evaluationSteps = config["stepsPerEvaluation"].asInt();
-	timeStep = config["stepSize"].asDouble();
+	relativeGravity = config["relativeGravity"].asBool();
 	dimension = config["cubeDimension"].asDouble();
-	
+
+	runMode = config["runType"].asInt();
+	evaluationBlocks = config["numberEvaluations"].asInt();
+	evaluationSteps = config["stepsPerEvaluation"].asInt();
+	timeStepDays = config["stepSize"].asDouble();
+	timeStep = timeStepDays * secondsDay;
+
 	// Close File
 	cout << " Closing Config File...\n";
 	configFile.close();
@@ -52,7 +54,7 @@ int main()
 	// Read scenario file
 	cout << "Reading Scenario File : " + scenarioFilename + "...";
 
-	ifstream scenarioFile(scenarioFilename);
+	ifstream scenarioFile("Scenarios\\" + scenarioFilename);
 	if (!scenarioFile.good())
 	{
 		throw std::runtime_error("Scenario file failed to load");
@@ -63,7 +65,8 @@ int main()
 
 	cout << " Parsing Scenario...";
 	SetCentralBody(scenario["centralBody"].asInt());
-	scaling = scenario["outputScaling"].asInt();
+	scalingPower = scenario["outputScaling"].asInt();
+	scaling = pow(10, scalingPower);
 
 	// Create population of objects & Identify average SMA
 	DebrisPopulation objectPopulation;
@@ -73,7 +76,8 @@ int main()
 		averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
 		objectPopulation.AddDebrisObject(tempObject);
 	}
-	averageSemiMajorAxis /= scenario["objects"].size();
+	nObjects = scenario["objects"].size();
+	averageSemiMajorAxis /= nObjects;
 	cubeDimension = averageSemiMajorAxis * dimension;
 
 	// Close File
@@ -81,9 +85,66 @@ int main()
 	scenarioFile.close();
 
 	// Run simulation
-	// TODO - Create Cube object
+	// Create Cube object
+	CUBEApproach collisionCube(cubeDimension, probabilityOutput);
+	if (relativeGravity)
+		collisionCube.SwitchGravityComponent();
 
-	//TODO - Call CUBE approach
+	int step, eval, k;
+	double tempCollisionRate, blockRatio;
+	vector<double> collisionProbabilities;
+	vector<pair<long, long>> collisionList;
+	map<pair<long, long>, double> totalCollisionRates;
+	map<pair<long, long>, int> totalCollisionCount;
+	vector<map<pair<long, long>, double>> collisionRates;
+	vector<map<pair<long, long>, int>> collisionCount;
+	collisionCount.resize(evaluationBlocks);
+	collisionRates.resize(evaluationBlocks);
+
+	blockRatio = 1 / (evaluationSteps * timeStep / secondsYear);
+	// Call CUBE approach
+	ProgressBar progress(evaluationBlocks * evaluationSteps, '=');
+	cout << "Using a Cube Length of " + to_string(cubeDimension) + "km and " + to_string(evaluationBlocks) + " blocks of " + to_string(evaluationSteps) + " steps.\n" << flush;
+
+	for (eval = 0; eval < evaluationBlocks; eval++)
+	{
+		for (step = 0; step < evaluationSteps; step++)
+		{
+			//Randomise variables
+			RandomiseOrbitOrientations(objectPopulation);
+			//Call Collision check
+			collisionCube.MainCollision(objectPopulation, timeStep);
+			progress.DisplayProgress(eval * evaluationSteps + step);
+		}
+		// TODO - Store collision data
+		collisionProbabilities = collisionCube.GetNewCollisionProbabilities();
+		collisionList = collisionCube.GetNewCollisionList();
+
+		for (k = 0; k < collisionProbabilities.size(); k++)
+		{
+			tempCollisionRate = scaling * collisionProbabilities[k] * blockRatio;
+			totalCollisionRates[collisionList[k]] = totalCollisionRates[collisionList[k]] + tempCollisionRate;
+			totalCollisionCount[collisionList[k]] = totalCollisionCount[collisionList[k]] + 1;
+			collisionRates[eval][collisionList[k]] = collisionRates[eval][collisionList[k]] + tempCollisionRate;
+			collisionCount[eval][collisionList[k]] = collisionCount[eval][collisionList[k]] + 1;
+		}
+	}
+
+	progress.DisplayProgress(evaluationBlocks * evaluationSteps); cout << "\n" << flush;
+	
+	pair<long, long> pairID;
+	string collisionName;
+
+	for (auto const& collisionPair : totalCollisionRates)
+	{
+		pairID = collisionPair.first;
+		tempCollisionRate = round(1e4 * (collisionPair.second/ evaluationBlocks)) / 1e4;
+		collisionName = objectPopulation.GetObject(pairID.first).GetName() + "-" +
+						objectPopulation.GetObject(pairID.second).GetName();
+		cout << "For collision pair: " + collisionName + ":\n" << flush;
+		cout << "-- Collision rate = " + to_string(collisionPair.second) + " * 10^-" + to_string(scalingPower) + " per year.\n" + 
+				" Based on " + to_string(totalCollisionCount[pairID]) + " conjunctions.\n" << flush;
+	}
 
 	// Store data
 	time_t dateTime = time(NULL);
@@ -108,8 +169,9 @@ int main()
 	// Write data into file
 	cout << "  Writing to Data File...";
 
-	metaData = "Scenario : ," + eventType + "\n  imension : ," + to_string(100 * dimension) + ", % of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + "km \n" + 
-				" Number of evaluations - N: ," + to_string(evaluations) + ",\n Evaluation Steps : ," + to_string(evaluationSteps) + ",\n Step Length : ," + to_string(timeStep) + ",days";
+	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + "km \n" + 
+				"Number of evaluations - N: ," + to_string(evaluationBlocks) + ",\nEvaluation Steps : ," + to_string(evaluationSteps) + ",\nStep Length : ," + to_string(timeStep) + ",days\n" +
+				"Using a scaling of," + to_string(scaling);
 	WriteCollisionData(outputFile, metaData);
 
 	cout << "Finished\n";
@@ -117,6 +179,20 @@ int main()
 	outputFile.close();
 
 	// END
+}
+
+void RandomiseOrbitOrientations(DebrisPopulation& population)
+{
+	double rAAN, argP;
+	for (pair<long, DebrisObject> debris : population.population)
+	{
+		//	-- Generate random orientation (randomTau)
+		rAAN = randomNumberTau();
+		argP = randomNumberTau();
+		//Update object
+		debris.second.UpdateRAAN(rAAN);
+		debris.second.UpdateRAAN(argP);
+	}
 }
 
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
@@ -177,3 +253,5 @@ bool fileExists(const string& name)
 	else
 		return false;
 }
+
+
