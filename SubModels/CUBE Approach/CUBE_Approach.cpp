@@ -9,7 +9,8 @@
 
 
 void RandomiseOrbitOrientations(DebrisPopulation& population);
-void WriteCollisionData(ofstream & dataFile, string metaData);
+void WriteCollisionData(ofstream & dataFile, string metaData, map<pair<long, long>, double> totalCollisionRates, vector<map<pair<long, long>, double>> collisionRates,
+						vector<map<pair<long, long>, int>> collisionCount, int scalingPower);
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
 bool fileExists(const string& name);
 
@@ -135,10 +136,11 @@ int main()
 	pair<long, long> pairID;
 	string collisionName;
 
-	for (auto const& collisionPair : totalCollisionRates)
+	for (auto & collisionPair : totalCollisionRates)
 	{
 		pairID = collisionPair.first;
 		tempCollisionRate = round(1e4 * (collisionPair.second/ evaluationBlocks)) / 1e4;
+		collisionPair.second = tempCollisionRate;
 		collisionName = objectPopulation.GetObject(pairID.first).GetName() + "-" +
 						objectPopulation.GetObject(pairID.second).GetName();
 		cout << "For collision pair: " + collisionName + ":\n" << flush;
@@ -172,7 +174,7 @@ int main()
 	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + "km \n" + 
 				"Number of evaluations - N: ," + to_string(evaluationBlocks) + ",\nEvaluation Steps : ," + to_string(evaluationSteps) + ",\nStep Length : ," + to_string(timeStep) + ",days\n" +
 				"Using a scaling of," + to_string(scaling);
-	WriteCollisionData(outputFile, metaData);
+	WriteCollisionData(outputFile, metaData, totalCollisionRates, collisionRates, collisionCount, scalingPower);
 
 	cout << "Finished\n";
 	// Close file
@@ -220,7 +222,8 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 	return debris;
 }
 
-void WriteCollisionData(ofstream & dataFile, string metaData)
+void WriteCollisionData(ofstream & dataFile, string metaData, map<pair<long, long>, double> totalCollisionRates, vector<map<pair<long, long>, double>> collisionRates,
+						vector<map<pair<long, long>, int>> collisionCount, int scalingPower)
 {
 	// Determine output format
 	/* 
@@ -239,6 +242,41 @@ void WriteCollisionData(ofstream & dataFile, string metaData)
 	*/
 
 	// TODO - Write data to file
+	int i;
+	double tempRate;
+	string collisionName;
+	pair<long, long> pairID;
+
+	dataFile << "Collision Pair,";
+	for (auto const& collisionPair : totalCollisionRates)
+	{
+		pairID = collisionPair.first;
+		collisionName = to_string(pairID.first) + "-" + to_string(pairID.second);
+		dataFile << collisionName + ',';
+	}
+
+	dataFile << "\nTotal Collision Rate,";
+	for (auto const& collisionPair : totalCollisionRates)
+	{
+
+		dataFile << to_string(collisionPair.second) + ',';
+	}
+	dataFile << " * 10 ^ -" + to_string(scalingPower) + " per year.\n";
+
+	dataFile << "\n";
+	for (i = 0; i < collisionRates.size(); i++)
+	{
+
+		dataFile << "Collision Block " + to_string(i+1) + ",";
+		for (auto const& collisionPair : totalCollisionRates)
+		{
+			pairID = collisionPair.first;
+			tempRate = collisionRates[i][pairID];
+			dataFile << to_string(tempRate) + ',';
+		}
+
+		dataFile << " * 10 ^ -" + to_string(scalingPower) + " per year.\n";
+	}
 }
 
 bool fileExists(const string& name)

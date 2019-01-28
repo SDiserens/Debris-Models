@@ -22,18 +22,20 @@ class ProgressBar
 public:
 	int n;
 	char display;
+	float percent;
+	unsigned long pInt;
 
 	ProgressBar(int n, char d) : n(n), display(d) {}
 
-	void DisplayProgress(int i)
+	void DisplayProgress(unsigned long i)
 	{
 		/* A function for displaying a progress bar.
 		*/
-		int percent;
 		if ((i % (n / 2000)) == 0)
 		{
-			percent = (100 * i) / n;
-			cout << '\r' + string(percent, display) + string((100 - percent), ' ') + ": " + to_string(percent) + "%." << flush;
+			percent = 100 * (i / float(n));
+			pInt = unsigned long(percent);
+			cout << '\r' + string(pInt, display) + string((100 - pInt), ' ') + ": " + to_string(percent) + "%." << flush;
 		}
 	}
 };

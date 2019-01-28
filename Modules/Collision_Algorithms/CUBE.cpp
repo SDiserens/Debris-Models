@@ -19,10 +19,11 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 	double tempProbability, collisionRate;
 	DebrisObject objectI, objectJ;
 	vector<pair<long, long>> pairList;
-
-	map<long, tuple<int, int, int>> cubeIDList;
 	tuple<int, int, int> cube;
 	double M;
+	map<long, tuple<int, int, int>> cubeIDList;
+	// Prepare List
+	cubeIDList.clear();
 
 	// For each object in population -
 	for ( pair<long, DebrisObject> debris : population.population)
@@ -58,6 +59,7 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			collisionList.push_back(collisionPair);
 			newCollisionProbabilities.push_back(tempProbability);
 			newCollisionList.push_back(collisionPair);
+			// TODO - Identify why eveyer collision comes out the same
 		}
 		else
 		{
@@ -81,7 +83,7 @@ long CUBEApproach::PositionHash(tuple<int, int, int> position)
 {
 	long hash;
 	// XORT Vector Hash Function
-	hash = ((get<0>(position) * p1) ^ (get<1>(position) * p2) ^ (get<2>(position) * p3)) % 10000;
+	hash = ((get<0>(position) * p1) ^ (get<1>(position) * p2) ^ (get<2>(position) * p3)) % 1000000000;
 
 	return hash;
 }
@@ -118,15 +120,14 @@ vector<pair<long, long>> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>
 		
 	}
 	//	-- (Sanitize results to remove hash clashes)
-	for (i = 0; (i) < pairList.size(); )
-	{
-		if (cubeIDList[pairList[i].first] != cubeIDList[pairList[i].second])
-			pairList.erase(pairList.begin() + i);
-		else
-			++i;
-	}
-	return pairList;
+	if (pairList.size() != 0)
+ 		pairList.erase( remove_if( pairList.begin(), pairList.end(),
+						[&](pair<long, long> cubePair) {return cubeIDList[cubePair.first] != cubeIDList[cubePair.second]; } )
+						, pairList.end());
+
+ 	return pairList;
 }
+
 
 void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>> hashList, int i, int step)
 {

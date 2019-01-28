@@ -1,0 +1,12 @@
+Scenario : ,JovianMoons,
+Dimension : ,1,% of average semiMajorAxis
+ Cube Dimension : ,115075.000000km ,
+Number of evaluations - N: ,1,
+Evaluation Steps : ,10000000,
+Step Length : ,86400,days
+Using a scaling of,10000000000,
+Collision Pair,:,
+,,
+Total Collision Rate,34.7774, * 10 ^ -10 per year.
+,,
+Collision Block 1,78.7774 * 10 ^ -10 per year.,
