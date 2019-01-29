@@ -34,7 +34,7 @@ public:
 	void InitialiseEpoch(double epoch);
 	void AddDebrisObject(DebrisObject debris);
 	void AddDebrisEvent(Event debrisEvent);
-	DebrisObject GetObject(long ID);
+	DebrisObject& GetObject(long ID);
 	void DecayObject(long ID);
 	void ExplodeObject(long ID);
 	void CollideObject(long ID);

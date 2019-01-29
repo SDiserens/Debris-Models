@@ -42,7 +42,7 @@ void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 	eventLog.push_back(debrisEvent);
 }
 
-DebrisObject DebrisPopulation::GetObject(long ID)
+DebrisObject& DebrisPopulation::GetObject(long ID)
 {
 	return population[ID];
 }

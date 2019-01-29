@@ -17,7 +17,6 @@ void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate;
-	DebrisObject objectI, objectJ;
 	vector<pair<long, long>> pairList;
 	tuple<int, int, int> cube;
 	double M;
@@ -26,12 +25,12 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 	cubeIDList.clear();
 
 	// For each object in population -
-	for ( pair<long, DebrisObject> debris : population.population)
+	for ( auto& debris : population.population)
 	{
 		//	-- Generate Mean anomaly (randomTau)
 		M = randomNumberTau();
 		debris.second.SetMeanAnomaly(M);
-		// TODO? is this persistent outside of loop?
+		// is this persistent outside of loop? - Does it need to be - Yes for velocity calculation - fixed with reference auto&
 
 		//	-- Calculate position & Identify CUBE ID
 		cube = IdentifyCube(debris.second.GetPosition());
@@ -59,7 +58,6 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			collisionList.push_back(collisionPair);
 			newCollisionProbabilities.push_back(tempProbability);
 			newCollisionList.push_back(collisionPair);
-			// TODO - Identify why eveyer collision comes out the same
 		}
 		else
 		{
@@ -155,7 +153,8 @@ double CUBEApproach::CollisionRate(DebrisObject& objectI, DebrisObject& objectJ)
 		escapeVelocity2 = 2 * (objectI.GetMass() + objectJ.GetMass()) * GravitationalConstant / boundingRadii;
 		gravitationalPerturbation = (1 + escapeVelocity2 / relativeVelocity.vectorNorm2());
 	}
-	gravitationalPerturbation = 1;
+	else
+		gravitationalPerturbation = 1;
 	collisionCrossSection = gravitationalPerturbation * Pi * boundingRadii * boundingRadii;
 
 	return  collisionCrossSection * relativeVelocity.vectorNorm() / cubeVolume;
@@ -179,5 +178,5 @@ tuple<int, int, int> CUBEApproach::IdentifyCube(vector3D& position)
 
 bool CUBEApproach::DetermineCollision(double collisionProbability)
 {
-	return false;
+	return randomNumber() < collisionProbability;
 }

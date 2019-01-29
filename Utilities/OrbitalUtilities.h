@@ -35,7 +35,7 @@ public:
 		{
 			percent = 100 * (i / float(n));
 			pInt = unsigned long(percent);
-			cout << '\r' + string(pInt, display) + string((100 - pInt), ' ') + ": " + to_string(percent) + "%." << flush;
+			cout << setprecision(2) << '\r' + string(pInt, display) + string((100 - pInt), ' ') + ": " << percent << "%." << flush;
 		}
 	}
 };
