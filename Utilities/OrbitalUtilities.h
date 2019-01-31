@@ -1,5 +1,5 @@
 #pragma once
-extern std::default_random_engine generator;
+extern mt19937_64 generator;
 
 const double NEWTONMAXITERATIONS = 20;
 const double NEWTONTOLERANCE = 1e-13;
@@ -20,21 +20,26 @@ extern double muGravity;    // Combined for simplicity
 class ProgressBar
 {
 public:
-	int n;
+	uint64_t n;
 	char display;
 	double percent;
-	unsigned long pInt;
+	uint64_t pInt;
 
-	ProgressBar(int n, char d) : n(n), display(d) {}
+	ProgressBar(uint64_t n, char d) : n(n/100), display(d) {}
 
-	void DisplayProgress(unsigned long i)
+	void DisplayProgress(uint64_t i)
 	{
 		/* A function for displaying a progress bar.
 		*/
-		if ((i % (n / 10000)) == 0)
+		if (i == 0)
 		{
-			percent = 100 * (i / double(n));
-			pInt = unsigned long(percent);
+			cout << fixed << setprecision(2) << showpoint;
+			cout << '\r' + string(100, ' ') + ": " << 0.00 << "%" << flush;
+		}
+		if ((i % (n / 100)) == 0)
+		{
+			percent = ((double)i / n);
+			pInt = uint64_t(percent);
 			cout << fixed << setprecision(2) << showpoint;
 			cout << '\r' + string(pInt, display) + string((100 - pInt), ' ') + ": " << percent << "%" << flush;
 		}

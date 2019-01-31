@@ -7,5 +7,5 @@
   "stepSize": 1, // size of timestep in days
 
   "numberEvaluations": 2e6, // Number of timesteps to be evaluated
-  "stepsPerEvaluation": 100 // Number of evaluations per section - sensible size is 365
+  "stepsPerEvaluation": 1200 // Number of evaluations per section - sensible size is 365
 }

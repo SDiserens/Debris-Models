@@ -18,7 +18,8 @@ bool fileExists(const string& name);
 int main()
 {
 	string scenarioFilename, outputFilename, eventType, metaData;
-	int evaluationBlocks, evaluationSteps, runMode, scalingPower, nObjects;
+	uint64_t evaluationBlocks, evaluationSteps;
+	int runMode, scalingPower, nObjects;
 	bool probabilityOutput, relativeGravity;
 	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
 	double averageSemiMajorAxis = 0;
@@ -43,8 +44,8 @@ int main()
 	dimension = config["cubeDimension"].asDouble();
 
 	runMode = config["runType"].asInt();
-	evaluationBlocks = config["numberEvaluations"].asInt();
-	evaluationSteps = config["stepsPerEvaluation"].asInt();
+	evaluationBlocks = config["numberEvaluations"].asUInt64();
+	evaluationSteps = config["stepsPerEvaluation"].asUInt64();
 	timeStepDays = config["stepSize"].asDouble();
 	timeStep = timeStepDays * secondsDay;
 
