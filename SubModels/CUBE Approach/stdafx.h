@@ -14,6 +14,7 @@
 #include <stdexcept>
 #include <random>
 #include <map>
+#include <algorithm>
 
 #include <iostream>
 #include <iomanip>  

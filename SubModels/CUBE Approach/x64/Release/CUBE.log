@@ -1,0 +1,8 @@
+﻿  OrbitalUtilities.cpp
+..\..\Utilities\OrbitalUtilities.cpp(12): warning C4244: 'argument': conversion from 'std::chrono::system_clock::rep' to 'unsigned int', possible loss of data
+  Generating code
+  24 of 1758 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+    7 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  CUBE.vcxproj -> E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Release\CUBE_Approach.exe

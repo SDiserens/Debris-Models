@@ -1,9 +1,17 @@
 #include "stdafx.h"
 
-std::uniform_real_distribution<double> uniformDistribution(0, 1);
-std::uniform_real_distribution<double> piDistribution(0, Pi);
-std::uniform_real_distribution<double> tauDistribution(0, Tau);
-std::default_random_engine generator;
+#include <chrono>
+
+uniform_real_distribution<double> uniformDistribution(0, 1);
+uniform_real_distribution<double> piDistribution(0, Pi);
+uniform_real_distribution<double> tauDistribution(0, Tau);
+
+auto seed = chrono::system_clock::now().time_since_epoch().count();
+
+//default_random_engine generator(seed);
+mt19937 generator(seed);
+//mt19937_64 generator(seed);
+
 
 double muGravity = GravitationalConstant * massEarth;
 

@@ -193,7 +193,7 @@ void RandomiseOrbitOrientations(DebrisPopulation& population)
 		argP = randomNumberTau();
 		//Update object
 		debris.second.UpdateRAAN(rAAN);
-		debris.second.UpdateRAAN(argP);
+		debris.second.UpdateArgP(argP);
 	}
 }
 
