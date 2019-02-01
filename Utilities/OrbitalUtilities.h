@@ -1,5 +1,6 @@
 #pragma once
-extern mt19937_64 generator;
+extern mt19937 * generator;
+//extern mt19937_64 * generator;
 
 const double NEWTONMAXITERATIONS = 20;
 const double NEWTONTOLERANCE = 1e-13;
@@ -68,6 +69,8 @@ public:
 
 };
 
+
+void SeedRNG(uint64_t seed);
 void SetCentralBody(int centralBody = 3);
 
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass);

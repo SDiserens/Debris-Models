@@ -18,7 +18,7 @@ bool fileExists(const string& name);
 int main()
 {
 	string scenarioFilename, outputFilename, eventType, metaData;
-	uint64_t evaluationBlocks, evaluationSteps;
+	uint64_t evaluationBlocks, evaluationSteps, seed;
 	int runMode, scalingPower, nObjects;
 	bool probabilityOutput, relativeGravity;
 	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
@@ -42,7 +42,6 @@ int main()
 	probabilityOutput = config["probabilityOutput"].asBool();
 	relativeGravity = config["relativeGravity"].asBool();
 	dimension = config["cubeDimension"].asDouble();
-
 	runMode = config["runType"].asInt();
 	evaluationBlocks = config["numberEvaluations"].asUInt64();
 	evaluationSteps = config["stepsPerEvaluation"].asUInt64();
@@ -67,6 +66,7 @@ int main()
 
 	cout << " Parsing Scenario...";
 	SetCentralBody(scenario["centralBody"].asInt());
+	
 	scalingPower = scenario["outputScaling"].asInt();
 	scaling = pow(10, scalingPower);
 
@@ -83,10 +83,23 @@ int main()
 	cubeDimension = averageSemiMajorAxis * dimension;
 
 	// Close File
-	cout << " Closing Scenario File...\n";
+	cout << " Closing Scenario File..." << endl;
 	scenarioFile.close();
 
 	// Run simulation
+	if (config["randomSeed"].isUInt64() )
+	{
+		seed = config["randomSeed"].asUInt64();
+		cout << "Using a random seed of : " << seed << endl;
+		SeedRNG(seed);
+		cout << "random numbers : ";
+		for (int l = 0; l < 10; l++)
+		{
+			cout<< randomNumber()<<", ";
+		}
+		cout << endl;
+	}
+
 	// Create Cube object
 	CUBEApproach collisionCube(cubeDimension, probabilityOutput);
 	if (relativeGravity)
@@ -106,7 +119,7 @@ int main()
 	blockRatio = secondsYear / (evaluationSteps * timeStep);
 	// Call CUBE approach
 	ProgressBar progress(evaluationBlocks * evaluationSteps, '=');
-	cout << "Using a Cube Length of " + to_string(cubeDimension) + "km and " + to_string(evaluationBlocks) + " blocks of " + to_string(evaluationSteps) + " steps.\n" << flush;
+	cout << "Using a Cube Length of " + to_string(cubeDimension) + "km and " + to_string(evaluationBlocks) + " blocks of " + to_string(evaluationSteps) + " steps." << endl;
 
 	for (eval = 0; eval < evaluationBlocks; eval++)
 	{

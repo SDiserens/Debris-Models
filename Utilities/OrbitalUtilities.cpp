@@ -3,42 +3,46 @@
 #include <chrono>
 
 uniform_real_distribution<double> uniformDistribution(0, 1);
-uniform_real_distribution<double> piDistribution(0, Pi);
-uniform_real_distribution<double> tauDistribution(0, Tau);
 
 uint64_t seed = (uint64_t) chrono::system_clock::now().time_since_epoch().count();
 
 //default_random_engine generator(seed);
 //mt19937 generator(seed);
-mt19937_64 generator(seed);
+//mt19937_64 generator(seed);
+mt19937 * generator = new mt19937(seed);
 
+
+void SeedRNG(uint64_t seed)
+{
+	generator = new mt19937(seed);
+}
 
 double muGravity = GravitationalConstant * massEarth;
 
 double randomNumber()
 {
-	return uniformDistribution(generator);
+	return uniformDistribution(*generator);
 }
 
 double randomNumber(double max)
 {
-	return max * uniformDistribution(generator);
+	return max * uniformDistribution(*generator);
 }
 
 
 double randomNumber(double min, double max)
 {
-	return min + (max - min) * uniformDistribution(generator);
+	return min + (max - min) * uniformDistribution(*generator);
 }
 
 double randomNumberPi()
 {
-	return piDistribution(generator);
+	return randomNumber(Pi);
 }
 
 double randomNumberTau()
 {
-	return tauDistribution(generator);
+	return randomNumber(Tau);
 }
 
 void SetCentralBody(int centralBody)

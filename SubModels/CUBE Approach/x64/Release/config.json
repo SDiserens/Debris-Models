@@ -5,7 +5,7 @@
   "runType": 0, // (0, 1, 2) = general run, convergence test, dimension test
   "cubeDimension": 0.01, // As fraction of average semiMajor Axis - can be 1 or multiple
   "stepSize": 1, // size of timestep in days
-
-  "numberEvaluations": 5e6, // Number of timesteps to be evaluated
-  "stepsPerEvaluation": 1260// Number of evaluations per section - sensible size is 365
+  "randomSeed": 0, // integer seed value or null to use system time
+  "numberEvaluations": 1, // Number of timesteps to be evaluated
+  "stepsPerEvaluation": 1e7 // Number of evaluations per section - sensible size is 365
 }
