@@ -3,36 +3,60 @@
 #include <chrono>
 
 uniform_real_distribution<double> uniformDistribution(0, 1);
-
+double muGravity = GravitationalConstant * massEarth;
 uint64_t seed = (uint64_t) chrono::system_clock::now().time_since_epoch().count();
 
 //default_random_engine generator(seed);
 //mt19937 generator(seed);
 //mt19937_64 generator(seed);
-mt19937 * generator = new mt19937(seed);
-
+mt19937_64 * generator = new mt19937_64(seed);
 
 void SeedRNG(uint64_t seed)
 {
-	generator = new mt19937(seed);
+	generator = new mt19937_64(seed);
 }
 
-double muGravity = GravitationalConstant * massEarth;
+/*
+// Testing rand gen
+static unsigned int x = 123456789, y = 362436000, z = 521288629, c = 7654321; // Seed variables
+																			  
+unsigned int KISS()
+{
+	unsigned long long t, a = 698769069ULL;
+	x = 69069 * x + 12345;
+	y ^= (y << 13);
+	y ^= (y >> 17);
+	y ^= (y << 5); // y must never be set to zero! 
+	t = a*z + c;
+	c = (t >> 32); // Also avoid setting z=c=0! 
+	return x + y + (z = t);
+}double randomNumber()
+{
+	double x;
+	unsigned int a, b;
+	a = KISS() >> 6; // Upper 26 bits 
+	b = KISS() >> 5; // Upper 27 bits 
+	x = (a * 134217728.0 + b) / 9007199254740992.0;
+	return x;
+}// test end 
+*/
+
 
 double randomNumber()
 {
 	return uniformDistribution(*generator);
 }
 
+
 double randomNumber(double max)
-{
-	return max * uniformDistribution(*generator);
+{ 
+	return max * randomNumber();
 }
 
 
 double randomNumber(double min, double max)
 {
-	return min + (max - min) * uniformDistribution(*generator);
+	return min + (max - min) * randomNumber();
 }
 
 double randomNumberPi()

@@ -20,14 +20,14 @@ void OrbitalAnomalies::SetMeanAnomaly(double M)
 
 void OrbitalAnomalies::SetTrueAnomaly(double v)
 {
-	meanAnomaly = v;
+	trueAnomaly = v;
 	synchronised = false;
 	priority = 2;
 }
 
 void OrbitalAnomalies::SetEccentricAnomaly(double E)
 {
-	meanAnomaly = E;
+	eccentricAnomaly = E;
 	synchronised = false;
 	priority = 1;
 }
@@ -119,7 +119,7 @@ double OrbitalAnomalies::GetTrueAnomaly(double eccentricity)
 		else if (priority == 0)
 			UpdateAnomaliesFromMean(eccentricity);
 
-	return meanAnomaly;
+	return trueAnomaly;
 }
 
 double OrbitalAnomalies::GetEccentricAnomaly(double eccentricity)
@@ -130,5 +130,5 @@ double OrbitalAnomalies::GetEccentricAnomaly(double eccentricity)
 		else if (priority == 2)
 			UpdateAnomaliesFromTrue(eccentricity);
 
-	return meanAnomaly;
+	return eccentricAnomaly;
 }

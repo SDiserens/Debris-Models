@@ -122,18 +122,19 @@ double OrbitalElements::GetRadialPosition()
 
 vector3D OrbitalElements::GetPostion()
 {
-	double radius, trueAnomaly, x, y, z;
+	double radius, trueAnomaly, x, y, z, U;
 	double sinRA, cosRA, sinI, cosI, sinU, cosU;
 	
 	trueAnomaly = anomalies.GetTrueAnomaly(eccentricity);
 	radius = GetRadialPosition();
+	U = argPerigee + trueAnomaly;
 
 	sinRA = sin(rightAscension);
 	cosRA = cos(rightAscension);
 	sinI = sin(inclination);
 	cosI = cos(inclination);
-	sinU = sin(argPerigee + trueAnomaly);
-	cosU = cos(argPerigee + trueAnomaly);
+	sinU = sin(U);
+	cosU = cos(U);
 
 	x = radius * (cosRA * cosU - sinRA * sinU * cosI);
 	y = radius * (sinRA * cosU + cosRA * sinU * cosI);

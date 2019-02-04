@@ -1,6 +1,6 @@
 #pragma once
-extern mt19937 * generator;
-//extern mt19937_64 * generator;
+extern mt19937_64 * generator;
+//extern mt19937 * generator;
 
 const double NEWTONMAXITERATIONS = 20;
 const double NEWTONTOLERANCE = 1e-13;
@@ -17,6 +17,8 @@ const double massJupiter = 1.898e27;  // Mass of jupiter in Kg
 const double GravitationalConstant = 6.67408e-20;    // Gravitational constant(km ^ 3 kg^-1 s^-2)
 
 extern double muGravity;    // Combined for simplicity
+
+//unsigned int KISS();
 
 class ProgressBar
 {

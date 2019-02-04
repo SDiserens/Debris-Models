@@ -92,12 +92,6 @@ int main()
 		seed = config["randomSeed"].asUInt64();
 		cout << "Using a random seed of : " << seed << endl;
 		SeedRNG(seed);
-		cout << "random numbers : ";
-		for (int l = 0; l < 10; l++)
-		{
-			cout<< randomNumber()<<", ";
-		}
-		cout << endl;
 	}
 
 	// Create Cube object
