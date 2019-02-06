@@ -4,13 +4,33 @@
 #include "stdafx.h"
 #include "NSBM.h"
 
-//std::default_random_engine generator;
-int numFragBuckets = 30;
-string bridgingFunction = "Weighted";
-double representativeFragmentThreshold = 0.02;
-int representativeFragmentNumber = 10;
+double NSBMFragmentCloud::catastrophicThreshold, NSBMFragmentCloud::representativeFragmentThreshold, NSBMFragmentCloud::scaling;
+int NSBMFragmentCloud::numFragBuckets, NSBMFragmentCloud::representativeFragmentNumber;
+string NSBMDebrisFragment::bridgingFunction;
 
-int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer, double minLength)
+NASABreakupModel::NASABreakupModel()
+{
+	minLength = 0.001;
+	NSBMFragmentCloud::catastrophicThreshold           = catastrophicThreshold = 40;
+	NSBMFragmentCloud::numFragBuckets                  = numFragBuckets = 30;
+	NSBMFragmentCloud::representativeFragmentThreshold = representativeFragmentThreshold = 0.02;
+	NSBMFragmentCloud::representativeFragmentNumber    = representativeFragmentNumber = 10;
+	NSBMFragmentCloud::scaling = scaling = 1;
+	NSBMDebrisFragment::bridgingFunction = bridgingFunction = "Weighted";
+}
+
+NASABreakupModel::NASABreakupModel(double mL, double cT, int nFB, string bF, double sc, double rFT, int rFN)
+{
+	minLength = mL;
+	catastrophicThreshold = NSBMFragmentCloud::catastrophicThreshold = cT;
+	numFragBuckets = NSBMFragmentCloud::numFragBuckets = nFB;
+	representativeFragmentThreshold = NSBMFragmentCloud::representativeFragmentThreshold = rFT;
+	representativeFragmentNumber = NSBMFragmentCloud::representativeFragmentNumber = rFN;
+	bridgingFunction = NSBMDebrisFragment::bridgingFunction = bF;
+	NSBMFragmentCloud::scaling = scaling = sc;
+}
+
+void  NASABreakupModel::mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer)
 {
     // Initialise Variables
     bool explosion;
@@ -35,7 +55,6 @@ int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, Debris
 		MergeFragmentPopulations(population, projectileDebrisCloud);
 	}
 
-	return 0;
 }
 
 
@@ -109,13 +128,12 @@ void NSBMFragmentCloud::GenerateFragmentBuckets(DebrisObject& targetObject)
 	SetNumberOfFragments(CalculateNumberOfFragments(minLength));
 
 	// Identify different size buckets for fragments
-	nBuckets = numFragBuckets;
 	lowerLength = minLength;
 	logLength = log10(lowerLength);
-	logStep = (-logLength) / (nBuckets - 1.0);
+	logStep = (-logLength) / (numFragBuckets - 1.0);
 
 	// Create set of fragment buckets
-	for (int i = 1; i < nBuckets; i++)
+	for (int i = 1; i < numFragBuckets; i++)
 	{
 		// Set upper limits of length
 		logLength = logLength + logStep;
@@ -601,7 +619,7 @@ void NSBMDebrisFragment::GenerateAreaToMassValue()
 {
 	std::normal_distribution<double> distribution1(mu_1, sigma_1);
 	std::normal_distribution<double> distribution2(mu_2, sigma_2);
-	chi = alpha * distribution1(generator) + (1 - alpha) * distribution2(generator);
+	chi = alpha * distribution1(*generator) + (1 - alpha) * distribution2(*generator);
 	areaToMass = pow(10, chi);
 }
 
@@ -626,7 +644,7 @@ void NSBMDebrisFragment::CalculateRelativeVelocity()
 
 	std::normal_distribution<double> velocityDistribution(mu, sigma);
 
-	nu = velocityDistribution(generator);
+	nu = velocityDistribution(*generator);
 
 	deltaVNorm = pow(10, nu);
 	theta = randomNumberPi();

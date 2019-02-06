@@ -4,9 +4,13 @@
 class FragmentCloud
 {
 public:
+	// Config Variables
+	static double representativeFragmentThreshold, catastrophicThreshold;// J/g of target mass
+	static int representativeFragmentNumber;
+
 	// Initialise object variables
 	bool explosion, consMomentumFlag = false;
-	int debrisCount, nBuckets;
+	int debrisCount;
 	double totalMass, averageMass, minLength, maxLength, averageLength; // Working variables
 	double assignedMass, averageSpeed, totalKineticEnergy, averageKineticEnergy, totalVolume, averageVolume, averageDensity, averageMomentumNorm, energyMassRatio; // Recorded variables
 	

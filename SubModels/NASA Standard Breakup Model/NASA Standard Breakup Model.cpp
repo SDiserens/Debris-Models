@@ -5,23 +5,19 @@
 #include "../../Modules/Fragmentation_Models/NSBM.h"
 #include <json\json.h>
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <ctime>
 
-void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, DebrisObject& targetObject, DebrisObject *projectilePointer);
+void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, DebrisObject& targetObject, DebrisObject *projectilePointer, NASABreakupModel model);
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
 bool fileExists(const string& name);
 
-double minLength;
 
 int main()
 {
-	string scenarioFilename, outputFilename, eventType;
+	string scenarioFilename, outputFilename, eventType, bridgingFunction;
 	char date[100];
-	int ID = 1;
+	int numFragBuckets, ID = 1;
+	double minLength, catastrophicThreshold, scaling;
+
 	Json::Value config, scenario, parsedObject;
 	Json::Reader reader;
 
@@ -39,7 +35,10 @@ int main()
 	numFragBuckets = config["numberOfBuckets"].asInt();
 	bridgingFunction = config["bridgingFunction"].asString();
 	catastrophicThreshold = config["catastrophicThreshold"].asDouble();
-	//TODO - debug assignment of global variables!
+	scaling = config["scaling"].asDouble();
+
+	// Create Breakup Model
+	NASABreakupModel NSBM(minLength, catastrophicThreshold, numFragBuckets, bridgingFunction, scaling);
 
 
 	cout << " Closing Config File...\n";
@@ -80,7 +79,7 @@ int main()
 	}
 
 	cout << "    Simulating Breakup...";
-	mainBreakup(fragmentPopulation, primaryObject, secondaryPointer, minLength);
+	NSBM.mainBreakup(fragmentPopulation, primaryObject, secondaryPointer);
 	cout << "    Breakup Simulation Complete\n";
 
 	// Store data
@@ -104,7 +103,7 @@ int main()
 	outputFile.open(outputFilename, ofstream::out);
 		// Write fragment data into file
 	cout << "  Writing to Data File...";
-	WritePopulationData(outputFile, fragmentPopulation, primaryObject, secondaryPointer);
+	WritePopulationData(outputFile, fragmentPopulation, primaryObject, secondaryPointer, NSBM);
 	cout << "Finished\n";
 		// Close file
 	outputFile.close();
@@ -135,7 +134,7 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 	return debris;
 }
 
-void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, DebrisObject& targetObject, DebrisObject *projectilePointer)
+void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, DebrisObject& targetObject, DebrisObject *projectilePointer, NASABreakupModel model)
 {
 	string tempData, header, metaData, eventType;
 	long ID, parentID;
@@ -146,13 +145,13 @@ void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, Deb
 	// Define MetaData
 	eventType = population.eventLog[0].GetEventType();
 	if (eventType == "Explosion")
-		metaData = "Breakup Type : ," + eventType + "\n Mass of Target :," + to_string(targetObject.GetMass()) + ",[kg]\n Mass of Projectile : ," + to_string(projectilePointer->GetMass()) + ",[kg]\n Minimum Length : ," +
-					to_string(minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + bridgingFunction;
+		metaData = "Breakup Type : ," + eventType + "\n Mass of Target :," + to_string(targetObject.GetMass()) + ",[kg]\n Mass of Projectile : ," + "N/A" + ",[kg]\n Minimum Length : ," +
+					to_string(model.minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(model.catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + model.bridgingFunction;
 	else
 	{
 		relativeVelocity = (targetObject.GetVelocity() - projectilePointer->GetVelocity()).vectorNorm();
 		metaData = "Breakup Type : ," + eventType + "\n Mass of Target : ," + to_string(targetObject.GetMass()) + ",[kg]\n Mass of Projectile : ," + to_string(projectilePointer->GetMass()) + ",[kg]\n Relative Velocity : ," + to_string(relativeVelocity)
-			+ ",[km/s]\n Minimum Length : ," + to_string(minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + bridgingFunction;
+			+ ",[km/s]\n Minimum Length : ," + to_string(model.minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(model.catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + model.bridgingFunction;
 	}
 	dataFile << metaData + "\n";
 

@@ -4,14 +4,26 @@
 #include "fragmentation.h"
 
 // Setting defaults for globals
-extern int numFragBuckets;
-extern string bridgingFunction;
 
-int mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL, double minLength = 0.001);
+class NASABreakupModel : public BreakupModel
+{
+public:
+	int numFragBuckets;
+	string bridgingFunction;
+	double scaling;
+
+	NASABreakupModel();
+	NASABreakupModel(double mL, double cT, int nFB, string bF, double sc=1, double rFT=0.02, int rFN=10);
+	void mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL);
+
+};
 
 class NSBMDebrisFragment : public DebrisObject
 {
 public:
+	// Model config variable
+	static string bridgingFunction;
+
 	double lambda, chi, deltaVNorm, kineticEnergy, volume, density;
 	bool explosion;
 	// A/m Distribution parameters
@@ -39,8 +51,12 @@ private:
 class NSBMFragmentCloud : public FragmentCloud
 {
 public:
+	// Model config variables
+	static int numFragBuckets;
+	static double scaling;
+
 	bool maxBucket;
-	double scaling, impactMass, nFragExponent, nFragCoefficient;
+	double impactMass, nFragExponent, nFragCoefficient;
 	int numFrag;
 	//std::default_random_engine generator;
 

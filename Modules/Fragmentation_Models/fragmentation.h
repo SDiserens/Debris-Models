@@ -10,4 +10,10 @@
 void MergeFragmentPopulations(DebrisPopulation& population, FragmentCloud& cloud);
 
 double CalculateEnergyToMass(double kineticEnergy, double mass);
-extern double catastrophicThreshold; // J/g of target mass
+
+class BreakupModel
+{
+public:
+	double minLength, representativeFragmentThreshold, catastrophicThreshold;// J/g of target mass
+	int representativeFragmentNumber;
+};

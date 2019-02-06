@@ -1,4 +1,17 @@
-﻿  Skipping... (no relevant changes detected)
+﻿  stdafx.cpp
+e:\work\modelling framework\utilities\orbitalutilities.h(47): warning C4244: 'argument': conversion from 'uint64_t' to 'const unsigned int', possible loss of data
   NASA Standard Breakup Model.cpp
+  OrbitalUtilities.cpp
+  OrbitalElements.cpp
+  OrbitalAnomalies.cpp
+  DebrisPopulation.cpp
+  DebrisObject.cpp
+  NASAStdBrkUpMdl.cpp
+  FragmentCloud.cpp
+  FragmentationFunctions.cpp
+  Generating Code...
+jsoncpp.lib(json_reader.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_reader.obj)' or at 'E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
+jsoncpp.lib(json_value.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_value.obj)' or at 'E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
+jsoncpp.lib(json_writer.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_writer.obj)' or at 'E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
   NASA Standard Breakup Model.vcxproj -> E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\Debug\NASA Standard Breakup Model.exe
   NASA Standard Breakup Model.vcxproj -> E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\Debug\NASA Standard Breakup Model.pdb (Partial PDB)

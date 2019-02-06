@@ -30,7 +30,9 @@ unsigned int KISS()
 	t = a*z + c;
 	c = (t >> 32); // Also avoid setting z=c=0! 
 	return x + y + (z = t);
-}double randomNumber()
+}
+
+double randomNumber()
 {
 	double x;
 	unsigned int a, b;
@@ -38,7 +40,8 @@ unsigned int KISS()
 	b = KISS() >> 5; // Upper 27 bits 
 	x = (a * 134217728.0 + b) / 9007199254740992.0;
 	return x;
-}// test end 
+}
+// test end 
 */
 
 
@@ -47,7 +50,6 @@ double randomNumber()
 	return uniformDistribution(*generator);
 }
 
-
 double randomNumber(double max)
 { 
 	return max * randomNumber();
