@@ -179,9 +179,9 @@ int main()
 	// Write data into file
 	cout << "  Writing to Data File...";
 
-	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + "km \n" + 
-				"Number of evaluations - N: ," + to_string(evaluationBlocks) + ",\nEvaluation Steps : ," + to_string(evaluationSteps) + ",\nStep Length : ," + to_string(timeStep) + ",days\n" +
-				"Using a scaling of," + to_string(scaling);
+	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + ",km\n" + 
+				"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",days\n" +
+				"Using a scaling of : ," + to_string(scaling);
 	WriteCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
 
 	cout << "Finished\n";
@@ -239,7 +239,7 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 	*/
 	
 	dataFile << metaData + "\n";
-
+	dataFile << "\n";
 	/*
 	Collision Pairs :-
 	Total Collision Rate per pair :-
@@ -255,32 +255,34 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 	string collisionName, collisionID;
 	pair<long, long> pairID;
 
-	dataFile << "Collision IDs,";
+	dataFile << "Collision IDs";
 	for (auto const& collisionPair : totalCollisionRates)
 	{
 		pairID = collisionPair.first;
 		collisionID = "(" + to_string(pairID.first) + "-" + to_string(pairID.second) + ")";
-		dataFile << collisionID + ',';
+		dataFile << ',' + collisionID;
 	}
 
-	dataFile << "\nCollision Pair,";
+	dataFile << "\nCollision Pair";
 	for (auto const& collisionPair : totalCollisionRates)
 	{
 		pairID = collisionPair.first;
 		collisionName = objectPopulation.GetObject(pairID.first).GetName() + "-" +
 			objectPopulation.GetObject(pairID.second).GetName();
-		dataFile << collisionName + ',';
+		dataFile << ',' + collisionName;
 	}
 
-	dataFile << "\nTotal Collision Rate,";
+	dataFile << "\nTotal Collision Rate";
 	for (auto const& collisionPair : totalCollisionRates)
 	{
 
-		dataFile << to_string(collisionPair.second) + ',';
+		dataFile << ',' + to_string(collisionPair.second);
 	}
-	dataFile << " * 10 ^ -" + to_string(scalingPower) + " per year.\n";
+	dataFile << ",* 10 ^ -" + to_string(scalingPower) + " per year.\n";
 
+	// Break data with line
 	dataFile << "\n";
+
 	for (i = 0; i < collisionRates.size(); i++)
 	{
 
@@ -295,7 +297,9 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 		dataFile << " * 10 ^ -" + to_string(scalingPower) + " per year.\n";
 	}
 
+	// Break data with line
 	dataFile << "\n";
+
 	for (i = 0; i < collisionCount.size(); i++)
 	{
 
