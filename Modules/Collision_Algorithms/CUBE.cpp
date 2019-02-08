@@ -14,10 +14,8 @@ CUBEApproach::CUBEApproach(double dimension, bool probabilities)
 
 void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>> hashList, int i, int step);
 
-void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
+vector<pair<long, long>> CUBEApproach::CreatePairList(DebrisPopulation& population)
 {
-	double tempProbability, collisionRate;
-	vector<pair<long, long>> pairList;
 	tuple<int, int, int> cube;
 	double M;
 	map<long, tuple<int, int, int>> cubeIDList;
@@ -25,7 +23,7 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 	cubeIDList.clear();
 
 	// For each object in population -
-	for ( auto& debris : population.population)
+	for (auto& debris : population.population)
 	{
 		//	-- Generate Mean anomaly (randomTau)
 		M = randomNumberTau();
@@ -39,42 +37,31 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 		cubeIDList.emplace(debris.first, cube);
 	}
 
-	// Filter Cube List
-	pairList = CubeFilter(cubeIDList);
-
-	// For each conjunction (cohabiting pair)
-	for (pair<long, long> &collisionPair : pairList)
-	{
-		//	-- Calculate collision rate in cube
-		collisionRate = CollisionRate(population.GetObject(collisionPair.first),
-			population.GetObject(collisionPair.second));
-		tempProbability = timeStep * collisionRate;
-
-		//	-- Determine if collision occurs through MC (random number generation)
-		if (outputProbabilities)
-		{
-			//	-- Store collision probability
-			collisionProbabilities.push_back(tempProbability);
-			collisionList.push_back(collisionPair);
-			newCollisionProbabilities.push_back(tempProbability);
-			newCollisionList.push_back(collisionPair);
-		}
-		else
-		{
-			if (DetermineCollision(tempProbability))
-			{
-				// Store Collisions 
-				collisionList.push_back(collisionPair);
-				newCollisionList.push_back(collisionPair);
-			}
-		}
-	}
-	elapsedTime += timeStep;
+	return CubeFilter(cubeIDList);
 }
 
-void CUBEApproach::SwitchGravityComponent()
+
+double CUBEApproach::CollisionRate(DebrisObject& objectI, DebrisObject& objectJ)
 {
-	relativeGravity = !relativeGravity;
+	double collisionCrossSection, boundingRadii, escapeVelocity2, gravitationalPerturbation;
+	vector3D velocityI, velocityJ, relativeVelocity;
+
+	velocityI = objectI.GetVelocity();
+	velocityJ = objectJ.GetVelocity();
+
+	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
+	boundingRadii = (objectI.GetRadius() + objectJ.GetRadius()) * 0.001; // Combined radii in kilometres
+
+	if (relativeGravity)
+	{
+		escapeVelocity2 = 2 * (objectI.GetMass() + objectJ.GetMass()) * GravitationalConstant / boundingRadii;
+		gravitationalPerturbation = (1 + escapeVelocity2 / relativeVelocity.vectorNorm2());
+	}
+	else
+		gravitationalPerturbation = 1;
+	collisionCrossSection = gravitationalPerturbation * Pi * boundingRadii * boundingRadii;
+
+	return  collisionCrossSection * relativeVelocity.vectorNorm() / cubeVolume;
 }
 
 long CUBEApproach::PositionHash(tuple<int, int, int> position)
@@ -137,29 +124,6 @@ void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>
 		FilterRecursion(pairList, hashList, i,  step +1 );
 }
 
-double CUBEApproach::CollisionRate(DebrisObject& objectI, DebrisObject& objectJ)
-{
-	double collisionCrossSection, boundingRadii, escapeVelocity2, gravitationalPerturbation;
-	vector3D velocityI, velocityJ, relativeVelocity;
-
-	velocityI = objectI.GetVelocity();
-	velocityJ = objectJ.GetVelocity();
-
-	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
-	boundingRadii = (objectI.GetRadius() + objectJ.GetRadius()) * 0.001; // Combined radii in kilometres
-
-	if (relativeGravity)
-	{
-		escapeVelocity2 = 2 * (objectI.GetMass() + objectJ.GetMass()) * GravitationalConstant / boundingRadii;
-		gravitationalPerturbation = (1 + escapeVelocity2 / relativeVelocity.vectorNorm2());
-	}
-	else
-		gravitationalPerturbation = 1;
-	collisionCrossSection = gravitationalPerturbation * Pi * boundingRadii * boundingRadii;
-
-	return  collisionCrossSection * relativeVelocity.vectorNorm() / cubeVolume;
-}
-
 double CUBEApproach::GetElapsedTime()
 {
 	return elapsedTime;
@@ -174,9 +138,4 @@ tuple<int, int, int> CUBEApproach::IdentifyCube(vector3D& position)
 	Z = int(position.z / cubeDimension);
 
 	return tuple<int, int, int>(X, Y, Z);
-}
-
-bool CUBEApproach::DetermineCollision(double collisionProbability)
-{
-	return randomNumber() < collisionProbability;
 }

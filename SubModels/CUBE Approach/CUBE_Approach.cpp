@@ -15,15 +15,15 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
 bool fileExists(const string& name);
 
 
-int main()
+int main(int argc, char** argv)
 {
-	string scenarioFilename, outputFilename, eventType, metaData;
+
+	string arg, scenarioFilename, outputFilename, eventType, metaData;
 	uint64_t evaluationBlocks, evaluationSteps, seed;
 	int runMode, scalingPower, nObjects;
 	bool probabilityOutput, relativeGravity;
 	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
 	double averageSemiMajorAxis = 0;
-
 
 	char date[100];
 	int ID = 1;
@@ -41,12 +41,37 @@ int main()
 	scenarioFilename =  config["scenarioFilename"].asString();
 	probabilityOutput = config["probabilityOutput"].asBool();
 	relativeGravity = config["relativeGravity"].asBool();
-	dimension = config["cubeDimension"].asDouble();
 	runMode = config["runType"].asInt();
+	dimension = config["cubeDimension"].asDouble();
 	evaluationBlocks = config["numberEvaluations"].asUInt64();
 	evaluationSteps = config["stepsPerEvaluation"].asUInt64();
 	timeStepDays = config["stepSize"].asDouble();
 	timeStep = timeStepDays * secondsDay;
+
+	// Parse command line arguments
+	for (int i = 1; i < argc; ++i) {
+		arg = argv[i];
+		if ((arg == "-f") || (arg == "--filename"))
+		{
+			scenarioFilename = argv[++i];
+		} 
+		else if ((arg == "-d") || (arg == "--dimension"))
+		{
+			dimension = atof(argv[++i]);
+		}
+		else if ((arg == "-b") || (arg == "--blocks"))
+		{
+			evaluationBlocks = stoi(argv[++i]);
+		}
+		else if ((arg == "-s") || (arg == "--steps"))
+		{
+			evaluationSteps = stoi(argv[++i]);
+		}
+		else if ((arg == "-t") || (arg == "--time"))
+		{
+			timeStepDays = atof(argv[++i]);
+		}
+	}
 
 	// Close File
 	cout << " Closing Config File...\n";

@@ -1,8 +1,8 @@
 {
-  "bridgingFunction": "Weighted",// "Small", "Large", "Mean", "Weighted",
+  "bridgingFunction": "Weighted", // "Small", "Large", "Mean", "Weighted",
   "catastrophicThreshold": 40, // Defaults to 40
-  "minLength": 0.01, // Defaults to 0.001
+  "minLength": 0.001, // Defaults to 0.001
   "numberOfBuckets": 30, // Defaults to 30
-  "scenarioFilename": "basicExplosion.json", // "basicCollision.json" , "basicExplosion.json",
-  "scaling" :  1
+  "scenarioFilename": "basicCollision.json", // "basicCollision.json" , "basicExplosion.json",
+  "scaling": 1
 }

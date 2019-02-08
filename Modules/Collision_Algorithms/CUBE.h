@@ -6,8 +6,7 @@
 class CUBEApproach : public CollisionAlgorithm
 {
 protected:
-	double cubeDimension, cubeVolume, elapsedTime;
-	bool outputProbabilities, relativeGravity = false;
+	double cubeDimension, cubeVolume;
 	int p1 = 73856093;
 	int p2 = 19349663;
 	int p3 = 83492791;
@@ -15,16 +14,13 @@ protected:
 
 public:
 	CUBEApproach(double dimension, bool probabilities = false);
-	void SwitchGravityComponent();
 
-	void MainCollision(DebrisPopulation& population, double timeStep);
 	double GetElapsedTime();
 
-
 protected:
-	bool DetermineCollision(double collisionProbability);
-	long PositionHash(tuple<int, int, int>);
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
+	vector<pair<long, long>> CUBEApproach::CreatePairList(DebrisPopulation& population);
+	long PositionHash(tuple<int, int, int>);
 	tuple<int, int, int> IdentifyCube(vector3D& position);
 	vector<pair<long,long>> CubeFilter(map<long, tuple<int, int, int>> cubeIDList);
 
