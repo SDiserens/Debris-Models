@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 {
 
 	string arg, scenarioFilename, outputFilename, eventType, metaData;
-	uint64_t evaluationBlocks, evaluationSteps, seed;
+	uint64_t evaluationBlocks, evaluationSteps, seed, argseed = -1;
 	int runMode, scalingPower, nObjects;
 	bool probabilityOutput, relativeGravity;
 	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
@@ -71,6 +71,10 @@ int main(int argc, char** argv)
 		{
 			timeStepDays = atof(argv[++i]);
 		}
+		else if (arg == "--seed")
+		{
+			argseed = stoi(argv[++i]);
+		}
 	}
 
 	// Close File
@@ -112,9 +116,9 @@ int main(int argc, char** argv)
 	scenarioFile.close();
 
 	// Run simulation
-	if (config["randomSeed"].isUInt64() )
+	if (config["randomSeed"].isUInt64() || (argseed != -1) )
 	{
-		seed = config["randomSeed"].asUInt64();
+		seed = (argseed != -1) ? argseed : config["randomSeed"].asUInt64();
 		cout << "Using a random seed of : " << seed << endl;
 		SeedRNG(seed);
 	}

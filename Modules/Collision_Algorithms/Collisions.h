@@ -16,8 +16,8 @@ protected:
 	bool DetermineCollision(double collisionProbability);
 
 	// Virtual function
-	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ) { cerr << "Error. CollisionRate not available for base type." << endl; };;
-	vector<pair<long, long>> CreatePairList(DebrisPopulation& population){ cerr << "Error. CreatePairList not available for base type." << endl; };
+	virtual double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ) = 0;
+	virtual vector<pair<long, long>> CreatePairList(DebrisPopulation& population) = 0;
 
 public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
