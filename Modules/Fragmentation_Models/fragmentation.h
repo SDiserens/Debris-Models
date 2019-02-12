@@ -16,4 +16,6 @@ class BreakupModel
 public:
 	double minLength, representativeFragmentThreshold, catastrophicThreshold;// J/g of target mass
 	int representativeFragmentNumber;
+
+	
 };

@@ -4,17 +4,17 @@
 #include "stdafx.h"
 #include "NSBM.h"
 
-double NSBMFragmentCloud::catastrophicThreshold, NSBMFragmentCloud::representativeFragmentThreshold, NSBMFragmentCloud::scaling;
-int NSBMFragmentCloud::numFragBuckets, NSBMFragmentCloud::representativeFragmentNumber;
+double FragmentCloud::catastrophicThreshold, FragmentCloud::representativeFragmentThreshold, NSBMFragmentCloud::scaling;
+int NSBMFragmentCloud::numFragBuckets, FragmentCloud::representativeFragmentNumber;
 string NSBMDebrisFragment::bridgingFunction;
 
 NASABreakupModel::NASABreakupModel()
 {
 	minLength = 0.001;
-	NSBMFragmentCloud::catastrophicThreshold           = catastrophicThreshold = 40;
+	FragmentCloud::catastrophicThreshold           = catastrophicThreshold = 40;
 	NSBMFragmentCloud::numFragBuckets                  = numFragBuckets = 30;
-	NSBMFragmentCloud::representativeFragmentThreshold = representativeFragmentThreshold = 0.02;
-	NSBMFragmentCloud::representativeFragmentNumber    = representativeFragmentNumber = 10;
+	FragmentCloud::representativeFragmentThreshold = representativeFragmentThreshold = 0.02;
+	FragmentCloud::representativeFragmentNumber    = representativeFragmentNumber = 10;
 	NSBMFragmentCloud::scaling = scaling = 1;
 	NSBMDebrisFragment::bridgingFunction = bridgingFunction = "Weighted";
 }
@@ -22,10 +22,10 @@ NASABreakupModel::NASABreakupModel()
 NASABreakupModel::NASABreakupModel(double mL, double cT, int nFB, string bF, double sc, double rFT, int rFN)
 {
 	minLength = mL;
-	catastrophicThreshold = NSBMFragmentCloud::catastrophicThreshold = cT;
+	catastrophicThreshold = FragmentCloud::catastrophicThreshold = cT;
 	numFragBuckets = NSBMFragmentCloud::numFragBuckets = nFB;
-	representativeFragmentThreshold = NSBMFragmentCloud::representativeFragmentThreshold = rFT;
-	representativeFragmentNumber = NSBMFragmentCloud::representativeFragmentNumber = rFN;
+	representativeFragmentThreshold = FragmentCloud::representativeFragmentThreshold = rFT;
+	representativeFragmentNumber = FragmentCloud::representativeFragmentNumber = rFN;
 	bridgingFunction = NSBMDebrisFragment::bridgingFunction = bF;
 	NSBMFragmentCloud::scaling = scaling = sc;
 }
@@ -195,11 +195,15 @@ void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, doub
 	if (explosion)
 	{
 		// Up to 8 fragments
-		tempFragmentCloud.numFrag = 8;
+		tempFragmentCloud.numFrag = 7;
 		//TODO - mass assignment here
 		tempFragmentCloud.GenerateDebrisFragments(targetObject);
+
+		energyMassRatio = 0;
+		remainingMass -= tempFragmentCloud.assignedMass;
 	}
-	else if (energyMassRatio < catastrophicThreshold)
+
+	if (energyMassRatio < catastrophicThreshold)
 	{
 		// Single large fragment
 		tempFragmentCloud.numFrag = 1;
@@ -208,6 +212,8 @@ void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, doub
 		tempFragment.SetPosition(targetObject.GetPosition());
 		tempFragment.SetVelocity(targetObject.GetVelocity());
 		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
+		tempFragment.SetSourceID(targetObject.GetSourceID());
+		tempFragment.SetParentID(targetObject.GetID());
 
 		tempFragmentCloud.StoreFragmentVariables(tempFragment);
 		tempFragmentCloud.UpdateAverageVariables();
@@ -441,6 +447,7 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion, 
 
 NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion, int source, int numFrag)
 {
+	objectID = ++objectSEQ;
 	length = init_length;
 	lambda = log10(length);
 	mass = init_mass;

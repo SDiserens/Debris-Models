@@ -7,7 +7,7 @@ public:
 	// Config Variables
 	static double representativeFragmentThreshold, catastrophicThreshold;// J/g of target mass
 	static int representativeFragmentNumber;
-
+	
 	// Initialise object variables
 	bool explosion, consMomentumFlag = false;
 	int debrisCount;

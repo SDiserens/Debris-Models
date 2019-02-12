@@ -3,6 +3,6 @@
   "catastrophicThreshold": 40, // Defaults to 40
   "minLength": 0.001, // Defaults to 0.001
   "numberOfBuckets": 30, // Defaults to 30
-  "scenarioFilename": "basicCollision.json", // "basicCollision.json" , "basicExplosion.json",
+  "scenarioFilename": "basicExplosion.json", // "basicCollision.json" , "basicExplosion.json",
   "scaling": 1
 }

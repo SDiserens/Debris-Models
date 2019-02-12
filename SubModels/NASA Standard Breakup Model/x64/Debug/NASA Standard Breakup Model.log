@@ -1,6 +1,3 @@
 ﻿  NASAStdBrkUpMdl.cpp
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(7): warning C4356: 'FragmentCloud::catastrophicThreshold': static data member cannot be initialized via derived class
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(7): warning C4356: 'FragmentCloud::representativeFragmentThreshold': static data member cannot be initialized via derived class
-e:\work\modelling framework\modules\fragmentation_models\nasastdbrkupmdl.cpp(8): warning C4356: 'FragmentCloud::representativeFragmentNumber': static data member cannot be initialized via derived class
   NASA Standard Breakup Model.vcxproj -> E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\x64\Debug\NASA Standard Breakup Model.exe
   NASA Standard Breakup Model.vcxproj -> E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\x64\Debug\NASA Standard Breakup Model.pdb (Partial PDB)

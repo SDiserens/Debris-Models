@@ -1,14 +1,10 @@
-﻿  stdafx.cpp
+﻿  FragmentCloud.cpp
   FragmentationFunctions.cpp
-  FragmentCloud.cpp
   NASAStdBrkUpMdl.cpp
-  DebrisObject.cpp
-  DebrisPopulation.cpp
-  OrbitalAnomalies.cpp
-  OrbitalElements.cpp
-  OrbitalUtilities.cpp
   NASA Standard Breakup Model.cpp
   Generating code
-  All 1037 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  120 of 1040 functions (11.5%) were compiled, the rest were copied from previous compilation.
+    7 functions were new in current compilation
+    39 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   NASA Standard Breakup Model.vcxproj -> E:\Work\Modelling Framework\SubModels\NASA Standard Breakup Model\x64\Release\NASA Standard Breakup Model.exe

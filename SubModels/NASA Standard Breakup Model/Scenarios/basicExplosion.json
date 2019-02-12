@@ -2,7 +2,7 @@
   "primaryObject": {
     "mass": 1000,
     "radius": 1,
-    "length": 2,
+    "length": 5,
     "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
     "orbitalElements": {
       "a": 7000,
