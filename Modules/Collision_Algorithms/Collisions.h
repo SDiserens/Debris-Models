@@ -18,6 +18,7 @@ protected:
 	// Virtual function
 	virtual double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ) = 0;
 	virtual vector<pair<long, long>> CreatePairList(DebrisPopulation& population) = 0;
+	double CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ);
 
 public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
@@ -26,5 +27,6 @@ public:
 	vector<double> GetCollisionProbabilities();
 	vector<pair<long, long>> GetNewCollisionList();
 	vector<double> GetNewCollisionProbabilities();
+	double GetElapsedTime();
 
 };

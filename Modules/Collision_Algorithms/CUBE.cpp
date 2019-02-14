@@ -43,23 +43,15 @@ vector<pair<long, long>> CUBEApproach::CreatePairList(DebrisPopulation& populati
 
 double CUBEApproach::CollisionRate(DebrisObject& objectI, DebrisObject& objectJ)
 {
-	double collisionCrossSection, boundingRadii, escapeVelocity2, gravitationalPerturbation;
+	double collisionCrossSection;
 	vector3D velocityI, velocityJ, relativeVelocity;
 
 	velocityI = objectI.GetVelocity();
 	velocityJ = objectJ.GetVelocity();
 
 	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
-	boundingRadii = (objectI.GetRadius() + objectJ.GetRadius()) * 0.001; // Combined radii in kilometres
 
-	if (relativeGravity)
-	{
-		escapeVelocity2 = 2 * (objectI.GetMass() + objectJ.GetMass()) * GravitationalConstant / boundingRadii;
-		gravitationalPerturbation = (1 + escapeVelocity2 / relativeVelocity.vectorNorm2());
-	}
-	else
-		gravitationalPerturbation = 1;
-	collisionCrossSection = gravitationalPerturbation * Pi * boundingRadii * boundingRadii;
+	collisionCrossSection = CollisionCrossSection(objectI, objectJ);
 
 	return  collisionCrossSection * relativeVelocity.vectorNorm() / cubeVolume;
 }
@@ -124,10 +116,6 @@ void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>
 		FilterRecursion(pairList, hashList, i,  step +1 );
 }
 
-double CUBEApproach::GetElapsedTime()
-{
-	return elapsedTime;
-}
 
 tuple<int, int, int> CUBEApproach::IdentifyCube(vector3D& position)
 {

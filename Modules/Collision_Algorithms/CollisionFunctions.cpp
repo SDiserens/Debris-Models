@@ -40,6 +40,30 @@ void CollisionAlgorithm::MainCollision(DebrisPopulation& population, double time
 	elapsedTime += timeStep;
 }
 
+double CollisionAlgorithm::GetElapsedTime()
+{
+	return elapsedTime;
+}
+double CollisionAlgorithm::CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ)
+{
+	double boundingRadii, escapeVelocity2, gravitationalPerturbation;
+	vector3D velocityI = objectI.GetVelocity();
+	vector3D velocityJ = objectJ.GetVelocity();
+
+	vector3D relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
+	boundingRadii = (objectI.GetRadius() + objectJ.GetRadius()) * 0.001; // Combined radii in kilometres
+
+	if (relativeGravity)
+	{
+		escapeVelocity2 = 2 * (objectI.GetMass() + objectJ.GetMass()) * GravitationalConstant / boundingRadii;
+		gravitationalPerturbation = (1 + escapeVelocity2 / relativeVelocity.vectorNorm2());
+	}
+	else
+		gravitationalPerturbation = 1;
+
+	return gravitationalPerturbation * Pi * boundingRadii * boundingRadii;
+}
+
 vector<pair<long, long>> CollisionAlgorithm::GetCollisionList()
 {
 	return collisionList;

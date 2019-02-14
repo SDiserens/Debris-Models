@@ -15,7 +15,6 @@ protected:
 public:
 	CUBEApproach(double dimension, bool probabilities = false);
 
-	double GetElapsedTime();
 
 protected:
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
