@@ -28,5 +28,6 @@ public:
 	vector<pair<long, long>> GetNewCollisionList();
 	vector<double> GetNewCollisionProbabilities();
 	double GetElapsedTime();
+	double CalculateRelativeInclination(pair<DebrisObject, DebrisObject> objectPair);
 
 };

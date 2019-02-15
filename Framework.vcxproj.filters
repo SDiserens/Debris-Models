@@ -84,6 +84,9 @@
     <ClInclude Include="Modules\Collision_Algorithms\OrbitTrace.h">
       <Filter>Header Files\04 Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\Collision_Algorithms\HootsFilter.h">
+      <Filter>Header Files\04 Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp">
@@ -123,6 +126,9 @@
       <Filter>Source Files\04 Collisions</Filter>
     </ClCompile>
     <ClCompile Include="Modules\Collision_Algorithms\OrbitTrace.cpp">
+      <Filter>Source Files\04 Collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\Collision_Algorithms\HootsFilter.cpp">
       <Filter>Source Files\04 Collisions</Filter>
     </ClCompile>
   </ItemGroup>

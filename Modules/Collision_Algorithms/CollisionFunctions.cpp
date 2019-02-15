@@ -44,6 +44,11 @@ double CollisionAlgorithm::GetElapsedTime()
 {
 	return elapsedTime;
 }
+double CollisionAlgorithm::CalculateRelativeInclination(pair<DebrisObject, DebrisObject> objectPair)
+{
+	//TODO - Calculate relative inclination
+	return 0.0;
+}
 double CollisionAlgorithm::CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ)
 {
 	double boundingRadii, escapeVelocity2, gravitationalPerturbation;
