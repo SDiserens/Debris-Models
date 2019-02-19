@@ -1,11 +1,12 @@
 {
-  "scenarioFilename": "JovianMoons.json", // "JovianMoons.json", "Asteroids.json",
+  "scenarioFilename": "Planetesimals.json", // "JovianMoons.json", "Asteroids.json", "Planetesimals.json",
   "probabilityOutput": 1, // Boolian 0 or 1 to switch probability output on/off
   "relativeGravity": 1, // Boolian 0 or 1 to swithc use of relative gravity between objects
-  "runType": 0, // (0, 1, 2) = general run, convergence test, dimension test
+  "outputPrinting": false, // true or false to print output rates
+  "individualOutput": false, // true or false to store pair specific collision rates
   "cubeDimension": 0.01, // As fraction of average semiMajor Axis - can be 1 or multiple
   "stepSize": 1, // size of timestep in days
   "randomSeed": null, // integer seed value or null to use system time
-  "numberEvaluations": 5e5, // Number of timesteps to be evaluated
-  "stepsPerEvaluation": 36500 // Number of evaluations per section - sensible size is 365
+  "numberEvaluations": 1e3, // Number of timesteps to be evaluated
+  "stepsPerEvaluation": 365 // Number of evaluations per section - sensible size is 365
 }

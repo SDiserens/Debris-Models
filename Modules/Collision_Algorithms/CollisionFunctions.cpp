@@ -3,52 +3,13 @@
 #include "Collisions.h"
 
 
-void CollisionAlgorithm::MainCollision(DebrisPopulation& population, double timeStep)
-{
-	double tempProbability, collisionRate;
-	vector<pair<long, long>> pairList;
-	// Filter Cube List
-	pairList = CreatePairList(population);
-
-	// For each conjunction (cohabiting pair)
-	for (pair<long, long> &collisionPair : pairList)
-	{
-		//	-- Calculate collision rate in cube
-		collisionRate = CollisionRate(population.GetObject(collisionPair.first),
-			population.GetObject(collisionPair.second));
-		tempProbability = timeStep * collisionRate;
-
-		//	-- Determine if collision occurs through MC (random number generation)
-		if (outputProbabilities)
-		{
-			//	-- Store collision probability
-			collisionProbabilities.push_back(tempProbability);
-			collisionList.push_back(collisionPair);
-			newCollisionProbabilities.push_back(tempProbability);
-			newCollisionList.push_back(collisionPair);
-		}
-		else
-		{
-			if (DetermineCollision(tempProbability))
-			{
-				// Store Collisions 
-				collisionList.push_back(collisionPair);
-				newCollisionList.push_back(collisionPair);
-			}
-		}
-	}
-	elapsedTime += timeStep;
-}
 
 double CollisionAlgorithm::GetElapsedTime()
 {
 	return elapsedTime;
 }
-double CollisionAlgorithm::CalculateRelativeInclination(pair<DebrisObject, DebrisObject> objectPair)
-{
-	//TODO - Calculate relative inclination
-	return 0.0;
-}
+
+
 double CollisionAlgorithm::CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ)
 {
 	double boundingRadii, escapeVelocity2, gravitationalPerturbation;
@@ -102,4 +63,86 @@ bool CollisionAlgorithm::DetermineCollision(double collisionProbability)
 void CollisionAlgorithm::SwitchGravityComponent()
 {
 	relativeGravity = !relativeGravity;
+}
+
+CollisionPair::CollisionPair(DebrisObject & objectI, DebrisObject & objectJ)
+{
+	primary = objectI;
+	secondary = objectJ;
+	CalculateRelativeInclination();
+	CalculateArgumenstOfIntersection();
+}
+
+double CollisionPair::GetRelativeInclination()
+{
+	return relativeInclination;
+}
+
+vector<pair<double, double>> CollisionPair::CalculateAngularWindowPrimary(double distance)
+{
+	return CalculateAngularWindow(primary, distance);
+}
+
+vector<pair<double, double>> CollisionPair::CalculateAngularWindowSecondary(double distance)
+{
+	return CalculateAngularWindow(secondary, distance);
+}
+
+vector3D CollisionPair::GetPrimaryPositionAtTime(double timeFromEpoch)
+{
+	//TODO - position at time
+	return vector3D();
+}
+
+vector3D CollisionPair::GetPrimaryVelocityAtTime(double timeFromEpoch)
+{
+	//TODO - velcoity at time
+	return vector3D();
+}
+
+vector3D CollisionPair::GetSecondaryPositionAtTime(double timeFromEpoch)
+{
+	//TODO -  position2 at time
+	return vector3D();
+}
+
+vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
+{
+	//TODO - velocity2 at time
+	return vector3D();
+}
+
+double CollisionPair::CalculateMinimumSeparation()
+{
+	// TODO - Min seperation
+	return 0.0;
+}
+
+double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)
+{
+	//TODO - closest approach distance
+	return 0.0;
+}
+
+void CollisionPair::CalculateRelativeInclination()
+{
+	//TODO - Calculate relative inclination
+	relativeInclination = 0;
+}
+
+
+void CollisionPair::CalculateArgumenstOfIntersection()
+{
+	// TODO Arguments of intersection
+	deltaPrimary = 0;
+	deltaSecondary = 0;
+}
+
+vector<pair<double, double>> CollisionPair::CalculateAngularWindow(DebrisObject & object, double distance)
+{
+	vector<pair<double, double>> timeWindows;
+	//TODO - Calculate Angular Windows
+
+	//TODO - check for singular case
+	return timeWindows;
 }

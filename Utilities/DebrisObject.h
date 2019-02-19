@@ -6,7 +6,7 @@ class DebrisObject
 protected:
 	OrbitalElements elements; // semi-major axis, eccentricity, inclination, right ascension of ascending node, arguement of perigee, anomalies
 	static int objectSEQ;
-	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch;
+	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period;
 	string name;
 	long parentID, sourceID, objectID;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
@@ -14,7 +14,7 @@ protected:
 	int removeEvent; // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
 	int nFrag;
 	vector3D velocity, position;
-	bool positionSync, velocitySync;
+	bool positionSync, velocitySync, periodSync;
 
 public:
 	DebrisObject();
@@ -38,6 +38,7 @@ public:
 	double GetArea();
 	double GetAreaToMass();
 	double GetRadius();
+	double GetPeriod();
 	vector3D GetVelocity();
 	vector3D GetPosition();
 

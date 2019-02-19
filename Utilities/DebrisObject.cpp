@@ -5,6 +5,7 @@ int DebrisObject::objectSEQ = 0;
 DebrisObject::DebrisObject() 
 {
 	positionSync = velocitySync = false;
+	periodSync = false;
 }
 
 DebrisObject::DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination,
@@ -19,6 +20,7 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	nFrag = 1;
 	objectType = type;
 	positionSync = velocitySync = false;
+	periodSync = false;
 }
 
 
@@ -81,12 +83,15 @@ void DebrisObject::UpdateOrbitalElements(vector3D deltaV)
 {
 	velocity.addVector(deltaV);
 	elements = OrbitalElements(position, velocity);
+	velocitySync = positionSync = true;
+	periodSync = false;
 }
 
 void DebrisObject::UpdateOrbitalElements(OrbitalElements newElements)
 {
 	elements = OrbitalElements(newElements);
 	positionSync = velocitySync = false;
+	periodSync = false;
 }
 
 vector3D DebrisObject::GetVelocity()
@@ -103,12 +108,16 @@ void DebrisObject::SetVelocity(double vX, double vY, double vZ)
 {
 	velocity = vector3D(vX, vY, vZ);
 	elements.SetOrbitalElements(position, velocity);
+	velocitySync = positionSync = true;
+	periodSync = false;
 }
 
 void DebrisObject::SetVelocity(vector3D inputVelocity)
 {
 	velocity = vector3D(inputVelocity);
 	elements.SetOrbitalElements(position, velocity);
+	velocitySync = positionSync = true;
+	periodSync = false;
 }
 
 vector3D DebrisObject::GetPosition()
@@ -126,12 +135,16 @@ void DebrisObject::SetPosition(double X, double Y, double Z)
 {
 	position = vector3D(X, Y, Z);
 	elements.SetOrbitalElements(position, velocity);
+	velocitySync = positionSync = true;
+	periodSync = false;
 }
 
 void DebrisObject::SetPosition(vector3D inputPosition)
 {
 	position = vector3D(inputPosition);
 	elements.SetOrbitalElements(position, velocity);
+	velocitySync = positionSync = true;
+	periodSync = false;
 }
 
 
@@ -140,6 +153,8 @@ void DebrisObject::SetStateVectors(vector3D inputPosition, vector3D inputVelocit
 	position = vector3D(inputPosition);
 	velocity = vector3D(inputVelocity);
 	elements.SetOrbitalElements(position, velocity);
+	velocitySync = positionSync = true;
+	periodSync = false;
 }
 
 void DebrisObject::SetStateVectors(double X, double Y, double Z, double vX, double vY, double vZ)
@@ -147,6 +162,8 @@ void DebrisObject::SetStateVectors(double X, double Y, double Z, double vX, doub
 	position = vector3D(X, Y, Z);
 	velocity = vector3D(vX, vY, vZ);
 	elements.SetOrbitalElements(position, velocity);
+	velocitySync = positionSync = true;
+	periodSync = false;
 }
 
 void DebrisObject::CalculateMassFromArea()
@@ -188,6 +205,16 @@ double DebrisObject::GetAreaToMass()
 double DebrisObject::GetRadius()
 {
 	return radius;
+}
+
+double DebrisObject::GetPeriod()
+{
+	if (!periodSync)
+	{
+		period = elements.CalculatePeriod();
+		periodSync = true;
+	}
+	return period;
 }
 
 

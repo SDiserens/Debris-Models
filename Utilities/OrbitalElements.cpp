@@ -120,6 +120,11 @@ double OrbitalElements::GetRadialPosition()
 	return radius;
 }
 
+double OrbitalElements::CalculatePeriod()
+{
+	return Tau * sqrt(semiMajorAxis * semiMajorAxis * semiMajorAxis / muGravity);
+}
+
 vector3D OrbitalElements::GetPostion()
 {
 	double radius, trueAnomaly, x, y, z, U;

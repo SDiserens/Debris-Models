@@ -15,6 +15,7 @@ protected:
 public:
 	CUBEApproach(double dimension, bool probabilities = false);
 
+	void MainCollision(DebrisPopulation& population, double timeStep);
 
 protected:
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);

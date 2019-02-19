@@ -11,7 +11,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timeStep)
 
 double OrbitTrace::CollisionRate(DebrisObject & objectI, DebrisObject & objectJ)
 {
-	double collisionCrossSection;
+	double collisionRate;
 	vector3D velocityI, velocityJ, relativeVelocity;
 
 	velocityI = objectI.GetVelocity();
@@ -19,16 +19,42 @@ double OrbitTrace::CollisionRate(DebrisObject & objectI, DebrisObject & objectJ)
 
 	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
 
-	collisionCrossSection = CollisionCrossSection(objectI, objectJ);
+	//TODO - OT collision rate
 
-	return collisionCrossSection * relativeVelocity.vectorNorm();
+	return collisionRate;
 }
 
-vector<pair<long, long>> OrbitTrace::CreatePairList(DebrisPopulation & population)
+vector<CollisionPair> OrbitTrace::CreatePairList(DebrisPopulation & population)
 {
-	return vector<pair<long, long>>();
+	// TODO -OT create pairlist
+	return vector<CollisionPair>();
 }
 
+bool OrbitTrace::CoplanarFilter(CollisionPair objectPair)
+{
+	// TODO -OT Coplanar filter
+	return false;
+}
+
+bool OrbitTrace::HeadOnFilter(CollisionPair objectPair)
+{
+	// TODO - OT Head on filter
+	return false;
+}
+
+bool OrbitTrace::SynchronizedFilter(CollisionPair objectPair)
+{
+	// TODO - OT synch filter
+	return false;
+}
+
+bool OrbitTrace::ProximityFilter(CollisionPair objectPair)
+{
+	// TODO - OT  proximity filter
+	return false;
+}
+
+/*
 double OrbitTrace::CalculateSpatialDensity(DebrisObject object, double radius, double latitude)
 {
 	// Equation 21
@@ -52,4 +78,5 @@ double OrbitTrace::CalculateVolumeElement(double radius, double latitude)
 	// Equation 17
 	return 0.0;
 }
+*/
 

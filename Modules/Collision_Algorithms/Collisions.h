@@ -17,17 +17,40 @@ protected:
 
 	// Virtual function
 	virtual double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ) = 0;
-	virtual vector<pair<long, long>> CreatePairList(DebrisPopulation& population) = 0;
+	//virtual vector<pair<long, long>> CreatePairList(DebrisPopulation& population) = 0;
 	double CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ);
 
+
 public:
-	void MainCollision(DebrisPopulation& population, double timeStep);
 	void SwitchGravityComponent();
 	vector<pair<long, long>> GetCollisionList();
 	vector<double> GetCollisionProbabilities();
 	vector<pair<long, long>> GetNewCollisionList();
 	vector<double> GetNewCollisionProbabilities();
 	double GetElapsedTime();
-	double CalculateRelativeInclination(pair<DebrisObject, DebrisObject> objectPair);
 
+};
+
+class CollisionPair
+{
+protected:
+	DebrisObject primary, secondary;
+	double relativeInclination, deltaPrimary, deltaSecondary;
+
+public:
+	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
+	double GetRelativeInclination();
+	vector<pair<double, double>> CalculateAngularWindowPrimary(double distance);
+	vector<pair<double, double>> CalculateAngularWindowSecondary(double distance);
+	vector3D GetPrimaryPositionAtTime(double timeFromEpoch);
+	vector3D GetPrimaryVelocityAtTime(double timeFromEpoch);
+	vector3D GetSecondaryPositionAtTime(double timeFromEpoch);
+	vector3D GetSecondaryVelocityAtTime(double timeFromEpoch);
+	double CalculateSeparationAtTime(double timeFromEpoch);
+	double CalculateMinimumSeparation();
+
+protected:
+	void CalculateRelativeInclination();
+	void CalculateArgumenstOfIntersection();
+	vector<pair<double, double>> CalculateAngularWindow(DebrisObject& object, double distance);
 };

@@ -11,6 +11,8 @@
 void RandomiseOrbitOrientations(DebrisPopulation& population);
 void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
 						vector<map<pair<long, long>, double>>& collisionRates, vector<map<pair<long, long>, int>>& collisionCount, int scalingPower);
+void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
+	vector<map<pair<long, long>, double>>& collisionRates, vector<map<pair<long, long>, int>>& collisionCount, int scalingPower);
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
 bool fileExists(const string& name);
 
@@ -21,7 +23,7 @@ int main(int argc, char** argv)
 	string arg, scenarioFilename, outputFilename, eventType, metaData;
 	uint64_t evaluationBlocks, evaluationSteps, seed, argseed = -1;
 	int runMode, scalingPower, nObjects;
-	bool probabilityOutput, relativeGravity;
+	bool probabilityOutput, relativeGravity, printing, individualOutput;
 	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
 	double averageSemiMajorAxis = 0;
 
@@ -46,6 +48,8 @@ int main(int argc, char** argv)
 	evaluationBlocks = config["numberEvaluations"].asUInt64();
 	evaluationSteps = config["stepsPerEvaluation"].asUInt64();
 	timeStepDays = config["stepSize"].asDouble();
+	printing = config["outputPrinting"].asBool();
+	individualOutput = config["individualOutput"].asBool();
 	timeStep = timeStepDays * secondsDay;
 
 	// Parse command line arguments
@@ -70,6 +74,10 @@ int main(int argc, char** argv)
 		else if ((arg == "-t") || (arg == "--time"))
 		{
 			timeStepDays = atof(argv[++i]);
+		}
+		else if ((arg == "-v") || (arg == "--verbose"))
+		{
+			printing = true;
 		}
 		else if (arg == "--seed")
 		{
@@ -180,9 +188,12 @@ int main(int argc, char** argv)
 		collisionPair.second = tempCollisionRate;
 		collisionName = objectPopulation.GetObject(pairID.first).GetName() + "-" +
 						objectPopulation.GetObject(pairID.second).GetName();
-		cout << "For collision pair: " + collisionName + ":\n" << flush;
-		cout << "-- Collision rate = " + to_string(collisionPair.second) + " * 10^-" + to_string(scalingPower) + " per year.\n" + 
+		if (printing)
+		{
+			cout << "For collision pair: " + collisionName + ":\n" << flush;
+			cout << "-- Collision rate = " + to_string(collisionPair.second) + " * 10^-" + to_string(scalingPower) + " per year.\n" +
 				" Based on " + to_string(totalCollisionCount[pairID]) + " conjunctions.\n" << flush;
+		}
 	}
 
 	// Store data
@@ -211,7 +222,11 @@ int main(int argc, char** argv)
 	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + ",km\n" + 
 				"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",days\n" +
 				"Using a scaling of : ," + to_string(scaling);
-	WriteCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
+
+	if (individualOutput)
+		WriteCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
+	else
+		WriteSystemCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
 
 	cout << "Finished\n";
 	// Close file
@@ -257,6 +272,48 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 	DebrisObject debris(radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type);
 	debris.SetName(name);
 	return debris;
+}
+
+void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
+	vector<map<pair<long, long>, double>>& collisionRates, vector<map<pair<long, long>, int>>& collisionCount, int scalingPower)
+{
+	/* 
+	MetaData = [['Simulation:', 'Jovian_Moons'], ['Cube Dimension', Dim, 'km'], ['Number of sections, N:', N], ['Section length, n:', n, 'days']]
+	*/
+	
+	dataFile << metaData + "\n";
+	dataFile << "\n";
+	
+	int i, tempCount=0;
+	double tempRate=0;
+	pair<long, long> pairID;
+
+	dataFile << "Total Collision Rate";
+	for (auto const& collisionPair : totalCollisionRates)
+	{
+		tempRate += collisionPair.second;
+	}
+	dataFile << ',' + to_string(tempRate)+ ",* 10 ^ -" + to_string(scalingPower) + " per year.\n";
+	
+
+	dataFile << "\n";
+	dataFile << "Block, Count, Rate\n";
+
+	for (i = 0; i < collisionRates.size(); i++)
+	{
+		tempCount = 0;
+		tempRate = 0;
+		dataFile << "Collision Block " + to_string(i + 1) + ",";
+		for (auto const& collisionPair : totalCollisionRates)
+		{
+			pairID = collisionPair.first;
+			tempRate += collisionRates[i][pairID];
+			tempCount += collisionCount[i][pairID];
+		}
+
+		dataFile << to_string(tempCount) + ',' + to_string(tempRate) + ',';
+		dataFile << " * 10 ^ -" + to_string(scalingPower) + " per year.\n";
+	}
 }
 
 void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,

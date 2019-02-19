@@ -14,6 +14,43 @@ CUBEApproach::CUBEApproach(double dimension, bool probabilities)
 
 void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>> hashList, int i, int step);
 
+void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
+{
+	double tempProbability, collisionRate;
+	vector<pair<long, long>> pairList;
+	// Filter Cube List
+	pairList = CreatePairList(population);
+
+	// For each conjunction (cohabiting pair)
+	for (pair<long, long> &collisionPair : pairList)
+	{
+		//	-- Calculate collision rate in cube
+		collisionRate = CollisionRate(population.GetObject(collisionPair.first),
+			population.GetObject(collisionPair.second));
+		tempProbability = timeStep * collisionRate;
+
+		//	-- Determine if collision occurs through MC (random number generation)
+		if (outputProbabilities)
+		{
+			//	-- Store collision probability
+			collisionProbabilities.push_back(tempProbability);
+			collisionList.push_back(collisionPair);
+			newCollisionProbabilities.push_back(tempProbability);
+			newCollisionList.push_back(collisionPair);
+		}
+		else
+		{
+			if (DetermineCollision(tempProbability))
+			{
+				// Store Collisions 
+				collisionList.push_back(collisionPair);
+				newCollisionList.push_back(collisionPair);
+			}
+		}
+	}
+	elapsedTime += timeStep;
+}
+
 vector<pair<long, long>> CUBEApproach::CreatePairList(DebrisPopulation& population)
 {
 	tuple<int, int, int> cube;
