@@ -103,7 +103,6 @@ int main(int argc, char** argv)
 
 	cout << " Parsing Scenario...";
 	SetCentralBody(scenario["centralBody"].asInt());
-	
 	scalingPower = scenario["outputScaling"].asInt();
 	scaling = pow(10, scalingPower);
 
@@ -119,6 +118,13 @@ int main(int argc, char** argv)
 	averageSemiMajorAxis /= nObjects;
 	cubeDimension = averageSemiMajorAxis * dimension;
 
+	for (int i = 1; i < argc; ++i) {
+		arg = argv[i];
+		if ((arg == "-c") || (arg == "--cubesize"))
+		{
+			cubeDimension = atof(argv[++i]);
+		}
+	}
 	// Close File
 	cout << " Closing Scenario File..." << endl;
 	scenarioFile.close();
@@ -152,6 +158,9 @@ int main(int argc, char** argv)
 	ProgressBar progress(evaluationBlocks * evaluationSteps, '=');
 	cout << "Using a Cube Length of " + to_string(cubeDimension) + "km and " + to_string(evaluationBlocks) + " blocks of " + to_string(evaluationSteps) + " steps." << endl;
 
+
+	// Call cube algorithm
+	auto start = std::chrono::system_clock::now(); // starttime
 	for (eval = 0; eval < evaluationBlocks; eval++)
 	{
 		for (step = 0; step < evaluationSteps; step++)
@@ -175,11 +184,15 @@ int main(int argc, char** argv)
 			collisionCount[eval][collisionList[k]] = collisionCount[eval][collisionList[k]] + 1;
 		}
 	}
+	auto end = std::chrono::system_clock::now(); //endtime
 
 	progress.DisplayProgress(evaluationBlocks * evaluationSteps); cout << "\n" << flush;
 	
 	pair<long, long> pairID;
 	string collisionName;
+	std::chrono::duration<double> timeDiff = end - start;
+
+	cout << "Calculated in runtime of " << timeDiff.count() << "s\n" << endl;
 
 	for (auto & collisionPair : totalCollisionRates)
 	{
@@ -221,7 +234,7 @@ int main(int argc, char** argv)
 
 	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + ",km\n" + 
 				"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",days\n" +
-				"Using a scaling of : ," + to_string(scaling);
+				"Using a scaling of : ," + to_string(scaling) + "\nCalculated in runtime of : ," + to_string(timeDiff.count()) + ",s";
 
 	if (individualOutput)
 		WriteCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);

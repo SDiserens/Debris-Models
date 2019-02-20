@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include <chrono>
 
 uniform_real_distribution<double> uniformDistribution(0, 1);
 double muGravity = GravitationalConstant * massEarth;
