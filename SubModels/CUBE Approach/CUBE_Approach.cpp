@@ -302,7 +302,7 @@ void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopula
 	pair<long, long> pairID;
 
 	dataFile << "Total Collision Rate";
-	for (auto const& collisionPair : totalCollisionRates)
+	for (auto& collisionPair : totalCollisionRates)
 	{
 		tempRate += collisionPair.second;
 	}
@@ -311,17 +311,21 @@ void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopula
 
 	dataFile << "\n";
 	dataFile << "Block, Count, Rate\n";
+	map<pair<long, long>, double> blockRates;
+	map<pair<long, long>, int> blockCounts;
 
 	for (i = 0; i < collisionRates.size(); i++)
 	{
+		blockRates = collisionRates[i];
+		blockCounts = collisionCount[i];
 		tempCount = 0;
 		tempRate = 0;
 		dataFile << "Collision Block " + to_string(i + 1) + ",";
-		for (auto const& collisionPair : totalCollisionRates)
+		for (auto& collisionPair : totalCollisionRates)
 		{
 			pairID = collisionPair.first;
-			tempRate += collisionRates[i][pairID];
-			tempCount += collisionCount[i][pairID];
+			tempRate += blockRates[pairID];
+			tempCount += blockCounts[pairID];
 		}
 
 		dataFile << to_string(tempCount) + ',' + to_string(tempRate) + ',';
@@ -363,7 +367,7 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 	}
 
 	dataFile << "\nCollision Pair";
-	for (auto const& collisionPair : totalCollisionRates)
+	for (auto& collisionPair : totalCollisionRates)
 	{
 		pairID = collisionPair.first;
 		collisionName = objectPopulation.GetObject(pairID.first).GetName() + "-" +
@@ -372,7 +376,7 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 	}
 
 	dataFile << "\nTotal Collision Rate";
-	for (auto const& collisionPair : totalCollisionRates)
+	for (auto& collisionPair : totalCollisionRates)
 	{
 
 		dataFile << ',' + to_string(collisionPair.second);
@@ -382,14 +386,19 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 	// Break data with line
 	dataFile << "\n";
 
+	map<pair<long, long>, double> blockRates;
+	map<pair<long, long>, int> blockCounts;
+
 	for (i = 0; i < collisionRates.size(); i++)
 	{
 
+		blockRates = collisionRates[i];
+
 		dataFile << "Collision Rate - Block " + to_string(i+1) + ",";
-		for (auto const& collisionPair : totalCollisionRates)
+		for (auto& collisionPair : totalCollisionRates)
 		{
 			pairID = collisionPair.first;
-			tempRate = collisionRates[i][pairID];
+			tempRate = blockRates[pairID];
 			dataFile << to_string(tempRate) + ',';
 		}
 
@@ -402,11 +411,12 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 	for (i = 0; i < collisionCount.size(); i++)
 	{
 
+		blockCounts = collisionCount[i];
 		dataFile << "Collision Count - Block " + to_string(i + 1) + ",";
-		for (auto const& collisionPair : totalCollisionRates)
+		for (auto& collisionPair : totalCollisionRates)
 		{
 			pairID = collisionPair.first;
-			tempRate = collisionCount[i][pairID];
+			tempRate = blockCounts[pairID];
 			dataFile << to_string(tempRate) + ',';
 		}
 
