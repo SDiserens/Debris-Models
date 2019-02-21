@@ -9,6 +9,23 @@ double CollisionAlgorithm::GetElapsedTime()
 	return elapsedTime;
 }
 
+vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
+{
+	vector<CollisionPair> pairList;
+	int i, j;
+	// For each object in population -
+	for (i=0; i < population.population.size() -1 ; i++)
+	{
+		// For each subsequent object
+		for (j = i + 1; j < population.population.size(); j++)
+		{
+			/// Add pair to list
+			pairList.push_back(CollisionPair(population.population[i], population.population[j]));
+		}
+	}
+
+	return pairList;
+}
 
 double CollisionAlgorithm::CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ)
 {

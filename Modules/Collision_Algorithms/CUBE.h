@@ -19,7 +19,7 @@ public:
 
 protected:
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
-	vector<pair<long, long>> CUBEApproach::CreatePairList(DebrisPopulation& population);
+	vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population);
 	long PositionHash(tuple<int, int, int>);
 	tuple<int, int, int> IdentifyCube(vector3D& position);
 	vector<pair<long,long>> CubeFilter(map<long, tuple<int, int, int>> cubeIDList);

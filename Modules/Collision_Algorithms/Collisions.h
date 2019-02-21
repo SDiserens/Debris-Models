@@ -9,6 +9,7 @@ protected:
 	double elapsedTime;
 
 protected:
+	vector<CollisionPair> CreatePairList(DebrisPopulation& population);
 	vector<double> collisionProbabilities;
 	vector<pair<long, long>> collisionList;
 	vector<double> newCollisionProbabilities;
@@ -33,8 +34,9 @@ public:
 
 class CollisionPair
 {
-protected:
+public:
 	DebrisObject primary, secondary;
+protected:
 	double relativeInclination, deltaPrimary, deltaSecondary;
 
 public:

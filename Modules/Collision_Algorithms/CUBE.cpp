@@ -17,45 +17,47 @@ void FilterRecursion(vector<pair<long, long>>& pairList, vector<pair<long, long>
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate;
-	vector<pair<long, long>> pairList;
+	vector<CollisionPair> pairList;
 	// Filter Cube List
 	pairList = CreatePairList(population);
 
 	// For each conjunction (cohabiting pair)
-	for (pair<long, long> &collisionPair : pairList)
+	for (CollisionPair &collisionPair : pairList)
 	{
 		//	-- Calculate collision rate in cube
-		collisionRate = CollisionRate(population.GetObject(collisionPair.first),
-			population.GetObject(collisionPair.second));
+		collisionRate = CollisionRate(collisionPair.primary, collisionPair.secondary);
 		tempProbability = timeStep * collisionRate;
+
+		pair<long, long> pairID(collisionPair.primary.GetID(), collisionPair.secondary.GetID());
 
 		//	-- Determine if collision occurs through MC (random number generation)
 		if (outputProbabilities)
 		{
 			//	-- Store collision probability
-			collisionProbabilities.push_back(tempProbability);
-			collisionList.push_back(collisionPair);
+			//collisionProbabilities.push_back(tempProbability);
+			//collisionList.push_back(collisionPair);
 			newCollisionProbabilities.push_back(tempProbability);
-			newCollisionList.push_back(collisionPair);
+			newCollisionList.push_back(pairID);
 		}
 		else
 		{
 			if (DetermineCollision(tempProbability))
 			{
 				// Store Collisions 
-				collisionList.push_back(collisionPair);
-				newCollisionList.push_back(collisionPair);
+				collisionList.push_back(pairID);
+				newCollisionList.push_back(pairID);
 			}
 		}
 	}
 	elapsedTime += timeStep;
 }
 
-vector<pair<long, long>> CUBEApproach::CreatePairList(DebrisPopulation& population)
+vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population)
 {
 	tuple<int, int, int> cube;
 	double M;
 	map<long, tuple<int, int, int>> cubeIDList;
+	vector<CollisionPair> pairList;
 	// Prepare List
 	cubeIDList.clear();
 
@@ -73,8 +75,12 @@ vector<pair<long, long>> CUBEApproach::CreatePairList(DebrisPopulation& populati
 		//	-- Store Cube ID
 		cubeIDList.emplace(debris.first, cube);
 	}
-
-	return CubeFilter(cubeIDList);
+	vector<pair<long, long>> PairIDList = CubeFilter(cubeIDList);
+	for (pair<long, long> &collisionPair : PairIDList)
+	{
+		pairList.push_back(CollisionPair(population.GetObject(collisionPair.first), population.GetObject(collisionPair.second)));
+	}
+	return pairList;
 }
 
 

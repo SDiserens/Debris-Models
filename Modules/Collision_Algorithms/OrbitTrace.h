@@ -12,7 +12,6 @@ public:
 
 protected:
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
-	vector<CollisionPair> CreatePairList(DebrisPopulation& population);
 
 	/*
 	double CalculateSpatialDensity(DebrisObject object, double radius, double latitude);

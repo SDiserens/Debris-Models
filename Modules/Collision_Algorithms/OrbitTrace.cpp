@@ -24,11 +24,6 @@ double OrbitTrace::CollisionRate(DebrisObject & objectI, DebrisObject & objectJ)
 	return collisionRate;
 }
 
-vector<CollisionPair> OrbitTrace::CreatePairList(DebrisPopulation & population)
-{
-	// TODO -OT create pairlist
-	return vector<CollisionPair>();
-}
 
 bool OrbitTrace::CoplanarFilter(CollisionPair objectPair)
 {

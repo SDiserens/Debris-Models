@@ -17,11 +17,6 @@ double HootsFilter::CollisionRate(DebrisObject & objectI, DebrisObject & objectJ
 	return 0.0;
 }
 
-vector<pair<long, long>> HootsFilter::CreatePairList(DebrisPopulation & population)
-{
-	return vector<pair<long, long>>();
-}
-
 bool HootsFilter::PerigeeApogeeTest(CollisionPair objectPair)
 {
 	// TODO - Perigee Apogee Test

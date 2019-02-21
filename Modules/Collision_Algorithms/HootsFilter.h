@@ -14,7 +14,6 @@ public:
 protected:
 	//Primary functions
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
-	vector<CollisionPair> CreatePairList(DebrisPopulation& population);
 	bool PerigeeApogeeTest(CollisionPair objectPair);
 	bool GeometricFilter(CollisionPair objectPair, double relativeInclination);
 	bool TimeFilter(CollisionPair objectPair, double relativeInclination, double timeStep);
