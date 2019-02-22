@@ -58,8 +58,8 @@ public:
 
 	void SetVelocity(double vX, double vY, double vZ);
 	void SetVelocity(vector3D inputVelocity);
-	void SetPosition(double X, double Y, double Z);
-	void SetPosition(vector3D inputPosition);
+	void SetPosition(double X, double Y, double Z); //Risky
+	void SetPosition(vector3D inputPosition); //Risky
 	void SetStateVectors(vector3D inputPosition, vector3D inputVelocity);
 	void SetStateVectors(double X, double Y, double Z, double vX, double vY, double vZ);
 

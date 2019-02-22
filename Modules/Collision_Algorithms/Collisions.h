@@ -2,6 +2,35 @@
 
 #include "stdafx.h"
 
+class CollisionPair
+{
+public:
+	DebrisObject primary, secondary;
+	long primaryID, secondaryID;
+protected:
+	double relativeInclination, deltaPrimary, deltaSecondary;
+
+public:
+	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
+	CollisionPair(long IDI, long IDJ);
+	double GetRelativeInclination();
+	vector<pair<double, double>> CalculateAngularWindowPrimary(double distance);
+	vector<pair<double, double>> CalculateAngularWindowSecondary(double distance);
+	vector3D GetPrimaryPositionAtTime(double timeFromEpoch);
+	vector3D GetPrimaryVelocityAtTime(double timeFromEpoch);
+	vector3D GetSecondaryPositionAtTime(double timeFromEpoch);
+	vector3D GetSecondaryVelocityAtTime(double timeFromEpoch);
+	double CalculateSeparationAtTime(double timeFromEpoch);
+	double CalculateMinimumSeparation();
+	void CalculateArgumenstOfIntersection();
+	void CalculateArgumenstOfIntersectionCoplanar();
+	double GetBoundingRadii();
+
+protected:
+	void CalculateRelativeInclination();
+	vector<pair<double, double>> CalculateAngularWindow(DebrisObject& object, double distance);
+};
+
 class CollisionAlgorithm
 {
 protected:
@@ -15,6 +44,7 @@ protected:
 	vector<double> newCollisionProbabilities;
 	vector<pair<long, long>> newCollisionList;
 	bool DetermineCollision(double collisionProbability);
+	double CalculateClosestApproach(CollisionPair objectPair);
 
 	// Virtual function
 	virtual double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ) = 0;
@@ -30,29 +60,4 @@ public:
 	vector<double> GetNewCollisionProbabilities();
 	double GetElapsedTime();
 
-};
-
-class CollisionPair
-{
-public:
-	DebrisObject primary, secondary;
-protected:
-	double relativeInclination, deltaPrimary, deltaSecondary;
-
-public:
-	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
-	double GetRelativeInclination();
-	vector<pair<double, double>> CalculateAngularWindowPrimary(double distance);
-	vector<pair<double, double>> CalculateAngularWindowSecondary(double distance);
-	vector3D GetPrimaryPositionAtTime(double timeFromEpoch);
-	vector3D GetPrimaryVelocityAtTime(double timeFromEpoch);
-	vector3D GetSecondaryPositionAtTime(double timeFromEpoch);
-	vector3D GetSecondaryVelocityAtTime(double timeFromEpoch);
-	double CalculateSeparationAtTime(double timeFromEpoch);
-	double CalculateMinimumSeparation();
-
-protected:
-	void CalculateRelativeInclination();
-	void CalculateArgumenstOfIntersection();
-	vector<pair<double, double>> CalculateAngularWindow(DebrisObject& object, double distance);
 };

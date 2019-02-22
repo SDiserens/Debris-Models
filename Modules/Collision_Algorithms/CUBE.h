@@ -22,6 +22,6 @@ protected:
 	vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population);
 	long PositionHash(tuple<int, int, int>);
 	tuple<int, int, int> IdentifyCube(vector3D& position);
-	vector<pair<long,long>> CubeFilter(map<long, tuple<int, int, int>> cubeIDList);
+	vector<CollisionPair> CubeFilter(map<long, tuple<int, int, int>> cubeIDList);
 
 };

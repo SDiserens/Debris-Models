@@ -11,7 +11,7 @@ public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
 
 protected:
-	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
+	double CollisionRate(CollisionPair objectPair);
 
 	/*
 	double CalculateSpatialDensity(DebrisObject object, double radius, double latitude);

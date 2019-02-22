@@ -15,8 +15,8 @@ protected:
 	//Primary functions
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
 	bool PerigeeApogeeTest(CollisionPair objectPair);
-	bool GeometricFilter(CollisionPair objectPair, double relativeInclination);
-	bool TimeFilter(CollisionPair objectPair, double relativeInclination, double timeStep);
+	bool GeometricFilter(CollisionPair objectPair);
+	bool TimeFilter(CollisionPair objectPair, double timeStep);
 	bool CoplanarFilter(CollisionPair objectPair, double timeStep);
 	vector<double> DetermineCollisionTimes(CollisionPair objectPair, vector<double> candidateTimeList);
 

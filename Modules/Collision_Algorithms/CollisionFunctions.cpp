@@ -76,6 +76,12 @@ bool CollisionAlgorithm::DetermineCollision(double collisionProbability)
 	return randomNumber() < collisionProbability;
 }
 
+double CollisionAlgorithm::CalculateClosestApproach(CollisionPair objectPair)
+{
+	// TODO -  Set objects to closest position and return seperation
+	return 0.0;
+}
+
 
 void CollisionAlgorithm::SwitchGravityComponent()
 {
@@ -86,8 +92,16 @@ CollisionPair::CollisionPair(DebrisObject & objectI, DebrisObject & objectJ)
 {
 	primary = objectI;
 	secondary = objectJ;
+	primaryID = objectI.GetID();
+	secondaryID = objectJ.GetID();
 	CalculateRelativeInclination();
 	CalculateArgumenstOfIntersection();
+}
+
+CollisionPair::CollisionPair(long IDI, long IDJ)
+{
+	primaryID = IDI;
+	secondaryID = IDJ;
 }
 
 double CollisionPair::GetRelativeInclination()
@@ -135,6 +149,11 @@ double CollisionPair::CalculateMinimumSeparation()
 	return 0.0;
 }
 
+double CollisionPair::GetBoundingRadii()
+{
+	return (primary.GetRadius() + secondary.GetRadius()) * 0.001; // Combined radii in kilometres;
+}
+
 double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)
 {
 	//TODO - closest approach distance
@@ -151,6 +170,13 @@ void CollisionPair::CalculateRelativeInclination()
 void CollisionPair::CalculateArgumenstOfIntersection()
 {
 	// TODO Arguments of intersection
+	deltaPrimary = 0;
+	deltaSecondary = 0;
+}
+
+void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
+{
+	// TODO Coplanar Arguments of intersection
 	deltaPrimary = 0;
 	deltaSecondary = 0;
 }

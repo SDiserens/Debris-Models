@@ -23,13 +23,13 @@ bool HootsFilter::PerigeeApogeeTest(CollisionPair objectPair)
 	return false;
 }
 
-bool HootsFilter::GeometricFilter(CollisionPair objectPair, double relativeInclination)
+bool HootsFilter::GeometricFilter(CollisionPair objectPair)
 {
 	// TODO - Geometric Filter
 	return false;
 }
 
-bool HootsFilter::TimeFilter(CollisionPair objectPair, double relativeInclination, double timeStep)
+bool HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep)
 {
 	// TODO - Time Filter
 	return false;
