@@ -145,8 +145,57 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 
 double CollisionPair::CalculateMinimumSeparation()
 {
-	// TODO - Min seperation
-	return 0.0;
+	double trueAnomalyP, trueAnomalyS, circularAnomalyP, circularAnomalyS, cosRI, seperation, altSeperation;
+	trueAnomalyP = deltaPrimary - primary.GetElements().argPerigee;
+	trueAnomalyS = deltaSecondary - secondary.GetElements().argPerigee;
+
+	// Find closest approach for elliptical orbits
+	if (primary.GetElements().eccentricity != 0 || secondary.GetElements().eccentricity != 0)
+	{
+		int it = 0;
+		double F, G, FdfP, FdfS, GdfP, GdfS;
+		double tempAnomalyP, tempAnomalyS;
+		double k, h = 1.0;
+
+		circularAnomalyP = tempAnomalyP = trueAnomalyP;
+		circularAnomalyS = tempAnomalyS = trueAnomalyS;
+		cosRI = cos(relativeInclination);
+
+		//Todo - Min Sep newton method
+		while ((abs(h) >= NEWTONTOLERANCE || abs(k) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
+		{
+			F = F; //TODO
+			G = G; //TODO
+			FdfP = 0;
+			FdfS = 0;
+			GdfP = 0;
+			GdfS = 0;
+
+
+			h = (F * GdfS - G * FdfS) / (FdfS*GdfP - FdfP*GdfS);
+			k = (G * GdfP - F * FdfP) / (FdfS*GdfP - FdfP*GdfS);
+
+			// Update values
+			tempAnomalyP += h;
+			tempAnomalyS += k;
+			it++;
+		}
+		trueAnomalyP = tempAnomalyP;
+		trueAnomalyS = tempAnomalyS;
+	}
+
+	primary.SetTrueAnomaly(trueAnomalyP);
+	secondary.SetTrueAnomaly(trueAnomalyS);
+	seperation = primary.GetPosition().CalculateRelativeVector(secondary.GetPosition()).vectorNorm();
+
+	trueAnomalyP = fmod(trueAnomalyP + Pi, Tau);
+	trueAnomalyS = fmod(trueAnomalyS + Pi, Tau);
+
+	primary.SetTrueAnomaly(trueAnomalyP);
+	secondary.SetTrueAnomaly(trueAnomalyS);
+	altSeperation = primary.GetPosition().CalculateRelativeVector(secondary.GetPosition()).vectorNorm();
+
+	return min(seperation, altSeperation);
 }
 
 double CollisionPair::GetBoundingRadii()
@@ -163,6 +212,11 @@ double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)
 void CollisionPair::CalculateRelativeInclination()
 {
 	//TODO - Calculate relative inclination
+	/*
+	sin IR = |cross(hP, hC)|
+
+	where r hP is the normal to the orbit plane of the primary object
+	*/
 	relativeInclination = 0;
 }
 
