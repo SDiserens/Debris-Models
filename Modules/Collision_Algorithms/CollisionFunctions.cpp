@@ -78,7 +78,7 @@ bool CollisionAlgorithm::DetermineCollision(double collisionProbability)
 
 double CollisionAlgorithm::CalculateClosestApproach(CollisionPair objectPair)
 {
-	// TODO -  Set objects to closest position and return seperation
+	// TODO -  Set objects to position at close approach time and return seperation
 	return 0.0;
 }
 
@@ -96,6 +96,7 @@ CollisionPair::CollisionPair(DebrisObject & objectI, DebrisObject & objectJ)
 	secondaryID = objectJ.GetID();
 	CalculateRelativeInclination();
 	CalculateArgumenstOfIntersection();
+	boundingRadii = (primary.GetRadius() + secondary.GetRadius()) * 0.001;
 }
 
 CollisionPair::CollisionPair(long IDI, long IDJ)
@@ -145,15 +146,20 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 
 double CollisionPair::CalculateMinimumSeparation()
 {
-	double trueAnomalyP, trueAnomalyS, circularAnomalyP, circularAnomalyS, cosRI, seperation, altSeperation;
+	double trueAnomalyP, trueAnomalyS, circularAnomalyP, circularAnomalyS, cosRI, seperation, altSeperation, eP, eS;
+	
 	trueAnomalyP = deltaPrimary - primary.GetElements().argPerigee;
 	trueAnomalyS = deltaSecondary - secondary.GetElements().argPerigee;
+	eP = primary.GetElements().eccentricity;
+	eS = secondary.GetElements().eccentricity;
 
 	// Find closest approach for elliptical orbits
-	if (primary.GetElements().eccentricity != 0 || secondary.GetElements().eccentricity != 0)
+	if (eP != 0 || eS != 0)
 	{
 		int it = 0;
 		double F, G, FdfP, FdfS, GdfP, GdfS;
+		double uRP, uRS, A, B, C, D, axP, ayP, axS, ayS;
+		double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES;
 		double tempAnomalyP, tempAnomalyS;
 		double k, h = 1.0;
 
@@ -164,12 +170,36 @@ double CollisionPair::CalculateMinimumSeparation()
 		//Todo - Min Sep newton method
 		while ((abs(h) >= NEWTONTOLERANCE || abs(k) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
 		{
-			F = F; //TODO
-			G = G; //TODO
-			FdfP = 0;
-			FdfS = 0;
-			GdfP = 0;
-			GdfS = 0;
+			rP = primary.GetElements().GetRadialPosition(tempAnomalyP);
+			rS = secondary.GetElements().GetRadialPosition(tempAnomalyS);
+			uRP = tempAnomalyP - circularAnomalyP;
+			uRS = tempAnomalyS - circularAnomalyS;
+
+			sinURP = sin(uRP);
+			cosURP = cos(uRP);
+			sinURS = sin(uRS);
+			cosURS = cos(uRS);
+
+			axP = eP * cos(-circularAnomalyP);
+			ayP = eP * sin(-circularAnomalyP);
+			axS = eS * cos(-circularAnomalyS);
+			ayS = eS * sin(-circularAnomalyS);
+
+			A = sinURP + ayP;
+			C = sinURS + ayS;
+			B = cosURP + axP;
+			D = cosURS + axS;
+
+			EP = atan2(sqrt(1 - eP * eP) * sin(tempAnomalyP), eP + cos(tempAnomalyP));
+			ES = atan2(sqrt(1 - eS * eS) * sin(tempAnomalyS), eS + cos(tempAnomalyS));
+
+			F = rP * eP * sin(tempAnomalyP) + rS * (A * cosURS - B * cosRI * sinURS);
+			G = rS * eS * sin(tempAnomalyS) + rP * (C * cosURP - D * cosRI * sinURP);
+
+			FdfP = rP * eP * cos(EP) + rS * (cosURP * cosURS + sinURP * sinURS * cosRI);
+			FdfS = -rS / (1 + eS * cos(tempAnomalyS)) * (A * C + B * D * cosRI);
+			GdfP = -rP / (1 + eP * cos(tempAnomalyP)) * (A * C + B * D * cosRI);
+			GdfS = rS * eS * cos(ES) + rP * (cosURP * cosURS + sinURP * sinURS * cosRI);
 
 
 			h = (F * GdfS - G * FdfS) / (FdfS*GdfP - FdfP*GdfS);
@@ -200,7 +230,7 @@ double CollisionPair::CalculateMinimumSeparation()
 
 double CollisionPair::GetBoundingRadii()
 {
-	return (primary.GetRadius() + secondary.GetRadius()) * 0.001; // Combined radii in kilometres;
+	return boundingRadii; // Combined radii in kilometres;
 }
 
 double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)

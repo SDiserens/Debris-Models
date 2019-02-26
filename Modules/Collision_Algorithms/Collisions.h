@@ -8,7 +8,7 @@ public:
 	DebrisObject primary, secondary;
 	long primaryID, secondaryID;
 protected:
-	double relativeInclination, deltaPrimary, deltaSecondary;
+	double relativeInclination, deltaPrimary, deltaSecondary, boundingRadii;
 
 public:
 	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);

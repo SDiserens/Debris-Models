@@ -88,14 +88,31 @@ double OrbitTrace::CollisionRate(CollisionPair objectPair)
 
 bool OrbitTrace::CoplanarFilter(CollisionPair objectPair)
 {
-	// TODO -OT Coplanar filter
-	return false;
+	// Coplanar filter
+	double combinedSemiMajorAxis = objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis;
+	bool coplanar = objectPair.GetRelativeInclination() <= (2 * asin(objectPair.GetBoundingRadii() / combinedSemiMajorAxis));
+	return coplanar;
 }
 
 bool OrbitTrace::HeadOnFilter(CollisionPair objectPair)
 {
-	// TODO - OT Head on filter
-	return false;
+	bool headOn = false;
+	double deltaW;
+	double eLimitP = objectPair.GetBoundingRadii() / objectPair.primary.GetElements().semiMajorAxis;
+	double eLimitS = objectPair.GetBoundingRadii() / objectPair.secondary.GetElements().semiMajorAxis;
+	// OT Head on filter
+	if ((objectPair.primary.GetElements().eccentricity <= eLimitP) && (objectPair.secondary.GetElements().eccentricity <= eLimitS))
+		headOn = true;
+	else
+	{
+		// TODO - Check second condition
+		deltaW = abs(Pi - objectPair.primary.GetElements().argPerigee - objectPair.secondary.GetElements().argPerigee);
+		if (deltaW <= 1)
+			headOn = true;
+		else if (Tau - deltaW <= 1)
+			headOn = true;
+	}
+	return headOn;
 }
 
 bool OrbitTrace::SynchronizedFilter(CollisionPair objectPair)

@@ -19,6 +19,7 @@ public:
 	vector3D GetPostion();
 	vector3D GetVelocity();
 	double GetRadialPosition();
+	double GetRadialPosition(double trueAnomaly);
 	double CalculatePeriod();
 
 	OrbitalAnomalies GetAnomalies();
