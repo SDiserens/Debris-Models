@@ -4,14 +4,14 @@
   OrbitalAnomalies.cpp
   DebrisPopulation.cpp
   DebrisObject.cpp
-  Framework.cpp
   NASAStdBrkUpMdl.cpp
-  FragmentCloud.cpp
   FragmentationFunctions.cpp
+  FragmentCloud.cpp
   OrbitTrace.cpp
   HootsFilter.cpp
-  CUBE.cpp
   CollisionFunctions.cpp
+  CUBE.cpp
+  Framework.cpp
   Generating Code...
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.exe
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.pdb (Partial PDB)

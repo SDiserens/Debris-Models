@@ -124,7 +124,7 @@ vector3D DebrisObject::GetPosition()
 {
 	if (!positionSync)
 	{
-		position = vector3D(elements.GetPostion());
+		position = vector3D(elements.GetPosition());
 		positionSync = true;
 	}
 

@@ -7,6 +7,7 @@ class CollisionPair
 public:
 	DebrisObject primary, secondary;
 	long primaryID, secondaryID;
+	double approachAnomalyP, approachAnomalyS;
 protected:
 	double relativeInclination, deltaPrimary, deltaSecondary, boundingRadii;
 
@@ -35,7 +36,7 @@ class CollisionAlgorithm
 {
 protected:
 	bool relativeGravity = false, outputProbabilities;
-	double elapsedTime;
+	double elapsedTime, timeStep;
 
 protected:
 	vector<CollisionPair> CreatePairList(DebrisPopulation& population);

@@ -11,12 +11,14 @@ public:
 	OrbitalElements(double a, double e, double i, double ra, double ap, double meanAnomaly);
 	OrbitalElements(vector3D &position, vector3D &velocity);
 	double GetTrueAnomaly();
+	double GetMeanAnomaly();
+	double GetEccentricAnomaly();
 	void SetOrbitalElements(double a, double e, double i, double ra, double ap);
 	void SetOrbitalElements(vector3D &position, vector3D &velocity);
 	void SetRightAscension(double init_rightAscension);
 	void SetArgPerigee(double init_argPerigee);
 
-	vector3D GetPostion();
+	vector3D GetPosition();
 	vector3D GetVelocity();
 	double GetRadialPosition();
 	double GetRadialPosition(double trueAnomaly);

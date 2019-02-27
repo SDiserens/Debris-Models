@@ -147,9 +147,11 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 double CollisionPair::CalculateMinimumSeparation()
 {
 	double trueAnomalyP, trueAnomalyS, circularAnomalyP, circularAnomalyS, cosRI, seperation, altSeperation, eP, eS;
-	
-	trueAnomalyP = deltaPrimary - primary.GetElements().argPerigee;
-	trueAnomalyS = deltaSecondary - secondary.GetElements().argPerigee;
+	OrbitalElements primaryElements(primary.GetElements());
+	OrbitalElements secondaryElements(secondary.GetElements());
+
+	trueAnomalyP = deltaPrimary - primaryElements.argPerigee;
+	trueAnomalyS = deltaSecondary - secondaryElements.argPerigee;
 	eP = primary.GetElements().eccentricity;
 	eS = secondary.GetElements().eccentricity;
 
@@ -170,8 +172,8 @@ double CollisionPair::CalculateMinimumSeparation()
 		//Todo - Min Sep newton method
 		while ((abs(h) >= NEWTONTOLERANCE || abs(k) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
 		{
-			rP = primary.GetElements().GetRadialPosition(tempAnomalyP);
-			rS = secondary.GetElements().GetRadialPosition(tempAnomalyS);
+			rP = primaryElements.GetRadialPosition(tempAnomalyP);
+			rS = secondaryElements.GetRadialPosition(tempAnomalyS);
 			uRP = tempAnomalyP - circularAnomalyP;
 			uRS = tempAnomalyS - circularAnomalyS;
 
@@ -214,18 +216,25 @@ double CollisionPair::CalculateMinimumSeparation()
 		trueAnomalyS = tempAnomalyS;
 	}
 
-	primary.SetTrueAnomaly(trueAnomalyP);
-	secondary.SetTrueAnomaly(trueAnomalyS);
-	seperation = primary.GetPosition().CalculateRelativeVector(secondary.GetPosition()).vectorNorm();
+	primaryElements.SetTrueAnomaly(trueAnomalyP);
+	secondaryElements.SetTrueAnomaly(trueAnomalyS);
+	seperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
-	trueAnomalyP = fmod(trueAnomalyP + Pi, Tau);
-	trueAnomalyS = fmod(trueAnomalyS + Pi, Tau);
 
-	primary.SetTrueAnomaly(trueAnomalyP);
-	secondary.SetTrueAnomaly(trueAnomalyS);
-	altSeperation = primary.GetPosition().CalculateRelativeVector(secondary.GetPosition()).vectorNorm();
+	primaryElements.SetTrueAnomaly(fmod(trueAnomalyP + Pi, Tau));
+	secondaryElements.SetTrueAnomaly(fmod(trueAnomalyS + Pi, Tau));
+	altSeperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
-	return min(seperation, altSeperation);
+	if (altSeperation < seperation)
+	{
+		seperation = altSeperation;
+		trueAnomalyP = fmod(trueAnomalyP + Pi, Tau);
+		trueAnomalyS = fmod(trueAnomalyS + Pi, Tau);
+	}
+	approachAnomalyP = trueAnomalyP;
+	approachAnomalyS = trueAnomalyS;
+
+	return seperation;
 }
 
 double CollisionPair::GetBoundingRadii()

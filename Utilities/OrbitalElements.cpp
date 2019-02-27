@@ -60,6 +60,16 @@ double OrbitalElements::GetTrueAnomaly()
 	return anomalies.GetTrueAnomaly(eccentricity);
 }
 
+double OrbitalElements::GetMeanAnomaly()
+{
+	return anomalies.GetMeanAnomaly(eccentricity);
+}
+
+double OrbitalElements::GetEccentricAnomaly()
+{
+	return anomalies.GetEccentricAnomaly(eccentricity);
+}
+
 void OrbitalElements::SetOrbitalElements(double a, double e, double i, double ra, double ap)
 {
 	semiMajorAxis = a;
@@ -134,7 +144,7 @@ double OrbitalElements::CalculatePeriod()
 	return Tau * sqrt(semiMajorAxis * semiMajorAxis * semiMajorAxis / muGravity);
 }
 
-vector3D OrbitalElements::GetPostion()
+vector3D OrbitalElements::GetPosition()
 {
 	double radius, trueAnomaly, x, y, z, U;
 	double sinRA, cosRA, sinI, cosI, sinU, cosU;

@@ -5,7 +5,7 @@
 #include "OrbitTrace.h"
 
 
-void OrbitTrace::MainCollision(DebrisPopulation& population, double timeStep)
+void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
 	double tempProbability, collisionRate;
 	vector<CollisionPair> pairList;
@@ -13,6 +13,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timeStep)
 	bool collision;
 	// Filter Cube List
 	pairList = CreatePairList(population);
+	timeStep = timestep;
 
 	for (CollisionPair& objectPair : pairList)
 	{
@@ -117,14 +118,32 @@ bool OrbitTrace::HeadOnFilter(CollisionPair objectPair)
 
 bool OrbitTrace::SynchronizedFilter(CollisionPair objectPair)
 {
+	double meanMotionP, meanMotionS, driftAngle;
 	// TODO - OT synch filter
-	return false;
+	meanMotionP = Tau / objectPair.primary.GetPeriod();
+	meanMotionS = Tau / objectPair.secondary.GetPeriod();
+
+	driftAngle = abs(meanMotionP - meanMotionS) * timeStep;
+	return (driftAngle >= Tau);
 }
 
 bool OrbitTrace::ProximityFilter(CollisionPair objectPair)
 {
 	// TODO - OT  proximity filter
-	return false;
+	double deltaMP, deltaMS, deltaMAngle, deltaMLinear, combinedSemiMajorAxis; 
+	OrbitalAnomalies anomaliesP, anomaliesS;
+
+	anomaliesP.SetTrueAnomaly(objectPair.approachAnomalyP);
+	anomaliesS.SetTrueAnomaly(objectPair.approachAnomalyS);
+
+	deltaMP = abs(anomaliesP.GetMeanAnomaly(objectPair.primary.GetElements().eccentricity) - objectPair.primary.GetElements().GetMeanAnomaly());
+	deltaMP = abs(anomaliesS.GetMeanAnomaly(objectPair.secondary.GetElements().eccentricity) - objectPair.secondary.GetElements().GetMeanAnomaly());
+	
+	combinedSemiMajorAxis = (objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis) / 2;
+	deltaMAngle = abs(deltaMP - deltaMS);
+	deltaMLinear = deltaMAngle * combinedSemiMajorAxis;
+
+	return (deltaMLinear <= objectPair.GetBoundingRadii());
 }
 
 /*
