@@ -256,7 +256,11 @@ void CollisionPair::CalculateRelativeInclination()
 
 	where r hP is the normal to the orbit plane of the primary object
 	*/
-	relativeInclination = 0;
+	vector3D hP = primary.GetNormalVector();
+	vector3D hS = secondary.GetNormalVector();
+	double k = hP.VectorDotProduct(hS);
+
+	relativeInclination = acos(k);
 }
 
 

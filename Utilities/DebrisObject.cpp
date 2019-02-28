@@ -94,6 +94,11 @@ void DebrisObject::UpdateOrbitalElements(OrbitalElements newElements)
 	periodSync = false;
 }
 
+double DebrisObject::GetApogee()
+{
+	return elements.GetApogee();
+}
+
 vector3D DebrisObject::GetVelocity()
 {
 	if (!velocitySync)
@@ -129,6 +134,11 @@ vector3D DebrisObject::GetPosition()
 	}
 
 	return position;
+}
+
+vector3D DebrisObject::GetNormalVector()
+{
+	return elements.GetNormalVector();
 }
 
 void DebrisObject::SetPosition(double X, double Y, double Z)
@@ -215,6 +225,11 @@ double DebrisObject::GetPeriod()
 		periodSync = true;
 	}
 	return period;
+}
+
+double DebrisObject::GetPerigee()
+{
+	return elements.GetPerigee();
 }
 
 

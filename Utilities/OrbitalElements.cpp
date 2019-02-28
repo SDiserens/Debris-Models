@@ -199,6 +199,25 @@ vector3D OrbitalElements::GetVelocity()
 	return vector3D(vX, vY, vZ);
 }
 
+vector3D OrbitalElements::GetNormalVector()
+{
+	double i, j, k;
+	i = sin(rightAscension) * sin(inclination);
+	j = cos(rightAscension) * sin(inclination);
+	k = cos(inclination);
+	return vector3D(i, j, k);
+}
+
+double OrbitalElements::GetPerigee()
+{
+	return semiMajorAxis * (1 - eccentricity);
+}
+
+double OrbitalElements::GetApogee()
+{
+	return semiMajorAxis * (1 + eccentricity);
+}
+
 OrbitalAnomalies OrbitalElements::GetAnomalies()
 {
 	return anomalies;

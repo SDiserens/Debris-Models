@@ -20,6 +20,9 @@ public:
 
 	vector3D GetPosition();
 	vector3D GetVelocity();
+	vector3D GetNormalVector();
+	double GetPerigee();
+	double GetApogee();
 	double GetRadialPosition();
 	double GetRadialPosition(double trueAnomaly);
 	double CalculatePeriod();

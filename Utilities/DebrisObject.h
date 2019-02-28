@@ -39,8 +39,11 @@ public:
 	double GetAreaToMass();
 	double GetRadius();
 	double GetPeriod();
+	double GetPerigee();
+	double GetApogee();
 	vector3D GetVelocity();
 	vector3D GetPosition();
+	vector3D GetNormalVector();
 
 	OrbitalAnomalies GetAnomalies();
 	OrbitalElements GetElements();

@@ -19,14 +19,17 @@ double HootsFilter::CollisionRate(DebrisObject & objectI, DebrisObject & objectJ
 
 bool HootsFilter::PerigeeApogeeTest(CollisionPair objectPair)
 {
-	// TODO - Perigee Apogee Test
-	return false;
+	double maxApogee, minPerigee;
+	// Perigee Apogee Test
+	minPerigee = min(objectPair.primary.GetPerigee(), objectPair.secondary.GetPerigee());
+	maxApogee = max(objectPair.primary.GetApogee(), objectPair.secondary.GetApogee());
+
+	return (maxApogee - minPerigee) <= conjunctionThreshold;
 }
 
 bool HootsFilter::GeometricFilter(CollisionPair objectPair)
 {
-	// TODO - Geometric Filter
-	return false;
+	return objectPair.CalculateMinimumSeparation() <= conjunctionThreshold;
 }
 
 bool HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep)
