@@ -103,16 +103,16 @@ bool OrbitTrace::HeadOnFilter(CollisionPair objectPair)
 	double eLimitS = objectPair.GetBoundingRadii() / objectPair.secondary.GetElements().semiMajorAxis;
 	// OT Head on filter
 	if ((objectPair.primary.GetElements().eccentricity <= eLimitP) && (objectPair.secondary.GetElements().eccentricity <= eLimitS))
-		headOn = true;
+			headOn = true;
 	else
 	{
-		// TODO - Check second condition
 		deltaW = abs(Pi - objectPair.primary.GetElements().argPerigee - objectPair.secondary.GetElements().argPerigee);
 		if (deltaW <= 1)
 			headOn = true;
 		else if (Tau - deltaW <= 1)
 			headOn = true;
 	}
+	
 	return headOn;
 }
 

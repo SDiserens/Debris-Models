@@ -35,12 +35,36 @@ bool HootsFilter::GeometricFilter(CollisionPair objectPair)
 bool HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep)
 {
 	// TODO - Time Filter
+
 	return false;
 }
 
 bool HootsFilter::CoplanarFilter(CollisionPair objectPair, double timeStep)
 {
-	// TODO - Coplanar Filter
+	// Coplanar Filter
+	double candidateTime, time, rate, previousTime, previousRate, periodP, periodS, interval;
+	vector<double> candidateTimeList;
+
+	time = rate = previousTime = 0;
+	periodP = objectPair.primary.GetPeriod();
+	periodS = objectPair.secondary.GetPeriod();
+	interval = min(periodP, periodS) / 15;  // recommended fraction
+
+	while (time < timeStep)
+	{
+		previousRate = rate;
+		rate = CalculateFirstDerivateSeparation(objectPair, time);
+		if (rate == 0 && previousRate < 0)
+			candidateTimeList.push_back(time);
+		else if (previousRate < 0 && rate > 0)
+		{
+			candidateTime = previousTime + interval * (previousRate / (previousRate - rate));
+			candidateTimeList.push_back(candidateTime);
+		}
+		previousTime = time;
+		time += interval;
+
+	}
 	return false;
 }
 

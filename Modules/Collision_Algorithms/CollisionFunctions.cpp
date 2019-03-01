@@ -266,9 +266,17 @@ void CollisionPair::CalculateRelativeInclination()
 
 void CollisionPair::CalculateArgumenstOfIntersection()
 {
-	// TODO Arguments of intersection
-	deltaPrimary = 0;
-	deltaSecondary = 0;
+	// Arguments of intersection
+	double cscIr, sinIp, sinIs, sinOmDif;
+
+	cscIr = 1 / sin(relativeInclination);
+	sinIp = sin(primary.GetElements().inclination);
+	sinIs = sin(secondary.GetElements().inclination);
+	sinOmDif = sin(primary.GetElements().rightAscension - secondary.GetElements().rightAscension);
+
+	deltaPrimary = asin(cscIr * sinIs * sinOmDif);
+	deltaSecondary = asin(cscIr * sinIp * sinOmDif);
+
 }
 
 void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
