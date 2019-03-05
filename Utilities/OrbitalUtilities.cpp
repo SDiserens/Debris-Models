@@ -84,6 +84,12 @@ void SetCentralBody(int centralBody)
 	muGravity = centralMass * GravitationalConstant;
 }
 
+vector3D CalculateAcceleration(vector3D & position)
+{
+	double rMagnitude = position.vectorNorm();
+	return position * -muGravity / (rMagnitude * rMagnitude * rMagnitude);
+}
+
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass)
 {
 	double kineticEnergy = 0.5 * mass * relativeVelocity.vectorNorm2() * 1e6;

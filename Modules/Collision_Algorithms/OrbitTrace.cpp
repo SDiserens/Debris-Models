@@ -79,7 +79,7 @@ double OrbitTrace::CollisionRate(CollisionPair objectPair)
 
 	sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
 
-	//TODO - OT collision rate
+	// OT collision rate
 	collisionRate = 2 * sqrt(boundingRadii*boundingRadii - minSeperation * minSeperation) / 
 		(sinAngle * relativeVelocity.vectorNorm() * objectPair.primary.GetPeriod() * objectPair.secondary.GetPeriod());
 
@@ -119,7 +119,7 @@ bool OrbitTrace::HeadOnFilter(CollisionPair objectPair)
 bool OrbitTrace::SynchronizedFilter(CollisionPair objectPair)
 {
 	double meanMotionP, meanMotionS, driftAngle;
-	// TODO - OT synch filter
+	// OT synch filter
 	meanMotionP = Tau / objectPair.primary.GetPeriod();
 	meanMotionS = Tau / objectPair.secondary.GetPeriod();
 
@@ -129,7 +129,7 @@ bool OrbitTrace::SynchronizedFilter(CollisionPair objectPair)
 
 bool OrbitTrace::ProximityFilter(CollisionPair objectPair)
 {
-	// TODO - OT  proximity filter
+	//  OT  proximity filter
 	double deltaMP, deltaMS, deltaMAngle, deltaMLinear, combinedSemiMajorAxis; 
 	OrbitalAnomalies anomaliesP, anomaliesS;
 

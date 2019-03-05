@@ -88,14 +88,38 @@ double HootsFilter::CalculateClosestApproachTime(CollisionPair objectPair, doubl
 
 double HootsFilter::CalculateFirstDerivateSeparation(CollisionPair objectPair, double candidateTime)
 {
-	//TODO - 1st derivative seperation
-	return 0.0;
+	//1st derivative seperation
+	double rDot;
+	vector3D positionP, positionS, velocityP, velocityS;
+
+	positionP = objectPair.GetPrimaryPositionAtTime(candidateTime);
+	positionS = objectPair.GetSecondaryPositionAtTime(candidateTime);
+	velocityP = objectPair.GetPrimaryVelocityAtTime(candidateTime);
+	velocityS = objectPair.GetSecondaryVelocityAtTime(candidateTime);
+
+	rDot = positionP.VectorDotProduct(velocityP) + positionS.VectorDotProduct(velocityS) - velocityP.VectorDotProduct(positionS) - positionP.VectorDotProduct(velocityS);
+
+	return rDot;
 }
 
 double HootsFilter::CalculateSecondDerivativeSeparation(CollisionPair objectPair, double candidateTime)
 {
 	// TODO - 2nd derivative seperation
-	return 0.0;
+	double rDotDot;
+	vector3D positionP, positionS, velocityP, velocityS, accelerationP, accelerationS;
+
+	positionP = objectPair.GetPrimaryPositionAtTime(candidateTime);
+	positionS = objectPair.GetSecondaryPositionAtTime(candidateTime);
+	velocityP = objectPair.GetPrimaryVelocityAtTime(candidateTime);
+	velocityS = objectPair.GetSecondaryVelocityAtTime(candidateTime);
+
+	accelerationP = CalculateAcceleration(positionP);
+	accelerationS = CalculateAcceleration(positionS);
+
+	rDotDot = velocityP.vectorNorm2() + positionP.vectorNorm() * accelerationP.vectorNorm() + velocityS.vectorNorm2() + positionS.vectorNorm() * accelerationS.vectorNorm()
+		- accelerationP.VectorDotProduct(positionS) - 2 * velocityP.VectorDotProduct(velocityS) - velocityP.VectorDotProduct(accelerationS);
+
+	return rDotDot;
 }
 
 
