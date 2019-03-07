@@ -82,7 +82,7 @@ int DebrisObject::GetNFrag()
 void DebrisObject::UpdateOrbitalElements(vector3D deltaV)
 {
 	velocity.addVector(deltaV);
-	elements = OrbitalElements(position, velocity);
+	elements.SetOrbitalElements(position, velocity);
 	velocitySync = positionSync = true;
 	periodSync = false;
 }
@@ -141,7 +141,7 @@ vector3D DebrisObject::GetNormalVector()
 	return elements.GetNormalVector();
 }
 
-void DebrisObject::SetPosition(double X, double Y, double Z)
+void DebrisObject::SetPosition(double X, double Y, double Z) // Not Safe - invalid logic
 {
 	position = vector3D(X, Y, Z);
 	elements.SetOrbitalElements(position, velocity);
@@ -149,7 +149,7 @@ void DebrisObject::SetPosition(double X, double Y, double Z)
 	periodSync = false;
 }
 
-void DebrisObject::SetPosition(vector3D inputPosition)
+void DebrisObject::SetPosition(vector3D inputPosition) // Not Safe - invalid logic
 {
 	position = vector3D(inputPosition);
 	elements.SetOrbitalElements(position, velocity);
@@ -225,6 +225,11 @@ double DebrisObject::GetPeriod()
 		periodSync = true;
 	}
 	return period;
+}
+
+double DebrisObject::GetEpochAnomaly()
+{
+	return meanAnomalyEpoch;
 }
 
 double DebrisObject::GetPerigee()

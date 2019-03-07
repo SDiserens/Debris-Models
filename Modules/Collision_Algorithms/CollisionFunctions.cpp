@@ -122,26 +122,34 @@ vector<pair<double, double>> CollisionPair::CalculateAngularWindowSecondary(doub
 
 vector3D CollisionPair::GetPrimaryPositionAtTime(double timeFromEpoch)
 {
-	//TODO - position at time
-	return vector3D();
+	// position at time
+	double meanAnomaly = fmod(primary.GetEpochAnomaly() + Tau * timeFromEpoch / primary.GetPeriod(), Tau);
+	primary.SetMeanAnomaly(meanAnomaly);
+	return primary.GetPosition();
 }
 
 vector3D CollisionPair::GetPrimaryVelocityAtTime(double timeFromEpoch)
 {
-	//TODO - velcoity at time
-	return vector3D();
+	// velcoity at time
+	double meanAnomaly = fmod(primary.GetEpochAnomaly() + Tau * timeFromEpoch / primary.GetPeriod(), Tau);
+	primary.SetMeanAnomaly(meanAnomaly);
+	return primary.GetVelocity();
 }
 
 vector3D CollisionPair::GetSecondaryPositionAtTime(double timeFromEpoch)
 {
-	//TODO -  position2 at time
-	return vector3D();
+	// position at time
+	double meanAnomaly = fmod(secondary.GetEpochAnomaly() + Tau * timeFromEpoch / secondary.GetPeriod(), Tau);
+	secondary.SetMeanAnomaly(meanAnomaly);
+	return secondary.GetPosition();
 }
 
 vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 {
-	//TODO - velocity2 at time
-	return vector3D();
+	// velcoity at time
+	double meanAnomaly = fmod(secondary.GetEpochAnomaly() + Tau * timeFromEpoch / secondary.GetPeriod(), Tau);
+	secondary.SetMeanAnomaly(meanAnomaly);
+	return secondary.GetVelocity();
 }
 
 double CollisionPair::CalculateMinimumSeparation()

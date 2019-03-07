@@ -39,6 +39,7 @@ public:
 	double GetAreaToMass();
 	double GetRadius();
 	double GetPeriod();
+	double GetEpochAnomaly();
 	double GetPerigee();
 	double GetApogee();
 	vector3D GetVelocity();
