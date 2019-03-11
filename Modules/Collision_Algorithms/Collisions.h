@@ -15,8 +15,8 @@ public:
 	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
 	CollisionPair(long IDI, long IDJ);
 	double GetRelativeInclination();
-	vector<pair<double, double>> CalculateAngularWindowPrimary(double distance);
-	vector<pair<double, double>> CalculateAngularWindowSecondary(double distance);
+	vector<double>  CalculateAngularWindowPrimary(double distance);
+	vector<double>  CalculateAngularWindowSecondary(double distance);
 	vector3D GetPrimaryPositionAtTime(double timeFromEpoch);
 	vector3D GetPrimaryVelocityAtTime(double timeFromEpoch);
 	vector3D GetSecondaryPositionAtTime(double timeFromEpoch);
@@ -29,7 +29,7 @@ public:
 
 protected:
 	void CalculateRelativeInclination();
-	vector<pair<double, double>> CalculateAngularWindow(DebrisObject& object, double distance);
+	vector<double> CalculateAngularWindow(DebrisObject& object, double distance, double delta);
 };
 
 class CollisionAlgorithm

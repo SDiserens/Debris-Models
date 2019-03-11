@@ -110,14 +110,14 @@ double CollisionPair::GetRelativeInclination()
 	return relativeInclination;
 }
 
-vector<pair<double, double>> CollisionPair::CalculateAngularWindowPrimary(double distance)
+vector<double> CollisionPair::CalculateAngularWindowPrimary(double distance)
 {
-	return CalculateAngularWindow(primary, distance);
+	return CalculateAngularWindow(primary, distance, deltaPrimary);
 }
 
-vector<pair<double, double>> CollisionPair::CalculateAngularWindowSecondary(double distance)
+vector<double> CollisionPair::CalculateAngularWindowSecondary(double distance)
 {
-	return CalculateAngularWindow(secondary, distance);
+	return CalculateAngularWindow(secondary, distance, deltaSecondary);
 }
 
 vector3D CollisionPair::GetPrimaryPositionAtTime(double timeFromEpoch)
@@ -294,11 +294,57 @@ void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 	deltaSecondary = 0;
 }
 
-vector<pair<double, double>> CollisionPair::CalculateAngularWindow(DebrisObject & object, double distance)
+vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, double distance, double delta)
 {
-	vector<pair<double, double>> timeWindows;
-	//TODO - Calculate Angular Windows
+	vector<double> timeWindows;
+	double circularAnomaly, alpha, aX, aY, Q, Qroot, cosUrMinus, cosUrPlus, windowStart, windowEnd, windowStart2, windowEnd2;
 
+	OrbitalElements elements(object.GetElements());
+	//TODO - Calculate Angular Windows
+	circularAnomaly = delta - elements.argPerigee;
+	alpha = elements.semiMajorAxis * (1 - elements.eccentricity * elements.eccentricity) * sin(relativeInclination);
+	aX = elements.eccentricity * cos(-circularAnomaly);
+	aY = elements.eccentricity * sin(-circularAnomaly);
+	Q = alpha * (alpha - 2 * distance * aY) - (1 - elements.eccentricity * elements.eccentricity) * distance * distance;
+
+	if (Q >= 0)
+		Qroot = sqrt(Q);
+	else
+	{
+		timeWindows.push_back(-1.0);
+		return timeWindows;
+	}
+
+	cosUrMinus = (-distance * distance * aX - (alpha - distance * aY) * Qroot) / (Q + distance * distance);
+	cosUrPlus = (-distance * distance * aX + (alpha - distance * aY) * Qroot) / (Q + distance * distance);
+
+	if (abs(cosUrMinus) > 1)
+	{
+		timeWindows.push_back(-2.0);
+		return timeWindows;
+	}
+
+	else if (abs(cosUrPlus) > 1)
+	{
+		timeWindows.push_back(-3.0);
+		return timeWindows;
+	}
+
+
+	windowStart = acos(cosUrMinus);
+	windowEnd = acos(cosUrPlus);
+
+	windowStart2 = Tau - windowEnd;
+	windowEnd2 = Tau - windowStart;
+
+	if (windowEnd < windowStart)
+	{
+		double temp = windowEnd;
+		windowEnd = windowEnd2;
+		windowEnd2 = temp;
+	}
 	//TODO - check for singular case
+	timeWindows.insert(timeWindows.end(), { windowStart, windowEnd, windowStart2, windowEnd2 });
+
 	return timeWindows;
 }
