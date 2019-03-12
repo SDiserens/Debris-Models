@@ -252,8 +252,13 @@ double CollisionPair::GetBoundingRadii()
 
 double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)
 {
+	double seperation;
+	vector3D positionP = GetPrimaryPositionAtTime(timeFromEpoch);
+	vector3D positionS = GetSecondaryPositionAtTime(timeFromEpoch);
+
 	//TODO - closest approach distance
-	return 0.0;
+	seperation =positionP.CalculateRelativeVector(positionS).vectorNorm();
+	return seperation;
 }
 
 void CollisionPair::CalculateRelativeInclination()

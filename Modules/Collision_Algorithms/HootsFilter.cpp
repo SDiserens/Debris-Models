@@ -48,7 +48,7 @@ bool HootsFilter::CoplanarFilter(CollisionPair objectPair, double timeStep)
 	time = rate = previousTime = 0;
 	periodP = objectPair.primary.GetPeriod();
 	periodS = objectPair.secondary.GetPeriod();
-	interval = min(periodP, periodS) / 15;  // recommended fraction
+	interval = min(periodP, periodS) / 5;  // recommended fraction
 
 	while (time < timeStep)
 	{
@@ -82,8 +82,20 @@ vector<pair<double, double>> HootsFilter::CalculateTimeWindows(pair<double, doub
 
 double HootsFilter::CalculateClosestApproachTime(CollisionPair objectPair, double candidateTime)
 {
-	//TODO - closest approach time
-	return 0.0;
+	int it = 0;
+	double approachTime, R, Rdot, h = 1.0;
+	// Closest approach time
+	approachTime = candidateTime;
+
+	while ((abs(h) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
+	{
+		R = CalculateFirstDerivateSeparation(objectPair, approachTime);
+		Rdot = CalculateSecondDerivativeSeparation(objectPair, approachTime);
+		h = R / Rdot;
+		approachTime -= h;
+		it++;
+	}
+	return approachTime;
 }
 
 double HootsFilter::CalculateFirstDerivateSeparation(CollisionPair objectPair, double candidateTime)
@@ -104,7 +116,7 @@ double HootsFilter::CalculateFirstDerivateSeparation(CollisionPair objectPair, d
 
 double HootsFilter::CalculateSecondDerivativeSeparation(CollisionPair objectPair, double candidateTime)
 {
-	// TODO - 2nd derivative seperation
+	// 2nd derivative seperation
 	double rDotDot;
 	vector3D positionP, positionS, velocityP, velocityS, accelerationP, accelerationS;
 
