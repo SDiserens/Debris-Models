@@ -45,7 +45,7 @@ protected:
 	vector<double> newCollisionProbabilities;
 	vector<pair<long, long>> newCollisionList;
 	bool DetermineCollision(double collisionProbability);
-	double CalculateClosestApproach(CollisionPair objectPair);
+	//double CalculateClosestApproach(CollisionPair objectPair);
 
 	// Virtual function
 	virtual double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ) = 0;

@@ -76,12 +76,13 @@ bool CollisionAlgorithm::DetermineCollision(double collisionProbability)
 	return randomNumber() < collisionProbability;
 }
 
+/*
 double CollisionAlgorithm::CalculateClosestApproach(CollisionPair objectPair)
 {
-	// TODO -  Set objects to position at close approach time and return seperation
-	return 0.0;
+	//  Set objects to position at close approach time and return seperation
+	return objectPair.CalculateSeparationAtTime();
 }
-
+*/
 
 void CollisionAlgorithm::SwitchGravityComponent()
 {
@@ -177,7 +178,7 @@ double CollisionPair::CalculateMinimumSeparation()
 		circularAnomalyS = tempAnomalyS = trueAnomalyS;
 		cosRI = cos(relativeInclination);
 
-		//Todo - Min Sep newton method
+		// Min Sep newton method
 		while ((abs(h) >= NEWTONTOLERANCE || abs(k) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
 		{
 			rP = primaryElements.GetRadialPosition(tempAnomalyP);
@@ -256,14 +257,14 @@ double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)
 	vector3D positionP = GetPrimaryPositionAtTime(timeFromEpoch);
 	vector3D positionS = GetSecondaryPositionAtTime(timeFromEpoch);
 
-	//TODO - closest approach distance
+	//closest approach distance
 	seperation =positionP.CalculateRelativeVector(positionS).vectorNorm();
 	return seperation;
 }
 
 void CollisionPair::CalculateRelativeInclination()
 {
-	//TODO - Calculate relative inclination
+	// Calculate relative inclination
 	/*
 	sin IR = |cross(hP, hC)|
 
@@ -305,7 +306,7 @@ vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, doub
 	double circularAnomaly, alpha, aX, aY, Q, Qroot, cosUrMinus, cosUrPlus, windowStart, windowEnd, windowStart2, windowEnd2;
 
 	OrbitalElements elements(object.GetElements());
-	//TODO - Calculate Angular Windows
+	// Calculate Angular Windows
 	circularAnomaly = delta - elements.argPerigee;
 	alpha = elements.semiMajorAxis * (1 - elements.eccentricity * elements.eccentricity) * sin(relativeInclination);
 	aX = elements.eccentricity * cos(-circularAnomaly);
