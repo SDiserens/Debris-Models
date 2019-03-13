@@ -72,8 +72,17 @@ bool HootsFilter::CoplanarFilter(CollisionPair objectPair, double timeStep)
 
 vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair objectPair, vector<double> candidateTimeList)
 {
+	vector<double> collideTimeList;
+	double closeTime;
 	// TODO - Collision Times
-	return vector<double>();
+	for (double candidateTime : candidateTimeList)
+	{
+		closeTime = CalculateClosestApproachTime(objectPair, candidateTime);
+
+		if ((objectPair.GetBoundingRadii() + collisionThreshold) > objectPair.CalculateSeparationAtTime(closeTime))
+			collideTimeList.push_back(closeTime);
+	}
+	return collideTimeList;
 }
 
 vector<pair<double, double>> HootsFilter::CalculateTimeWindows(pair<double, double> window, double period)
