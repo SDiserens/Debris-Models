@@ -36,6 +36,8 @@ bool HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep)
 {
 	// TODO - Time Filter
 
+	// When calling time-windows function need to do 4 times, once for each window for each object
+
 	return false;
 }
 
@@ -74,10 +76,18 @@ vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair objectPair, ve
 	return vector<double>();
 }
 
-vector<pair<double, double>> HootsFilter::CalculateTimeWindows(pair<double, double> window, double period, double timestep)
+vector<pair<double, double>> HootsFilter::CalculateTimeWindows(pair<double, double> window, double period)
 {
-	//TODO - Time windows
-	return vector<pair<double, double>>();
+	vector<pair<double, double>> windowList;
+	// Time windows
+	while (window.second < timeStep)
+	{
+		windowList.push_back(window);
+		window.first += period;
+		window.second += period;
+	}
+
+	return windowList;
 }
 
 double HootsFilter::CalculateClosestApproachTime(CollisionPair objectPair, double candidateTime)

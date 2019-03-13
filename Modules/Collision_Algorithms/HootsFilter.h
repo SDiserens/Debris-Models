@@ -21,7 +21,7 @@ protected:
 	vector<double> DetermineCollisionTimes(CollisionPair objectPair, vector<double> candidateTimeList);
 
 	//Secondary functions
-	vector<pair<double, double>> CalculateTimeWindows(pair<double,double> window, double period, double timestep);
+	vector<pair<double, double>> CalculateTimeWindows(pair<double,double> window, double period);
 	double CalculateClosestApproachTime(CollisionPair objectPair, double candidateTime);
 	double CalculateFirstDerivateSeparation(CollisionPair objectPair, double candidateTime);
 	double CalculateSecondDerivativeSeparation(CollisionPair objectPair, double candidateTime);
