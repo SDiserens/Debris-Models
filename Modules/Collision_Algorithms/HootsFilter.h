@@ -16,12 +16,12 @@ protected:
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
 	bool PerigeeApogeeTest(CollisionPair objectPair);
 	bool GeometricFilter(CollisionPair objectPair);
-	bool TimeFilter(CollisionPair objectPair, double timeStep);
-	bool CoplanarFilter(CollisionPair objectPair, double timeStep);
+	vector<double> TimeFilter(CollisionPair objectPair, double timeStep);
+	vector<double> CoplanarFilter(CollisionPair objectPair, double timeStep);
 	vector<double> DetermineCollisionTimes(CollisionPair objectPair, vector<double> candidateTimeList);
 
 	//Secondary functions
-	vector<pair<double, double>> CalculateTimeWindows(pair<double,double> window, double period);
+	vector<pair<double, double>> CalculateTimeWindows(pair<double,double> window, pair<double, double> window2, double period);
 	double CalculateClosestApproachTime(CollisionPair objectPair, double candidateTime);
 	double CalculateFirstDerivateSeparation(CollisionPair objectPair, double candidateTime);
 	double CalculateSecondDerivativeSeparation(CollisionPair objectPair, double candidateTime);

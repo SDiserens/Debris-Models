@@ -161,14 +161,20 @@ int main(int argc, char** argv)
 
 	// Call cube algorithm
 	auto start = std::chrono::system_clock::now(); // starttime
+	auto end = std::chrono::system_clock::now(); //endtime
+	std::chrono::duration<double> timeDiff = end - end;
+
 	for (eval = 0; eval < evaluationBlocks; eval++)
 	{
 		for (step = 0; step < evaluationSteps; step++)
 		{
+			start = std::chrono::system_clock::now();
 			//Randomise variables
 			RandomiseOrbitOrientations(objectPopulation);
 			//Call Collision check
 			collisionCube.MainCollision(objectPopulation, timeStep);
+			end = std::chrono::system_clock::now();
+			timeDiff += end - start;
 			progress.DisplayProgress(eval * evaluationSteps + step);
 		}
 		// Store collision data
@@ -184,13 +190,12 @@ int main(int argc, char** argv)
 			collisionCount[eval][collisionList[k]] = collisionCount[eval][collisionList[k]] + 1;
 		}
 	}
-	auto end = std::chrono::system_clock::now(); //endtime
 
 	progress.DisplayProgress(evaluationBlocks * evaluationSteps); cout << "\n" << flush;
 	
 	pair<long, long> pairID;
 	string collisionName;
-	std::chrono::duration<double> timeDiff = end - start;
+
 
 	cout << "Calculated in runtime of " << timeDiff.count() << "s\n" << endl;
 

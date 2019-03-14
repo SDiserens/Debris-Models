@@ -33,41 +33,50 @@ void OrbitalAnomalies::SetEccentricAnomaly(double E)
 }
 
 
-double OrbitalAnomalies::EccentricToMeanAnomaly(double eccentricity)
+double OrbitalAnomalies::EccentricToMeanAnomaly(double eA, double eccentricity)
 {
 	double tempAnomaly;
-	tempAnomaly = eccentricAnomaly - eccentricity * sin(eccentricAnomaly);
+	tempAnomaly = eA - eccentricity * sin(eA);
 	return fmod(tempAnomaly, Tau);
 
 }
 
-double OrbitalAnomalies::EccentricToTrueAnomaly(double eccentricity)
+double OrbitalAnomalies::EccentricToTrueAnomaly(double eA, double eccentricity)
 {
 	double X, Y, tempAnomaly;
-	X = sqrt(1 - eccentricity) * cos(eccentricAnomaly / 2);
-	Y = sqrt(1 + eccentricity) * sin(eccentricAnomaly / 2);
+	X = sqrt(1 - eccentricity) * cos(eA / 2);
+	Y = sqrt(1 + eccentricity) * sin(eA / 2);
 	tempAnomaly = 2 * atan2(Y, X);
 	return tempAnomaly;
 }
 
-double OrbitalAnomalies::TrueToEccentricAnomaly(double eccentricity)
+double OrbitalAnomalies::TrueToEccentricAnomaly(double tA, double eccentricity)
 {
 	double X, Y, tempAnomaly;
-	Y = sqrt(1 - eccentricity * eccentricity) * sin(trueAnomaly);
-	X = eccentricity + cos(trueAnomaly);
+	Y = sqrt(1 - eccentricity * eccentricity) * sin(tA);
+	X = eccentricity + cos(tA);
 	tempAnomaly = atan2(Y, X);
 	return tempAnomaly;
 }
 
-double OrbitalAnomalies::MeanToEccentricAnomaly(double eccentricity)
+double OrbitalAnomalies::TrueToMeanAnomaly(double tA, double eccentricity)
+{
+	double tempAnomaly;
+	tempAnomaly = TrueToEccentricAnomaly(tA, eccentricity);
+	tempAnomaly = EccentricToMeanAnomaly(tempAnomaly, eccentricity);
+
+	return tempAnomaly;
+}
+
+double OrbitalAnomalies::MeanToEccentricAnomaly(double mA, double eccentricity)
 {
 	int it = 0;
 	double f, fPrime;
-	double tempAnomaly = meanAnomaly;
+	double tempAnomaly = mA;
 	double h = 1.0;
 	while ((abs(h) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
 	{
-		f = tempAnomaly - eccentricity * sin(tempAnomaly) - meanAnomaly;
+		f = tempAnomaly - eccentricity * sin(tempAnomaly) - mA;
 		fPrime = 1 - eccentricity * cos(tempAnomaly);
 
 		h = f / fPrime;
@@ -78,25 +87,34 @@ double OrbitalAnomalies::MeanToEccentricAnomaly(double eccentricity)
 	return fmod(tempAnomaly, Tau);
 }
 
+double OrbitalAnomalies::MeanToTrueAnomaly(double mA, double eccentricity)
+{
+	double tempAnomaly;
+	tempAnomaly = MeanToEccentricAnomaly(mA, eccentricity);
+	tempAnomaly = EccentricToTrueAnomaly(tempAnomaly, eccentricity);
+
+	return tempAnomaly;
+}
+
 void OrbitalAnomalies::UpdateAnomaliesFromEccentric(double eccentricity)
 {
-	meanAnomaly = EccentricToMeanAnomaly(eccentricity);
-	trueAnomaly = EccentricToTrueAnomaly(eccentricity);
+	meanAnomaly = EccentricToMeanAnomaly(eccentricAnomaly, eccentricity);
+	trueAnomaly = EccentricToTrueAnomaly(eccentricAnomaly, eccentricity);
 	synchronised = true;
 }
 
 void OrbitalAnomalies::UpdateAnomaliesFromTrue(double eccentricity)
 {
 	
-	eccentricAnomaly = TrueToEccentricAnomaly(eccentricity);
-	meanAnomaly = EccentricToMeanAnomaly(eccentricity);
+	eccentricAnomaly = TrueToEccentricAnomaly(trueAnomaly, eccentricity);
+	meanAnomaly = EccentricToMeanAnomaly(eccentricAnomaly, eccentricity);
 	synchronised = true;
 }
 
 void OrbitalAnomalies::UpdateAnomaliesFromMean(double eccentricity)
 {
-	eccentricAnomaly = MeanToEccentricAnomaly(eccentricity);
-	trueAnomaly = EccentricToTrueAnomaly(eccentricity);
+	eccentricAnomaly = MeanToEccentricAnomaly(meanAnomaly, eccentricity);
+	trueAnomaly = EccentricToTrueAnomaly(eccentricAnomaly, eccentricity);
 	synchronised = true;
 }
 

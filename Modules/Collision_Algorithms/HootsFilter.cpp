@@ -32,16 +32,83 @@ bool HootsFilter::GeometricFilter(CollisionPair objectPair)
 	return objectPair.CalculateMinimumSeparation() <= conjunctionThreshold;
 }
 
-bool HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep)
+vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep)
 {
-	// TODO - Time Filter
+	double time, eP, eS, periodP, periodS, candidateTime;
+	vector<double> angularWindowPrimary, angularWindowSecondary, timeWindowPrimary, timeWindowSecondary, timeList;
+	vector<pair<double, double>> timeWindowsP, timeWindowsS;
+	// Time Filter
+	angularWindowPrimary = objectPair.CalculateAngularWindowPrimary(conjunctionThreshold);
+	if (angularWindowPrimary[0] < 0)
+		return angularWindowPrimary;
+
+	angularWindowSecondary = objectPair.CalculateAngularWindowSecondary(conjunctionThreshold);
+	if (angularWindowSecondary[0] < 0)
+		return angularWindowSecondary;
+
+	// Convert to mean anomalies
+	eP = objectPair.primary.GetElements().eccentricity;
+	periodP = objectPair.primary.GetPeriod();
+	for (double angle : angularWindowPrimary)
+	{
+		angle = objectPair.primary.GetElements().anomalies.TrueToMeanAnomaly(angle, eP);
+		time = periodP * (angle - objectPair.primary.GetEpochAnomaly()) / Tau;
+		timeWindowPrimary.push_back(time);
+	}
+	if (timeWindowPrimary[3] < timeWindowPrimary[2])
+		timeWindowPrimary[3] += periodP;
+
+	eS = objectPair.secondary.GetElements().eccentricity;
+	periodS = objectPair.secondary.GetPeriod();
+	for (double angle : angularWindowSecondary)
+	{
+		angle = objectPair.secondary.GetElements().anomalies.TrueToMeanAnomaly(angle, eP);
+		time = periodP * (angle - objectPair.secondary.GetEpochAnomaly()) / Tau;
+		timeWindowSecondary.push_back(time);
+	}
+	if (timeWindowSecondary[3] < timeWindowSecondary[2])
+		timeWindowSecondary[3] += periodS;
 
 	// When calling time-windows function need to do 4 times, once for each window for each object
+	timeWindowsP = CalculateTimeWindows(pair<double, double> {timeWindowPrimary[0], timeWindowPrimary[1]}, pair<double, double> {timeWindowPrimary[2], timeWindowPrimary[3]}, periodP);
+	timeWindowsS = CalculateTimeWindows(pair<double, double> {timeWindowSecondary[0], timeWindowSecondary[1]}, pair<double, double> {timeWindowSecondary[2], timeWindowSecondary[3]}, periodS);
 
-	return false;
+	int i = 0;
+	for (pair<double, double> window : timeWindowsP)
+	{
+		if ((window.first <= timeWindowsS[i].first) & (window.second > timeWindowsS[i].second))
+		{
+			candidateTime = timeWindowsS[i].first + (window.second - timeWindowsS[i].first) / 2;
+			timeList.push_back(candidateTime);
+			continue;
+		}
+
+		// Loop up to matched point in list
+		while (window.first > timeWindowsS[i].first)
+			{
+				i++;
+				if (i == timeWindowsS.size())
+					break;
+			}
+
+		// Check for overlap
+		if ((i > 0) & (window.first < timeWindowsS[i - 1].second))
+		{
+			candidateTime = window.first + (timeWindowsS[i - 1].second - window.first) / 2;
+			timeList.push_back(candidateTime);
+		}
+
+		else if ((i < timeWindowsS.size()) & (window.second > timeWindowsS[i].first))
+		{
+			candidateTime = timeWindowsS[i].first + (window.second - timeWindowsS[i].first) / 2;
+			timeList.push_back(candidateTime);
+		}
+	}
+
+	return timeList;
 }
 
-bool HootsFilter::CoplanarFilter(CollisionPair objectPair, double timeStep)
+vector<double> HootsFilter::CoplanarFilter(CollisionPair objectPair, double timeStep)
 {
 	// Coplanar Filter
 	double candidateTime, time, rate, previousTime, previousRate, periodP, periodS, interval;
@@ -67,7 +134,7 @@ bool HootsFilter::CoplanarFilter(CollisionPair objectPair, double timeStep)
 		time += interval;
 
 	}
-	return false;
+	return candidateTimeList;
 }
 
 vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair objectPair, vector<double> candidateTimeList)
@@ -85,17 +152,33 @@ vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair objectPair, ve
 	return collideTimeList;
 }
 
-vector<pair<double, double>> HootsFilter::CalculateTimeWindows(pair<double, double> window, double period)
+vector<pair<double, double>>  HootsFilter::CalculateTimeWindows(pair<double, double> window, pair<double, double> window2, double period)
 {
 	vector<pair<double, double>> windowList;
 	// Time windows
 	while (window.second < timeStep)
 	{
 		windowList.push_back(window);
+		if (window2.second < timeStep)
+			windowList.push_back(window2);
+		
+		else if (window2.first < timeStep)
+		{
+			window2.second = timeStep;
+			windowList.push_back(window2);
+		}
+
 		window.first += period;
 		window.second += period;
+		window2.first += period;
+		window2.second += period;
 	}
 
+	if (window.first < timeStep)
+	{
+		window.second = timeStep;
+		windowList.push_back(window);
+	}
 	return windowList;
 }
 
