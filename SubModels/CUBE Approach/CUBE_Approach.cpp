@@ -238,7 +238,7 @@ int main(int argc, char** argv)
 	cout << "  Writing to Data File...";
 
 	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + ",km\n" + 
-				"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",days\n" +
+				"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",seconds\n" +
 				"Using a scaling of : ," + to_string(scaling) + "\nCalculated in runtime of : ," + to_string(timeDiff.count()) + ",s";
 
 	if (individualOutput)
