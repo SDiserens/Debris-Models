@@ -6,13 +6,20 @@ class HootsFilter :
 	public CollisionAlgorithm
 {
 	double conjunctionThreshold, collisionThreshold;
+	bool outputTimes;
+protected:
+	vector<double> newCollisionTimes;
+	vector<double> collisionTimes;
 
 public:
 	HootsFilter(double init_conjThreshold=10, double init_collThreshold=0.1);
-	void MainCollision(DebrisPopulation& population, double timeStep);
+	void MainCollision(DebrisPopulation& population, double timestep);
+	vector<double> GetNewCollisionTimes();
+	vector<double> GetCollisionTimes();
 
 protected:
 	//Primary functions
+
 	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
 	bool PerigeeApogeeTest(CollisionPair objectPair);
 	bool GeometricFilter(CollisionPair objectPair);

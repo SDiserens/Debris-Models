@@ -9,6 +9,7 @@ class OrbitTrace : public CollisionAlgorithm
 
 public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
+	OrbitTrace(bool probabilities = false);
 
 protected:
 	double CollisionRate(CollisionPair objectPair);

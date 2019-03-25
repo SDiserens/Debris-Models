@@ -95,8 +95,8 @@ CollisionPair::CollisionPair(DebrisObject & objectI, DebrisObject & objectJ)
 	secondary = objectJ;
 	primaryID = objectI.GetID();
 	secondaryID = objectJ.GetID();
-	CalculateRelativeInclination();
-	CalculateArgumenstOfIntersection();
+	//CalculateRelativeInclination();
+	//CalculateArgumenstOfIntersection();
 	boundingRadii = (primary.GetRadius() + secondary.GetRadius()) * 0.001;
 }
 

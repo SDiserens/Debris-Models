@@ -4,6 +4,11 @@
 #include "stdafx.h"
 #include "OrbitTrace.h"
 
+OrbitTrace::OrbitTrace(bool probabilities)
+{
+	outputProbabilities = probabilities;
+}
+
 
 void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
@@ -18,6 +23,8 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 	for (CollisionPair& objectPair : pairList)
 	{
 		collision = false;
+
+		objectPair.CalculateRelativeInclination();
 
 		if (CoplanarFilter(objectPair))
 		{

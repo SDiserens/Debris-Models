@@ -25,10 +25,10 @@ public:
 	double CalculateMinimumSeparation();
 	void CalculateArgumenstOfIntersection();
 	void CalculateArgumenstOfIntersectionCoplanar();
+	void CalculateRelativeInclination();
 	double GetBoundingRadii();
 
 protected:
-	void CalculateRelativeInclination();
 	vector<double> CalculateAngularWindow(DebrisObject& object, double distance, double delta);
 };
 

@@ -8,8 +8,70 @@ HootsFilter::HootsFilter(double init_conjThreshold, double init_collThreshold)
 	collisionThreshold = init_collThreshold;
 }
 
-void HootsFilter::MainCollision(DebrisPopulation & population, double timeStep)
+void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 {
+	double tempTime, collisionRate;
+	vector<CollisionPair> pairList;
+	vector<double> candidateTimeList, collisionTimes;
+	pair<long, long> pairID;
+	bool collision;
+	// Filter Cube List
+	pairList = CreatePairList(population);
+	timeStep = timestep;
+
+
+	for (CollisionPair& objectPair : pairList)
+	{
+		if (!PerigeeApogeeTest(objectPair))
+			continue;
+
+		objectPair.CalculateRelativeInclination();
+
+		if (!GeometricFilter(objectPair))
+			continue;
+
+		// Reset vectors
+		candidateTimeList.clear();
+		collisionTimes.clear();
+
+		if (objectPair.GetRelativeInclination() == 0)
+			candidateTimeList.push_back(-1);
+		else
+		{
+			candidateTimeList = TimeFilter(objectPair, timeStep);
+		}
+
+		if (candidateTimeList[0] < 0)
+		{
+			candidateTimeList = CoplanarFilter(objectPair, timeStep);
+		}
+
+		collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList);
+		if (outputTimes)
+		{
+			//	-- Store collision probability
+			//collisionTimes.push_back(tempTime);
+			//collisionList.push_back(collisionPair);
+			newCollisionTimes.insert(newCollisionTimes.end(), collisionTimes.begin(), collisionTimes.end());
+			newCollisionList.insert(newCollisionList.end(), collisionTimes.size(), pairID);
+		}
+		else
+		{
+			// Store Collisions 
+			collisionList.push_back(pairID);
+			newCollisionList.push_back(pairID); // Note in this scenario only adds once regardless of number of # potential collisions for pair
+		}
+	}
+}
+
+vector<double> HootsFilter::GetNewCollisionTimes()
+{
+	return newCollisionTimes;
+}
+
+vector<double> HootsFilter::GetCollisionTimes()
+{
+	return collisionTimes;
 }
 
 double HootsFilter::CollisionRate(DebrisObject & objectI, DebrisObject & objectJ)
@@ -29,6 +91,7 @@ bool HootsFilter::PerigeeApogeeTest(CollisionPair objectPair)
 
 bool HootsFilter::GeometricFilter(CollisionPair objectPair)
 {
+	objectPair.CalculateArgumenstOfIntersection();
 	return objectPair.CalculateMinimumSeparation() <= conjunctionThreshold;
 }
 
@@ -141,7 +204,7 @@ vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair objectPair, ve
 {
 	vector<double> collideTimeList;
 	double closeTime;
-	// TODO - Collision Times
+	// Collision Times
 	for (double candidateTime : candidateTimeList)
 	{
 		closeTime = CalculateClosestApproachTime(objectPair, candidateTime);
