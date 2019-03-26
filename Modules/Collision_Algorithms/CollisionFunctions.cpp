@@ -155,74 +155,81 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 
 double CollisionPair::CalculateMinimumSeparation()
 {
-	double trueAnomalyP, trueAnomalyS, circularAnomalyP, circularAnomalyS, cosRI, seperation, altSeperation, eP, eS;
+	double trueAnomalyP, trueAnomalyS, cosRI, seperation, altSeperation, eP, eS;
 	OrbitalElements primaryElements(primary.GetElements());
 	OrbitalElements secondaryElements(secondary.GetElements());
 
 	trueAnomalyP = deltaPrimary - primaryElements.argPerigee;
 	trueAnomalyS = deltaSecondary - secondaryElements.argPerigee;
-	eP = primary.GetElements().eccentricity;
-	eS = secondary.GetElements().eccentricity;
+	eP = primaryElements.eccentricity;
+	eS = secondaryElements.eccentricity;
+	auto NewtonSeperation = [](double &trueP, double &trueS) {};
 
 	// Find closest approach for elliptical orbits
 	if (eP != 0 || eS != 0)
 	{
-		int it = 0;
-		double F, G, FdfP, FdfS, GdfP, GdfS;
-		double uRP, uRS, A, B, C, D, axP, ayP, axS, ayS;
-		double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES;
-		double tempAnomalyP, tempAnomalyS;
-		double k, h = 1.0;
-
-		circularAnomalyP = tempAnomalyP = trueAnomalyP;
-		circularAnomalyS = tempAnomalyS = trueAnomalyS;
-		cosRI = cos(relativeInclination);
-
-		// Min Sep newton method
-		while ((abs(h) >= NEWTONTOLERANCE || abs(k) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
+		auto NewtonSeperation = [&](double &trueP, double &trueS)
 		{
-			rP = primaryElements.GetRadialPosition(tempAnomalyP);
-			rS = secondaryElements.GetRadialPosition(tempAnomalyS);
-			uRP = tempAnomalyP - circularAnomalyP;
-			uRS = tempAnomalyS - circularAnomalyS;
 
-			sinURP = sin(uRP);
-			cosURP = cos(uRP);
-			sinURS = sin(uRS);
-			cosURS = cos(uRS);
+			int it = 0;
+			double F, G, FdfP, FdfS, GdfP, GdfS, eP, eS;
+			double uRP, uRS, A, B, C, D, axP, ayP, axS, ayS;
+			double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES;
+			double tempAnomalyP, tempAnomalyS, circularAnomalyP, circularAnomalyS;
+			double k, h = 1.0;
 
-			axP = eP * cos(-circularAnomalyP);
-			ayP = eP * sin(-circularAnomalyP);
-			axS = eS * cos(-circularAnomalyS);
-			ayS = eS * sin(-circularAnomalyS);
+			circularAnomalyP = tempAnomalyP = trueP;
+			circularAnomalyS = tempAnomalyS = trueS;
+			cosRI = cos(relativeInclination);
 
-			A = sinURP + ayP;
-			C = sinURS + ayS;
-			B = cosURP + axP;
-			D = cosURS + axS;
+			// Min Sep newton method
+			while ((abs(h) >= NEWTONTOLERANCE || abs(k) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
+			{
+				rP = primaryElements.GetRadialPosition(tempAnomalyP);
+				rS = secondaryElements.GetRadialPosition(tempAnomalyS);
+				uRP = tempAnomalyP - circularAnomalyP;
+				uRS = tempAnomalyS - circularAnomalyS;
 
-			EP = atan2(sqrt(1 - eP * eP) * sin(tempAnomalyP), eP + cos(tempAnomalyP));
-			ES = atan2(sqrt(1 - eS * eS) * sin(tempAnomalyS), eS + cos(tempAnomalyS));
+				sinURP = sin(uRP);
+				cosURP = cos(uRP);
+				sinURS = sin(uRS);
+				cosURS = cos(uRS);
 
-			F = rP * eP * sin(tempAnomalyP) + rS * (A * cosURS - B * cosRI * sinURS);
-			G = rS * eS * sin(tempAnomalyS) + rP * (C * cosURP - D * cosRI * sinURP);
+				axP = eP * cos(-circularAnomalyP);
+				ayP = eP * sin(-circularAnomalyP);
+				axS = eS * cos(-circularAnomalyS);
+				ayS = eS * sin(-circularAnomalyS);
 
-			FdfP = rP * eP * cos(EP) + rS * (cosURP * cosURS + sinURP * sinURS * cosRI);
-			FdfS = -rS / (1 + eS * cos(tempAnomalyS)) * (A * C + B * D * cosRI);
-			GdfP = -rP / (1 + eP * cos(tempAnomalyP)) * (A * C + B * D * cosRI);
-			GdfS = rS * eS * cos(ES) + rP * (cosURP * cosURS + sinURP * sinURS * cosRI);
+				A = sinURP + ayP;
+				C = sinURS + ayS;
+				B = cosURP + axP;
+				D = cosURS + axS;
+
+				EP = atan2(sqrt(1 - eP * eP) * sin(tempAnomalyP), eP + cos(tempAnomalyP));
+				ES = atan2(sqrt(1 - eS * eS) * sin(tempAnomalyS), eS + cos(tempAnomalyS));
+
+				F = rP * eP * sin(tempAnomalyP) + rS * (A * cosURS - B * cosRI * sinURS);
+				G = rS * eS * sin(tempAnomalyS) + rP * (C * cosURP - D * cosRI * sinURP);
+
+				FdfP = rP * eP * cos(EP) + rS * (cosURP * cosURS + sinURP * sinURS * cosRI);
+				FdfS = -rS / (1 + eS * cos(tempAnomalyS)) * (A * C + B * D * cosRI);
+				GdfP = -rP / (1 + eP * cos(tempAnomalyP)) * (A * C + B * D * cosRI);
+				GdfS = rS * eS * cos(ES) + rP * (cosURP * cosURS + sinURP * sinURS * cosRI);
 
 
-			h = (F * GdfS - G * FdfS) / (FdfS*GdfP - FdfP*GdfS);
-			k = (G * GdfP - F * FdfP) / (FdfS*GdfP - FdfP*GdfS);
+				h = (F * GdfS - G * FdfS) / (FdfS*GdfP - FdfP*GdfS);
+				k = (G * GdfP - F * FdfP) / (FdfS*GdfP - FdfP*GdfS);
 
-			// Update values
-			tempAnomalyP += h;
-			tempAnomalyS += k;
-			it++;
-		}
-		trueAnomalyP = tempAnomalyP;
-		trueAnomalyS = tempAnomalyS;
+				// Update values
+				tempAnomalyP += h;
+				tempAnomalyS += k;
+				it++;
+			}
+			trueP = tempAnomalyP;
+			trueS = tempAnomalyS;
+		};
+
+		NewtonSeperation(trueAnomalyP, trueAnomalyS);
 	}
 
 	primaryElements.SetTrueAnomaly(trueAnomalyP);
@@ -232,6 +239,12 @@ double CollisionPair::CalculateMinimumSeparation()
 
 	primaryElements.SetTrueAnomaly(fmod(trueAnomalyP + Pi, Tau));
 	secondaryElements.SetTrueAnomaly(fmod(trueAnomalyS + Pi, Tau));
+
+	if (eP != 0 || eS != 0)
+	{
+		//TODO - Check this is working
+		NewtonSeperation(trueAnomalyP, trueAnomalyS);
+	}
 	altSeperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
 	if (altSeperation < seperation)
@@ -302,7 +315,7 @@ void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 
 vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, double distance, double delta)
 {
-	vector<double> timeWindows;
+	vector<double> anlgeWindows;
 	double circularAnomaly, alpha, aX, aY, Q, Qroot, cosUrMinus, cosUrPlus, windowStart, windowEnd, windowStart2, windowEnd2;
 
 	OrbitalElements elements(object.GetElements());
@@ -317,8 +330,8 @@ vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, doub
 		Qroot = sqrt(Q);
 	else
 	{
-		timeWindows.push_back(-1.0);
-		return timeWindows;
+		anlgeWindows.push_back(-1.0);
+		return anlgeWindows;
 	}
 
 	cosUrMinus = (-distance * distance * aX - (alpha - distance * aY) * Qroot) / (Q + distance * distance);
@@ -326,31 +339,31 @@ vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, doub
 
 	if (abs(cosUrMinus) > 1)
 	{
-		timeWindows.push_back(-2.0);
-		return timeWindows;
+		anlgeWindows.push_back(-2.0);
+		return anlgeWindows;
 	}
 
 	else if (abs(cosUrPlus) > 1)
 	{
-		timeWindows.push_back(-3.0);
-		return timeWindows;
+		anlgeWindows.push_back(-3.0);
+		return anlgeWindows;
 	}
 
 
 	windowStart = acos(cosUrMinus);
 	windowEnd = acos(cosUrPlus);
-
-	windowStart2 = Tau - windowEnd;
-	windowEnd2 = Tau - windowStart;
-
 	if (windowEnd < windowStart)
 	{
-		double temp = windowEnd;
-		windowEnd = windowEnd2;
-		windowEnd2 = temp;
+		// check for singular case where close approach at perigee
+		windowStart -= Tau;
+		anlgeWindows.insert(anlgeWindows.end(), { windowStart, windowEnd });
 	}
-	//TODO - check for singular case
-	timeWindows.insert(timeWindows.end(), { windowStart, windowEnd, windowStart2, windowEnd2 });
+	else
+	{
+		windowStart2 = Tau - windowEnd;
+		windowEnd2 = Tau - windowStart;
 
-	return timeWindows;
+		anlgeWindows.insert(anlgeWindows.end(), { windowStart, windowEnd, windowStart2, windowEnd2 });
+	}
+	return anlgeWindows;
 }

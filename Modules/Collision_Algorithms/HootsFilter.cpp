@@ -102,11 +102,13 @@ vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep
 	vector<pair<double, double>> timeWindowsP, timeWindowsS;
 	// Time Filter
 	angularWindowPrimary = objectPair.CalculateAngularWindowPrimary(conjunctionThreshold);
-	if (angularWindowPrimary[0] < 0)
+	// Invalid, exit
+	if (angularWindowPrimary.back() < 0)
 		return angularWindowPrimary;
 
 	angularWindowSecondary = objectPair.CalculateAngularWindowSecondary(conjunctionThreshold);
-	if (angularWindowSecondary[0] < 0)
+	// Invalid, exit
+	if (angularWindowSecondary.back() < 0)
 		return angularWindowSecondary;
 
 	// Convert to mean anomalies
@@ -118,20 +120,22 @@ vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep
 		time = periodP * (angle - objectPair.primary.GetEpochAnomaly()) / Tau;
 		timeWindowPrimary.push_back(time);
 	}
+	/*
 	if (timeWindowPrimary[3] < timeWindowPrimary[2])
 		timeWindowPrimary[3] += periodP;
-
+		*/
 	eS = objectPair.secondary.GetElements().eccentricity;
 	periodS = objectPair.secondary.GetPeriod();
 	for (double angle : angularWindowSecondary)
 	{
-		angle = objectPair.secondary.GetElements().anomalies.TrueToMeanAnomaly(angle, eP);
+		angle = objectPair.secondary.GetElements().anomalies.TrueToMeanAnomaly(angle, eS);
 		time = periodP * (angle - objectPair.secondary.GetEpochAnomaly()) / Tau;
 		timeWindowSecondary.push_back(time);
 	}
+	/*
 	if (timeWindowSecondary[3] < timeWindowSecondary[2])
 		timeWindowSecondary[3] += periodS;
-
+		*/
 	// When calling time-windows function need to do 4 times, once for each window for each object
 	timeWindowsP = CalculateTimeWindows(pair<double, double> {timeWindowPrimary[0], timeWindowPrimary[1]}, pair<double, double> {timeWindowPrimary[2], timeWindowPrimary[3]}, periodP);
 	timeWindowsS = CalculateTimeWindows(pair<double, double> {timeWindowSecondary[0], timeWindowSecondary[1]}, pair<double, double> {timeWindowSecondary[2], timeWindowSecondary[3]}, periodS);
