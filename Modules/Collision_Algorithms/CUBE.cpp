@@ -22,11 +22,12 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 	pairList = CreatePairList(population);
 
 	// For each conjunction (cohabiting pair)
-	for (CollisionPair &collisionPair : pairList)
+	for (CollisionPair &collisionPairID : pairList)
 	{
-		pair<long, long> pairID(collisionPair.primaryID, collisionPair.secondaryID);
+		pair<long, long> pairID(collisionPairID.primaryID, collisionPairID.secondaryID);
+		CollisionPair collisionPair(population.GetObject(pairID.first), population.GetObject(pairID.second));
 		//	-- Calculate collision rate in cube
-		collisionRate = CollisionRate(population.GetObject(pairID.first), population.GetObject(pairID.second));
+		collisionRate = CollisionRate(collisionPair);
 		tempProbability = timeStep * collisionRate;
 
 
@@ -79,17 +80,17 @@ vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population)
 }
 
 
-double CUBEApproach::CollisionRate(DebrisObject& objectI, DebrisObject& objectJ)
+double CUBEApproach::CollisionRate(CollisionPair& objectPair)
 {
 	double collisionCrossSection;
 	vector3D velocityI, velocityJ, relativeVelocity;
 
-	velocityI = objectI.GetVelocity();
-	velocityJ = objectJ.GetVelocity();
+	velocityI = objectPair.primary.GetVelocity();
+	velocityJ = objectPair.secondary.GetVelocity();
 
 	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
 
-	collisionCrossSection = CollisionCrossSection(objectI, objectJ);
+	collisionCrossSection = CollisionCrossSection(objectPair.primary, objectPair.secondary);
 
 	return  collisionCrossSection * relativeVelocity.vectorNorm() / cubeVolume;
 }

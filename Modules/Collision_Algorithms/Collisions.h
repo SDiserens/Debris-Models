@@ -48,7 +48,7 @@ protected:
 	//double CalculateClosestApproach(CollisionPair objectPair);
 
 	// Virtual function
-	virtual double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ) = 0;
+	virtual double CollisionRate(CollisionPair &objectPair) = 0;
 	//virtual vector<pair<long, long>> CreatePairList(DebrisPopulation& population) = 0;
 	double CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ);
 

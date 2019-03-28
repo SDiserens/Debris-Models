@@ -71,7 +71,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 
 }
 
-double OrbitTrace::CollisionRate(CollisionPair objectPair)
+double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 {
 	double collisionRate, boundingRadii, minSeperation, sinAngle;
 	vector3D velocityI, velocityJ, relativeVelocity;

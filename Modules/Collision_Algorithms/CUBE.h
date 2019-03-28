@@ -18,7 +18,7 @@ public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
 
 protected:
-	double CollisionRate(DebrisObject& objectI, DebrisObject& objectJ);
+	double CollisionRate(CollisionPair& objectPair);
 	vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population);
 	long PositionHash(tuple<int, int, int>);
 	tuple<int, int, int> IdentifyCube(vector3D& position);

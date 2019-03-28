@@ -12,7 +12,7 @@ public:
 	OrbitTrace(bool probabilities = false);
 
 protected:
-	double CollisionRate(CollisionPair objectPair);
+	double CollisionRate(CollisionPair &objectPair);
 
 	/*
 	double CalculateSpatialDensity(DebrisObject object, double radius, double latitude);
