@@ -65,6 +65,24 @@ double randomNumberPi()
 	return randomNumber(Pi);
 }
 
+double TauRange(double n)
+{
+	n = fmod(n, Tau);
+	if (n < 0)
+		n = Tau - n;
+
+	return n;
+}
+
+double PiRange(double n)
+{
+	n = fmod(n, Pi);
+	if (n < 0)
+		n = Pi - n;
+		
+	return n;
+}
+
 double randomNumberTau()
 {
 	return randomNumber(Tau);

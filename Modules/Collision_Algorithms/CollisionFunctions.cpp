@@ -12,15 +12,16 @@ double CollisionAlgorithm::GetElapsedTime()
 vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
 {
 	vector<CollisionPair> pairList;
-	int i, j;
 	// For each object in population -
-	for (i=0; i < population.population.size() -1 ; i++)
+	for (auto it=population.population.begin(); it!= population.population.end(); it++)
 	{
 		// For each subsequent object
-		for (j = i + 1; j < population.population.size(); j++)
+		auto jt = it;
+		for (jt++; jt != population.population.end(); ++jt)
 		{
 			/// Add pair to list
-			pairList.push_back(CollisionPair(population.population[i], population.population[j]));
+			//DebrisObject& primaryObject(population.Ge), secondaryObject;
+			pairList.push_back(CollisionPair(it->second, jt->second));
 		}
 	}
 
@@ -124,7 +125,7 @@ vector<double> CollisionPair::CalculateAngularWindowSecondary(double distance)
 vector3D CollisionPair::GetPrimaryPositionAtTime(double timeFromEpoch)
 {
 	// position at time
-	double meanAnomaly = fmod(primary.GetEpochAnomaly() + Tau * timeFromEpoch / primary.GetPeriod(), Tau);
+	double meanAnomaly = TauRange(primary.GetEpochAnomaly() + Tau * timeFromEpoch / primary.GetPeriod());
 	primary.SetMeanAnomaly(meanAnomaly);
 	return primary.GetPosition();
 }
@@ -132,7 +133,7 @@ vector3D CollisionPair::GetPrimaryPositionAtTime(double timeFromEpoch)
 vector3D CollisionPair::GetPrimaryVelocityAtTime(double timeFromEpoch)
 {
 	// velcoity at time
-	double meanAnomaly = fmod(primary.GetEpochAnomaly() + Tau * timeFromEpoch / primary.GetPeriod(), Tau);
+	double meanAnomaly = TauRange(primary.GetEpochAnomaly() + Tau * timeFromEpoch / primary.GetPeriod());
 	primary.SetMeanAnomaly(meanAnomaly);
 	return primary.GetVelocity();
 }
@@ -140,7 +141,7 @@ vector3D CollisionPair::GetPrimaryVelocityAtTime(double timeFromEpoch)
 vector3D CollisionPair::GetSecondaryPositionAtTime(double timeFromEpoch)
 {
 	// position at time
-	double meanAnomaly = fmod(secondary.GetEpochAnomaly() + Tau * timeFromEpoch / secondary.GetPeriod(), Tau);
+	double meanAnomaly = TauRange(secondary.GetEpochAnomaly() + Tau * timeFromEpoch / secondary.GetPeriod());
 	secondary.SetMeanAnomaly(meanAnomaly);
 	return secondary.GetPosition();
 }
@@ -148,14 +149,14 @@ vector3D CollisionPair::GetSecondaryPositionAtTime(double timeFromEpoch)
 vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 {
 	// velcoity at time
-	double meanAnomaly = fmod(secondary.GetEpochAnomaly() + Tau * timeFromEpoch / secondary.GetPeriod(), Tau);
+	double meanAnomaly = TauRange(secondary.GetEpochAnomaly() + Tau * timeFromEpoch / secondary.GetPeriod());
 	secondary.SetMeanAnomaly(meanAnomaly);
 	return secondary.GetVelocity();
 }
 
 double CollisionPair::CalculateMinimumSeparation()
 {
-	double trueAnomalyP, trueAnomalyS, cosRI, seperation, altSeperation, eP, eS;
+	double trueAnomalyP, trueAnomalyS, seperation, altSeperation, eP, eS;
 	OrbitalElements primaryElements(primary.GetElements());
 	OrbitalElements secondaryElements(secondary.GetElements());
 
@@ -172,10 +173,10 @@ double CollisionPair::CalculateMinimumSeparation()
 		{
 
 			int it = 0;
-			double F, G, FdfP, FdfS, GdfP, GdfS, eP, eS;
+			double F, G, FdfP, FdfS, GdfP, GdfS;
 			double uRP, uRS, A, B, C, D, axP, ayP, axS, ayS;
 			double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES;
-			double tempAnomalyP, tempAnomalyS, circularAnomalyP, circularAnomalyS;
+			double tempAnomalyP, tempAnomalyS, circularAnomalyP, circularAnomalyS, cosRI;
 			double k, h = 1.0;
 
 			circularAnomalyP = tempAnomalyP = trueP;
@@ -225,8 +226,8 @@ double CollisionPair::CalculateMinimumSeparation()
 				tempAnomalyS += k;
 				it++;
 			}
-			trueP = tempAnomalyP;
-			trueS = tempAnomalyS;
+			trueP = TauRange(tempAnomalyP);
+			trueS = TauRange(tempAnomalyS);
 		};
 
 		NewtonSeperation(trueAnomalyP, trueAnomalyS);
@@ -237,8 +238,8 @@ double CollisionPair::CalculateMinimumSeparation()
 	seperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
 
-	primaryElements.SetTrueAnomaly(fmod(trueAnomalyP + Pi, Tau));
-	secondaryElements.SetTrueAnomaly(fmod(trueAnomalyS + Pi, Tau));
+	primaryElements.SetTrueAnomaly(TauRange(trueAnomalyP + Pi));
+	secondaryElements.SetTrueAnomaly(TauRange(trueAnomalyS + Pi));
 
 	if (eP != 0 || eS != 0)
 	{
@@ -250,8 +251,8 @@ double CollisionPair::CalculateMinimumSeparation()
 	if (altSeperation < seperation)
 	{
 		seperation = altSeperation;
-		trueAnomalyP = fmod(trueAnomalyP + Pi, Tau);
-		trueAnomalyS = fmod(trueAnomalyS + Pi, Tau);
+		trueAnomalyP = TauRange(trueAnomalyP + Pi);
+		trueAnomalyS = TauRange(trueAnomalyS + Pi);
 	}
 	approachAnomalyP = trueAnomalyP;
 	approachAnomalyS = trueAnomalyS;
@@ -301,8 +302,8 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 	sinIs = sin(secondary.GetElements().inclination);
 	sinOmDif = sin(primary.GetElements().rightAscension - secondary.GetElements().rightAscension);
 
-	deltaPrimary = asin(cscIr * sinIs * sinOmDif);
-	deltaSecondary = asin(cscIr * sinIp * sinOmDif);
+	deltaPrimary = TauRange(asin(cscIr * sinIs * sinOmDif));
+	deltaSecondary = TauRange(asin(cscIr * sinIp * sinOmDif));
 
 }
 

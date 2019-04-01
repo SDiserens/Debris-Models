@@ -7,6 +7,7 @@ int Event::eventSEQ = 0;
 DebrisPopulation::DebrisPopulation()
 {
 	currentEpoch = startEpoch = 0;
+	populationCount = totalMass = 0;
 }
 
 
@@ -44,7 +45,7 @@ void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 
 DebrisObject& DebrisPopulation::GetObject(long ID)
 {
-	return population[ID];
+	return population.at(ID);
 }
 
 void DebrisPopulation::DecayObject(long ID)
@@ -53,6 +54,7 @@ void DebrisPopulation::DecayObject(long ID)
 	population.erase(ID);
 	tempObject.RemoveObject(0, currentEpoch);
 	removedPopulation.emplace(ID, tempObject);
+	populationCount--;
 }
 
 void DebrisPopulation::ExplodeObject(long ID)
@@ -61,6 +63,7 @@ void DebrisPopulation::ExplodeObject(long ID)
 	population.erase(ID);
 	tempObject.RemoveObject(1, currentEpoch);
 	removedPopulation.emplace(ID, tempObject);
+	populationCount--;
 }
 
 void DebrisPopulation::CollideObject(long ID)
@@ -69,6 +72,7 @@ void DebrisPopulation::CollideObject(long ID)
 	population.erase(ID);
 	tempObject.RemoveObject(2, currentEpoch);
 	removedPopulation.emplace(ID, tempObject);
+	populationCount--;
 }
 
 Event::Event(double epoch, int type, bool consMomentum, bool catastr, double mass)

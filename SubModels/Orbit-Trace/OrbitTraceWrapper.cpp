@@ -27,11 +27,11 @@ int main(int argc, char** argv)
 {
 
 	string arg, scenarioFilename, outputFilename, eventType, metaData;
-	uint64_t evaluationBlocks, evaluationSteps, seed, argseed = -1;
-	int runMode, scalingPower, nObjects;
+	unsigned long evaluationBlocks, evaluationSteps;
+	uint64_t seed, argseed = -1;
+	int scalingPower, nObjects;
 	bool probabilityOutput, relativeGravity, printing, individualOutput;
-	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
-	double averageSemiMajorAxis = 0;
+	double timeStepDays, timeStep, scaling;
 
 	char date[100];
 	int ID = 1;
@@ -49,10 +49,8 @@ int main(int argc, char** argv)
 	scenarioFilename = config["scenarioFilename"].asString();
 	probabilityOutput = config["probabilityOutput"].asBool();
 	relativeGravity = config["relativeGravity"].asBool();
-	runMode = config["runType"].asInt();
-	dimension = config["cubeDimension"].asDouble();
-	evaluationBlocks = config["numberEvaluations"].asUInt64();
-	evaluationSteps = config["stepsPerEvaluation"].asUInt64();
+	evaluationBlocks = config["numberEvaluations"].asUInt();
+	evaluationSteps = config["stepsPerEvaluation"].asUInt();
 	timeStepDays = config["stepSize"].asDouble();
 	printing = config["outputPrinting"].asBool();
 	individualOutput = config["individualOutput"].asBool();
@@ -64,10 +62,6 @@ int main(int argc, char** argv)
 		if ((arg == "-f") || (arg == "--filename"))
 		{
 			scenarioFilename = argv[++i];
-		}
-		else if ((arg == "-d") || (arg == "--dimension"))
-		{
-			dimension = atof(argv[++i]);
 		}
 		else if ((arg == "-b") || (arg == "--blocks"))
 		{
@@ -117,20 +111,10 @@ int main(int argc, char** argv)
 	for (Json::Value objectParameters : scenario["objects"])
 	{
 		DebrisObject tempObject(GenerateDebrisObject(objectParameters));
-		averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
 		objectPopulation.AddDebrisObject(tempObject);
 	}
 	nObjects = scenario["objects"].size();
-	averageSemiMajorAxis /= nObjects;
-	cubeDimension = averageSemiMajorAxis * dimension;
 
-	for (int i = 1; i < argc; ++i) {
-		arg = argv[i];
-		if ((arg == "-c") || (arg == "--cubesize"))
-		{
-			cubeDimension = atof(argv[++i]);
-		}
-	}
 	// Close File
 	cout << " Closing Scenario File..." << endl;
 	scenarioFile.close();
@@ -148,7 +132,7 @@ int main(int argc, char** argv)
 	if (relativeGravity)
 		collisionModel.SwitchGravityComponent();
 
-	int step, eval, k;
+	unsigned int step, eval, k;
 	double tempCollisionRate, blockRatio;
 	vector<double> collisionProbabilities;
 	vector<pair<long, long>> collisionList;
@@ -162,7 +146,7 @@ int main(int argc, char** argv)
 	blockRatio = secondsYear / (evaluationSteps * timeStep);
 	// Call CUBE approach
 	ProgressBar progress(evaluationBlocks * evaluationSteps, '=');
-	cout << "Using a Cube Length of " + to_string(cubeDimension) + "km and " + to_string(evaluationBlocks) + " blocks of " + to_string(evaluationSteps) + " steps." << endl;
+	cout << "Using " + to_string(evaluationBlocks) + " blocks of " + to_string(evaluationSteps) + " steps." << endl;
 
 
 	// Call cube algorithm
@@ -243,8 +227,8 @@ int main(int argc, char** argv)
 	// Write data into file
 	cout << "  Writing to Data File...";
 
-	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + ",km\n" +
-		"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",seconds\n" +
+	metaData = "Scenario : ," + eventType +
+		"\nNumber of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",seconds\n" +
 		"Using a scaling of : ," + to_string(scaling) + "\nCalculated in runtime of : ," + to_string(timeDiff.count()) + ",s";
 
 	if (individualOutput)
@@ -308,7 +292,7 @@ void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopula
 	dataFile << metaData + "\n";
 	dataFile << "\n";
 
-	int i, tempCount = 0;
+	unsigned int i, tempCount = 0;
 	double tempRate = 0;
 	pair<long, long> pairID;
 
@@ -364,7 +348,7 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 	*/
 
 	// Write data to file
-	int i;
+	unsigned int i;
 	double tempRate;
 	string collisionName, collisionID;
 	pair<long, long> pairID;

@@ -1,0 +1,66 @@
+{
+  "centralBody": 5, // 0: Sol, 3: Earth, 5: Jupiter
+  "outputScaling" :  10, // collision probabilities of the order of 10^(-outputScaling)
+  "objects": [
+    {
+      "name": "Himalia",
+      "mass": 4.2e18,
+      "radius": 85000,
+      "length": 85000,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 11470000,
+        "e": 0.15780296425457715,
+        "i": 0.48171087355043496,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Elara",
+      "mass": 8.7e17,
+      "radius": 40000,
+      "length": 40000,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 11740000,
+        "e": 0.206984667802385,
+        "i": 0.4328416544945937,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Lysithea",
+      "mass": 6.3e16,
+      "radius": 8000,
+      "length": 8000,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 11710000,
+        "e": 0.12980358667805295,
+        "i": 0.5061454830783556,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Leda",
+      "mass": 1.1e16,
+      "radius": 3000,
+      "length": 3000,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 11110000,
+        "e": 0.14581458145814583,
+        "i": 0.4660029102824859,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    }
+  ]
+}

@@ -37,7 +37,7 @@ double OrbitalAnomalies::EccentricToMeanAnomaly(double eA, double eccentricity)
 {
 	double tempAnomaly;
 	tempAnomaly = eA - eccentricity * sin(eA);
-	return fmod(tempAnomaly, Tau);
+	return TauRange(tempAnomaly);
 
 }
 
@@ -84,7 +84,7 @@ double OrbitalAnomalies::MeanToEccentricAnomaly(double mA, double eccentricity)
 
 		it++;
 	}
-	return fmod(tempAnomaly, Tau);
+	return TauRange(tempAnomaly);
 }
 
 double OrbitalAnomalies::MeanToTrueAnomaly(double mA, double eccentricity)

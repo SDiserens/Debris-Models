@@ -83,3 +83,5 @@ double randomNumber(double max);
 double randomNumber(double min, double max);
 double randomNumberTau();
 double randomNumberPi();
+double TauRange(double n);
+double PiRange(double n);
