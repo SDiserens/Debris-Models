@@ -160,8 +160,8 @@ double CollisionPair::CalculateMinimumSeparation()
 	OrbitalElements primaryElements(primary.GetElements());
 	OrbitalElements secondaryElements(secondary.GetElements());
 
-	trueAnomalyP = deltaPrimary - primaryElements.argPerigee;
-	trueAnomalyS = deltaSecondary - secondaryElements.argPerigee;
+	trueAnomalyP = TauRange(deltaPrimary - primaryElements.argPerigee);
+	trueAnomalyS = TauRange(deltaSecondary - secondaryElements.argPerigee);
 	eP = primaryElements.eccentricity;
 	eS = secondaryElements.eccentricity;
 	auto NewtonSeperation = [](double &trueP, double &trueS) {};
@@ -286,24 +286,41 @@ void CollisionPair::CalculateRelativeInclination()
 	*/
 	vector3D hP = primary.GetNormalVector();
 	vector3D hS = secondary.GetNormalVector();
-	double k = hP.VectorDotProduct(hS);
+	double k = hP.VectorCrossProduct(hS).vectorNorm();
 
-	relativeInclination = acos(k);
+	relativeInclination = asin(k);
 }
 
 
 void CollisionPair::CalculateArgumenstOfIntersection()
 {
 	// Arguments of intersection
-	double cscIr, sinIp, sinIs, sinOmDif;
+	double cscIr, sinIp, sinIs, cosIp, cosIs, sinOmDif, cosOmDif, XP, XS, YP, YS;
 
 	cscIr = 1 / sin(relativeInclination);
 	sinIp = sin(primary.GetElements().inclination);
+	cosIp = cos(primary.GetElements().inclination);
 	sinIs = sin(secondary.GetElements().inclination);
+	cosIs = cos(secondary.GetElements().inclination);
 	sinOmDif = sin(primary.GetElements().rightAscension - secondary.GetElements().rightAscension);
+	cosOmDif = cos(primary.GetElements().rightAscension - secondary.GetElements().rightAscension);
 
-	deltaPrimary = TauRange(asin(cscIr * sinIs * sinOmDif));
-	deltaSecondary = TauRange(asin(cscIr * sinIp * sinOmDif));
+	XP = cscIr*(sinIp*cosIs - sinIs*cosIp*cosOmDif);
+	XS = cscIr*(sinIp*cosIs*cosOmDif - sinIs*cosIp);
+	YP = cscIr * sinIs * sinOmDif;
+	YS = cscIr * sinIp * sinOmDif;
+
+	deltaPrimary = asin(YP);
+	if (XP < 0)
+		deltaPrimary = Pi - deltaPrimary;
+	else if (YP < 0)
+		deltaPrimary += Tau;
+
+	deltaSecondary = asin(YS);
+	if (XS < 0)
+		deltaSecondary = Pi - deltaSecondary;
+	else if (YS < 0)
+		deltaSecondary += Tau;
 
 }
 

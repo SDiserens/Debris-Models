@@ -69,7 +69,7 @@ double TauRange(double n)
 {
 	n = fmod(n, Tau);
 	if (n < 0)
-		n = Tau - n;
+		n = Tau + n;
 
 	return n;
 }
