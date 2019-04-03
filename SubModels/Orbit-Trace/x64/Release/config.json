@@ -6,6 +6,6 @@
   "individualOutput": false, // true or false to store pair specific collision rates
   "stepSize": 1, // size of timestep in days
   "randomSeed": null, // integer seed value or null to use system time
-  "numberEvaluations": 1e4, // Number of timesteps to be evaluated
-  "stepsPerEvaluation": 1 // Number of evaluations per section - sensible size is 365
+  "numberEvaluations": 1e5, // Number of timesteps to be evaluated
+  "stepsPerEvaluation": 3650 // Number of evaluations per section - sensible size is 365
 }

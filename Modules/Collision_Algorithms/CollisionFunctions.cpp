@@ -219,7 +219,7 @@ double CollisionPair::CalculateMinimumSeparation()
 
 
 				h = (F * GdfS - G * FdfS) / (FdfS*GdfP - FdfP*GdfS);
-				k = (G * GdfP - F * FdfP) / (FdfS*GdfP - FdfP*GdfS);
+				k = (G * FdfP - F * GdfP) / (FdfS*GdfP - FdfP*GdfS);
 
 				// Update values
 				tempAnomalyP += h;
