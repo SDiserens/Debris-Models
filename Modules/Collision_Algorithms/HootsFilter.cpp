@@ -74,7 +74,7 @@ vector<double> HootsFilter::GetCollisionTimes()
 	return collisionTimes;
 }
 
-double HootsFilter::CollisionRate(DebrisObject & objectI, DebrisObject & objectJ)
+double HootsFilter::CollisionRate(CollisionPair &objectPair)
 {
 	return 0.0;
 }

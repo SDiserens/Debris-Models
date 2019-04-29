@@ -1,18 +1,10 @@
 // OrbitTrace.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-
-
-// CUBE.cpp : Defines the entry point for the console application.
-//
 
 #include "stdafx.h"
 #include "Modules/Collision_Algorithms/OrbitTrace.h"
 #include <json\json.h>
-
-
-
 
 void RandomiseOrbitOrientations(DebrisPopulation& population);
 void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
