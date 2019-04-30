@@ -158,12 +158,15 @@ int main(int argc, char** argv)
 			progress.DisplayProgress(eval * evaluationSteps + step);
 		}
 		// Store collision data
-		collisionProbabilities = collisionModel.GetNewCollisionProbabilities(); // TODO - Change to use Times
+		
 		collisionList = collisionModel.GetNewCollisionList();
 
-		for (k = 0; k < collisionProbabilities.size(); k++)
+		for (k = 0; k < collisionList.size(); k++)
 		{
-			tempCollisionRate = scaling * collisionProbabilities[k] * blockRatio;// TODO - Change to use Times
+			//tempCollisionRate = scaling * collisionProbabilities[k] * blockRatio;
+			// TODO - Change to use numer of collisions/Times
+			tempCollisionRate = 1 * blockRatio;
+
 			totalCollisionRates[collisionList[k]] = totalCollisionRates[collisionList[k]] + tempCollisionRate;
 			totalCollisionCount[collisionList[k]] = totalCollisionCount[collisionList[k]] + 1;
 			collisionRates[eval][collisionList[k]] = collisionRates[eval][collisionList[k]] + tempCollisionRate;
