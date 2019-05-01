@@ -14,6 +14,7 @@ const double massSol = 1.989e30;  // Mass of sun in Kg
 const double massEarth = 5.972e24;  // Mass of earth in Kg
 const double massJupiter = 1.898e27;  // Mass of jupiter in Kg
 
+const double radiusEarth = 6378137; // in m
 const double GravitationalConstant = 6.67408e-20;    // Gravitational constant(km ^ 3 kg^-1 s^-2)
 
 extern double muGravity;    // Combined for simplicity

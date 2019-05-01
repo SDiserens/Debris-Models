@@ -70,6 +70,16 @@ double OrbitalElements::GetEccentricAnomaly()
 	return anomalies.GetEccentricAnomaly(eccentricity);
 }
 
+void OrbitalElements::UpdateOrbitalElements(double deltaSMA = 0, double deltaEcc = 0, double deltaInc = 0, double deltaRA = 0, double deltaAP = 0)
+{
+	semiMajorAxis += deltaSMA;
+	eccentricity += deltaEcc;
+	inclination += deltaInc;
+	rightAscension += deltaRA;
+	argPerigee += deltaAP;
+	anomaliesSynced = false;
+}
+
 void OrbitalElements::SetOrbitalElements(double a, double e, double i, double ra, double ap)
 {
 	semiMajorAxis = a;

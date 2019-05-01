@@ -37,6 +37,12 @@
     <Filter Include="Header Files\03 Fragmentation">
       <UniqueIdentifier>{e6b7ad93-cdcc-4295-8999-36acb42152b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\05 Propagators">
+      <UniqueIdentifier>{b2562c06-2974-471e-91ec-d17adefec9b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\05 Propagators">
+      <UniqueIdentifier>{c1820f57-0ec7-460b-b169-949e4ab8bea5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -87,6 +93,12 @@
     <ClInclude Include="Modules\Collision_Algorithms\HootsFilter.h">
       <Filter>Header Files\04 Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\Propagators\Analytical\Analytic_J2.h">
+      <Filter>Header Files\05 Propagators</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\Propagators\Propagator.h">
+      <Filter>Header Files\05 Propagators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp">
@@ -130,6 +142,12 @@
     </ClCompile>
     <ClCompile Include="Modules\Collision_Algorithms\HootsFilter.cpp">
       <Filter>Source Files\04 Collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\Propagators\Analytical\Analytic_J2.cpp">
+      <Filter>Source Files\05 Propagators</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\Propagators\Propagator.cpp">
+      <Filter>Source Files\05 Propagators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

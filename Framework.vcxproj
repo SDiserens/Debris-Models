@@ -151,6 +151,8 @@
     <ClInclude Include="Modules\Fragmentation_Models\fragmentation.h" />
     <ClInclude Include="Modules\Fragmentation_Models\FragmentCloud.h" />
     <ClInclude Include="Modules\Fragmentation_Models\NSBM.h" />
+    <ClInclude Include="Modules\Propagators\Analytical\Analytic_J2.h" />
+    <ClInclude Include="Modules\Propagators\Propagator.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -169,6 +171,8 @@
     <ClCompile Include="Modules\Fragmentation_Models\FragmentCloud.cpp" />
     <ClCompile Include="Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp" />
     <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="Modules\Propagators\Analytical\Analytic_J2.cpp" />
+    <ClCompile Include="Modules\Propagators\Propagator.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
