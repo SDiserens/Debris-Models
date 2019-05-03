@@ -1,0 +1,85 @@
+{"Grid":{
+  "MJD": {
+    "start":   58256,
+    "end":     58257,
+    "points": 1
+    },
+  
+  "SMA": {
+    "start":   6871,
+    "end":     6971,
+    "points": 1
+    },
+  
+  "ECC": {
+    "start":   0,
+    "end":     0.2,
+    "points": 3200
+    },
+  
+  "INC": {
+    "start":   80,
+    "end":     82,
+    "points": 1
+    },
+  
+  "RAAN": {
+    "start":   0,
+    "end":     180,
+    "points": 1
+    },
+  
+  "AOP": {
+    "start":   0,
+    "end":     180,
+    "points": 1
+    },
+  
+  "MA": {
+    "start":   0,
+    "end":     180,
+    "points": 1
+    }
+  },
+
+  "Model":{
+    "NS gravity": {
+      "Flag": true,
+      "Degree": 7,
+      "Order": 7
+    },
+    
+    "Drag":{
+      "Flag": true,
+      "Model": "MSIS00",
+      "Solar flux": "Variable"
+    },
+
+    "Lunisolar":{
+      "Sun": true,
+      "Moon": true,
+      "Ephemerides": "DE431"
+    },
+    
+    "SRP":{
+      "Flag": false,
+      "Eclipses": true
+    }
+
+  },
+
+  "Spacecraft":{
+    "Mass": 100,
+    "Drag area": 1,
+    "SRP area": 1,
+    "CD": 2.0,
+    "CR": 1.1
+  },
+
+  "Integration":{
+    "Tolerance": 1E-8,
+    "Duration": 1.5,
+    "Step": 1,
+    "Equations": 3
+  }
+}

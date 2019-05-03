@@ -1,0 +1,27 @@
+# THALASSA - PHYSICAL PARAMETERS
+# Contains default values for the physical parameters to be used in Thalassa.
+# The values of the physical parameters are taken from the STELA 3.0 propagation
+# model, except the lunar and solar radii which are from Seidelmann (Explanatory
+# Supplement, 1992) cited in Vallado (Fundamentals of Astrodynamics, 2013).
+# ==============================================================================
+
+# Astronomical unit [km]
+1.49598022291E+08
+# Gravitational parameters of the Sun, Moon. [km^3/s^2]
+1.3271244001800E+11
+4.9027779000000E+03
+# Radii of the Sun, Moon [km]
+6.9600000000000E+05
+1.7380000000000E+03
+# Solar radiation pressure at 1 au [N/m^2]
+0.4560500000000E-05
+# Observed solar flux @ 10.7cm (F10.7, constant) [SFU]
+140.00000000000E+00
+# Geomagnetic planetary index Kp (constant)
+3.0000000000000E+00
+# Geomagnetic planetary amplitude Ap (constant, has to be consistent w/ Kp)
+1.5000000000000E+01
+# Re-entry altitude [km]
+120.00000000000E+00
+# Cut-off altitude for drag [km]
+2500.0000000000E+00

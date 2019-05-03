@@ -1,0 +1,12 @@
+# Compiled files
+*.o
+*.x
+# Fortran module files
+*.mod
+# Outputs
+*.log
+fort.*
+.vscode
+dp_run_batch
+.DS_Store
+__pycache__

@@ -1,0 +1,10 @@
+KPL/MK
+\begindata
+    PATH_VALUES     = ( '/Users/epicurus/Documents/Codes/SPICE/kernels' )
+    PATH_SYMBOLS    = ( 'KERNELS'                    )
+    KERNELS_TO_LOAD = (
+        '$KERNELS/naif0012.tls',
+        '$KERNELS/gm_de431.tpc',
+        '$KERNELS/de431_part-1.bsp',
+        '$KERNELS/de431_part-2.bsp',
+                      )
