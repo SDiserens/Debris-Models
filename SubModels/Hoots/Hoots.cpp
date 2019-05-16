@@ -6,6 +6,7 @@
 #include <json\json.h>
 
 void RandomiseOrbitOrientations(DebrisPopulation& population);
+void RandomiseMeanAnomalies(DebrisPopulation& population);
 void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
 	vector<map<pair<long, long>, double>>& collisionRates, vector<map<pair<long, long>, int>>& collisionCount, int scalingPower);
 void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
@@ -150,7 +151,7 @@ int main(int argc, char** argv)
 			start = std::chrono::system_clock::now();
 			//Randomise variables
 			RandomiseOrbitOrientations(objectPopulation);
-			//TODO - Randomise mean anomaly?
+			RandomiseMeanAnomalies(objectPopulation);
 			//Call Collision check
 			collisionModel.MainCollision(objectPopulation, timeStep);
 			end = std::chrono::system_clock::now();
@@ -164,7 +165,7 @@ int main(int argc, char** argv)
 		for (k = 0; k < collisionList.size(); k++)
 		{
 			//tempCollisionRate = scaling * collisionProbabilities[k] * blockRatio;
-			// TODO - Change to use numer of collisions/Times
+			// use numer of collisions/Times
 			tempCollisionRate = 1 * blockRatio;
 
 			totalCollisionRates[collisionList[k]] = totalCollisionRates[collisionList[k]] + tempCollisionRate;
@@ -235,6 +236,13 @@ int main(int argc, char** argv)
 	// END
 }
 
+
+
+void RandomiseMeanAnomalies(DebrisPopulation& population)
+{
+	for (auto& debris : population.population)
+		debris.second.SetMeanAnomaly(randomNumberTau());
+}
 
 void RandomiseOrbitOrientations(DebrisPopulation& population)
 {

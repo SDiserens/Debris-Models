@@ -70,7 +70,7 @@ double OrbitalElements::GetEccentricAnomaly()
 	return anomalies.GetEccentricAnomaly(eccentricity);
 }
 
-void OrbitalElements::UpdateOrbitalElements(double deltaSMA = 0, double deltaEcc = 0, double deltaInc = 0, double deltaRA = 0, double deltaAP = 0)
+void OrbitalElements::UpdateOrbitalElements(double deltaSMA, double deltaEcc, double deltaInc, double deltaRA, double deltaAP)
 {
 	semiMajorAxis += deltaSMA;
 	eccentricity += deltaEcc;

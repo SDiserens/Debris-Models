@@ -6,8 +6,10 @@ int Event::eventSEQ = 0;
 
 DebrisPopulation::DebrisPopulation()
 {
-	currentEpoch = startEpoch = 0;
-	populationCount = totalMass = 0;
+	currentEpoch = 0;
+	startEpoch = 0;
+	populationCount = 0;
+	totalMass = 0;
 }
 
 
@@ -22,7 +24,8 @@ double DebrisPopulation::GetEpoch()
 
 void DebrisPopulation::InitialiseEpoch(double epoch)
 {
-	currentEpoch = startEpoch = epoch;
+	currentEpoch = epoch;
+	startEpoch = epoch;
 }
 
 void DebrisPopulation::UpdateEpoch(double timeStep)
