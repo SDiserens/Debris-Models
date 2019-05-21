@@ -270,6 +270,13 @@ void DebrisObject::UpdateArgP(double argPerigee)
 	positionSync = velocitySync = false;
 }
 
+void DebrisObject::RandomiseMeanAnomaly()
+{
+	double M = randomNumberTau();
+	SetMeanAnomaly(M);
+	meanAnomalyEpoch = M;
+}
+
 void DebrisObject::SetMeanAnomaly(double M)
 {
 	elements.SetMeanAnomaly(M);

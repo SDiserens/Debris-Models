@@ -2,10 +2,11 @@
 #include "HootsFilter.h"
 
 
-HootsFilter::HootsFilter(double init_conjThreshold, double init_collThreshold)
+HootsFilter::HootsFilter(bool times, double init_conjThreshold, double init_collThreshold)
 {
 	conjunctionThreshold = init_conjThreshold;
 	collisionThreshold = init_collThreshold;
+	outputTimes = times;
 }
 
 void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)

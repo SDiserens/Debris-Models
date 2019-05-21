@@ -21,7 +21,9 @@ int main(int argc, char** argv)
 	uint64_t seed, argseed = -1;
 	int scalingPower, nObjects;
 	bool probabilityOutput, relativeGravity, printing, individualOutput;
-	double timeStepDays, timeStep, scaling;
+	double timeStepDays, timeStep, scaling, dimension, threshold, collThreshold;
+	double averageSemiMajorAxis = 0;
+	double averageRadius = 0;
 
 	char date[100];
 	int ID = 1;
@@ -44,6 +46,7 @@ int main(int argc, char** argv)
 	timeStepDays = config["stepSize"].asDouble();
 	printing = config["outputPrinting"].asBool();
 	individualOutput = config["individualOutput"].asBool();
+	dimension = config["cubeDimension"].asDouble();
 	timeStep = timeStepDays * secondsDay;
 
 	// Parse command line arguments
@@ -101,9 +104,13 @@ int main(int argc, char** argv)
 	for (Json::Value objectParameters : scenario["objects"])
 	{
 		DebrisObject tempObject(GenerateDebrisObject(objectParameters));
+		averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
+		averageRadius += tempObject.GetRadius();
 		objectPopulation.AddDebrisObject(tempObject);
 	}
 	nObjects = scenario["objects"].size();
+	averageSemiMajorAxis /= nObjects;
+	averageRadius /= nObjects;
 
 	// Close File
 	cout << " Closing Scenario File..." << endl;
@@ -117,8 +124,10 @@ int main(int argc, char** argv)
 		SeedRNG(seed);
 	}
 
+	threshold = averageSemiMajorAxis * dimension;
+	collThreshold = averageRadius;
 	// Create Hoots object
-	HootsFilter collisionModel(probabilityOutput);
+	HootsFilter collisionModel(probabilityOutput, threshold, collThreshold);
 	if (relativeGravity)
 		collisionModel.SwitchGravityComponent();
 
@@ -241,7 +250,7 @@ int main(int argc, char** argv)
 void RandomiseMeanAnomalies(DebrisPopulation& population)
 {
 	for (auto& debris : population.population)
-		debris.second.SetMeanAnomaly(randomNumberTau());
+		debris.second.RandomiseMeanAnomaly();
 }
 
 void RandomiseOrbitOrientations(DebrisPopulation& population)

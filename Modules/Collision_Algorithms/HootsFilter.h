@@ -12,7 +12,7 @@ protected:
 	vector<double> collisionTimes;
 
 public:
-	HootsFilter(double init_conjThreshold=10, double init_collThreshold=0.1);
+	HootsFilter(bool times = false, double init_conjThreshold=10, double init_collThreshold=0.1);
 	void MainCollision(DebrisPopulation& population, double timestep);
 	vector<double> GetNewCollisionTimes();
 	vector<double> GetCollisionTimes();

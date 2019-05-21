@@ -51,6 +51,7 @@ public:
 
 	void UpdateRAAN(double rightAscension);
 	void UpdateArgP(double argPerigee);
+	void RandomiseMeanAnomaly();
 	void SetMeanAnomaly(double M);
 	void SetTrueAnomaly(double v);
 	void SetEccentricAnomaly(double E);
