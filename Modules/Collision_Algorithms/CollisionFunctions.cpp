@@ -21,6 +21,7 @@ vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popu
 		{
 			/// Add pair to list
 			//DebrisObject& primaryObject(population.Ge), secondaryObject;
+			//TODO - Add in Per-Apogee filter
 			pairList.push_back(CollisionPair(it->second, jt->second));
 		}
 	}
@@ -154,7 +155,7 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 	return secondary.GetVelocity();
 }
 
-double CollisionPair::CalculateMinimumSeparation()
+double CollisionPair::CalculateMinimumSeparation() // TODO - Implement test case
 {
 	double trueAnomalyP, trueAnomalyS, seperation, altSeperation, eP, eS;
 	OrbitalElements primaryElements(primary.GetElements());
@@ -327,6 +328,7 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 {
 	// TODO Coplanar Arguments of intersection
+	// (Rate of change of seperations?)
 	deltaPrimary = 0;
 	deltaSecondary = 0;
 }

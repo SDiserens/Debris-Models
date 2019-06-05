@@ -1,9 +1,9 @@
 {
-  "scenarioFilename": "JovianMoons.json", // "JovianMoons.json", "Asteroids.json", "Planetesimals.json",
+  "scenarioFilename": "SimpleSatellites.json", // "JovianMoons.json", "Asteroids.json", "Planetesimals.json", "SimpleSatellites.json", 
   "probabilityOutput": 1, // Boolian 0 or 1 to switch probability output on/off
-  "relativeGravity": 1, // Boolian 0 or 1 to swithc use of relative gravity between objects
+  "relativeGravity": 0, // Boolian 0 or 1 to swithc use of relative gravity between objects
   "outputPrinting": true, // true or false to print output rates
-  "individualOutput": false, // true or false to store pair specific collision rates
+  "individualOutput": true, // true or false to store pair specific collision rates
   "stepSize": 1, // size of timestep in days
   "randomSeed": null, // integer seed value or null to use system time
   "numberEvaluations": 1e4, // Number of timesteps to be evaluated

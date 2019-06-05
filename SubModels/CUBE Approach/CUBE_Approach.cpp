@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	string arg, scenarioFilename, outputFilename, eventType, metaData;
 	uint64_t evaluationBlocks, evaluationSteps, seed, argseed = -1;
 	int runMode, scalingPower, nObjects;
-	bool probabilityOutput, relativeGravity, printing, individualOutput;
+	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits;
 	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
 	double averageSemiMajorAxis = 0;
 
@@ -50,6 +50,7 @@ int main(int argc, char** argv)
 	timeStepDays = config["stepSize"].asDouble();
 	printing = config["outputPrinting"].asBool();
 	individualOutput = config["individualOutput"].asBool();
+	randomiseOrbits = config["randomiseOrbits"].asBool();
 	timeStep = timeStepDays * secondsDay;
 
 	// Parse command line arguments
@@ -170,7 +171,8 @@ int main(int argc, char** argv)
 		{
 			start = std::chrono::system_clock::now();
 			//Randomise variables
-			RandomiseOrbitOrientations(objectPopulation);
+			if (randomiseOrbits)
+				RandomiseOrbitOrientations(objectPopulation);
 			//Call Collision check
 			collisionCube.MainCollision(objectPopulation, timeStep);
 			end = std::chrono::system_clock::now();

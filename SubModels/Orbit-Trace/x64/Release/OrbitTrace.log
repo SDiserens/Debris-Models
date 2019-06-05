@@ -3,14 +3,13 @@
   OrbitTrace.cpp
   DebrisObject.cpp
   DebrisPopulation.cpp
-..\..\Utilities\DebrisPopulation.cpp(10): warning C4244: '=': conversion from 'double' to 'long', possible loss of data
   OrbitalAnomalies.cpp
   OrbitalElements.cpp
   OrbitalUtilities.cpp
   OrbitTraceWrapper.cpp
   Generating code
-  135 of 1645 functions ( 8.2%) were compiled, the rest were copied from previous compilation.
-    5 functions were new in current compilation
-    40 functions had inline decision re-evaluated but remain unchanged
+  39 of 1645 functions ( 2.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    7 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   OrbitTrace.vcxproj -> E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Release\OrbitTrace.exe

@@ -135,9 +135,19 @@ vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep
 	if (timeWindowSecondary[3] < timeWindowSecondary[2])
 		timeWindowSecondary[3] += periodS;
 		*/
-	// When calling time-windows function need to do 4 times, once for each window for each object
-	timeWindowsP = CalculateTimeWindows(pair<double, double> {timeWindowPrimary[0], timeWindowPrimary[1]}, pair<double, double> {timeWindowPrimary[2], timeWindowPrimary[3]}, periodP);
-	timeWindowsS = CalculateTimeWindows(pair<double, double> {timeWindowSecondary[0], timeWindowSecondary[1]}, pair<double, double> {timeWindowSecondary[2], timeWindowSecondary[3]}, periodS);
+		// When calling time-windows function need to do 4 times, once for each window for each object
+	if (timeWindowPrimary.size() == 2)
+	{
+
+		timeWindowsP = CalculateTimeWindows(pair<double, double> {timeWindowPrimary[0], timeWindowPrimary[1]}, periodP);
+		timeWindowsS = CalculateTimeWindows(pair<double, double> {timeWindowSecondary[0], timeWindowSecondary[1]}, periodS);
+	}
+	else if (timeWindowPrimary.size() == 4)
+	{
+
+		timeWindowsP = CalculateTimeWindows(pair<double, double> {timeWindowPrimary[0], timeWindowPrimary[1]}, pair<double, double> {timeWindowPrimary[2], timeWindowPrimary[3]}, periodP);
+		timeWindowsS = CalculateTimeWindows(pair<double, double> {timeWindowSecondary[0], timeWindowSecondary[1]}, pair<double, double> {timeWindowSecondary[2], timeWindowSecondary[3]}, periodS);
+	}
 
 	int i = 0;
 	for (pair<double, double> window : timeWindowsP)
@@ -238,6 +248,26 @@ vector<pair<double, double>>  HootsFilter::CalculateTimeWindows(pair<double, dou
 		window.second += period;
 		window2.first += period;
 		window2.second += period;
+	}
+
+	if (window.first < timeStep)
+	{
+		window.second = timeStep;
+		windowList.push_back(window);
+	}
+	return windowList;
+}
+
+vector<pair<double, double>>  HootsFilter::CalculateTimeWindows(pair<double, double> window, double period)
+{
+	vector<pair<double, double>> windowList;
+	// Time windows
+	while (window.second < timeStep)
+	{
+		windowList.push_back(window);
+
+		window.first += period;
+		window.second += period;
 	}
 
 	if (window.first < timeStep)

@@ -1,15 +1,3 @@
-﻿  stdafx.cpp
-  Hoots.cpp
-  OrbitalUtilities.cpp
-  OrbitalElements.cpp
-  OrbitalAnomalies.cpp
-  DebrisPopulation.cpp
-  DebrisObject.cpp
-  HootsFilter.cpp
-  CollisionFunctions.cpp
-  Generating Code...
-jsoncpp.lib(json_reader.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_reader.obj)' or at 'E:\Work\Modelling Framework\SubModels\Hoots\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_value.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_value.obj)' or at 'E:\Work\Modelling Framework\SubModels\Hoots\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_writer.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_writer.obj)' or at 'E:\Work\Modelling Framework\SubModels\Hoots\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
+﻿  HootsFilter.cpp
   Hoots.vcxproj -> E:\Work\Modelling Framework\SubModels\Hoots\x64\Debug\Hoots.exe
   Hoots.vcxproj -> E:\Work\Modelling Framework\SubModels\Hoots\x64\Debug\Hoots.pdb (Partial PDB)

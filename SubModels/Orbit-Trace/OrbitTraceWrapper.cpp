@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 	unsigned long evaluationBlocks, evaluationSteps;
 	uint64_t seed, argseed = -1;
 	int scalingPower, nObjects;
-	bool probabilityOutput, relativeGravity, printing, individualOutput;
+	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits;
 	double timeStepDays, timeStep, scaling;
 
 	char date[100];
@@ -41,6 +41,7 @@ int main(int argc, char** argv)
 	scenarioFilename = config["scenarioFilename"].asString();
 	probabilityOutput = config["probabilityOutput"].asBool();
 	relativeGravity = config["relativeGravity"].asBool();
+	randomiseOrbits = config["randomiseOrbits"].asBool();
 	evaluationBlocks = config["numberEvaluations"].asUInt();
 	evaluationSteps = config["stepsPerEvaluation"].asUInt();
 	timeStepDays = config["stepSize"].asDouble();
@@ -152,7 +153,8 @@ int main(int argc, char** argv)
 		{
 			start = std::chrono::system_clock::now();
 			//Randomise variables
-			RandomiseOrbitOrientations(objectPopulation);
+			if (randomiseOrbits)
+				RandomiseOrbitOrientations(objectPopulation);
 			//Call Collision check
 			collisionModel.MainCollision(objectPopulation, timeStep);
 			end = std::chrono::system_clock::now();
