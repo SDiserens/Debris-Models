@@ -5,6 +5,7 @@
   "randomiseOrbits": 0, // Boolian 0 or 1 to switch randomisation of RAAN and ArgP
   "outputPrinting": true, // true or false to print output rates
   "individualOutput": true, // true or false to store pair specific collision rates
+  "saveOutput": false, // true or false to save to output file
   "cubeDimension": 0.01, // As fraction of average semiMajor Axis
   "stepSize": 1, // size of timestep in days
   "randomSeed": null, // integer seed value or null to use system time

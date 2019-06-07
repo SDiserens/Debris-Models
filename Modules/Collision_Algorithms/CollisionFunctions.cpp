@@ -158,8 +158,8 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 double CollisionPair::CalculateMinimumSeparation() // TODO - Implement test case
 {
 	double trueAnomalyP, trueAnomalyS, seperation, altSeperation, eP, eS;
-	OrbitalElements primaryElements(primary.GetElements());
-	OrbitalElements secondaryElements(secondary.GetElements());
+	OrbitalElements &primaryElements = primary.GetElements();
+	OrbitalElements &secondaryElements = secondary.GetElements();
 
 	trueAnomalyP = TauRange(deltaPrimary - primaryElements.argPerigee);
 	trueAnomalyS = TauRange(deltaSecondary - secondaryElements.argPerigee);
@@ -338,7 +338,7 @@ vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, doub
 	vector<double> anlgeWindows;
 	double circularAnomaly, alpha, aX, aY, Q, Qroot, cosUrMinus, cosUrPlus, windowStart, windowEnd, windowStart2, windowEnd2;
 
-	OrbitalElements elements(object.GetElements());
+	OrbitalElements& elements(object.GetElements());
 	// Calculate Angular Windows
 	circularAnomaly = delta - elements.argPerigee;
 	alpha = elements.semiMajorAxis * (1 - elements.eccentricity * elements.eccentricity) * sin(relativeInclination);

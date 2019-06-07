@@ -47,7 +47,7 @@ public:
 	vector3D GetNormalVector();
 
 	OrbitalAnomalies GetAnomalies();
-	OrbitalElements GetElements();
+	OrbitalElements& GetElements();
 
 	void UpdateRAAN(double rightAscension);
 	void UpdateArgP(double argPerigee);

@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	string arg, scenarioFilename, outputFilename, eventType, metaData;
 	uint64_t evaluationBlocks, evaluationSteps, seed, argseed = -1;
 	int runMode, scalingPower, nObjects;
-	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits;
+	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits, saveOutput;
 	double timeStepDays, timeStep, dimension, cubeDimension, scaling;
 	double averageSemiMajorAxis = 0;
 
@@ -51,6 +51,7 @@ int main(int argc, char** argv)
 	printing = config["outputPrinting"].asBool();
 	individualOutput = config["individualOutput"].asBool();
 	randomiseOrbits = config["randomiseOrbits"].asBool();
+	saveOutput = config["saveOutput"].asBool();
 	timeStep = timeStepDays * secondsDay;
 
 	// Parse command line arguments
@@ -242,12 +243,13 @@ int main(int argc, char** argv)
 	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + ",km\n" + 
 				"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",seconds\n" +
 				"Using a scaling of : ," + to_string(scaling) + "\nCalculated in runtime of : ," + to_string(timeDiff.count()) + ",s";
-
-	if (individualOutput)
-		WriteCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
-	else
-		WriteSystemCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
-
+	if (saveOutput)
+	{
+		if (individualOutput)
+			WriteCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
+		else
+			WriteSystemCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
+	}
 	cout << "Finished\n";
 	// Close file
 	outputFile.close();

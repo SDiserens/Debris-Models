@@ -253,7 +253,7 @@ OrbitalAnomalies DebrisObject::GetAnomalies()
 	return elements.GetAnomalies();
 }
 
-OrbitalElements DebrisObject::GetElements()
+OrbitalElements& DebrisObject::GetElements()
 {
 	return elements;
 }

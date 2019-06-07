@@ -8,8 +8,8 @@
   OrbitalUtilities.cpp
   OrbitTraceWrapper.cpp
   Generating code
-  39 of 1645 functions ( 2.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    7 functions had inline decision re-evaluated but remain unchanged
+  46 of 1645 functions ( 2.8%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    12 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   OrbitTrace.vcxproj -> E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Release\OrbitTrace.exe

@@ -236,14 +236,17 @@ OrbitalAnomalies OrbitalElements::GetAnomalies()
 void OrbitalElements::SetMeanAnomaly(double M)
 {
 	anomalies.SetMeanAnomaly(M);
+	anomaliesSynced = false;
 }
 
 void OrbitalElements::SetTrueAnomaly(double v)
 {
 	anomalies.SetTrueAnomaly(v);
+	anomaliesSynced = false;
 }
 
 void OrbitalElements::SetEccentricAnomaly(double E)
 {
 	anomalies.SetEccentricAnomaly(E);
+	anomaliesSynced = false;
 }
