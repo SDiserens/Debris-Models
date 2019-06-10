@@ -5,6 +5,7 @@
   "randomiseOrbits": 0, // Boolian 0 or 1 to switch randomisation of RAAN and ArgP
   "outputPrinting": true, // true or false to print output rates
   "individualOutput": true, // true or false to store pair specific collision rates
+  "threshold" : 10,
   "stepSize": 1, // size of timestep in days
   "randomSeed": null, // integer seed value or null to use system time
   "numberEvaluations": 1e5, // Number of timesteps to be evaluated

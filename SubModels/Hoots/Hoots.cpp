@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 	timeStepDays = config["stepSize"].asDouble();
 	printing = config["outputPrinting"].asBool();
 	individualOutput = config["individualOutput"].asBool();
-	dimension = config["cubeDimension"].asDouble();
+	threshold = config["threshold"].asDouble();
 	timeStep = timeStepDays * secondsDay;
 
 	// Parse command line arguments
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 		SeedRNG(seed);
 	}
 
-	threshold = averageSemiMajorAxis * dimension;
+	//threshold = averageSemiMajorAxis * dimension;
 	collThreshold = averageRadius;
 	// Create Hoots object
 	HootsFilter collisionModel(probabilityOutput, threshold, collThreshold);

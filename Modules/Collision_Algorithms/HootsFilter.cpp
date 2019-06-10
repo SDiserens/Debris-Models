@@ -40,25 +40,29 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 			candidateTimeList = TimeFilter(objectPair, timeStep);
 		}
 
-		if (candidateTimeList[0] < 0)
+		if (candidateTimeList.size() > 0)
 		{
-			candidateTimeList = CoplanarFilter(objectPair, timeStep);
+			if (candidateTimeList[0] < 0)
+				candidateTimeList = CoplanarFilter(objectPair, timeStep);
 		}
 
-		collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList);
-		if (outputTimes)
+		if (candidateTimeList.size() > 0)
 		{
-			//	-- Store collision probability
-			//collisionTimes.push_back(tempTime);
-			//collisionList.push_back(collisionPair);
-			newCollisionTimes.insert(newCollisionTimes.end(), collisionTimes.begin(), collisionTimes.end());
-			newCollisionList.insert(newCollisionList.end(), collisionTimes.size(), pairID);
-		}
-		else
-		{
-			// Store Collisions 
-			collisionList.push_back(pairID);
-			newCollisionList.push_back(pairID); // Note in this scenario only adds once regardless of number of # potential collisions for pair
+			collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList);
+			if (outputTimes)
+			{
+				//	-- Store collision probability
+				//collisionTimes.push_back(tempTime);
+				//collisionList.push_back(collisionPair);
+				newCollisionTimes.insert(newCollisionTimes.end(), collisionTimes.begin(), collisionTimes.end());
+				newCollisionList.insert(newCollisionList.end(), collisionTimes.size(), pairID);
+			}
+			else
+			{
+				// Store Collisions 
+				collisionList.push_back(pairID);
+				newCollisionList.push_back(pairID); // Note in this scenario only adds once regardless of number of # potential collisions for pair
+			}
 		}
 	}
 }
@@ -78,7 +82,7 @@ double HootsFilter::CollisionRate(CollisionPair &objectPair)
 	return 0.0;
 }
 
-bool HootsFilter::PerigeeApogeeTest(CollisionPair objectPair)
+bool HootsFilter::PerigeeApogeeTest(CollisionPair& objectPair)
 {
 	double maxApogee, minPerigee;
 	// Perigee Apogee Test
@@ -88,15 +92,15 @@ bool HootsFilter::PerigeeApogeeTest(CollisionPair objectPair)
 	return (maxApogee - minPerigee) <= conjunctionThreshold;
 }
 
-bool HootsFilter::GeometricFilter(CollisionPair objectPair)
+bool HootsFilter::GeometricFilter(CollisionPair& objectPair)
 {
 	objectPair.CalculateArgumenstOfIntersection();
 	return objectPair.CalculateMinimumSeparation() <= conjunctionThreshold;
 }
 
-vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep)
+vector<double> HootsFilter::TimeFilter(CollisionPair& objectPair, double timeStep)
 {
-	double time, eP, eS, periodP, periodS, candidateTime;
+	double time, eP, eS, periodP, periodS, candidateTime, lastTime;
 	vector<double> angularWindowPrimary, angularWindowSecondary, timeWindowPrimary, timeWindowSecondary, timeList;
 	vector<pair<double, double>> timeWindowsP, timeWindowsS;
 	// Time Filter
@@ -113,11 +117,15 @@ vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep
 	// Convert to mean anomalies
 	eP = objectPair.primary.GetElements().eccentricity;
 	periodP = objectPair.primary.GetPeriod();
+	lastTime = 0;
 	for (double angle : angularWindowPrimary)
 	{
 		angle = objectPair.primary.GetElements().anomalies.TrueToMeanAnomaly(angle, eP);
 		time = periodP * (angle - objectPair.primary.GetEpochAnomaly()) / Tau;
+		if (time < lastTime)
+			time += periodP;
 		timeWindowPrimary.push_back(time);
+		lastTime = time;
 	}
 	/*
 	if (timeWindowPrimary[3] < timeWindowPrimary[2])
@@ -125,11 +133,15 @@ vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep
 		*/
 	eS = objectPair.secondary.GetElements().eccentricity;
 	periodS = objectPair.secondary.GetPeriod();
+	lastTime = 0;
 	for (double angle : angularWindowSecondary)
 	{
 		angle = objectPair.secondary.GetElements().anomalies.TrueToMeanAnomaly(angle, eS);
 		time = periodP * (angle - objectPair.secondary.GetEpochAnomaly()) / Tau;
+		if (time < lastTime)
+			time += periodS;
 		timeWindowSecondary.push_back(time);
+		lastTime = time;
 	}
 	/*
 	if (timeWindowSecondary[3] < timeWindowSecondary[2])
@@ -160,7 +172,7 @@ vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep
 		}
 
 		// Loop up to matched point in list
-		while (window.first > timeWindowsS[i].first)
+		while (window.first >= timeWindowsS[i].first)
 			{
 				i++;
 				if (i == timeWindowsS.size())
@@ -168,7 +180,16 @@ vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep
 			}
 
 		// Check for overlap
-		if ((i > 0) & (window.first < timeWindowsS[i - 1].second))
+		if (i == 0)
+		{
+			if (window.second > timeWindowsS[i].first)
+			{
+				candidateTime = timeWindowsS[i].first + (window.second - timeWindowsS[i].first) / 2;
+				timeList.push_back(candidateTime);
+			}
+		}
+
+		else if (window.first < timeWindowsS[i - 1].second)
 		{
 			candidateTime = window.first + (timeWindowsS[i - 1].second - window.first) / 2;
 			timeList.push_back(candidateTime);
@@ -184,7 +205,7 @@ vector<double> HootsFilter::TimeFilter(CollisionPair objectPair, double timeStep
 	return timeList;
 }
 
-vector<double> HootsFilter::CoplanarFilter(CollisionPair objectPair, double timeStep)
+vector<double> HootsFilter::CoplanarFilter(CollisionPair& objectPair, double timeStep)
 {
 	// Coplanar Filter
 	double candidateTime, time, rate, previousTime, previousRate, periodP, periodS, interval;
@@ -213,7 +234,7 @@ vector<double> HootsFilter::CoplanarFilter(CollisionPair objectPair, double time
 	return candidateTimeList;
 }
 
-vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair objectPair, vector<double> candidateTimeList)
+vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair& objectPair, vector<double> candidateTimeList)
 {
 	vector<double> collideTimeList;
 	double closeTime;
@@ -278,7 +299,7 @@ vector<pair<double, double>>  HootsFilter::CalculateTimeWindows(pair<double, dou
 	return windowList;
 }
 
-double HootsFilter::CalculateClosestApproachTime(CollisionPair objectPair, double candidateTime)
+double HootsFilter::CalculateClosestApproachTime(CollisionPair& objectPair, double candidateTime)
 {
 	int it = 0;
 	double approachTime, R, Rdot, h = 1.0;
@@ -296,7 +317,7 @@ double HootsFilter::CalculateClosestApproachTime(CollisionPair objectPair, doubl
 	return approachTime;
 }
 
-double HootsFilter::CalculateFirstDerivateSeparation(CollisionPair objectPair, double candidateTime)
+double HootsFilter::CalculateFirstDerivateSeparation(CollisionPair& objectPair, double candidateTime)
 {
 	//1st derivative seperation
 	double rDot;
@@ -312,7 +333,7 @@ double HootsFilter::CalculateFirstDerivateSeparation(CollisionPair objectPair, d
 	return rDot;
 }
 
-double HootsFilter::CalculateSecondDerivativeSeparation(CollisionPair objectPair, double candidateTime)
+double HootsFilter::CalculateSecondDerivativeSeparation(CollisionPair& objectPair, double candidateTime)
 {
 	// 2nd derivative seperation
 	double rDotDot;

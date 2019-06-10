@@ -335,7 +335,7 @@ void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 
 vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, double distance, double delta)
 {
-	vector<double> anlgeWindows;
+	vector<double> angleWindows;
 	double circularAnomaly, alpha, aX, aY, Q, Qroot, cosUrMinus, cosUrPlus, windowStart, windowEnd, windowStart2, windowEnd2;
 
 	OrbitalElements& elements(object.GetElements());
@@ -350,8 +350,8 @@ vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, doub
 		Qroot = sqrt(Q);
 	else
 	{
-		anlgeWindows.push_back(-1.0);
-		return anlgeWindows;
+		angleWindows.push_back(-1.0);
+		return angleWindows;
 	}
 
 	cosUrMinus = (-distance * distance * aX - (alpha - distance * aY) * Qroot) / (Q + distance * distance);
@@ -359,31 +359,41 @@ vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, doub
 
 	if (abs(cosUrMinus) > 1)
 	{
-		anlgeWindows.push_back(-2.0);
-		return anlgeWindows;
+		angleWindows.push_back(-2.0);
+		return angleWindows;
 	}
 
 	else if (abs(cosUrPlus) > 1)
 	{
-		anlgeWindows.push_back(-3.0);
-		return anlgeWindows;
+		angleWindows.push_back(-3.0);
+		return angleWindows;
 	}
 
 
-	windowStart = acos(cosUrMinus);
 	windowEnd = acos(cosUrPlus);
-	if (windowEnd < windowStart)
-	{
-		// check for singular case where close approach at perigee
-		windowStart -= Tau;
-		anlgeWindows.insert(anlgeWindows.end(), { windowStart, windowEnd });
-	}
-	else
-	{
-		windowStart2 = Tau - windowEnd;
-		windowEnd2 = Tau - windowStart;
+	windowStart2 = acos(cosUrMinus);
+	windowStart = 0 - windowEnd;
+	windowEnd2 = Tau - windowStart2;
 
-		anlgeWindows.insert(anlgeWindows.end(), { windowStart, windowEnd, windowStart2, windowEnd2 });
+	windowEnd -= circularAnomaly;
+	windowStart2 -= circularAnomaly;
+	windowStart -= circularAnomaly;
+	windowEnd2 -= circularAnomaly;
+
+	if (windowEnd < 0)
+	{
+		windowStart += Tau;
+		windowEnd += Tau;
 	}
-	return anlgeWindows;
+	if (windowEnd2 < 0)
+	{
+		windowStart2 += Tau;
+		windowEnd2 += Tau;
+	}
+
+
+	//TODO - check for singular case where close approach at perige
+	angleWindows.insert(angleWindows.end(), { windowStart, windowEnd, windowStart2, windowEnd2 });
+
+	return angleWindows;
 }
