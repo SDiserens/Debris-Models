@@ -2,8 +2,8 @@
 extern mt19937_64 * generator;
 //extern mt19937 * generator;
 
-const double NEWTONMAXITERATIONS = 20;
-const double NEWTONTOLERANCE = 1e-13;
+const double NEWTONMAXITERATIONS = 10;
+const double NEWTONTOLERANCE = 1e-10;
 
 const double Pi = _Pi;
 const double Tau = 2 * _Pi;
@@ -20,6 +20,14 @@ const double GravitationalConstant = 6.67408e-20;    // Gravitational constant(k
 extern double muGravity;    // Combined for simplicity
 
 //unsigned int KISS();
+
+class NewtonConvergenceException : public exception
+{
+	virtual const char* what() const throw()
+	{
+		return "Newton Method failed to converge";
+	}
+} ;
 
 class ProgressBar
 {

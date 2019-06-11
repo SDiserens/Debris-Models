@@ -49,6 +49,7 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 		if (candidateTimeList.size() > 0)
 		{
 			collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList);
+			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 			if (outputTimes)
 			{
 				//	-- Store collision probability
@@ -243,7 +244,7 @@ vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair& objectPair, v
 	{
 		closeTime = CalculateClosestApproachTime(objectPair, candidateTime);
 
-		if ((objectPair.GetBoundingRadii() + collisionThreshold) > objectPair.CalculateSeparationAtTime(closeTime))
+		if (0.001 * (objectPair.GetBoundingRadii() + collisionThreshold) > objectPair.CalculateSeparationAtTime(closeTime))
 			collideTimeList.push_back(closeTime);
 	}
 	return collideTimeList;
@@ -314,6 +315,9 @@ double HootsFilter::CalculateClosestApproachTime(CollisionPair& objectPair, doub
 		approachTime -= h;
 		it++;
 	}
+	if (it == NEWTONMAXITERATIONS)
+		throw NewtonConvergenceException();
+
 	return approachTime;
 }
 
@@ -347,8 +351,13 @@ double HootsFilter::CalculateSecondDerivativeSeparation(CollisionPair& objectPai
 	accelerationP = CalculateAcceleration(positionP);
 	accelerationS = CalculateAcceleration(positionS);
 
+	/*
 	rDotDot = velocityP.vectorNorm2() + positionP.vectorNorm() * accelerationP.vectorNorm() + velocityS.vectorNorm2() + positionS.vectorNorm() * accelerationS.vectorNorm()
 		- accelerationP.VectorDotProduct(positionS) - 2 * velocityP.VectorDotProduct(velocityS) - velocityP.VectorDotProduct(accelerationS);
+		*/
+	rDotDot = velocityP.vectorNorm2() + positionP.VectorDotProduct(accelerationP) + velocityS.vectorNorm2() + positionS.VectorDotProduct(accelerationS)
+		- accelerationP.VectorDotProduct(positionS) - 2 * velocityP.VectorDotProduct(velocityS) - positionS.VectorDotProduct(accelerationS);
+
 
 	return rDotDot;
 }

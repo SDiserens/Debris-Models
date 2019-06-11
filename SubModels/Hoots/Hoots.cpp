@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	uint64_t seed, argseed = -1;
 	int scalingPower, nObjects;
 	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits;
-	double timeStepDays, timeStep, scaling, dimension, threshold, collThreshold;
+	double timeStepDays, timeStep, scaling, threshold, collThreshold;
 	double averageSemiMajorAxis = 0;
 	double averageRadius = 0;
 
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
 	}
 
 	//threshold = averageSemiMajorAxis * dimension;
-	collThreshold = averageRadius;
+	collThreshold = averageRadius * 0.001;
 	// Create Hoots object
 	HootsFilter collisionModel(probabilityOutput, threshold, collThreshold);
 	if (relativeGravity)

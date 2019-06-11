@@ -164,7 +164,7 @@ vector3D vector3D::CalculateRelativeVector(vector3D& vectorB) const
 double vector3D::VectorDotProduct(vector3D& vectorB)
 {
 	double product;
-	product = x * vectorB.x + y * vectorB.y + vectorB.z;
+	product = x * vectorB.x + y * vectorB.y + z * vectorB.z;
 	return product;
 }
 

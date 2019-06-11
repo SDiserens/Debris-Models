@@ -227,6 +227,8 @@ double CollisionPair::CalculateMinimumSeparation() // TODO - Implement test case
 				tempAnomalyS += k;
 				it++;
 			}
+			if (it == NEWTONMAXITERATIONS)
+				throw NewtonConvergenceException();
 			trueP = TauRange(tempAnomalyP);
 			trueS = TauRange(tempAnomalyS);
 		};
