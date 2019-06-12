@@ -21,8 +21,10 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 
 	for (CollisionPair& objectPair : pairList)
 	{
+		/* - Moved into CreatePairList
 		if (!PerigeeApogeeTest(objectPair))
 			continue;
+		*/
 
 		objectPair.CalculateRelativeInclination();
 

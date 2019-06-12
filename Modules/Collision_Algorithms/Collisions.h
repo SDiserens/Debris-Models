@@ -36,10 +36,11 @@ class CollisionAlgorithm
 {
 protected:
 	bool relativeGravity = false, outputProbabilities;
-	double elapsedTime, timeStep;
+	double elapsedTime, timeStep, pAThreshold;
 
 protected:
 	vector<CollisionPair> CreatePairList(DebrisPopulation& population);
+	bool PerigeeApogeeTest(CollisionPair & objectPair);
 	vector<double> collisionProbabilities;
 	vector<pair<long, long>> collisionList;
 	vector<double> newCollisionProbabilities;

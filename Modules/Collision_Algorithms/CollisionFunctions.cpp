@@ -21,12 +21,23 @@ vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popu
 		{
 			/// Add pair to list
 			//DebrisObject& primaryObject(population.Ge), secondaryObject;
-			//TODO - Add in Per-Apogee filter
-			pairList.push_back(CollisionPair(it->second, jt->second));
+			CollisionPair pair(it->second, jt->second);
+			if (PerigeeApogeeTest(pair))
+				pairList.push_back(pair);
 		}
 	}
 
 	return pairList;
+}
+
+bool CollisionAlgorithm::PerigeeApogeeTest(CollisionPair& objectPair)
+{
+	double maxApogee, minPerigee;
+	// Perigee Apogee Test
+	minPerigee = min(objectPair.primary.GetPerigee(), objectPair.secondary.GetPerigee());
+	maxApogee = max(objectPair.primary.GetApogee(), objectPair.secondary.GetApogee());
+
+	return (maxApogee - minPerigee) <= pAThreshold;
 }
 
 double CollisionAlgorithm::CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ)
@@ -155,7 +166,7 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 	return secondary.GetVelocity();
 }
 
-double CollisionPair::CalculateMinimumSeparation() // TODO - Implement test case
+double CollisionPair::CalculateMinimumSeparation()
 {
 	double trueAnomalyP, trueAnomalyS, seperation, altSeperation, eP, eS;
 	OrbitalElements &primaryElements = primary.GetElements();
@@ -348,54 +359,66 @@ vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, doub
 	aY = elements.eccentricity * sin(-circularAnomaly);
 	Q = alpha * (alpha - 2 * distance * aY) - (1 - elements.eccentricity * elements.eccentricity) * distance * distance;
 
-	if (Q >= 0)
-		Qroot = sqrt(Q);
-	else
+
+	if (Q < 0)
 	{
+		// Handle  coplanar case
 		angleWindows.push_back(-1.0);
 		return angleWindows;
 	}
+	else if (Q == 0)
+	{
+		// Check for singular case where close approach at perige
+		Qroot = 0;
+		cosUrPlus = -aX;
+	}
+	else
+	{
+		Qroot = sqrt(Q);
+		cosUrMinus = (-distance * distance * aX - (alpha - distance * aY) * Qroot) / (Q + distance * distance);
+		cosUrPlus = (-distance * distance * aX + (alpha - distance * aY) * Qroot) / (Q + distance * distance);
+	}
 
-	cosUrMinus = (-distance * distance * aX - (alpha - distance * aY) * Qroot) / (Q + distance * distance);
-	cosUrPlus = (-distance * distance * aX + (alpha - distance * aY) * Qroot) / (Q + distance * distance);
-
+	// Handle  coplanar case
 	if (abs(cosUrMinus) > 1)
 	{
 		angleWindows.push_back(-2.0);
 		return angleWindows;
 	}
-
 	else if (abs(cosUrPlus) > 1)
 	{
 		angleWindows.push_back(-3.0);
 		return angleWindows;
 	}
 
-
 	windowEnd = acos(cosUrPlus);
-	windowStart2 = acos(cosUrMinus);
 	windowStart = 0 - windowEnd;
-	windowEnd2 = Tau - windowStart2;
 
-	windowEnd -= circularAnomaly;
-	windowStart2 -= circularAnomaly;
 	windowStart -= circularAnomaly;
-	windowEnd2 -= circularAnomaly;
+	windowEnd -= circularAnomaly;
 
 	if (windowEnd < 0)
 	{
 		windowStart += Tau;
 		windowEnd += Tau;
 	}
-	if (windowEnd2 < 0)
-	{
-		windowStart2 += Tau;
-		windowEnd2 += Tau;
-	}
 
+	angleWindows.insert(angleWindows.end(), {windowStart, windowEnd });
+	if (Q != 0)
+		{
+			windowStart2 = acos(cosUrMinus);
+			windowEnd2 = Tau - windowStart2;
+			windowStart2 -= circularAnomaly;
+			windowEnd2 -= circularAnomaly;
 
-	//TODO - check for singular case where close approach at perige
-	angleWindows.insert(angleWindows.end(), { windowStart, windowEnd, windowStart2, windowEnd2 });
+			if (windowEnd2 < 0)
+			{
+				windowStart2 += Tau;
+				windowEnd2 += Tau;
+			}
+
+			angleWindows.insert(angleWindows.end(), {windowStart2, windowEnd2 });
+		}
 
 	return angleWindows;
 }

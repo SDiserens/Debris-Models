@@ -4,9 +4,10 @@
 #include "stdafx.h"
 #include "OrbitTrace.h"
 
-OrbitTrace::OrbitTrace(bool probabilities)
+OrbitTrace::OrbitTrace(bool probabilities, double threshold)
 {
 	outputProbabilities = probabilities;
+	pAThreshold = threshold;
 }
 
 
