@@ -1,0 +1,51 @@
+{
+  "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter
+  "outputScaling" :  5, // collision probabilities of the order of 10^(-outputScaling)
+  "objects": [
+    {
+      "name": "Alice",
+      "mass": 0,
+      "radius": 5,
+      "length": 10,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 6731,
+        "e": 0.0,
+        "i": 0.0,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Bob",
+      "mass": 0,
+      "radius": 5,
+      "length": 10,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 6731,
+        "e": 0.0,
+        "i": 1.0,
+        "Om": 0,
+        "om": 0
+      },
+      "meanAnomaly": 0
+    },
+    {
+      "name": "Charlie",
+      "mass": 0,
+      "radius": 5,
+      "length": 10,
+      "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
+      "orbitalElements": {
+        "a": 6731,
+        "e": 0.0,
+        "i": 1.57079632679,
+        "Om": 1.57079632679,
+        "om": 5.712388980384
+      },
+      "meanAnomaly": 0
+    }
+  ]
+}
