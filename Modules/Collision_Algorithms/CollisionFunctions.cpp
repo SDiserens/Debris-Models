@@ -32,12 +32,12 @@ vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popu
 
 bool CollisionAlgorithm::PerigeeApogeeTest(CollisionPair& objectPair)
 {
-	double maxApogee, minPerigee;
+	double maxPerigee, minApogee;
 	// Perigee Apogee Test
-	minPerigee = min(objectPair.primary.GetPerigee(), objectPair.secondary.GetPerigee());
-	maxApogee = max(objectPair.primary.GetApogee(), objectPair.secondary.GetApogee());
+	maxPerigee = max(objectPair.primary.GetPerigee(), objectPair.secondary.GetPerigee());
+	minApogee = min(objectPair.primary.GetApogee(), objectPair.secondary.GetApogee());
 
-	return (maxApogee - minPerigee) <= pAThreshold;
+	return (maxPerigee - minApogee) <= pAThreshold;
 }
 
 double CollisionAlgorithm::CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ)
@@ -238,6 +238,7 @@ double CollisionPair::CalculateMinimumSeparation()
 				tempAnomalyS += k;
 				it++;
 			}
+			//TODO Handle case where iterations reached
 			if (it == NEWTONMAXITERATIONS)
 				throw NewtonConvergenceException();
 			trueP = TauRange(tempAnomalyP);
@@ -340,10 +341,25 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 
 void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 {
-	// TODO Coplanar Arguments of intersection
+	double cP, cS, A, B, C, Y, X;
+	OrbitalElements &primaryElements = primary.GetElements();
+	OrbitalElements &secondaryElements = secondary.GetElements();
+
+	cP = primaryElements.semiMajorAxis * (1 - primaryElements.eccentricity * primaryElements.eccentricity);
+	cS = secondaryElements.semiMajorAxis * (1 - secondaryElements.eccentricity * secondaryElements.eccentricity);
+
+	A = cP - cS;
+	B = cP * secondaryElements.eccentricity * cos(secondaryElements.argPerigee) - cS * primaryElements.eccentricity * cos(primaryElements.argPerigee);
+	C = cP * secondaryElements.eccentricity * sin(secondaryElements.argPerigee) - cS * primaryElements.eccentricity * sin(primaryElements.argPerigee);
+
+	Y = atan2(C, B);
+
+	X = asin(-A / sqrt(B*B + C*C));
+
+	// TODO - Should there be two output?
 	// (Rate of change of seperations?)
-	deltaPrimary = 0;
-	deltaSecondary = 0;
+	deltaPrimary = deltaSecondary = X - Y;
+	
 }
 
 vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, double distance, double delta)

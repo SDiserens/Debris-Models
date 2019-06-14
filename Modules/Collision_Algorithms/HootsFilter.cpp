@@ -4,7 +4,7 @@
 
 HootsFilter::HootsFilter(bool times, double init_conjThreshold, double init_collThreshold)
 {
-	conjunctionThreshold = init_conjThreshold;
+	conjunctionThreshold = pAThreshold = init_conjThreshold;
 	collisionThreshold = init_collThreshold;
 	outputTimes = times;
 }
@@ -85,15 +85,7 @@ double HootsFilter::CollisionRate(CollisionPair &objectPair)
 	return 0.0;
 }
 
-bool HootsFilter::PerigeeApogeeTest(CollisionPair& objectPair)
-{
-	double maxApogee, minPerigee;
-	// Perigee Apogee Test
-	minPerigee = min(objectPair.primary.GetPerigee(), objectPair.secondary.GetPerigee());
-	maxApogee = max(objectPair.primary.GetApogee(), objectPair.secondary.GetApogee());
 
-	return (maxApogee - minPerigee) <= conjunctionThreshold;
-}
 
 bool HootsFilter::GeometricFilter(CollisionPair& objectPair)
 {
@@ -240,13 +232,13 @@ vector<double> HootsFilter::CoplanarFilter(CollisionPair& objectPair, double tim
 vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair& objectPair, vector<double> candidateTimeList)
 {
 	vector<double> collideTimeList;
-	double closeTime;
+	double closeTime, closeApproach;
 	// Collision Times
 	for (double candidateTime : candidateTimeList)
 	{
 		closeTime = CalculateClosestApproachTime(objectPair, candidateTime);
-
-		if (0.001 * (objectPair.GetBoundingRadii() + collisionThreshold) > objectPair.CalculateSeparationAtTime(closeTime))
+		closeApproach = objectPair.CalculateSeparationAtTime(closeTime);
+		if (closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold) )
 			collideTimeList.push_back(closeTime);
 	}
 	return collideTimeList;

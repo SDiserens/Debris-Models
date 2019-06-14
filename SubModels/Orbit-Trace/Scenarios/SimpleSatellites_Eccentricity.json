@@ -24,7 +24,7 @@
       "length": 10,
       "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
       "orbitalElements": {
-        "a": 10684.79648,
+        "a": 10684.796131,
         "e": 0.370039454424969,
         "i": 1.57079632679,
         "Om": 0,

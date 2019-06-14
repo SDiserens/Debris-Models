@@ -1,12 +1,3 @@
-﻿  stdafx.cpp
-  Hoots.cpp
-  OrbitalUtilities.cpp
-  OrbitalElements.cpp
-  OrbitalAnomalies.cpp
-  DebrisPopulation.cpp
-  DebrisObject.cpp
-  HootsFilter.cpp
-  CollisionFunctions.cpp
-  Generating Code...
+﻿  HootsFilter.cpp
   Hoots.vcxproj -> E:\Work\Modelling Framework\SubModels\Hoots\x64\Debug\Hoots.exe
   Hoots.vcxproj -> E:\Work\Modelling Framework\SubModels\Hoots\x64\Debug\Hoots.pdb (Partial PDB)

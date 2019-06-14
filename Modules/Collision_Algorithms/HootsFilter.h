@@ -20,7 +20,6 @@ public:
 protected:
 	//Primary functions
 	double CollisionRate(CollisionPair &objectPair);
-	bool PerigeeApogeeTest(CollisionPair& objectPair);
 	bool GeometricFilter(CollisionPair& objectPair);
 	vector<double> TimeFilter(CollisionPair& objectPair, double timeStep);
 	vector<double> CoplanarFilter(CollisionPair& objectPair, double timeStep);
