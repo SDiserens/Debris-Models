@@ -258,7 +258,6 @@ double CollisionPair::CalculateMinimumSeparation()
 
 	if (eP != 0 || eS != 0)
 	{
-		//TODO - Check this is working
 		NewtonSeperation(trueAnomalyP, trueAnomalyS);
 	}
 	altSeperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
@@ -341,7 +340,7 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 
 void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 {
-	double cP, cS, A, B, C, Y, X;
+	double cP, cS, A, B, C, X, X2, Yplus, Yminus;
 	OrbitalElements &primaryElements = primary.GetElements();
 	OrbitalElements &secondaryElements = secondary.GetElements();
 
@@ -352,13 +351,16 @@ void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 	B = cP * secondaryElements.eccentricity * cos(secondaryElements.argPerigee) - cS * primaryElements.eccentricity * cos(primaryElements.argPerigee);
 	C = cP * secondaryElements.eccentricity * sin(secondaryElements.argPerigee) - cS * primaryElements.eccentricity * sin(primaryElements.argPerigee);
 
-	Y = atan2(C, B);
+	Yplus = (C + sqrt(C*C + B*B - A*A)) / (A - B);
 
-	X = asin(-A / sqrt(B*B + C*C));
+	Yminus = (C - sqrt(C*C + B*B - A*A)) / (A - B);
 
-	// TODO - Should there be two output?
+	X = 2 * atan(Yplus);
+	X2 = 2 * atan(Yminus);
+
+	// TODO - Handle second output?
 	// (Rate of change of seperations?)
-	deltaPrimary = deltaSecondary = X - Y;
+	deltaPrimary = deltaSecondary = X;
 	
 }
 
