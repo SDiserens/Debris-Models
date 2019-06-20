@@ -252,9 +252,20 @@ double CollisionPair::CalculateMinimumSeparation()
 	secondaryElements.SetTrueAnomaly(trueAnomalyS);
 	seperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
+	// Test second intersection point
+	if (coplanar)
+	{
+		trueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
+		trueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
+	}
+	else
+	{
+		trueAnomalyP = TauRange(trueAnomalyP + Pi);
+		trueAnomalyS = TauRange(trueAnomalyS + Pi);
+	}
 
-	primaryElements.SetTrueAnomaly(TauRange(trueAnomalyP + Pi));
-	secondaryElements.SetTrueAnomaly(TauRange(trueAnomalyS + Pi));
+	primaryElements.SetTrueAnomaly(trueAnomalyP);
+	secondaryElements.SetTrueAnomaly(trueAnomalyS);
 
 	if (eP != 0 || eS != 0)
 	{
@@ -336,6 +347,8 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 	else if (YS < 0)
 		deltaSecondary += Tau;
 
+	deltaPrimary2 = deltaPrimary + Pi;
+	deltaSecondary2 = deltaSecondary + Pi;
 }
 
 void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
@@ -358,10 +371,9 @@ void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 	X = 2 * atan(Yplus);
 	X2 = 2 * atan(Yminus);
 
-	// TODO - Handle second output?
 	// (Rate of change of seperations?)
 	deltaPrimary = deltaSecondary = X;
-	
+	deltaPrimary2 = deltaSecondary2 = X2;
 }
 
 vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, double distance, double delta)

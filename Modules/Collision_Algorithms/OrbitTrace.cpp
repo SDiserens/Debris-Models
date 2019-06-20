@@ -104,6 +104,7 @@ bool OrbitTrace::CoplanarFilter(CollisionPair objectPair)
 	// Coplanar filter
 	double combinedSemiMajorAxis = objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis;
 	bool coplanar = objectPair.GetRelativeInclination() <= (2 * asin(objectPair.GetBoundingRadii() / combinedSemiMajorAxis));
+	objectPair.coplanar = coplanar;
 	return coplanar;
 }
 

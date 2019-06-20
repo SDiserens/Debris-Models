@@ -8,8 +8,9 @@ public:
 	DebrisObject primary, secondary;
 	long primaryID, secondaryID;
 	double approachAnomalyP, approachAnomalyS;
+	bool coplanar;
 protected:
-	double relativeInclination, deltaPrimary, deltaSecondary, boundingRadii;
+	double relativeInclination, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii;
 
 public:
 	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
