@@ -82,16 +82,16 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	velocityI = objectPair.primary.GetVelocity();
 	velocityJ = objectPair.secondary.GetVelocity();
 
-	//relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
+	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
 	boundingRadii = objectPair.GetBoundingRadii();
 
 	sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
-	sinAngleV2 = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm()); // sinAngle * velocityJ
+	//sinAngleV2 = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm()); // sinAngle * velocityJ
 
 	// OT collision rate
 	if (boundingRadii*boundingRadii > minSeperation * minSeperation)
 		collisionRate = 2 * sqrt(boundingRadii*boundingRadii - minSeperation * minSeperation) / 
-			(sinAngleV2 * objectPair.primary.GetPeriod() * objectPair.secondary.GetPeriod());
+			(sinAngle * relativeVelocity.vectorNorm() * objectPair.primary.GetPeriod() * objectPair.secondary.GetPeriod());
 	else
 		collisionRate = 0;
 
