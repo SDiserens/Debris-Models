@@ -99,6 +99,9 @@
     <ClInclude Include="Modules\Propagators\Propagator.h">
       <Filter>Header Files\05 Propagators</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\Propagators\SGP4\SGP4.h">
+      <Filter>Header Files\05 Propagators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp">
@@ -147,6 +150,9 @@
       <Filter>Source Files\05 Propagators</Filter>
     </ClCompile>
     <ClCompile Include="Modules\Propagators\Propagator.cpp">
+      <Filter>Source Files\05 Propagators</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\Propagators\SGP4\SGP4.cpp">
       <Filter>Source Files\05 Propagators</Filter>
     </ClCompile>
   </ItemGroup>
