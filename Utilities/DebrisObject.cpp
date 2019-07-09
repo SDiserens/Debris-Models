@@ -94,6 +94,14 @@ void DebrisObject::UpdateOrbitalElements(OrbitalElements newElements)
 	periodSync = false;
 }
 
+void DebrisObject::UpdateOrbitalElements(vector3D position, vector3D velocity)
+{
+	elements = OrbitalElements(position, velocity);
+	positionSync = velocitySync = false;
+	periodSync = false;
+}
+
+
 double DebrisObject::GetApogee()
 {
 	return elements.GetApogee();

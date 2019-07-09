@@ -7,6 +7,6 @@ public:
 	void PropagatePopulation(DebrisPopulation & population, double timestep); // timestep in seconds
 
 protected:
-	virtual OrbitalElements UpdateElements(OrbitalElements initialElements, double timeStep) = 0;
+	virtual void UpdateElements(DebrisObject &object, double timeStep) = 0;
 };
 

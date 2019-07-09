@@ -43,6 +43,12 @@
     <Filter Include="Header Files\05 Propagators">
       <UniqueIdentifier>{c1820f57-0ec7-460b-b169-949e4ab8bea5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\05 Propagators\SGP4">
+      <UniqueIdentifier>{343ba0d5-d46e-40e8-91ce-a627ddf948e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\05 Propagators\SGP4">
+      <UniqueIdentifier>{d523669f-3a6c-4292-abe9-6be416393949}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -99,7 +105,10 @@
     <ClInclude Include="Modules\Propagators\Propagator.h">
       <Filter>Header Files\05 Propagators</Filter>
     </ClInclude>
-    <ClInclude Include="Modules\Propagators\SGP4\SGP4.h">
+    <ClInclude Include="Modules\Propagators\SGP4\SGP4Code\SGP4.h">
+      <Filter>Header Files\05 Propagators\SGP4</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\Propagators\SGP4\SGP4wrap.h">
       <Filter>Header Files\05 Propagators</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,7 +161,10 @@
     <ClCompile Include="Modules\Propagators\Propagator.cpp">
       <Filter>Source Files\05 Propagators</Filter>
     </ClCompile>
-    <ClCompile Include="Modules\Propagators\SGP4\SGP4.cpp">
+    <ClCompile Include="Modules\Propagators\SGP4\SGP4Code\SGP4.cpp">
+      <Filter>Source Files\05 Propagators\SGP4</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\Propagators\SGP4\SGP4wrap.cpp">
       <Filter>Source Files\05 Propagators</Filter>
     </ClCompile>
   </ItemGroup>
