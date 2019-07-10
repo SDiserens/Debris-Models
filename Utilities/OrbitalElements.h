@@ -27,6 +27,7 @@ public:
 	double GetRadialPosition();
 	double GetRadialPosition(double trueAnomaly);
 	double CalculatePeriod();
+	double GetMeanMotion();
 
 	OrbitalAnomalies GetAnomalies();
 	void SetMeanAnomaly(double M);

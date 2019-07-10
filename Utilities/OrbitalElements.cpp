@@ -154,6 +154,11 @@ double OrbitalElements::CalculatePeriod()
 	return Tau * sqrt(semiMajorAxis * semiMajorAxis * semiMajorAxis / muGravity);
 }
 
+double OrbitalElements::GetMeanMotion()
+{
+	return 1 / CalculatePeriod();
+}
+
 vector3D OrbitalElements::GetPosition()
 {
 	double radius, trueAnomaly, x, y, z, U;

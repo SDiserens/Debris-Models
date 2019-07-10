@@ -12,10 +12,11 @@ Analytic_J2::~Analytic_J2()
 {
 }
 
-OrbitalElements Analytic_J2::UpdateElements(OrbitalElements initialElements, double timeStep)
+void Analytic_J2::UpdateElements(DebrisObject &object, double timeStep)
 {
 	double deltaM, deltaSMA=0, deltaEcc = 0, deltaInc = 0, deltaRA = 0, deltaAP = 0;
 	double period, revolutions, gravityTerm;
+	OrbitalElements& initialElements = object.GetElements();
 
 	period = initialElements.CalculatePeriod();
 	revolutions = timeStep / period;
@@ -33,6 +34,4 @@ OrbitalElements Analytic_J2::UpdateElements(OrbitalElements initialElements, dou
 	deltaM = Tau * revolutions;
 	
 	initialElements.SetMeanAnomaly(TauRange(initialElements.GetMeanAnomaly() + deltaM));
-
-	return initialElements;
 }

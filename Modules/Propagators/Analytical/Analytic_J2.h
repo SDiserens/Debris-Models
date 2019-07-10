@@ -13,6 +13,6 @@ public:
 protected:
 	bool useJ2;
 
-	OrbitalElements UpdateElements(OrbitalElements initialElements, double timeStep);
+	void UpdateElements(DebrisObject &object, double timeStep);
 };
 

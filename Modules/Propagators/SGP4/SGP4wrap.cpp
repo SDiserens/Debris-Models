@@ -13,19 +13,51 @@ SGP4::~SGP4()
 
 void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 {
+	int orbitState;
+	double bStar, timeMinutes;
 	double r[3];
 	double v[3];
 	// If first instance then call initialise SGP4 for object
-	
+	if (object.SGP4Initialised()) //TODO
+	{
+
+		OrbitalElements& elements = object.GetElements();
 		// Calculate BStar value
+		bStar = CalculateBStar(object);
 
 		// call SGP4init
+		orbitState = SGP4Funcs::sgp4init(gravityModel, opsmode, object.GetID(), epoch, bStar, //TODO add epoch data
+										0, 0, //first and second derivative of the mean motion set to zero as unused
+										elements.eccentricity, elements.argPerigee, elements.inclination, elements.GetMeanAnomaly(), elements.GetMeanMotion(), elements.rightAscension,			
+										object.GetSGP4SatRec());
 
+		if (orbitState != 0)
+			HandleSPG4Error(orbitState);
+	}
 
 	// Propagate forward by timestep in minutes
-
+	timeMinutes = timeStep * 24 * 60;
 		// call SGP4 procedure
+	orbitState = SGP4Funcs::sgp4(object.GetSGP4SatRec(), timeMinutes, r, v);
+	
+	if (orbitState != 0)
+		HandleSPG4Error(orbitState);
 
 	// Update orbital elements
-	object.UpdateOrbitalElements(vector3D(r[0], r[1], r[2]), vector3D(v[0], v[1], v[2]));
+	else
+		object.SetStateVectors(r[0], r[1], r[2], v[0], v[1], v[2]);
+}
+
+double SGP4::CalculateBStar(DebrisObject & object)
+{
+	double ballisticC;
+
+	ballisticC = object.GetCDrag() * object.GetAreaToMass();
+
+	return rhoZero / 2 * ballisticC;
+}
+
+void SGP4::HandleSPG4Error(int errorCode)
+{
+	//TODO - handle SGP4 error codes
 }

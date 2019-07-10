@@ -1,12 +1,13 @@
 #pragma once
 
+#include "..\Modules\Propagators\SGP4\SGP4Code\SGP4.h"
 
 class DebrisObject
 {
 protected:
 	OrbitalElements elements; // semi-major axis, eccentricity, inclination, right ascension of ascending node, arguement of perigee, anomalies
 	static int objectSEQ;
-	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period;
+	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag;
 	string name;
 	long parentID, sourceID, objectID;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
@@ -15,6 +16,8 @@ protected:
 	int nFrag;
 	vector3D velocity, position;
 	bool positionSync, velocitySync, periodSync;
+	elsetrec sgp4Sat;
+	bool sgp4Initialised;
 
 public:
 	DebrisObject();
@@ -42,12 +45,16 @@ public:
 	double GetEpochAnomaly();
 	double GetPerigee();
 	double GetApogee();
+	double GetCDrag();
 	vector3D GetVelocity();
 	vector3D GetPosition();
 	vector3D GetNormalVector();
 
 	OrbitalAnomalies GetAnomalies();
 	OrbitalElements& GetElements();
+
+	bool SGP4Initialised();
+	elsetrec& GetSGP4SatRec();
 
 	void UpdateRAAN(double rightAscension);
 	void UpdateArgP(double argPerigee);
@@ -61,6 +68,7 @@ public:
 
 	void SetSourceID(long ID);
 	void SetParentID(long ID);
+	void SetCDrag(double cDrag);
 
 	void SetVelocity(double vX, double vY, double vZ);
 	void SetVelocity(vector3D inputVelocity);

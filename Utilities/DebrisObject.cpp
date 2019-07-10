@@ -21,6 +21,7 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	objectType = type;
 	positionSync = velocitySync = false;
 	periodSync = false;
+	coefficientDrag = 2.2;
 }
 
 
@@ -105,6 +106,11 @@ void DebrisObject::UpdateOrbitalElements(vector3D position, vector3D velocity)
 double DebrisObject::GetApogee()
 {
 	return elements.GetApogee();
+}
+
+double DebrisObject::GetCDrag()
+{
+	return coefficientDrag;
 }
 
 vector3D DebrisObject::GetVelocity()
@@ -256,6 +262,11 @@ void DebrisObject::SetParentID(long ID)
 	parentID = ID;
 }
 
+void DebrisObject::SetCDrag(double cDrag)
+{
+	coefficientDrag = cDrag;
+}
+
 OrbitalAnomalies DebrisObject::GetAnomalies()
 {
 	return elements.GetAnomalies();
@@ -264,6 +275,17 @@ OrbitalAnomalies DebrisObject::GetAnomalies()
 OrbitalElements& DebrisObject::GetElements()
 {
 	return elements;
+}
+
+bool DebrisObject::SGP4Initialised()
+{
+	return sgp4Initialised;
+}
+
+elsetrec & DebrisObject::GetSGP4SatRec()
+{
+	// TODO: insert return statement here
+	return sgp4Sat;
 }
 
 void DebrisObject::UpdateRAAN(double rightAscension)

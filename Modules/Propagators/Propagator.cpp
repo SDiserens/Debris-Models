@@ -15,6 +15,6 @@ void Propagator::PropagatePopulation(DebrisPopulation & population, double times
 {
 	for (auto& debris : population.population)
 	{
-		debris.second.UpdateOrbitalElements(UpdateElements(debris.second, timestep));
+		UpdateElements(debris.second, timestep);
 	}
 }
