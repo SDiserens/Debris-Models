@@ -74,9 +74,13 @@ void InitPopulation(string populationFilename, DebrisPopulation population)
 {
 	// Initialise variables
 	ifstream popFile;
+	double epoch;
 
 	// Open population file
 	popFile.open(populationFilename.c_str());
+
+	// Read population metadata and initialise
+	population.InitialiseEpoch(epoch);
 
 	// Read population data object by object
 		// Create object

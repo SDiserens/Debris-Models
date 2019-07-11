@@ -17,4 +17,5 @@ void Propagator::PropagatePopulation(DebrisPopulation & population, double times
 	{
 		UpdateElements(debris.second, timestep);
 	}
+	population.UpdateEpoch(timestep);
 }

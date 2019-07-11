@@ -18,7 +18,7 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 	double r[3];
 	double v[3];
 	// If first instance then call initialise SGP4 for object
-	if (object.SGP4Initialised()) //TODO
+	if (object.SGP4Initialised())
 	{
 
 		OrbitalElements& elements = object.GetElements();
@@ -26,8 +26,7 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 		bStar = CalculateBStar(object);
 
 		// call SGP4init
-		orbitState = SGP4Funcs::sgp4init(gravityModel, opsmode, object.GetID(), epoch, bStar, //TODO add epoch data
-										0, 0, //first and second derivative of the mean motion set to zero as unused
+		orbitState = SGP4Funcs::sgp4init(gravityModel, opsmode, object.GetID(), object.GetInitEpoch(), bStar, 0, 0, //first and second derivative of the mean motion set to zero as unused
 										elements.eccentricity, elements.argPerigee, elements.inclination, elements.GetMeanAnomaly(), elements.GetMeanMotion(), elements.rightAscension,			
 										object.GetSGP4SatRec());
 
@@ -59,5 +58,15 @@ double SGP4::CalculateBStar(DebrisObject & object)
 
 void SGP4::HandleSPG4Error(int errorCode)
 {
+	/*	
+	*  return code - non-zero on error.
+	*                   1 - mean elements, ecc >= 1.0 or ecc < -0.001 or a < 0.95 er
+	*                   2 - mean motion less than 0.0
+	*                   3 - pert elements, ecc < 0.0  or  ecc > 1.0
+	*                   4 - semi-latus rectum < 0.0
+	*                   5 - epoch elements are sub-orbital
+	*                   6 - satellite has decayed
+	*/
+
 	//TODO - handle SGP4 error codes
 }

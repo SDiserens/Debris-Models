@@ -35,6 +35,7 @@ void DebrisPopulation::UpdateEpoch(double timeStep)
 
 void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 {
+	debris.SetInitEpoch(currentEpoch);
 	population.emplace(debris.GetID(), debris);
 	populationCount++;
 	totalMass += debris.GetMass();

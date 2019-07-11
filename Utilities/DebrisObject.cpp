@@ -80,6 +80,11 @@ int DebrisObject::GetNFrag()
 	return nFrag;
 }
 
+double DebrisObject::GetInitEpoch()
+{
+	return initEpoch;
+}
+
 void DebrisObject::UpdateOrbitalElements(vector3D deltaV)
 {
 	velocity.addVector(deltaV);
@@ -267,6 +272,11 @@ void DebrisObject::SetCDrag(double cDrag)
 	coefficientDrag = cDrag;
 }
 
+void DebrisObject::SetInitEpoch(double epoch)
+{
+	initEpoch = epoch;
+}
+
 OrbitalAnomalies DebrisObject::GetAnomalies()
 {
 	return elements.GetAnomalies();
@@ -284,7 +294,11 @@ bool DebrisObject::SGP4Initialised()
 
 elsetrec & DebrisObject::GetSGP4SatRec()
 {
-	// TODO: insert return statement here
+	if (!sgp4Initialised)
+	{
+		sgp4Sat = elsetrec();
+		sgp4Initialised = true;
+	}
 	return sgp4Sat;
 }
 
