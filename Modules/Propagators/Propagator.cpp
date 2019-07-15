@@ -2,8 +2,9 @@
 #include "Propagator.h"
 
 
-Propagator::Propagator()
+Propagator::Propagator(DebrisPopulation & initPopulation)
 {
+	population = initPopulation
 }
 
 
@@ -11,7 +12,7 @@ Propagator::~Propagator()
 {
 }
 
-void Propagator::PropagatePopulation(DebrisPopulation & population, double timestep)
+void Propagator::PropagatePopulation(double timestep)
 {
 	for (auto& debris : population.population)
 	{

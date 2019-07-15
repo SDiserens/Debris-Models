@@ -18,6 +18,6 @@ public:
 private:
 	void UpdateElements(DebrisObject &object, double timeStep);
 	double CalculateBStar(DebrisObject &object);
-	void HandleSPG4Error(int errorCode);
+	void HandleSPG4Error(DebrisObject &object);
 };
 

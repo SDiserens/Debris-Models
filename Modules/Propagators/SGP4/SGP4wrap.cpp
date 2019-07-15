@@ -30,8 +30,8 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 										elements.eccentricity, elements.argPerigee, elements.inclination, elements.GetMeanAnomaly(), elements.GetMeanMotion(), elements.rightAscension,			
 										object.GetSGP4SatRec());
 
-		if (orbitState != 0)
-			HandleSPG4Error(orbitState);
+		if (!orbitState)
+			HandleSPG4Error(object);
 	}
 
 	// Propagate forward by timestep in minutes
@@ -39,8 +39,8 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 		// call SGP4 procedure
 	orbitState = SGP4Funcs::sgp4(object.GetSGP4SatRec(), timeMinutes, r, v);
 	
-	if (orbitState != 0)
-		HandleSPG4Error(orbitState);
+	if (!orbitState)
+		HandleSPG4Error(object);
 
 	// Update orbital elements
 	else
@@ -56,8 +56,10 @@ double SGP4::CalculateBStar(DebrisObject & object)
 	return rhoZero / 2 * ballisticC;
 }
 
-void SGP4::HandleSPG4Error(int errorCode)
+void SGP4::HandleSPG4Error(DebrisObject &object)
 {
+	int errorCode;
+	errorCode = object.GetSGP4SatRec().error;
 	/*	
 	*  return code - non-zero on error.
 	*                   1 - mean elements, ecc >= 1.0 or ecc < -0.001 or a < 0.95 er
@@ -69,4 +71,12 @@ void SGP4::HandleSPG4Error(int errorCode)
 	*/
 
 	//TODO - handle SGP4 error codes
+	if (errorCode == 6)
+	{
+		population.DecayObject(object.GetID());
+	}
+	else if (errorCode == 5)
+	{
+		population.DecayObject(object.GetID());
+	}
 }

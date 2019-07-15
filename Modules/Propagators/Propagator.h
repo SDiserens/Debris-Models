@@ -2,11 +2,12 @@
 class Propagator
 {
 public:
-	Propagator();
+	Propagator(DebrisPopulation & initPopulation);
 	~Propagator();
-	void PropagatePopulation(DebrisPopulation & population, double timestep); // timestep in seconds
+	void PropagatePopulation(double timestep); // timestep in seconds
 
 protected:
+	DebrisPopulation & population;
 	virtual void UpdateElements(DebrisObject &object, double timeStep) = 0;
 };
 
