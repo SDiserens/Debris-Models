@@ -2,7 +2,7 @@
 #include "Analytic_J2.h"
 
 
-Analytic_J2::Analytic_J2(bool useJ2=true)
+Analytic_J2::Analytic_J2(DebrisPopulation & initPopulation, bool useJ2=true) : Propagator(initPopulation)
 {
 	useJ2 = useJ2;
 }

@@ -1,13 +1,6 @@
-﻿  OrbitTrace.cpp
-  HootsFilter.cpp
-e:\work\modelling framework\modules\collision_algorithms\hootsfilter.cpp(13): warning C4101: 'tempTime': unreferenced local variable
-e:\work\modelling framework\modules\collision_algorithms\hootsfilter.cpp(13): warning C4101: 'collisionRate': unreferenced local variable
-e:\work\modelling framework\modules\collision_algorithms\hootsfilter.cpp(17): warning C4101: 'collision': unreferenced local variable
-  CollisionFunctions.cpp
-  CUBE.cpp
+﻿  SGP4wrap.cpp
+  Propagator.cpp
+  Analytic_J2.cpp
   Generating Code...
-e:\work\modelling framework\modules\collision_algorithms\collisionfunctions.cpp(198): warning C4700: uninitialized local variable 'eP' used
-e:\work\modelling framework\modules\collision_algorithms\collisionfunctions.cpp(200): warning C4700: uninitialized local variable 'eS' used
-e:\work\modelling framework\modules\collision_algorithms\orbittrace.cpp(150): warning C4700: uninitialized local variable 'deltaMS' used
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.exe
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.pdb (Partial PDB)

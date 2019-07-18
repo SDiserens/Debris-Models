@@ -12,7 +12,7 @@ class SGP4 :
 	public Propagator
 {
 public:
-	SGP4();
+	SGP4(DebrisPopulation & initPopulation);
 	~SGP4();
 
 private:

@@ -74,7 +74,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 
 double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 {
-	double collisionRate, boundingRadii, minSeperation, sinAngle, sinAngleV2;
+	double collisionRate, boundingRadii, minSeperation, sinAngle;//  , sinAngleV2;
 	vector3D velocityI, velocityJ, relativeVelocity;
 
 	minSeperation = objectPair.CalculateMinimumSeparation();
@@ -150,7 +150,7 @@ bool OrbitTrace::ProximityFilter(CollisionPair objectPair)
 	anomaliesS.SetTrueAnomaly(objectPair.approachAnomalyS);
 
 	deltaMP = abs(anomaliesP.GetMeanAnomaly(objectPair.primary.GetElements().eccentricity) - objectPair.primary.GetElements().GetMeanAnomaly());
-	deltaMP = abs(anomaliesS.GetMeanAnomaly(objectPair.secondary.GetElements().eccentricity) - objectPair.secondary.GetElements().GetMeanAnomaly());
+	deltaMS = abs(anomaliesS.GetMeanAnomaly(objectPair.secondary.GetElements().eccentricity) - objectPair.secondary.GetElements().GetMeanAnomaly());
 	
 	combinedSemiMajorAxis = (objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis) / 2;
 	deltaMAngle = abs(deltaMP - deltaMS);

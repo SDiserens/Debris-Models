@@ -79,6 +79,7 @@ void InitPopulation(string populationFilename, DebrisPopulation population)
 	// Open population file
 	popFile.open(populationFilename.c_str());
 
+	epoch = 0; //TODO read epoch from file
 	// Read population metadata and initialise
 	population.InitialiseEpoch(epoch);
 

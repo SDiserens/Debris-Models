@@ -52,7 +52,7 @@
 *                     80  norad
 *                           original baseline
 *       ----------------------------------------------------------------      */
-
+#include "stdafx.h"
 #include "SGP4.h"
 
 #define pi 3.14159265358979323846

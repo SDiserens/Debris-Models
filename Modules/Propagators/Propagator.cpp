@@ -2,9 +2,11 @@
 #include "Propagator.h"
 
 
-Propagator::Propagator(DebrisPopulation & initPopulation)
+
+
+
+Propagator::Propagator(DebrisPopulation & initPopulation) :population(initPopulation)
 {
-	population = initPopulation
 }
 
 

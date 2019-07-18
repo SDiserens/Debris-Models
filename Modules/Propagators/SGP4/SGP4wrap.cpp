@@ -2,7 +2,7 @@
 #include "SGP4wrap.h"
 
 
-SGP4::SGP4()
+SGP4::SGP4(DebrisPopulation & initPopulation) : Propagator(initPopulation)
 {
 }
 
