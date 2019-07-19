@@ -7,7 +7,7 @@ class DebrisObject
 protected:
 	OrbitalElements elements; // semi-major axis, eccentricity, inclination, right ascension of ascending node, arguement of perigee, anomalies
 	static int objectSEQ;
-	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag, initEpoch;
+	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag, initEpoch, bStar;
 	string name;
 	long parentID, sourceID, objectID;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
@@ -23,6 +23,7 @@ public:
 	DebrisObject();
 	DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination, double rightAscension,
 		double argPerigee, double init_meanAnomaly, int type);
+	DebrisObject(string TLE1, string TLE2, string TLE3);
 	~DebrisObject();
 
 	long GetID();
@@ -47,6 +48,7 @@ public:
 	double GetPerigee();
 	double GetApogee();
 	double GetCDrag();
+	double GetBStar();
 	vector3D GetVelocity();
 	vector3D GetPosition();
 	vector3D GetNormalVector();
@@ -70,6 +72,7 @@ public:
 	void SetSourceID(long ID);
 	void SetParentID(long ID);
 	void SetCDrag(double cDrag);
+	void SetBStar(double bStar);
 	void SetInitEpoch(double epoch);
 
 	void SetVelocity(double vX, double vY, double vZ);

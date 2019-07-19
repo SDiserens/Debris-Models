@@ -120,6 +120,12 @@ double CalculateKineticEnergy(double speed, double mass)
 	double kineticEnergy = 0.5 * mass * speed * speed;
 	return kineticEnergy;
 }
+
+double DegToRad(double angle)
+{
+	return angle * Pi/180;
+}
+
 // 3D vector functions
 vector3D::vector3D() {}
 

@@ -22,6 +22,34 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	positionSync = velocitySync = false;
 	periodSync = false;
 	coefficientDrag = 2.2;
+	bStar = NAN;
+}
+
+DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3)
+{
+
+	double meanMotion, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly;
+	objectID = ++objectSEQ;
+	name = TLE1;
+
+	bStar = stod(TLE2.substr(53, 1) + "0." + TLE2.substr(54, 5) + "e" + TLE2.substr(59, 2));
+
+	meanMotion = stod(TLE3.substr(52, 11));
+	semiMajorAxis = cbrt(muGravity / (meanMotion * meanMotion));
+	inclination = DegToRad(stod(TLE3.substr(8,8)));
+	rightAscension = DegToRad(stod(TLE3.substr(17, 8)));
+	eccentricity = stod("0." + TLE3.substr(26, 7));
+	argPerigee = DegToRad(stod(TLE3.substr(34, 8)));
+	init_meanAnomaly = DegToRad(stod(TLE3.substr(43, 8)));
+
+	elements = OrbitalElements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly);
+
+	meanAnomalyEpoch = init_meanAnomaly;
+	nFrag = 1;
+	objectType = 2;
+	positionSync = velocitySync = false;
+	periodSync = false;
+	coefficientDrag = 2.2;
 }
 
 
@@ -116,6 +144,11 @@ double DebrisObject::GetApogee()
 double DebrisObject::GetCDrag()
 {
 	return coefficientDrag;
+}
+
+double DebrisObject::GetBStar()
+{
+	return bStar;
 }
 
 vector3D DebrisObject::GetVelocity()
@@ -270,6 +303,11 @@ void DebrisObject::SetParentID(long ID)
 void DebrisObject::SetCDrag(double cDrag)
 {
 	coefficientDrag = cDrag;
+}
+
+void DebrisObject::SetBStar(double bStar)
+{
+	bStar = bStar;
 }
 
 void DebrisObject::SetInitEpoch(double epoch)

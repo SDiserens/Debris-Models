@@ -23,7 +23,12 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 
 		OrbitalElements& elements = object.GetElements();
 		// Calculate BStar value
-		bStar = CalculateBStar(object);
+		bStar = object.GetBStar();
+		if (isnan(bStar))
+		{
+			bStar = CalculateBStar(object);
+			object.SetBStar(bStar);
+		}
 
 		// call SGP4init
 		orbitState = SGP4Funcs::sgp4init(gravityModel, opsmode, object.GetID(), object.GetInitEpoch(), bStar, 0, 0, //first and second derivative of the mean motion set to zero as unused
