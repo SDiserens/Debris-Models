@@ -24,6 +24,7 @@ public:
 	DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination, double rightAscension,
 		double argPerigee, double init_meanAnomaly, int type);
 	DebrisObject(string TLE1, string TLE2, string TLE3);
+	DebrisObject(string TLE2, string TLE3);
 	~DebrisObject();
 
 	long GetID();
@@ -51,6 +52,7 @@ public:
 	double GetBStar();
 	vector3D GetVelocity();
 	vector3D GetPosition();
+	vector<double> GetStateVector();
 	vector3D GetNormalVector();
 
 	OrbitalAnomalies GetAnomalies();

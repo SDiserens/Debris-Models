@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Modules\Propagators\Propagator.h" />
+    <ClInclude Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.h" />
     <ClInclude Include="..\..\Modules\Propagators\SGP4\SGP4wrap.h" />
     <ClInclude Include="..\..\Utilities\DebrisObject.h" />
     <ClInclude Include="..\..\Utilities\DebrisPopulation.h" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Modules\Propagators\Propagator.cpp" />
+    <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp" />
     <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4wrap.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisObject.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp" />

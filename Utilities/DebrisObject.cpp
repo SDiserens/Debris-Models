@@ -25,18 +25,22 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	bStar = NAN;
 }
 
-DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3)
+DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3) : DebrisObject(TLE2, TLE3)
+{
+	name = TLE1;
+}
+
+DebrisObject::DebrisObject(string TLE2, string TLE3)
 {
 
 	double meanMotion, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly;
 	objectID = ++objectSEQ;
-	name = TLE1;
 
 	bStar = stod(TLE2.substr(53, 1) + "0." + TLE2.substr(54, 5) + "e" + TLE2.substr(59, 2));
 
 	meanMotion = stod(TLE3.substr(52, 11));
 	semiMajorAxis = cbrt(muGravity / (meanMotion * meanMotion));
-	inclination = DegToRad(stod(TLE3.substr(8,8)));
+	inclination = DegToRad(stod(TLE3.substr(8, 8)));
 	rightAscension = DegToRad(stod(TLE3.substr(17, 8)));
 	eccentricity = stod("0." + TLE3.substr(26, 7));
 	argPerigee = DegToRad(stod(TLE3.substr(34, 8)));
@@ -51,7 +55,6 @@ DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3)
 	periodSync = false;
 	coefficientDrag = 2.2;
 }
-
 
 DebrisObject::~DebrisObject()
 {
@@ -186,6 +189,23 @@ vector3D DebrisObject::GetPosition()
 	}
 
 	return position;
+}
+
+vector<double> DebrisObject::GetStateVector()
+{
+	if (!positionSync)
+	{
+		position = vector3D(elements.GetPosition());
+		positionSync = true;
+	}
+	if (!velocitySync)
+	{
+		velocity = vector3D(elements.GetVelocity());
+		velocitySync = true;
+	}
+	vector<double> stateVector{ position.x, position.y, position.z, velocity.x, velocity.y, velocity.z };
+	
+	return stateVector;
 }
 
 vector3D DebrisObject::GetNormalVector()
