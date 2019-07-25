@@ -5,8 +5,8 @@
 
 const double rhoZero = 0.1570;
 
-char opsmode = 'i'; // operation mode of the SGP4, either i (improved) or a (afspc).
-gravconsttype gravityModel = wgs84; // which set of constants to use  wgs72, wgs84
+const char opsMode = 'i'; // operation mode of the SGP4, either i (improved) or a (afspc).
+const gravconsttype gravModel = wgs84; // which set of constants to use  wgs72, wgs84
 
 class SGP4 :
 	public Propagator

@@ -34,7 +34,10 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 {
 
 	double meanMotion, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly;
+	
 	objectID = ++objectSEQ;
+
+	noradID = stoi(TLE3.substr(2, 5));
 
 	bStar = stod(TLE2.substr(53, 1) + "0." + TLE2.substr(54, 5) + "e" + TLE2.substr(59, 2));
 
@@ -73,6 +76,11 @@ long DebrisObject::GetSourceID()
 long DebrisObject::GetParentID()
 {
 	return parentID;
+}
+
+int DebrisObject::GetNoradID()
+{
+	return noradID;
 }
 
 int DebrisObject::GetType()

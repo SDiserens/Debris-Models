@@ -1,4 +1,7 @@
-﻿  SGP4.cpp
-SGP4Test.obj : error LNK2005: "char opsmode" (?opsmode@@3DA) already defined in SGP4wrap.obj
-SGP4Test.obj : error LNK2005: "enum gravconsttype gravityModel" (?gravityModel@@3W4gravconsttype@@A) already defined in SGP4wrap.obj
-E:\Work\Modelling Framework\SubModels\SGP4Test\Debug\SGP4Test.exe : fatal error LNK1169: one or more multiply defined symbols found
+﻿  SGP4wrap.cpp
+  Generating Code...
+  Compiling...
+  SGP4Test.cpp
+  Generating Code...
+  SGP4Test.vcxproj -> E:\Work\Modelling Framework\SubModels\SGP4Test\Debug\SGP4Test.exe
+  SGP4Test.vcxproj -> E:\Work\Modelling Framework\SubModels\SGP4Test\Debug\SGP4Test.pdb (Partial PDB)

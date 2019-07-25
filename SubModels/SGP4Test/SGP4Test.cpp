@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Modules\Propagators\SGP4\SGP4wrap.h"
 
+bool fileExists(const string& name);
 
 int main(int argc, char** argv)
 {
@@ -12,6 +13,9 @@ int main(int argc, char** argv)
 	double startTime, endTime, timeStep, minutes2days, elapsedTime;
 	vector<double> stateVector;
 	vector<vector<double>> stateVectorList;
+
+	char date[100];
+	int ID = 1;
 
 	minutes2days = 1 / (24 * 60);
 
@@ -26,6 +30,7 @@ int main(int argc, char** argv)
 	}
 	
 	// Open scenario file
+	cout << "Reading Scenario File : " + scenarioFilename + "...";
 	ifstream scenarioFile(scenarioFilename);
 	if (!scenarioFile.good())
 	{
@@ -34,6 +39,7 @@ int main(int argc, char** argv)
 
 
 	// Read scenario file into vector
+	cout << " Parsing Scenario...";
 	while (getline(scenarioFile, line))
 	{
 		if (line[0] == 1)
@@ -45,10 +51,12 @@ int main(int argc, char** argv)
 	}
 
 	// close file
+	cout << " Closing Scenario File..." << endl;
 	scenarioFile.close();
 
 	
 	// For each Scenario
+	cout << "Propagating TLEs..." << endl;
 	for (auto currentTLE : TLEs)
 	{
 		string scenarioDataStr = currentTLE.second.substr(70);
@@ -76,10 +84,15 @@ int main(int argc, char** argv)
 		objectPopulation.InitialiseEpoch(startTime);
 		elapsedTime = 0.0;
 
+		// Add identification tag
+		stateVectorList.push_back(vector<double> {(double) object.GetNoradID()});
+
+		// Store initial Position
 		stateVector = objectPopulation.GetObject(objectID).GetStateVector();
 		stateVector.insert(stateVector.begin(), elapsedTime);
 		stateVectorList.push_back(stateVector);
 
+		// Set to starting position
 		if (startTime != 0.0)
 		{
 			prop.PropagatePopulation(startTime);
@@ -89,6 +102,7 @@ int main(int argc, char** argv)
 			stateVector.insert(stateVector.begin(), elapsedTime);
 			stateVectorList.push_back(stateVector);
 		}
+
 		// While time < endTime
 		while (objectPopulation.GetEpoch() < endTime)
 		{
@@ -103,9 +117,60 @@ int main(int argc, char** argv)
 		}
 	}
 
+	// Store data
+	time_t dateTime = time(NULL);
+	struct tm currtime;
+	localtime_s(&currtime, &dateTime);
+	strftime(date, sizeof(date), "%F", &currtime);
+
+
+	outputFilename = "Output\\" + string(date) + "_SGP4TestOutput" + ".csv";
+
+	while (fileExists(outputFilename))
+	{
+		ID++;
+		outputFilename = "Output\\" + string(date) + "_SGP4TestOutput" + '_' + to_string(ID) + ".csv";
+	}
+
+	cout << "Creating Data File : " + outputFilename + "...";
 	// Create Output file
-		// Write state vectors for each scenario at each propagation step
+	ofstream outputFile;
+	outputFile.open(outputFilename, ofstream::out);
+
+
+	// Write state vectors for each scenario at each propagation step
+	cout << "  Writing to Data File...";
+	for (auto outputLine : stateVectorList)
+	{
+		if (outputLine.size() == 1)
+		{
+			outputFile << to_string(outputLine[0]) + " xx\n";
+		}
+		else
+		{
+			for (double value : outputLine)
+			{
+				outputFile << to_string(value) + ",";
+			}
+			outputFile << "\n";
+		}
+	}
+	cout << "Finished\n";
+	// Close file
+	outputFile.close();
 
     return 0;
 }
 
+bool fileExists(const string& name)
+{
+	FILE *file;
+	fopen_s(&file, name.c_str(), "r");
+	if (file)
+	{
+		fclose(file);
+		return true;
+	}
+	else
+		return false;
+}

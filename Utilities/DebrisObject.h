@@ -13,7 +13,7 @@ protected:
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
 	int sourceType, objectType; // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
 	int removeEvent; // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
-	int nFrag;
+	int nFrag, noradID;
 	vector3D velocity, position;
 	bool positionSync, velocitySync, periodSync;
 	elsetrec sgp4Sat;
@@ -30,6 +30,7 @@ public:
 	long GetID();
 	long GetSourceID();
 	long GetParentID();
+	int GetNoradID();
 	int GetType();
 	int GetSourceType();
 	int GetSourceEvent();

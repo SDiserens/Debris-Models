@@ -31,7 +31,7 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 		}
 
 		// call SGP4init
-		orbitState = SGP4Funcs::sgp4init(gravityModel, opsmode, object.GetID(), object.GetInitEpoch(), bStar, 0, 0, //first and second derivative of the mean motion set to zero as unused
+		orbitState = SGP4Funcs::sgp4init(gravModel, opsMode, object.GetID(), object.GetInitEpoch(), bStar, 0, 0, //first and second derivative of the mean motion set to zero as unused
 										elements.eccentricity, elements.argPerigee, elements.inclination, elements.GetMeanAnomaly(), elements.GetMeanMotion(), elements.rightAscension,			
 										object.GetSGP4SatRec());
 
