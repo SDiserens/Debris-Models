@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 	char date[100];
 	int ID = 1;
 
-	minutes2days = 1 / (24 * 60);
+	minutes2days = 1.0 / (24 * 60);
 
 	scenarioFilename = "SGP4-VER.TLE";
 	// Parse command line arguments
@@ -42,10 +42,10 @@ int main(int argc, char** argv)
 	cout << " Parsing Scenario...";
 	while (getline(scenarioFile, line))
 	{
-		if (line[0] == 1)
+		if ((int) line[0] == 49) // 1 in asci
 		{
 			getline(scenarioFile, line2);
-			if (line2[0] == 2)
+			if ((int)line2[0] == 50) // 2 in asci
 				TLEs.push_back(make_pair(line, line2));
 		}
 	}
@@ -80,8 +80,8 @@ int main(int argc, char** argv)
 		startTime = stod(scenarioData[0]) * minutes2days;
 		endTime = stod(scenarioData[1]) * minutes2days;
 		timeStep = stod(scenarioData[2]) * minutes2days;
-
-		objectPopulation.InitialiseEpoch(startTime);
+		
+		objectPopulation.InitialiseEpoch(0.0);
 		elapsedTime = 0.0;
 
 		// Add identification tag
@@ -95,9 +95,11 @@ int main(int argc, char** argv)
 		// Set to starting position
 		if (startTime != 0.0)
 		{
+			// Propagate to start
 			prop.PropagatePopulation(startTime);
-			elapsedTime += startTime;
+			elapsedTime += stod(scenarioData[0]);
 
+			// Store State vector
 			stateVector = objectPopulation.GetObject(objectID).GetStateVector();
 			stateVector.insert(stateVector.begin(), elapsedTime);
 			stateVectorList.push_back(stateVector);
@@ -106,9 +108,11 @@ int main(int argc, char** argv)
 		// While time < endTime
 		while (objectPopulation.GetEpoch() < endTime)
 		{
+			if (endTime - objectPopulation.GetEpoch() < timeStep)
+				timeStep = endTime - objectPopulation.GetEpoch();
 			// Propagate in specified timestep
 			prop.PropagatePopulation(timeStep);
-			elapsedTime += stod(scenarioData[2]);
+			elapsedTime += timeStep * 60 * 24;
 
 			// Store State vector
 			stateVector = objectPopulation.GetObject(objectID).GetStateVector();

@@ -41,7 +41,7 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 
 	bStar = stod(TLE2.substr(53, 1) + "0." + TLE2.substr(54, 5) + "e" + TLE2.substr(59, 2));
 
-	meanMotion = stod(TLE3.substr(52, 11));
+	meanMotion = stod(TLE3.substr(52, 11)) / secondsDay;
 	semiMajorAxis = cbrt(muGravity / (meanMotion * meanMotion));
 	inclination = DegToRad(stod(TLE3.substr(8, 8)));
 	rightAscension = DegToRad(stod(TLE3.substr(17, 8)));
