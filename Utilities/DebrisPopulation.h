@@ -30,6 +30,7 @@ public:
 	DebrisPopulation();
 	~DebrisPopulation();
 	double GetEpoch();
+	int GetPopulationSize();
 	void UpdateEpoch(double timeStep);
 	void InitialiseEpoch(double epoch);
 	void AddDebrisObject(DebrisObject debris);

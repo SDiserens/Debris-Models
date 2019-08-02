@@ -16,9 +16,14 @@ Propagator::~Propagator()
 
 void Propagator::PropagatePopulation(double timestep)
 {
-	for (auto& debris : population.population)
+	if (population.GetPopulationSize() > 0)
 	{
-		UpdateElements(debris.second, timestep);
+		for (auto& debris : population.population)
+		{
+			UpdateElements(debris.second, timestep);
+			if (population.GetPopulationSize() == 0)
+				break;
+		}
 	}
 	population.UpdateEpoch(timestep);
 }

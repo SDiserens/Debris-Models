@@ -102,6 +102,7 @@ void DebrisObject::RemoveObject(int removeType, double epoch) // (0, 1, 2) = (De
 {
 	removeEpoch = epoch;
 	removeEvent = removeType;
+	isIntact = false;
 }
 
 void DebrisObject::SetName(string init_name)
@@ -201,18 +202,26 @@ vector3D DebrisObject::GetPosition()
 
 vector<double> DebrisObject::GetStateVector()
 {
-	if (!positionSync)
+	vector<double> stateVector(6);
+
+	if (!isIntact)
 	{
-		position = vector3D(elements.GetPosition());
-		positionSync = true;
+		stateVector = { NAN, NAN, NAN, NAN, NAN, NAN }; 
 	}
-	if (!velocitySync)
+	else
 	{
-		velocity = vector3D(elements.GetVelocity());
-		velocitySync = true;
+		if (!positionSync)
+		{
+			position = vector3D(elements.GetPosition());
+			positionSync = true;
+		}
+		if (!velocitySync)
+		{
+			velocity = vector3D(elements.GetVelocity());
+			velocitySync = true;
+		}
+		stateVector = { position.x, position.y, position.z, velocity.x, velocity.y, velocity.z };
 	}
-	vector<double> stateVector{ position.x, position.y, position.z, velocity.x, velocity.y, velocity.z };
-	
 	return stateVector;
 }
 

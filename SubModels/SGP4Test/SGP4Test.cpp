@@ -88,6 +88,7 @@ int main(int argc, char** argv)
 		stateVectorList.push_back(vector<double> {(double) object.GetNoradID()});
 
 		// Store initial Position
+		prop.PropagatePopulation(0.0);
 		stateVector = objectPopulation.GetObject(objectID).GetStateVector();
 		stateVector.insert(stateVector.begin(), elapsedTime);
 		stateVectorList.push_back(stateVector);

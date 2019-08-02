@@ -22,6 +22,11 @@ double DebrisPopulation::GetEpoch()
 	return currentEpoch;
 }
 
+int DebrisPopulation::GetPopulationSize()
+{
+	return populationCount;
+}
+
 void DebrisPopulation::InitialiseEpoch(double epoch)
 {
 	currentEpoch = epoch;
@@ -49,7 +54,11 @@ void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 
 DebrisObject& DebrisPopulation::GetObject(long ID)
 {
-	return population.at(ID);
+	if (population.count(ID) > 0)
+		return population.at(ID);
+	else
+		return removedPopulation.at(ID);
+
 }
 
 void DebrisPopulation::DecayObject(long ID)

@@ -1,3 +1,14 @@
-﻿  SGP4wrap.cpp
+﻿  stdafx.cpp
+e:\work\modelling framework\utilities\orbitalutilities.h(56): warning C4244: 'argument': conversion from 'uint64_t' to 'const unsigned int', possible loss of data
+  SGP4Test.cpp
+  OrbitalUtilities.cpp
+  OrbitalElements.cpp
+  OrbitalAnomalies.cpp
+  DebrisPopulation.cpp
+  DebrisObject.cpp
+  SGP4wrap.cpp
+  SGP4.cpp
+  Propagator.cpp
+  Generating Code...
   SGP4Test.vcxproj -> E:\Work\Modelling Framework\SubModels\SGP4Test\Debug\SGP4Test.exe
   SGP4Test.vcxproj -> E:\Work\Modelling Framework\SubModels\SGP4Test\Debug\SGP4Test.pdb (Partial PDB)
