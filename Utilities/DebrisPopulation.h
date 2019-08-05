@@ -20,7 +20,8 @@ class DebrisPopulation
 {
 protected:
 	long populationCount;
-	double totalMass, currentEpoch, startEpoch;
+	int scalingPower;
+	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis;
 
 public:
 	map<long, DebrisObject> population, removedPopulation;
@@ -31,6 +32,10 @@ public:
 	~DebrisPopulation();
 	double GetEpoch();
 	int GetPopulationSize();
+	int GetScalingPower();
+	double GetAverageSMA();
+	void SetAverageSMA(double averageSMA);
+	void SetScalingPower(int power);
 	void UpdateEpoch(double timeStep);
 	void InitialiseEpoch(double epoch);
 	void AddDebrisObject(DebrisObject debris);

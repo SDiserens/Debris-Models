@@ -2,24 +2,46 @@
 //
 
 #include "stdafx.h"
-#include <fstream>
-#include <iostream>
-#include <vector>
 using namespace std;
 
-void InitPopulation(string populationFilename, DebrisPopulation population);
-
-int main()
+int main(int argc, char** argv)
 {
 	// ----------------------------
 	// ------ Initialisation ------
 	// ----------------------------
+	string arg, populationFilename;
+
+	//TODO - Create independent function for config 
+	Json::Value config;
+	Json::Reader reader;
+	
+	cout << "Reading Config File...";
 	// Read config file
-	string populationFilename;
+	ifstream configFile("config.json");
+	// Parse config file to identify scenario file and settings
+	reader.parse(configFile, config);
+	cout << " Parsing Config...";
+
+	// Parsing config variables
+	populationFilename = config["scenarioFilename"].asString();
+
+	// Parse command line arguments
+	for (int i = 1; i < argc; ++i) {
+		arg = argv[i];
+		if ((arg == "-f") || (arg == "--filename"))
+		{
+			populationFilename = argv[++i];
+		}
+		if ((arg == "-h") || (arg == "--help"))
+		{
+			//TODO - Create help output
+		}
+	}
 
 	// Initialise population
 	DebrisPopulation environmentPopulation;
-	InitPopulation(populationFilename, environmentPopulation);
+	LoadScenario(environmentPopulation, populationFilename);
+	
 
 	// Load Modules
 
@@ -70,24 +92,4 @@ int main()
     return 0;
 }
 
-void InitPopulation(string populationFilename, DebrisPopulation population)
-{
-	// Initialise variables
-	ifstream popFile;
-	double epoch;
 
-	// Open population file
-	popFile.open(populationFilename.c_str());
-
-	epoch = 0; //TODO read epoch from file
-	// Read population metadata and initialise
-	population.InitialiseEpoch(epoch);
-
-	// Read population data object by object
-		// Create object
-
-		// Add object to population
-
-	// Close file
-	popFile.close();
-}

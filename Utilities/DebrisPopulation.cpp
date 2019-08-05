@@ -27,6 +27,26 @@ int DebrisPopulation::GetPopulationSize()
 	return populationCount;
 }
 
+int DebrisPopulation::GetScalingPower()
+{
+	return scalingPower;
+}
+
+double DebrisPopulation::GetAverageSMA()
+{
+	return averageSemiMajorAxis;
+}
+
+void DebrisPopulation::SetAverageSMA(double averageSMA)
+{
+	averageSemiMajorAxis = averageSMA;
+}
+
+void DebrisPopulation::SetScalingPower(int power)
+{
+	scalingPower = power;
+}
+
 void DebrisPopulation::InitialiseEpoch(double epoch)
 {
 	currentEpoch = epoch;

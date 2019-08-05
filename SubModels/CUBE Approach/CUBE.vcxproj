@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Modules\Collision_Algorithms\Collisions.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\CUBE.h" />
+    <ClInclude Include="..\..\Utilities\BaseUtilities.h" />
     <ClInclude Include="..\..\Utilities\DebrisObject.h" />
     <ClInclude Include="..\..\Utilities\DebrisPopulation.h" />
     <ClInclude Include="..\..\Utilities\OrbitalAnomalies.h" />
@@ -157,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CollisionFunctions.cpp" />
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CUBE.cpp" />
+    <ClCompile Include="..\..\Utilities\BaseUtilities.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisObject.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp" />
     <ClCompile Include="..\..\Utilities\OrbitalAnomalies.cpp" />

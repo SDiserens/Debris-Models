@@ -57,6 +57,9 @@
     <ClInclude Include="..\..\Modules\Collision_Algorithms\CUBE.h">
       <Filter>Header Files\CUBE</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Utilities\BaseUtilities.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -85,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="CUBE_Approach.cpp">
       <Filter>Source Files\CUBE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Utilities\BaseUtilities.cpp">
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
