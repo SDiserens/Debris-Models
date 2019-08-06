@@ -8,6 +8,7 @@ const double rhoZero = 0.1570;
 const char opsMode = 'i'; // operation mode of the SGP4, either i (improved) or a (afspc).
 const gravconsttype gravModel = wgs72; // which set of constants to use  wgs72, wgs84
 
+
 class SGP4 :
 	public Propagator
 {
@@ -17,7 +18,6 @@ public:
 
 private:
 	void UpdateElements(DebrisObject &object, double timeStep);
-	double CalculateBStar(DebrisObject &object);
-	void HandleSPG4Error(DebrisObject &object);
+	void HandleError(DebrisObject &object);
 };
 

@@ -9,5 +9,8 @@ public:
 protected:
 	DebrisPopulation & population;
 	virtual void UpdateElements(DebrisObject &object, double timeStep) = 0;
+	//virtual void HandleError(DebrisObject &object) = 0;
+
+	double CalculateBStar(DebrisObject &object);
 };
 

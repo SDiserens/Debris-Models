@@ -1,7 +1,14 @@
 {
   "scenarioFilename": "Collisions_39191.json", //
+  //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
+  //
   "Fragmentation": null, // "NSBM",
+  "minLength": 0.01, // Min fragment length in metres
+  //
   "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots"
+  "CollisionDetail": true, // Probability output / time output for different methods
+  "CollisionThreshold1" :  10, // Cube Size or threshold distance
+  //
   "BackgroundPop": null
 }

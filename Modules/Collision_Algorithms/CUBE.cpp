@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "CUBE.h"
 
-CUBEApproach::CUBEApproach(double dimension, bool probabilities)
+CUBEApproach::CUBEApproach(bool probabilities, double dimension)
 {
 	cubeDimension = dimension;
 	cubeVolume = dimension * dimension * dimension;

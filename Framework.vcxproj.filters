@@ -114,6 +114,12 @@
     <ClInclude Include="Utilities\BaseUtilities.h">
       <Filter>Header Files\02 Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities\ModuleFactory.h">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\Modules.h">
+      <Filter>Header Files\01 Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp">

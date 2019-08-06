@@ -17,5 +17,6 @@ public:
 	double minLength, representativeFragmentThreshold, catastrophicThreshold;// J/g of target mass
 	int representativeFragmentNumber;
 
+	virtual void mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL) = 0;
 	
 };

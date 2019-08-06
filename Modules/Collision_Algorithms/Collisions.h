@@ -40,19 +40,18 @@ protected:
 	double elapsedTime, timeStep, pAThreshold;
 
 protected:
-	vector<CollisionPair> CreatePairList(DebrisPopulation& population);
 	bool PerigeeApogeeTest(CollisionPair & objectPair);
 	vector<double> collisionProbabilities;
 	vector<pair<long, long>> collisionList;
 	vector<double> newCollisionProbabilities;
 	vector<pair<long, long>> newCollisionList;
 	bool DetermineCollision(double collisionProbability);
+	double CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ);
 	//double CalculateClosestApproach(CollisionPair objectPair);
 
 	// Virtual function
 	virtual double CollisionRate(CollisionPair &objectPair) = 0;
-	//virtual vector<pair<long, long>> CreatePairList(DebrisPopulation& population) = 0;
-	double CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ);
+	virtual vector<CollisionPair> CreatePairList(DebrisPopulation& population);
 
 
 public:
@@ -63,4 +62,6 @@ public:
 	vector<double> GetNewCollisionProbabilities();
 	double GetElapsedTime();
 
+	virtual vector<double> GetNewCollisionTimes();
+	virtual vector<double> GetCollisionTimes();
 };

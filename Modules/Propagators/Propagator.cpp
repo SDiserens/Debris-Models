@@ -16,6 +16,8 @@ Propagator::~Propagator()
 
 void Propagator::PropagatePopulation(double timestep)
 {
+	population.LoadPopulation();
+
 	if (population.GetPopulationSize() > 0)
 	{
 		for (auto& debris : population.population)
@@ -26,4 +28,13 @@ void Propagator::PropagatePopulation(double timestep)
 		}
 	}
 	population.UpdateEpoch(timestep);
+}
+
+double Propagator::CalculateBStar(DebrisObject & object)
+{
+	double ballisticC;
+
+	ballisticC = object.GetCDrag() * object.GetAreaToMass();
+
+	return rhoZero / 2 * ballisticC;
 }

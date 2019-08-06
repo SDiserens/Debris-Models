@@ -84,6 +84,16 @@ vector<double> CollisionAlgorithm::GetNewCollisionProbabilities()
 	return newList;
 }
 
+vector<double> CollisionAlgorithm::GetNewCollisionTimes()
+{
+	return GetNewCollisionProbabilities();
+}
+
+vector<double> CollisionAlgorithm::GetCollisionTimes()
+{
+	return GetCollisionProbabilities();
+}
+
 bool CollisionAlgorithm::DetermineCollision(double collisionProbability)
 {
 	return randomNumber() < collisionProbability;

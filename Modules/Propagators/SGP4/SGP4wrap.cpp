@@ -36,7 +36,7 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 										object.GetSGP4SatRec());
 
 		if (object.GetSGP4SatRec().error != 0)
-			HandleSPG4Error(object);
+			HandleError(object);
 	}
 
 	// Propagate forward by timestep in minutes
@@ -45,23 +45,14 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 	orbitState = SGP4Funcs::sgp4(object.GetSGP4SatRec(), timeMinutes, r, v);
 	
 	if (!orbitState)
-		HandleSPG4Error(object);
+		HandleError(object);
 
 	// Update orbital elements
 	else
 		object.SetStateVectors(r[0], r[1], r[2], v[0], v[1], v[2]);
 }
 
-double SGP4::CalculateBStar(DebrisObject & object)
-{
-	double ballisticC;
-
-	ballisticC = object.GetCDrag() * object.GetAreaToMass();
-
-	return rhoZero / 2 * ballisticC;
-}
-
-void SGP4::HandleSPG4Error(DebrisObject &object)
+void SGP4::HandleError(DebrisObject &object)
 {
 	int errorCode;
 	errorCode = object.GetSGP4SatRec().error;

@@ -9,7 +9,9 @@ int main(int argc, char** argv)
 	// ----------------------------
 	// ------ Initialisation ------
 	// ----------------------------
-	string arg, populationFilename;
+	string arg, populationFilename, propagatorType, breakUpType, collisionType;
+	bool collisionDetail;
+	double fragmentMinLength, collisionThreshold;
 
 	//TODO - Create independent function for config 
 	Json::Value config;
@@ -24,6 +26,15 @@ int main(int argc, char** argv)
 
 	// Parsing config variables
 	populationFilename = config["scenarioFilename"].asString();
+
+	propagatorType = config["Propagator"].asString();
+
+	breakUpType = config["Fragmentation"].asString();
+	fragmentMinLength = config["minLength"].asDouble();
+
+	collisionType = config["CollsionAlgorithm"].asString();
+	collisionDetail = config["CollisionDetail"].asBool();
+	collisionThreshold = config["CollisionThreshold1"].asDouble();
 
 	// Parse command line arguments
 	for (int i = 1; i < argc; ++i) {
@@ -42,11 +53,15 @@ int main(int argc, char** argv)
 	DebrisPopulation environmentPopulation;
 	LoadScenario(environmentPopulation, populationFilename);
 	
-
 	// Load Modules
+	auto propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation);
+
+	auto collisionModel = ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionDetail, collisionThreshold);
+	// TODO - Include configuration variable fro breakup model
+	auto breakUp = ModuleFactory::CreateBreakupModel(breakUpType, fragmentMinLength);
 
 		// Validate Modules
-
+	
 	// Load Environment Parameters
 
 	// --------------------------

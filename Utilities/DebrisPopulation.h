@@ -22,6 +22,8 @@ protected:
 	long populationCount;
 	int scalingPower;
 	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis;
+	map<long, DebrisObject> loadingPopulation;
+	vector<pair<double, long>> initEpochs;
 
 public:
 	map<long, DebrisObject> population, removedPopulation;
@@ -30,6 +32,9 @@ public:
 public:
 	DebrisPopulation();
 	~DebrisPopulation();
+	void LoadPopulation();
+
+	double GetNextInitEpoch();
 	double GetEpoch();
 	int GetPopulationSize();
 	int GetScalingPower();

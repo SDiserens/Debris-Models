@@ -19,6 +19,11 @@ NASABreakupModel::NASABreakupModel()
 	NSBMDebrisFragment::bridgingFunction = bridgingFunction = "Weighted";
 }
 
+NASABreakupModel::NASABreakupModel(double mL) : NASABreakupModel()
+{
+	minLength = mL;
+}
+
 NASABreakupModel::NASABreakupModel(double mL, double cT, int nFB, string bF, double sc, double rFT, int rFN)
 {
 	minLength = mL;

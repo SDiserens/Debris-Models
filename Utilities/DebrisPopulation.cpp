@@ -17,6 +17,14 @@ DebrisPopulation::~DebrisPopulation()
 {
 }
 
+double DebrisPopulation::GetNextInitEpoch()
+{
+	if (initEpochs.size() == 0)
+		return NAN;
+	else
+		return initEpochs[0].first;
+}
+
 double DebrisPopulation::GetEpoch()
 {
 	return currentEpoch;
@@ -60,12 +68,47 @@ void DebrisPopulation::UpdateEpoch(double timeStep)
 
 void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 {
-	debris.SetInitEpoch(currentEpoch);
-	population.emplace(debris.GetID(), debris);
-	populationCount++;
-	totalMass += debris.GetMass();
+	double debEpoch = debris.GetInitEpoch();
+	long ID = debris.GetID();
+
+
+	if (isnan(debEpoch))
+	{
+		debris.SetInitEpoch(currentEpoch);
+		population.emplace(ID, debris);
+		populationCount++;
+		totalMass += debris.GetMass();
+	}
+	else if (debEpoch <= currentEpoch)
+	{
+		population.emplace(ID, debris);
+		populationCount++;
+		totalMass += debris.GetMass();
+	}
+	else
+	{
+		loadingPopulation.emplace(ID, debris);
+		initEpochs.push_back(make_pair(debEpoch, ID));
+		sort(initEpochs.begin(), initEpochs.end());
+	}
 }
 
+
+void DebrisPopulation::LoadPopulation()
+{
+	for (auto ID : initEpochs)
+	{
+		if (ID.first <= currentEpoch)
+		{
+			DebrisObject tempObject(loadingPopulation[ID.second]);
+			loadingPopulation.erase(ID.second);
+			population.emplace(ID.second, tempObject.);
+			populationCount++;
+			totalMass += tempObject.GetMass();
+		}
+	}
+
+}
 
 void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 {

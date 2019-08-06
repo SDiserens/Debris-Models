@@ -9,7 +9,7 @@ class OrbitTrace : public CollisionAlgorithm
 
 public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
-	OrbitTrace(bool probabilities = false, double threshold=10);
+	OrbitTrace(bool probabilities = false, double threshold = 10);
 
 protected:
 	double CollisionRate(CollisionPair &objectPair);
@@ -24,4 +24,6 @@ protected:
 	bool HeadOnFilter(CollisionPair objectPair);
 	bool SynchronizedFilter(CollisionPair objectPair);
 	bool ProximityFilter(CollisionPair objectPair);
+
 };
+

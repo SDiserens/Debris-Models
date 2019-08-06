@@ -7,13 +7,16 @@
 
 class NASABreakupModel : public BreakupModel
 {
-public:
+protected:
 	int numFragBuckets;
 	string bridgingFunction;
 	double scaling;
 
+public:
+
 	NASABreakupModel();
-	NASABreakupModel(double mL, double cT, int nFB, string bF, double sc=1, double rFT=0.02, int rFN=10);
+	NASABreakupModel(double mL);
+	NASABreakupModel(double mL, double cT, int nFB = 30, string bF = "Weighted", double sc=1, double rFT=0.02, int rFN=10);
 	void mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL);
 
 };
