@@ -23,6 +23,7 @@ void Propagator::PropagatePopulation(double timestep)
 		for (auto& debris : population.population)
 		{
 			UpdateElements(debris.second, timestep);
+			debris.second.SetEpoch(population.GetEpoch() + timestep);
 			if (population.GetPopulationSize() == 0)
 				break;
 		}

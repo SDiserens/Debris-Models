@@ -32,14 +32,29 @@ DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3) : DebrisObject
 
 DebrisObject::DebrisObject(string TLE2, string TLE3)
 {
-
-	double meanMotion, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly;
+	int epochYear;
+	double meanMotion, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly, epochDay;
 	
 	objectID = ++objectSEQ;
 
 	noradID = stoi(TLE3.substr(2, 5));
 
-	initEpoch = stod(TLE2.substr(18, 14));
+	// Convert to days since 1957-OCT-04
+	epochYear = stoi(TLE2.substr(18, 2));
+	epochDay = stod(TLE2.substr(20, 12));
+
+	//Handle y2k
+	if (epochYear < 57)
+		epochYear += 2000;
+	else
+		epochYear += 1900;
+
+	int mon, day, hr, min;
+	double sec;
+
+	SGP4Funcs::days2mdhms(epochYear, epochDay, mon, day, hr, min, sec);
+	initEpoch = DateToEpoch(epochYear, mon, day, hr, min, sec);
+
 	bStar = stod(TLE2.substr(53, 1) + "0." + TLE2.substr(54, 5) + "e" + TLE2.substr(59, 2));
 
 	meanMotion = stod(TLE3.substr(52, 11)) / secondsDay;
@@ -351,6 +366,11 @@ void DebrisObject::SetBStar(double bStar)
 void DebrisObject::SetInitEpoch(double epoch)
 {
 	initEpoch = epoch;
+}
+
+void DebrisObject::SetEpoch(double epoch)
+{
+	currEpoch = epoch;
 }
 
 OrbitalAnomalies DebrisObject::GetAnomalies()

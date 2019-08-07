@@ -83,6 +83,36 @@ double PiRange(double n)
 	return n;
 }
 
+double DateToEpoch(int year, int month, int day, int hour, int minute, double second)
+{
+	double julianDay, dayFrac;
+	julianDay = 367.0 * year -
+		floor((7 * (year + floor((month + 9) / 12.0))) * 0.25) +
+		floor(275 * month / 9.0) +
+		day + 1721013.5;  // use - 678987.0 to go to mjd directly
+	dayFrac = (second + minute * 60.0 + hour * 3600.0) / 86400.0;
+
+	// check that the day and fractional day are correct
+	if (fabs(dayFrac) > 1.0)
+	{
+		double dtt = floor(dayFrac);
+		julianDay += dtt;
+		dayFrac -= dtt;
+	}
+
+	return julianDay + dayFrac - 2436115.5; // Julian date adjusted to space age epoch
+}
+
+double DateToEpoch(string date)
+{
+	int yr, mon, day;
+	yr = stoi(date.substr(0, 4));
+	mon = stoi(date.substr(5, 2));
+	day = stoi(date.substr(8, 2));
+
+	return DateToEpoch(yr, mon, day, 0,  0, 0.0);
+}
+
 double randomNumberTau()
 {
 	return randomNumber(Tau);

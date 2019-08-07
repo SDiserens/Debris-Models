@@ -55,6 +55,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	int nObjects;
 	double averageSemiMajorAxis = 0;
 	double epoch;
+	string date;
 
 	// Read scenario file
 	cout << "Reading Scenario File : " + scenarioFilename + "...";
@@ -82,7 +83,9 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	nObjects = scenario["objects"].size();
 	population.SetAverageSMA(averageSemiMajorAxis / nObjects);
 
-	epoch = 0; //TODO read epoch from file
+
+	date = scenario["EpochDate"].asString();
+	epoch = DateToEpoch(date); //TODO read epoch from file
 	population.InitialiseEpoch(epoch);
 
 	// Close File

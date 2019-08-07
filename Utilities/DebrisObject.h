@@ -77,6 +77,7 @@ public:
 	void SetCDrag(double cDrag);
 	void SetBStar(double bStar);
 	void SetInitEpoch(double epoch);
+	void SetEpoch(double epoch);
 
 	void SetVelocity(double vX, double vY, double vZ);
 	void SetVelocity(vector3D inputVelocity);

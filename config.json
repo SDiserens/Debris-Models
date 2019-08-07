@@ -8,7 +8,10 @@
   //
   "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots"
   "CollisionDetail": true, // Probability output / time output for different methods
-  "CollisionThreshold1" :  10, // Cube Size or threshold distance
+  "CollisionThreshold1": 10, // Cube Size or threshold distance
   //
-  "BackgroundPop": null
+  "BackgroundPop": null,
+  //
+  "Duration": 100, // Length of simulation (days)
+  "StepSize": 5 // Size of default timestep (days)
 }

@@ -1,6 +1,7 @@
 {
+  "EpochDate": "2017-04-17", // Date of simulation start (YYYY-MM-DD)
   "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter
-  "outputScaling" :  5, // collision probabilities of the order of 10^(-outputScaling)
+  "outputScaling": 5, // collision probabilities of the order of 10^(-outputScaling)
   "objects": [
     {
       "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
@@ -8,19 +9,19 @@
       "TLELine2": "1 25844U 89062H   17107.92189936 +.00000760 +00000-0 +12178-2 0  9995",
       "TLELine3": "2 25844 007.4892 084.0182 6731442 109.7891 330.6096 02.92413126183436"
     },
-    {      
+    {
       "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
       "TLELine1": "0 O3B PFM",
       "TLELine2": "1 39191U 13031D   17108.22690665 -.00000025 +00000-0 +00000-0 0  9992",
       "TLELine3": "2 39191 000.0414 018.8743 0004331 357.3745 343.7660 05.00115957069670"
     },
-    {      
+    {
       "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
       "TLELine1": "0 ARIANE 5 R/B",
       "TLELine2": "1 41593U 16039C   17108.25813738 +.00000875 +00000-0 +51833-3 0  9998",
       "TLELine3": "2 41593 006.0559 295.9592 7262304 064.6595 351.5169 02.29423736006946"
     },
-    {      
+    {
       "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
       "TLELine1": "0 O3B FM13",
       "TLELine2": "1 43234U 18024D   18207.76816779 -.00000029 +00000-0 +00000-0 0  9992",

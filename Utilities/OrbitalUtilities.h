@@ -95,3 +95,5 @@ double randomNumberTau();
 double randomNumberPi();
 double TauRange(double n);
 double PiRange(double n);
+
+double DateToEpoch(int year, int month, int day, int hour, int minute, double second);

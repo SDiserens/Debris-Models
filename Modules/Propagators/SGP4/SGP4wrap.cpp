@@ -66,13 +66,13 @@ void SGP4::HandleError(DebrisObject &object)
 	*                   6 - satellite has decayed
 	*/
 
-	//TODO - handle SGP4 error codes
-	if (errorCode == 6)
+	if (errorCode == 6 || errorCode == 5 || errorCode == 2)
 	{
 		population.DecayObject(object.GetID());
 	}
-	else if (errorCode == 5)
+	else if (errorCode == 1 || errorCode == 3 || errorCode == 4)
 	{
+		// Todo add handling for non elliptical orbtis
 		population.DecayObject(object.GetID());
 	}
 }
