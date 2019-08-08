@@ -10,11 +10,10 @@ int main(int argc, char** argv)
 	// ------ Initialisation ------
 	// ----------------------------
 	string arg, populationFilename, propagatorType, breakUpType, collisionType;
-	bool collisionDetail;
-	double fragmentMinLength, collisionThreshold;
+	double timeStep, stepDays, elapsedDays, simulationDays;
 
 	//TODO - Create independent function for config 
-	Json::Value config;
+	Json::Value config, propagatorConfig, fragmentationConfig, collisionConfig;
 	Json::Reader reader;
 	
 	cout << "Reading Config File...";
@@ -28,13 +27,13 @@ int main(int argc, char** argv)
 	populationFilename = config["scenarioFilename"].asString();
 
 	propagatorType = config["Propagator"].asString();
+	propagatorConfig = config["PropagatorConfig"];
 
 	breakUpType = config["Fragmentation"].asString();
-	fragmentMinLength = config["minLength"].asDouble();
+	fragmentationConfig = config["FragmentationConfig"];
 
 	collisionType = config["CollsionAlgorithm"].asString();
-	collisionDetail = config["CollisionDetail"].asBool();
-	collisionThreshold = config["CollisionThreshold1"].asDouble();
+	collisionConfig = config["CollisionConfig"];
 
 	// Parse command line arguments
 	for (int i = 1; i < argc; ++i) {
@@ -48,27 +47,37 @@ int main(int argc, char** argv)
 			//TODO - Create help output
 		}
 	}
-
 	// Initialise population
 	DebrisPopulation environmentPopulation;
-	LoadScenario(environmentPopulation, populationFilename);
-	
-	// Load Modules
-	auto propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation);
 
-	auto collisionModel = ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionDetail, collisionThreshold);
-	// TODO - Include configuration variable fro breakup model
-	auto breakUp = ModuleFactory::CreateBreakupModel(breakUpType, fragmentMinLength);
+	// Load Modules
+	auto& propagator = *ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
+
+	auto& collisionModel = *ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
+
+	auto& breakUp = *ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
+
+	// Load population
+	LoadScenario(environmentPopulation, populationFilename);
+	propagator.SyncPopulation();
 
 		// Validate Modules
 	
 	// Load Environment Parameters
+	elapsedDays = 0;
+	simulationDays = config["Duration"].asDouble();
+	stepDays = config["StepSize"].asDouble();
 
 	// --------------------------
 	// --- Evolve Environment ---
 	// --------------------------
 	// While timeSimulation < timeEnd
+	while (elapsedDays < simulationDays)
+	{
 		// Propagate Object Orbits
+		timeStep = secondsDay * min(stepDays, environmentPopulation.GetNextInitEpoch(), simulationDays - elapsedDays);
+		propagator.PropagatePopulation(timeStep);
+		elapsedDays += timeStep;
 
 		// Determine Events
 			// Collision Detection
@@ -95,7 +104,7 @@ int main(int argc, char** argv)
 			// Remove Decayed Objects
 
 				// Log
-
+	}
 
 	// ----------------------------
 	// ------ End Simulation ------

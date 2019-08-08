@@ -102,7 +102,7 @@ void DebrisPopulation::LoadPopulation()
 		{
 			DebrisObject tempObject(loadingPopulation[ID.second]);
 			loadingPopulation.erase(ID.second);
-			population.emplace(ID.second, tempObject.);
+			population.emplace(ID.second, tempObject);
 			populationCount++;
 			totalMass += tempObject.GetMass();
 		}

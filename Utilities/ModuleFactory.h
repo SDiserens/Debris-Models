@@ -16,11 +16,12 @@
 //	SimpleJ2
 //};
 
+
 class ModuleFactory {
 public:
-	static unique_ptr<Propagator> CreatePropagator(string propagatorType, DebrisPopulation population) {
+	static unique_ptr<Propagator> CreatePropagator(string propagatorType, DebrisPopulation & population, Json::Value & config) {
 		if (propagatorType == "SGP4")
-			return make_unique<SGP4>(population);
+			return CreateSGP4Instance(population, config);
 		if (propagatorType == "SimpleJ2")
 			return make_unique<Analytic_J2>(population, true);
 		if (propagatorType == "Simple")
@@ -29,21 +30,81 @@ public:
 			throw "Invalid Propagator Type";
 	};
 
-	static unique_ptr<CollisionAlgorithm> CreateCollisionAlgorithm(string collisionType, bool detail, double threshold) {
+	static unique_ptr<CollisionAlgorithm> CreateCollisionAlgorithm(string collisionType, Json::Value & config) {
 		if (collisionType == "Cube")
-			return make_unique<CUBEApproach>(detail, threshold);
+			return CreateCubeInstance(config);
 		if (collisionType == "OrbitTrace")
-			return make_unique<OrbitTrace>(detail, threshold);
+			return CreateOTInstance(config);
 		if (collisionType ==  "Hoots")
-			return make_unique<HootsFilter>(detail, threshold);
+			return CreateHootsInstance(config);
 		else
 			throw "Invalid Collision Algorithm Type";
 	};
 
-	static unique_ptr<BreakupModel> CreateBreakupModel(string breakupType, double minLength) {
+	static unique_ptr<BreakupModel> CreateBreakupModel(string breakupType, Json::Value & config) {
 		if (breakupType == "NSBM")
-			return make_unique<NASABreakupModel>(minLength);
+			return CreateNSBMInstance(config);
 		else
 			throw "Invalid Breakup Model Type";
+	};
+
+
+private:
+	// Propagator Factories
+	static unique_ptr<SGP4> CreateSGP4Instance(DebrisPopulation & population, Json::Value & config){
+		gravconsttype gravModel;
+		char opsMode = config["opsMode"].asString()[0];
+		string gravType = config["gravModel"].asString();
+
+		if (gravType == "wgs72")
+			gravModel = wgs72;
+		else if (gravType == "wgs72old")
+			gravModel = wgs72old;
+		else if (gravType == "wgs84")
+			gravModel = wgs84;
+		else
+			throw "Invalid Gravity Model Type";
+
+		return make_unique<SGP4>(population, opsMode, gravModel);
+	};
+
+	// Collision Factories
+	static unique_ptr<CUBEApproach> CreateCubeInstance(Json::Value & config) {
+		// Read Cube config
+		bool probabilities = config["Verbose"].asBool();
+		double dimension = config["CubeDimension"].asDouble();
+
+		return make_unique<CUBEApproach>(probabilities, dimension);
+	};
+
+	static unique_ptr<OrbitTrace> CreateOTInstance(Json::Value & config) {
+		// Read OT config
+		bool probabilities = config["Verbose"].asBool();
+		double threshold = config["conjunctionThreshold"].asDouble();
+
+		return make_unique<OrbitTrace>( probabilities, threshold);
+	};
+
+	static unique_ptr<HootsFilter> CreateHootsInstance(Json::Value & config) {
+		// Read Hoots config
+		bool times = config["Verbose"].asBool();
+		double conjunctionThreshold = config["conjunctionThreshold"].asDouble();
+		double collisionThreshold = config["collisionThreshold"].asDouble();
+
+		return make_unique<HootsFilter>( times, conjunctionThreshold, collisionThreshold);
+	};
+
+	// Fragmentation Factories
+	static unique_ptr<NASABreakupModel> CreateNSBMInstance(Json::Value & config) {
+		// Read NSBM config
+		double minLength = config["minLength"].asDouble();
+		double catastrophicThreshold = config["catastrophicThreshold"].asDouble();
+		int numberBuckets = config["numberBuckets"].asInt();
+		string bridgingFucntion = config["bridgingFucntion"].asString();
+		double explosionScaling = config["explosionScaling"].asDouble();
+		double representativeFragmentThreshold = config["representativeFragmentThreshold"].asDouble();
+		int representativeFragmentNumber = config["representativeFragmentNumber"].asInt();
+
+		return make_unique<NASABreakupModel>(minLength, catastrophicThreshold, numberBuckets, bridgingFucntion, explosionScaling, representativeFragmentThreshold, representativeFragmentNumber);
 	};
 };

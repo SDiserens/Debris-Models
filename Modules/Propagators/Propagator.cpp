@@ -17,18 +17,29 @@ Propagator::~Propagator()
 void Propagator::PropagatePopulation(double timestep)
 {
 	population.LoadPopulation();
+	population.UpdateEpoch(timestep);
+	SyncPopulation();
+}
+
+void Propagator::SyncPopulation()
+{
+	double currEpoch, debrisEpoch, timestep;
 
 	if (population.GetPopulationSize() > 0)
 	{
+		currEpoch = population.GetEpoch();
 		for (auto& debris : population.population)
 		{
-			UpdateElements(debris.second, timestep);
-			debris.second.SetEpoch(population.GetEpoch() + timestep);
+			debrisEpoch = debris.second.GetEpoch();
+			if (debrisEpoch < currEpoch) {
+				timestep = currEpoch - debrisEpoch;
+				UpdateElements(debris.second, timestep);
+				debris.second.SetEpoch(currEpoch);
+			}
 			if (population.GetPopulationSize() == 0)
 				break;
 		}
 	}
-	population.UpdateEpoch(timestep);
 }
 
 double Propagator::CalculateBStar(DebrisObject & object)

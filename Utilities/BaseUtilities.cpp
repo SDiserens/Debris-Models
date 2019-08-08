@@ -73,6 +73,10 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	SetCentralBody(scenario["centralBody"].asInt());
 	population.SetScalingPower(scenario["outputScaling"].asInt());
 
+	date = scenario["EpochDate"].asString();
+	epoch = DateToEpoch(date);
+	population.InitialiseEpoch(epoch);
+
 	for (Json::Value objectParameters : scenario["objects"])
 	{
 		DebrisObject tempObject(GenerateDebrisObject(objectParameters));
@@ -82,12 +86,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 
 	nObjects = scenario["objects"].size();
 	population.SetAverageSMA(averageSemiMajorAxis / nObjects);
-
-
-	date = scenario["EpochDate"].asString();
-	epoch = DateToEpoch(date); //TODO read epoch from file
-	population.InitialiseEpoch(epoch);
-
+			
 	// Close File
 	cout << " Closing Scenario File..." << endl;
 	scenarioFile.close();

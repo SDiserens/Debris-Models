@@ -6,6 +6,11 @@ SGP4::SGP4(DebrisPopulation & initPopulation) : Propagator(initPopulation)
 {
 }
 
+SGP4::SGP4(DebrisPopulation & initPopulation, char opMode, gravconsttype gravMode) : Propagator(initPopulation)
+{
+	opsMode = opMode;
+	gravModel = gravMode;
+}
 
 SGP4::~SGP4()
 {

@@ -5,6 +5,7 @@ public:
 	Propagator(DebrisPopulation & initPopulation);
 	~Propagator();
 	void PropagatePopulation(double timestep); // timestep in seconds
+	void SyncPopulation(); // timestep in seconds
 
 protected:
 	DebrisPopulation & population;

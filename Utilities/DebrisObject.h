@@ -40,6 +40,7 @@ public:
 	string GetName();
 	int GetNFrag();
 	double GetInitEpoch();
+	double GetEpoch();
 	double GetMass();
 	double GetLength();
 	double GetArea();

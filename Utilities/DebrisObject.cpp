@@ -141,6 +141,11 @@ double DebrisObject::GetInitEpoch()
 	return initEpoch;
 }
 
+double DebrisObject::GetEpoch()
+{
+	return currEpoch;
+}
+
 void DebrisObject::UpdateOrbitalElements(vector3D deltaV)
 {
 	velocity.addVector(deltaV);

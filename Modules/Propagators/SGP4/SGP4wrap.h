@@ -5,15 +5,17 @@
 
 const double rhoZero = 0.1570;
 
-const char opsMode = 'i'; // operation mode of the SGP4, either i (improved) or a (afspc).
-const gravconsttype gravModel = wgs72; // which set of constants to use  wgs72, wgs84
-
 
 class SGP4 :
 	public Propagator
 {
+private:
+	char opsMode = 'i'; // operation mode of the SGP4, either i (improved) or a (afspc).
+	gravconsttype gravModel = wgs72; // which set of constants to use  wgs72, wgs84
+
 public:
 	SGP4(DebrisPopulation & initPopulation);
+	SGP4(DebrisPopulation & initPopulation, char opMode, gravconsttype gravMode);
 	~SGP4();
 
 private:
