@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 	DebrisPopulation environmentPopulation;
 
 	// Load Modules
-	auto& propagator = *ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
+	auto& propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
 
 	auto& collisionModel = *ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
 
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 
 	// Load population
 	LoadScenario(environmentPopulation, populationFilename);
-	propagator.SyncPopulation();
+	propagator->SyncPopulation();
 
 		// Validate Modules
 	
@@ -75,8 +75,8 @@ int main(int argc, char** argv)
 	while (elapsedDays < simulationDays)
 	{
 		// Propagate Object Orbits
-		timeStep = secondsDay * min(stepDays, environmentPopulation.GetNextInitEpoch(), simulationDays - elapsedDays);
-		propagator.PropagatePopulation(timeStep);
+		timeStep = min(min(stepDays, environmentPopulation.GetNextInitEpoch()), simulationDays - elapsedDays);
+		(*propagator).PropagatePopulation(secondsDay * timeStep);
 		elapsedDays += timeStep;
 
 		// Determine Events

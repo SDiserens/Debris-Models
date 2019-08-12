@@ -9,9 +9,12 @@ public:
 
 protected:
 	DebrisPopulation & population;
+
+	vector<long> removeID;
 	virtual void UpdateElements(DebrisObject &object, double timeStep) = 0;
 	//virtual void HandleError(DebrisObject &object) = 0;
 
+	void RemovePopulation();
 	double CalculateBStar(DebrisObject &object);
 };
 

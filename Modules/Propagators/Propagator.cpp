@@ -5,7 +5,7 @@
 
 
 
-Propagator::Propagator(DebrisPopulation & initPopulation) :population(initPopulation)
+Propagator::Propagator(DebrisPopulation & initPopulation) : population(initPopulation)
 {
 }
 
@@ -23,10 +23,11 @@ void Propagator::PropagatePopulation(double timestep)
 
 void Propagator::SyncPopulation()
 {
-	double currEpoch, debrisEpoch, timestep;
 
 	if (population.GetPopulationSize() > 0)
 	{
+		double currEpoch, debrisEpoch, timestep;
+
 		currEpoch = population.GetEpoch();
 		for (auto& debris : population.population)
 		{
@@ -39,7 +40,17 @@ void Propagator::SyncPopulation()
 			if (population.GetPopulationSize() == 0)
 				break;
 		}
+		RemovePopulation();
 	}
+}
+
+void Propagator::RemovePopulation()
+{
+	for (long ID : removeID) {
+
+		population.DecayObject(ID);
+	}
+	removeID.clear();
 }
 
 double Propagator::CalculateBStar(DebrisObject & object)

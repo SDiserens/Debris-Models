@@ -19,7 +19,7 @@ public:
 class DebrisPopulation
 {
 protected:
-	long populationCount;
+	long populationCount = 0;
 	int scalingPower;
 	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis;
 	map<long, DebrisObject> loadingPopulation;

@@ -44,6 +44,8 @@ public:
 	static unique_ptr<BreakupModel> CreateBreakupModel(string breakupType, Json::Value & config) {
 		if (breakupType == "NSBM")
 			return CreateNSBMInstance(config);
+		else if (breakupType.empty())
+			return nullptr;
 		else
 			throw "Invalid Breakup Model Type";
 	};

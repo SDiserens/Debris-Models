@@ -73,11 +73,11 @@ void SGP4::HandleError(DebrisObject &object)
 
 	if (errorCode == 6 || errorCode == 5 || errorCode == 2)
 	{
-		population.DecayObject(object.GetID());
+		removeID.push_back(object.GetID());
 	}
 	else if (errorCode == 1 || errorCode == 3 || errorCode == 4)
 	{
+		removeID.push_back(object.GetID());
 		// Todo add handling for non elliptical orbtis
-		population.DecayObject(object.GetID());
 	}
 }
