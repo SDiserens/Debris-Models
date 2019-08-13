@@ -2,9 +2,6 @@
 #include "Propagator.h"
 
 
-
-
-
 Propagator::Propagator(DebrisPopulation & initPopulation) : population(initPopulation)
 {
 }
@@ -32,7 +29,7 @@ void Propagator::SyncPopulation()
 		for (auto& debris : population.population)
 		{
 			debrisEpoch = debris.second.GetEpoch();
-			if (debrisEpoch < currEpoch) {
+			if (debrisEpoch <= currEpoch) {
 				timestep = currEpoch - debrisEpoch;
 				UpdateElements(debris.second, timestep);
 				debris.second.SetEpoch(currEpoch);

@@ -67,6 +67,9 @@ int main(int argc, char** argv)
 		// Read TLE and generate objects
 			// For set in file Read 3 lines and create object
 		DebrisObject object(currentTLE.first, currentTLE.second);
+		object.SetInitEpoch(0.0);
+		object.SetEpoch(0.0);
+		objectPopulation.InitialiseEpoch(0.0);
 			// Add to Population
 		objectPopulation.AddDebrisObject(object);
 		long objectID = object.GetID();
@@ -81,7 +84,7 @@ int main(int argc, char** argv)
 		endTime = stod(scenarioData[1]) * minutes2days;
 		timeStep = stod(scenarioData[2]) * minutes2days;
 		
-		objectPopulation.InitialiseEpoch(0.0);
+		//objectPopulation.InitialiseEpoch(0.0);
 		elapsedTime = 0.0;
 
 		// Add identification tag
@@ -97,27 +100,28 @@ int main(int argc, char** argv)
 		if (startTime != 0.0)
 		{
 			// Propagate to start
+			objectPopulation.GetObject(objectID).SetEpoch(startTime);
 			prop.PropagatePopulation(startTime);
-			elapsedTime += stod(scenarioData[0]);
+			elapsedTime += stod(scenarioData[0]) * minutes2days;
 
 			// Store State vector
 			stateVector = objectPopulation.GetObject(objectID).GetStateVector();
-			stateVector.insert(stateVector.begin(), elapsedTime);
+			stateVector.insert(stateVector.begin(), elapsedTime * 60 * 24);
 			stateVectorList.push_back(stateVector);
 		}
 
 		// While time < endTime
-		while (objectPopulation.GetEpoch() < endTime)
+		while (elapsedTime < endTime)
 		{
-			if (endTime - objectPopulation.GetEpoch() < timeStep)
-				timeStep = endTime - objectPopulation.GetEpoch();
+			if (endTime - elapsedTime < timeStep)
+				timeStep = endTime - elapsedTime;
 			// Propagate in specified timestep
 			prop.PropagatePopulation(timeStep);
-			elapsedTime += timeStep * 60 * 24;
+			elapsedTime += timeStep;
 
 			// Store State vector
 			stateVector = objectPopulation.GetObject(objectID).GetStateVector();
-			stateVector.insert(stateVector.begin(), elapsedTime);
+			stateVector.insert(stateVector.begin(), elapsedTime * 60 * 24);
 			stateVectorList.push_back(stateVector);
 		}
 	}

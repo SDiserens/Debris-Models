@@ -45,7 +45,7 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 	}
 
 	// Propagate forward by timestep in minutes
-	timeMinutes = (timeStep + population.GetEpoch()) * 24 * 60;
+	timeMinutes = (population.GetEpoch()) * 24 * 60;
 		// call SGP4 procedure
 	orbitState = SGP4Funcs::sgp4(object.GetSGP4SatRec(), timeMinutes, r, v);
 	

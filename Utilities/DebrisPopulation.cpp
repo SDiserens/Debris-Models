@@ -119,6 +119,8 @@ DebrisObject& DebrisPopulation::GetObject(long ID)
 {
 	if (population.count(ID) > 0)
 		return population.at(ID);
+	else if (loadingPopulation.count(ID) > 0)
+		return loadingPopulation.at(ID);
 	else
 		return removedPopulation.at(ID);
 

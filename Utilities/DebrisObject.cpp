@@ -54,16 +54,17 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 
 	SGP4Funcs::days2mdhms(epochYear, epochDay, mon, day, hr, min, sec);
 	initEpoch = DateToEpoch(epochYear, mon, day, hr, min, sec);
+	currEpoch = initEpoch;
 
 	bStar = stod(TLE2.substr(53, 1) + "0." + TLE2.substr(54, 5) + "e" + TLE2.substr(59, 2));
 
-	meanMotion = stod(TLE3.substr(52, 11)) / secondsDay;
-	semiMajorAxis = cbrt(muGravity / (meanMotion * meanMotion));
 	inclination = DegToRad(stod(TLE3.substr(8, 8)));
 	rightAscension = DegToRad(stod(TLE3.substr(17, 8)));
 	eccentricity = stod("0." + TLE3.substr(26, 7));
 	argPerigee = DegToRad(stod(TLE3.substr(34, 8)));
 	init_meanAnomaly = DegToRad(stod(TLE3.substr(43, 8)));
+	meanMotion = stod(TLE3.substr(52, 11)) * Tau / secondsDay;
+	semiMajorAxis = cbrt(muGravity / (meanMotion * meanMotion));
 
 	elements = OrbitalElements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly);
 

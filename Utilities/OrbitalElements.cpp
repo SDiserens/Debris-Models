@@ -156,7 +156,7 @@ double OrbitalElements::CalculatePeriod()
 
 double OrbitalElements::GetMeanMotion()
 {
-	return Tau * secondsDay / CalculatePeriod();
+	return secondsDay / CalculatePeriod();
 }
 
 vector3D OrbitalElements::GetPosition()
