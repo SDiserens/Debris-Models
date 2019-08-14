@@ -53,15 +53,16 @@ protected:
 	virtual double CollisionRate(CollisionPair &objectPair) = 0;
 	virtual vector<CollisionPair> CreatePairList(DebrisPopulation& population);
 
+	vector<double> GetCollisionProbabilities();
+	vector<double> GetNewCollisionProbabilities();
 
 public:
+	virtual void MainCollision(DebrisPopulation& population, double timeStep) = 0;
 	void SwitchGravityComponent();
 	vector<pair<long, long>> GetCollisionList();
-	vector<double> GetCollisionProbabilities();
 	vector<pair<long, long>> GetNewCollisionList();
-	vector<double> GetNewCollisionProbabilities();
 	double GetElapsedTime();
 
-	virtual vector<double> GetNewCollisionTimes();
-	virtual vector<double> GetCollisionTimes();
+	vector<double> GetCollisionVerbose();
+	vector<double> GetNewCollisionVerbose();
 };

@@ -53,7 +53,7 @@ int main(int argc, char** argv)
 	// Load Modules
 	auto& propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
 
-	auto& collisionModel = *ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
+	auto& collisionModel = ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
 
 	auto& breakUp = *ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
 
@@ -68,6 +68,8 @@ int main(int argc, char** argv)
 	simulationDays = config["Duration"].asDouble();
 	stepDays = config["StepSize"].asDouble();
 
+	vector<pair<long, long>> collisionList;
+
 	// --------------------------
 	// --- Evolve Environment ---
 	// --------------------------
@@ -81,8 +83,23 @@ int main(int argc, char** argv)
 
 		// Determine Events
 			// Collision Detection
+		collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
+		collisionList = collisionModel->GetNewCollisionList();
+
+		// if extra output requested
+		if (collisionConfig["Verbose"].asBool()) {
+			vector<double> collisionOutput;
+			// Retrieve collision output
+			collisionOutput = collisionModel->GetNewCollisionVerbose();
+
+			// TODO - Log data
+		}
+
+		// For each pair in collision list
+			// determine if collision avoidance occurs
 
 				// Log
+
 
 			// Generate Explosions
 

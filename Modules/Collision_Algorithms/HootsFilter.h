@@ -14,8 +14,9 @@ protected:
 public:
 	HootsFilter(bool times = false, double init_conjThreshold=10, double init_collThreshold=0.1);
 	void MainCollision(DebrisPopulation& population, double timestep);
-	vector<double> GetNewCollisionTimes();
-	vector<double> GetCollisionTimes();
+
+	vector<double> GetCollisionVerbose();
+	vector<double> GetNewCollisionVerbose();
 
 protected:
 	//Primary functions
@@ -31,5 +32,9 @@ protected:
 	double CalculateClosestApproachTime(CollisionPair& objectPair, double candidateTime);
 	double CalculateFirstDerivateSeparation(CollisionPair& objectPair, double candidateTime);
 	double CalculateSecondDerivativeSeparation(CollisionPair& objectPair, double candidateTime);
+
+
+	vector<double> GetNewCollisionTimes();
+	vector<double> GetCollisionTimes();
 };
 

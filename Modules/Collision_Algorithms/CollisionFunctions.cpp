@@ -9,6 +9,16 @@ double CollisionAlgorithm::GetElapsedTime()
 	return elapsedTime;
 }
 
+vector<double> CollisionAlgorithm::GetCollisionVerbose()
+{
+	return GetCollisionProbabilities();
+}
+
+vector<double> CollisionAlgorithm::GetNewCollisionVerbose()
+{
+	return GetNewCollisionProbabilities();
+}
+
 vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
 {
 	vector<CollisionPair> pairList;
@@ -84,15 +94,7 @@ vector<double> CollisionAlgorithm::GetNewCollisionProbabilities()
 	return newList;
 }
 
-vector<double> CollisionAlgorithm::GetNewCollisionTimes()
-{
-	return GetNewCollisionProbabilities();
-}
 
-vector<double> CollisionAlgorithm::GetCollisionTimes()
-{
-	return GetCollisionProbabilities();
-}
 
 bool CollisionAlgorithm::DetermineCollision(double collisionProbability)
 {

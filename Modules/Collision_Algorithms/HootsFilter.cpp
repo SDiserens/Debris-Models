@@ -70,6 +70,16 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 	}
 }
 
+vector<double> HootsFilter::GetCollisionVerbose()
+{
+	return GetCollisionTimes();
+}
+
+vector<double> HootsFilter::GetNewCollisionVerbose()
+{
+	return GetNewCollisionTimes();
+}
+
 vector<double> HootsFilter::GetNewCollisionTimes()
 {
 	return newCollisionTimes;

@@ -187,5 +187,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="config.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Scenarios\Collisions_39191.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
