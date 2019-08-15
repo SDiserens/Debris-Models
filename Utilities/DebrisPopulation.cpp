@@ -22,9 +22,15 @@ double DebrisPopulation::GetNextInitEpoch()
 	if (initEpochs.size() == 0)
 		return NAN;
 	else
-		return initEpochs[0].first;
+		return initEpochs.front().first;
 }
-
+double DebrisPopulation::GetTimeToNextInitEpoch()
+{
+	if (initEpochs.size() == 0)
+		return NAN;
+	else
+		return initEpochs.front().first - currentEpoch;
+}
 double DebrisPopulation::GetEpoch()
 {
 	return currentEpoch;
@@ -96,17 +102,24 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 
 void DebrisPopulation::LoadPopulation()
 {
-	for (auto ID : initEpochs)
+	if (initEpochs.size() != 0)
 	{
-		if (ID.first <= currentEpoch)
+		pair<double, long> ID;
+		while (initEpochs.front().first <= currentEpoch)
 		{
+			ID = initEpochs.front();
+			initEpochs.erase(initEpochs.begin());
 			DebrisObject tempObject(loadingPopulation[ID.second]);
 			loadingPopulation.erase(ID.second);
 			population.emplace(ID.second, tempObject);
 			populationCount++;
 			totalMass += tempObject.GetMass();
+
+			if (initEpochs.size() == 0)
+				break;
 		}
 	}
+	
 
 }
 

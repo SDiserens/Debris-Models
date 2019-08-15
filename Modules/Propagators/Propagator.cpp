@@ -31,7 +31,7 @@ void Propagator::SyncPopulation()
 			debrisEpoch = debris.second.GetEpoch();
 			if (debrisEpoch <= currEpoch) {
 				timestep = currEpoch - debrisEpoch;
-				UpdateElements(debris.second, timestep);
+				UpdateElements(debris.second, secondsDay * timestep);
 				debris.second.SetEpoch(currEpoch);
 			}
 			if (population.GetPopulationSize() == 0)

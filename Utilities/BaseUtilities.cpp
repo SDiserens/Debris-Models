@@ -1,5 +1,19 @@
 #include "stdafx.h"
 
+bool fileExists(const string& name)
+{
+	FILE *file;
+	fopen_s(&file, name.c_str(), "r");
+	if (file)
+	{
+		fclose(file);
+		return true;
+	}
+	else
+		return false;
+}
+
+
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 {
 	Json::Value elements;
@@ -39,9 +53,12 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 		break;
 
 	case 2:
+
+		radius = parsedObject["radius"].asDouble();
 		debris = DebrisObject(parsedObject["TLELine1"].asString(),
 							  parsedObject["TLELine2"].asString(),
 							  parsedObject["TLELine3"].asString());
+		debris.SetRadius(radius);
 		break;
 	}
 
@@ -90,5 +107,61 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	// Close File
 	cout << " Closing Scenario File..." << endl;
 	scenarioFile.close();
+}
+
+void WriteCollisionData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, vector<tuple<double, pair<long, long>, double>> collisionLog)
+{
+	char date[100];
+	int ID = 1;
+	string outputFilename, eventType, pairID;
+
+	// Store data
+	time_t dateTime = time(NULL);
+	struct tm currtime;
+	localtime_s(&currtime, &dateTime);
+	strftime(date, sizeof(date), "%F", &currtime);
+
+	eventType = scenario.substr(0, scenario.find("."));
+
+	outputFilename = "Output\\" + string(date) + "_CollisionData_" + eventType + ".csv";
+	while (fileExists(outputFilename))
+	{
+		ID++;
+		outputFilename = "Output\\" + string(date) + "_CollisionData_" + eventType + "_" + to_string(ID) + ".csv";
+	}
+
+	cout << "Creating Data File : " + outputFilename + "...";
+	// Create Output file
+	ofstream outputFile;
+	outputFile.open(outputFilename, ofstream::out);
+
+	// Write data into file
+	cout << "  Writing to Data File...";
+
+	outputFile << "Scenario File:," + scenario;
+	outputFile << "\nDuration:" + config["Duration"].asString(); // Length of simulation (days)
+	outputFile << "\nStep Length:" + config["StepSize"].asString();
+	outputFile << "\nCollision Model:," + collisionModel;
+	if (collisionModel == "Cube")
+		outputFile << "\nCube Dimension (km):," + config["CubeDimension"].asString();
+	if (collisionModel == "OrbitTrace")
+		outputFile << "\nThreshold (km):," + config["conjunctionThreshold"].asString();
+	if (collisionModel == "Hoots")
+	{
+		outputFile << "\nConjunction Threshold (km):," + config["conjunctionThreshold"].asString();
+		outputFile << "\nCollision Threshold (km):," + config["collisionThreshold"].asString();
+	}
+
+	// Break data with line
+	outputFile << "\n";
+
+	outputFile << "\nSimulation Elapsed Time (days), Object Pair, Collision Probability";
+	for (auto logEntry : collisionLog) 
+	{
+		//TODO - Add scaling to collision so not stored as 0
+		pairID = to_string(get<1>(logEntry).first) + "-" + to_string(get<1>(logEntry).second);
+		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + pairID + "," + to_string(get<2>(logEntry));
+	}
+
 }
 

@@ -69,6 +69,7 @@ int main(int argc, char** argv)
 	stepDays = config["StepSize"].asDouble();
 
 	vector<pair<long, long>> collisionList;
+	vector<tuple<double, pair<long, long>, double>> collisionLog;
 
 	// --------------------------
 	// --- Evolve Environment ---
@@ -77,8 +78,8 @@ int main(int argc, char** argv)
 	while (elapsedDays < simulationDays)
 	{
 		// Propagate Object Orbits
-		timeStep = min(min(stepDays, environmentPopulation.GetNextInitEpoch()), simulationDays - elapsedDays);
-		(*propagator).PropagatePopulation(secondsDay * timeStep);
+		timeStep = min(min(stepDays, environmentPopulation.GetTimeToNextInitEpoch()), simulationDays - elapsedDays);
+		(*propagator).PropagatePopulation(timeStep);
 		elapsedDays += timeStep;
 
 		// Determine Events
@@ -93,6 +94,9 @@ int main(int argc, char** argv)
 			collisionOutput = collisionModel->GetNewCollisionVerbose();
 
 			// TODO - Log data
+			for (int i = 0; i < collisionList.size(); i++) {
+				collisionLog.push_back(make_tuple(elapsedDays, collisionList[i], collisionOutput[i]));
+			}
 		}
 
 		// For each pair in collision list
@@ -129,6 +133,9 @@ int main(int argc, char** argv)
 	// Save final population
 
 	// Write Logs to output files
+	if (collisionConfig["Verbose"].asBool()) {
+		WriteCollisionData(populationFilename, config, collisionType, collisionConfig, collisionLog);
+	}
 
     return 0;
 }

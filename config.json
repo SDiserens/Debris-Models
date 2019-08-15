@@ -25,7 +25,7 @@
   //
   "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots"
   "CollisionConfig": {
-    "CubeDimension": 10.0, // Cube Size or threshold distance
+    "CubeDimension": 1000.0, // Cube Size or threshold distance
     //"ConjunctionThreshold": 10.0, //Threshold for orbit-trace and hoots
     //"CollisionThreshold": 0.1 // inner threshold for Hoots
     "Verbose": true // Probability output / time output for different methods

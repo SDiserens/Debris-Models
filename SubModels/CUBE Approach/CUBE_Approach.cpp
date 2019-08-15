@@ -158,7 +158,7 @@ int main(int argc, char** argv)
 			progress.DisplayProgress(eval * evaluationSteps + step);
 		}
 		// Store collision data
-		collisionProbabilities = collisionCube.GetNewCollisionProbabilities();
+		collisionProbabilities = collisionCube.GetNewCollisionVerbose();
 		collisionList = collisionCube.GetNewCollisionList();
 
 		for (k = 0; k < collisionProbabilities.size(); k++)

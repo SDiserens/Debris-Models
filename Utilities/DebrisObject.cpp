@@ -379,6 +379,11 @@ void DebrisObject::SetEpoch(double epoch)
 	currEpoch = epoch;
 }
 
+void DebrisObject::SetRadius(double radii)
+{
+	radius = radii;
+}
+
 OrbitalAnomalies DebrisObject::GetAnomalies()
 {
 	return elements.GetAnomalies();

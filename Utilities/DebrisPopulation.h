@@ -35,6 +35,7 @@ public:
 	void LoadPopulation();
 
 	double GetNextInitEpoch();
+	double GetTimeToNextInitEpoch();
 	double GetEpoch();
 	int GetPopulationSize();
 	int GetScalingPower();
