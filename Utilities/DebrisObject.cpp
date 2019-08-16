@@ -379,6 +379,11 @@ void DebrisObject::SetEpoch(double epoch)
 	currEpoch = epoch;
 }
 
+void DebrisObject::UpdateEpoch(double epochStep)
+{
+	currEpoch += epochStep;
+}
+
 void DebrisObject::SetRadius(double radii)
 {
 	radius = radii;

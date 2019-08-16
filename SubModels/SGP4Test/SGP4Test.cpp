@@ -67,9 +67,8 @@ int main(int argc, char** argv)
 		// Read TLE and generate objects
 			// For set in file Read 3 lines and create object
 		DebrisObject object(currentTLE.first, currentTLE.second);
-		object.SetInitEpoch(0.0);
-		object.SetEpoch(0.0);
-		objectPopulation.InitialiseEpoch(0.0);
+
+		objectPopulation.InitialiseEpoch(object.GetInitEpoch());
 			// Add to Population
 		objectPopulation.AddDebrisObject(object);
 		long objectID = object.GetID();
@@ -100,7 +99,7 @@ int main(int argc, char** argv)
 		if (startTime != 0.0)
 		{
 			// Propagate to start
-			objectPopulation.GetObject(objectID).SetEpoch(startTime);
+			objectPopulation.GetObject(objectID).UpdateEpoch(startTime);
 			prop.PropagatePopulation(startTime);
 			elapsedTime += stod(scenarioData[0]) * minutes2days;
 
@@ -111,7 +110,7 @@ int main(int argc, char** argv)
 		}
 
 		// While time < endTime
-		while (elapsedTime < endTime)
+		while (elapsedTime < endTime && objectPopulation.GetPopulationSize() > 0)
 		{
 			if (endTime - elapsedTime < timeStep)
 				timeStep = endTime - elapsedTime;
@@ -153,7 +152,7 @@ int main(int argc, char** argv)
 	{
 		if (outputLine.size() == 1)
 		{
-			outputFile << to_string(outputLine[0]) + " xx\n";
+			outputFile << to_string(int(outputLine[0])) + " xx\n";
 		}
 		else
 		{

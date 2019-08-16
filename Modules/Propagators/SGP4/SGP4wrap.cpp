@@ -35,8 +35,9 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 			object.SetBStar(bStar);
 		}
 		meanMotionKozai = Tau * elements.GetMeanMotion() / 1440; // rad/min
+		double objectEpoch = object.GetInitEpoch() + 2834.0000; //Corrected to 0 Jan 1950 (i.e. 31/12/49) for SGP4
 		// call SGP4init
-		SGP4Funcs::sgp4init(gravModel, opsMode, object.GetID(), object.GetInitEpoch(), bStar, 0, 0, //first and second derivative of the mean motion set to zero as unused
+		SGP4Funcs::sgp4init(gravModel, opsMode, object.GetID(), objectEpoch, bStar, 0, 0, //first and second derivative of the mean motion set to zero as unused
 										elements.eccentricity, elements.argPerigee, elements.inclination, elements.GetMeanAnomaly(), meanMotionKozai, elements.rightAscension,
 										object.GetSGP4SatRec());
 
@@ -45,7 +46,7 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 	}
 
 	// Propagate forward by timestep in minutes
-	timeMinutes = (population.GetEpoch()) * 24 * 60;
+	timeMinutes = (population.GetEpoch() - object.GetInitEpoch()) * 24 * 60;
 		// call SGP4 procedure
 	orbitState = SGP4Funcs::sgp4(object.GetSGP4SatRec(), timeMinutes, r, v);
 	
@@ -53,8 +54,8 @@ void SGP4::UpdateElements(DebrisObject &object, double timeStep)
 		HandleError(object);
 
 	// Update orbital elements
-	else
-		object.SetStateVectors(r[0], r[1], r[2], v[0], v[1], v[2]);
+	//else
+	object.SetStateVectors(r[0], r[1], r[2], v[0], v[1], v[2]);
 }
 
 void SGP4::HandleError(DebrisObject &object)

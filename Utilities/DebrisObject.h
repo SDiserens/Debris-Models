@@ -72,6 +72,7 @@ public:
 	void UpdateOrbitalElements(vector3D deltaV);
 	void UpdateOrbitalElements(OrbitalElements newElements);
 	void UpdateOrbitalElements(vector3D position, vector3D velocity);
+	void UpdateEpoch(double epochStep);
 
 	void SetSourceID(long ID);
 	void SetParentID(long ID);
