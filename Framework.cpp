@@ -93,7 +93,7 @@ int main(int argc, char** argv)
 			// Retrieve collision output
 			collisionOutput = collisionModel->GetNewCollisionVerbose();
 
-			// TODO - Log data
+			// Log data
 			for (int i = 0; i < collisionList.size(); i++) {
 				collisionLog.push_back(make_tuple(elapsedDays, collisionList[i], collisionOutput[i]));
 			}
@@ -134,6 +134,8 @@ int main(int argc, char** argv)
 
 	// Write Logs to output files
 	if (collisionConfig["Verbose"].asBool()) {
+
+		// TODO - Pass population data
 		WriteCollisionData(populationFilename, config, collisionType, collisionConfig, collisionLog);
 	}
 

@@ -114,6 +114,7 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	char date[100];
 	int ID = 1;
 	string outputFilename, eventType, pairID;
+	double scaling;
 
 	// Store data
 	time_t dateTime = time(NULL);
@@ -139,17 +140,26 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	cout << "  Writing to Data File...";
 
 	outputFile << "Scenario File:," + scenario;
-	outputFile << "\nDuration:" + config["Duration"].asString(); // Length of simulation (days)
-	outputFile << "\nStep Length:" + config["StepSize"].asString();
+	outputFile << "\nDuration:," + config["Duration"].asString() + ",Days"; // Length of simulation (days)
+	outputFile << "\nStep Length:," + config["StepSize"].asString() + ",Days";
 	outputFile << "\nCollision Model:," + collisionModel;
+
+	if (collisionConfig.isMember("outputScaling")) {
+		int scalingPower = collisionConfig["outputScaling"].asInt();
+		scaling = pow(10, scalingPower);
+		outputFile << "\nScaling Power:," + to_string(scalingPower);
+	}
+	else
+		scaling = 1;
+
 	if (collisionModel == "Cube")
-		outputFile << "\nCube Dimension (km):," + config["CubeDimension"].asString();
+		outputFile << "\nCube Dimension (km):," + to_string(collisionConfig["CubeDimension"].asDouble());
 	if (collisionModel == "OrbitTrace")
-		outputFile << "\nThreshold (km):," + config["conjunctionThreshold"].asString();
+		outputFile << "\nThreshold (km):," + to_string(collisionConfig["conjunctionThreshold"].asDouble());
 	if (collisionModel == "Hoots")
 	{
-		outputFile << "\nConjunction Threshold (km):," + config["conjunctionThreshold"].asString();
-		outputFile << "\nCollision Threshold (km):," + config["collisionThreshold"].asString();
+		outputFile << "\nConjunction Threshold (km):," + to_string(collisionConfig["conjunctionThreshold"].asDouble());
+		outputFile << "\nCollision Threshold (km):," + to_string(collisionConfig["collisionThreshold"].asDouble());
 	}
 
 	// Break data with line
@@ -158,9 +168,9 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	outputFile << "\nSimulation Elapsed Time (days), Object Pair, Collision Probability";
 	for (auto logEntry : collisionLog) 
 	{
-		//TODO - Add scaling to collision so not stored as 0
-		pairID = to_string(get<1>(logEntry).first) + "-" + to_string(get<1>(logEntry).second);
-		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + pairID + "," + to_string(get<2>(logEntry));
+		// TODO - Use Pair ID values to retrieve object names/noradID for greater clarity
+		pairID = "'" + to_string(get<1>(logEntry).first) + " - " + to_string(get<1>(logEntry).second);
+		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + pairID + "," + to_string(scaling * get<2>(logEntry));
 	}
 
 }

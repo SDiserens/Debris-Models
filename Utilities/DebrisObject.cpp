@@ -38,6 +38,7 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 	objectID = ++objectSEQ;
 
 	noradID = stoi(TLE3.substr(2, 5));
+	name = TLE2.substr(9, 8);
 
 	// Convert to days since 1957-OCT-04
 	epochYear = stoi(TLE2.substr(18, 2));
