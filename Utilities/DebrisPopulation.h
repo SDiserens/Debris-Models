@@ -34,6 +34,7 @@ public:
 	~DebrisPopulation();
 	void LoadPopulation();
 
+	void Clear();
 	double GetNextInitEpoch();
 	double GetTimeToNextInitEpoch();
 	double GetEpoch();

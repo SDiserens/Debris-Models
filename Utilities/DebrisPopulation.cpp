@@ -17,6 +17,21 @@ DebrisPopulation::~DebrisPopulation()
 {
 }
 
+void DebrisPopulation::Clear()
+{
+	population.clear();
+	removedPopulation.clear();
+	loadingPopulation.clear();
+	initEpochs.clear();
+	eventLog.clear();
+
+	currentEpoch = 0;
+	startEpoch = 0;
+	populationCount = 0;
+	totalMass = 0;
+
+}
+
 double DebrisPopulation::GetNextInitEpoch()
 {
 	if (initEpochs.size() == 0)

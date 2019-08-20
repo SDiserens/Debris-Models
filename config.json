@@ -2,6 +2,7 @@
   "scenarioFilename": "Collisions_39191.json", //
   "Duration": 683, // Length of simulation (days)
   "StepSize": 0.05, // Size of default timestep (days)
+  "MonteCarlo": 100,
 
   //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
@@ -25,7 +26,7 @@
   //
   "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots"
   "CollisionConfig": {
-    "CubeDimension": 10.0, // Cube Size or threshold distance
+    "CubeDimension": 100.0, // Cube Size or threshold distance
     //"ConjunctionThreshold": 10.0, //Threshold for orbit-trace and hoots
     //"CollisionThreshold": 0.1 // inner threshold for Hoots
     "Verbose": true, // Probability output / time output for different methods

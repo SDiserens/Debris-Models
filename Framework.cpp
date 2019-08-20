@@ -11,6 +11,7 @@ int main(int argc, char** argv)
 	// ----------------------------
 	string arg, populationFilename, propagatorType, breakUpType, collisionType;
 	double timeStep, stepDays, elapsedDays, simulationDays;
+	int mcRuns;
 
 	//TODO - Create independent function for config 
 	Json::Value config, propagatorConfig, fragmentationConfig, collisionConfig;
@@ -25,6 +26,7 @@ int main(int argc, char** argv)
 
 	// Parsing config variables
 	populationFilename = config["scenarioFilename"].asString();
+	mcRuns = config["MonteCarlo"].asInt();
 
 	propagatorType = config["Propagator"].asString();
 	propagatorConfig = config["PropagatorConfig"];
@@ -47,86 +49,96 @@ int main(int argc, char** argv)
 			//TODO - Create help output
 		}
 	}
+
 	// Initialise population
 	DebrisPopulation environmentPopulation;
 
-	// Load Modules
+	// Load population
 	auto& propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
-
+	// Load Modulea
 	auto& collisionModel = ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
 
 	auto& breakUp = *ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
 
-	// Load population
-	LoadScenario(environmentPopulation, populationFilename);
-	propagator->SyncPopulation();
-
-		// Validate Modules
-	
 	// Load Environment Parameters
 	elapsedDays = 0;
 	simulationDays = config["Duration"].asDouble();
 	stepDays = config["StepSize"].asDouble();
 
 	vector<pair<long, long>> collisionList;
-	vector<tuple<double, pair<long, long>, double>> collisionLog;
+	vector<tuple<int, double, pair<string, string>, double>> collisionLog;
 
-	// --------------------------
-	// --- Evolve Environment ---
-	// --------------------------
-	// While timeSimulation < timeEnd
-	while (elapsedDays < simulationDays)
+	for (int i = 0; i < mcRuns; i++)
 	{
-		// Propagate Object Orbits
-		timeStep = min(min(stepDays, environmentPopulation.GetTimeToNextInitEpoch()), simulationDays - elapsedDays);
-		(*propagator).PropagatePopulation(timeStep);
-		elapsedDays += timeStep;
+		LoadScenario(environmentPopulation, populationFilename);
+		propagator->SyncPopulation();
 
-		// Determine Events
-			// Collision Detection
-		collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
-		collisionList = collisionModel->GetNewCollisionList();
+		// Validate Modules
 
-		// if extra output requested
-		if (collisionConfig["Verbose"].asBool()) {
-			vector<double> collisionOutput;
-			// Retrieve collision output
-			collisionOutput = collisionModel->GetNewCollisionVerbose();
 
-			// Log data
-			for (int i = 0; i < collisionList.size(); i++) {
-				collisionLog.push_back(make_tuple(elapsedDays, collisionList[i], collisionOutput[i]));
+		// --------------------------
+		// --- Evolve Environment ---
+		// --------------------------
+
+		elapsedDays = 0;
+		// While timeSimulation < timeEnd
+		while (elapsedDays < simulationDays)
+		{
+			// Propagate Object Orbits
+			timeStep = min(min(stepDays, environmentPopulation.GetTimeToNextInitEpoch()), simulationDays - elapsedDays);
+			(*propagator).PropagatePopulation(timeStep);
+			elapsedDays += timeStep;
+
+			// Determine Events
+				// Collision Detection
+			collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
+			collisionList = collisionModel->GetNewCollisionList();
+
+			// if extra output requested
+			if (collisionConfig["Verbose"].asBool()) {
+				vector<double> collisionOutput;
+				// Retrieve collision output
+				collisionOutput = collisionModel->GetNewCollisionVerbose();
+
+				// Log data
+				for (int i = 0; i < collisionList.size(); i++) {
+					// TODO - Use Pair ID values to retrieve object names/noradID for greater clarity
+
+					collisionLog.push_back(make_tuple(i, elapsedDays, make_pair(environmentPopulation.GetObject(collisionList[i].first).GetName(), 
+																				environmentPopulation.GetObject(collisionList[i].second).GetName()), collisionOutput[i]));
+				}
 			}
+
+			// For each pair in collision list
+				// determine if collision avoidance occurs
+
+					// Log
+
+
+				// Generate Explosions
+
+					// Log
+
+				// Check for Pre-specified Events
+
+					// Log
+
+			// Update population
+				// Simulate Fragmentations
+
+					// Log
+
+				// Generate Launches
+
+					// Log
+
+				// Remove Decayed Objects
+
+					// Log
+
+		//TODO - Save Event log for MC run
 		}
-
-		// For each pair in collision list
-			// determine if collision avoidance occurs
-
-				// Log
-
-
-			// Generate Explosions
-
-				// Log
-
-			// Check for Pre-specified Events
-
-				// Log
-
-		// Update population
-			// Simulate Fragmentations
-
-				// Log
-
-			// Generate Launches
-
-				// Log
-
-			// Remove Decayed Objects
-
-				// Log
 	}
-
 	// ----------------------------
 	// ------ End Simulation ------
 	// ----------------------------

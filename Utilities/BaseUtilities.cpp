@@ -67,6 +67,7 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 
 void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 {
+	population.Clear();
 	Json::Value config, scenario, parsedObject;
 	Json::Reader reader;
 	int nObjects;
@@ -75,7 +76,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	string date;
 
 	// Read scenario file
-	cout << "Reading Scenario File : " + scenarioFilename + "...";
+	//cout << "Reading Scenario File : " + scenarioFilename + "...";
 
 	ifstream scenarioFile("Scenarios\\" + scenarioFilename);
 	if (!scenarioFile.good())
@@ -86,7 +87,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	// Parse scenario file to identify object characteristics
 	reader.parse(scenarioFile, scenario);
 
-	cout << " Parsing Scenario...";
+	//cout << " Parsing Scenario...";
 	SetCentralBody(scenario["centralBody"].asInt());
 	population.SetScalingPower(scenario["outputScaling"].asInt());
 
@@ -105,17 +106,16 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	population.SetAverageSMA(averageSemiMajorAxis / nObjects);
 			
 	// Close File
-	cout << " Closing Scenario File..." << endl;
+	//cout << " Closing Scenario File..." << endl;
 	scenarioFile.close();
 }
 
-void WriteCollisionData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, vector<tuple<double, pair<long, long>, double>> collisionLog)
+void WriteCollisionData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, vector<tuple<int, double, pair<string, string>, double>> collisionLog)
 {
 	char date[100];
 	int ID = 1;
 	string outputFilename, eventType, pairID;
 	double scaling;
-
 	// Store data
 	time_t dateTime = time(NULL);
 	struct tm currtime;
@@ -165,12 +165,11 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	// Break data with line
 	outputFile << "\n";
 
-	outputFile << "\nSimulation Elapsed Time (days), Object Pair, Collision Probability";
+	outputFile << "\nSimulation Run, Simulation Elapsed Time (days), Object Pair, Collision Probability";
 	for (auto logEntry : collisionLog) 
 	{
-		// TODO - Use Pair ID values to retrieve object names/noradID for greater clarity
-		pairID = "'" + to_string(get<1>(logEntry).first) + " - " + to_string(get<1>(logEntry).second);
-		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + pairID + "," + to_string(scaling * get<2>(logEntry));
+		pairID = "'" + get<2>(logEntry).first + " - " + get<2>(logEntry).second;
+		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + to_string(get<1>(logEntry)) + "," + pairID + "," + to_string(scaling * get<3>(logEntry));
 	}
 
 }
