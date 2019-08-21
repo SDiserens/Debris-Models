@@ -4,11 +4,12 @@
 #include "stdafx.h"
 #include "CUBE.h"
 
-CUBEApproach::CUBEApproach(bool probabilities, double dimension)
+CUBEApproach::CUBEApproach(bool probabilities, double dimension, int runs)
 {
 	cubeDimension = dimension;
 	cubeVolume = dimension * dimension * dimension;
 	outputProbabilities = probabilities;
+	mcRuns = runs;
 	elapsedTime = 0;
 }
 
@@ -19,34 +20,37 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 	double tempProbability, collisionRate;
 	vector<CollisionPair> pairList;
 	// Filter Cube List
-	pairList = CreatePairList(population);
-
-	// For each conjunction (cohabiting pair)
-	for (CollisionPair &collisionPairID : pairList)
+	for (int j = 0; j < mcRuns; j++)
 	{
-		pair<long, long> pairID(collisionPairID.primaryID, collisionPairID.secondaryID);
-		CollisionPair collisionPair(population.GetObject(pairID.first), population.GetObject(pairID.second));
-		//	-- Calculate collision rate in cube
-		collisionRate = CollisionRate(collisionPair);
-		tempProbability = timeStep * collisionRate;
+		pairList = CreatePairList(population);
+
+		// For each conjunction (cohabiting pair)
+		for (CollisionPair &collisionPairID : pairList)
+		{
+			pair<long, long> pairID(collisionPairID.primaryID, collisionPairID.secondaryID);
+			CollisionPair collisionPair(population.GetObject(pairID.first), population.GetObject(pairID.second));
+			//	-- Calculate collision rate in cube
+			collisionRate = CollisionRate(collisionPair);
+			tempProbability = timeStep * collisionRate / mcRuns;
 
 
-		//	-- Determine if collision occurs through MC (random number generation)
-		if (outputProbabilities)
-		{
-			//	-- Store collision probability
-			//collisionProbabilities.push_back(tempProbability);
-			//collisionList.push_back(collisionPair);
-			newCollisionProbabilities.push_back(tempProbability);
-			newCollisionList.push_back(pairID);
-		}
-		else
-		{
-			if (DetermineCollision(tempProbability))
+			//	-- Determine if collision occurs through MC (random number generation)
+			if (outputProbabilities)
 			{
-				// Store Collisions 
-				collisionList.push_back(pairID);
+				//	-- Store collision probability
+				//collisionProbabilities.push_back(tempProbability);
+				//collisionList.push_back(collisionPair);
+				newCollisionProbabilities.push_back(tempProbability);
 				newCollisionList.push_back(pairID);
+			}
+			else
+			{
+				if (DetermineCollision(tempProbability))
+				{
+					// Store Collisions 
+					collisionList.push_back(pairID);
+					newCollisionList.push_back(pairID);
+				}
 			}
 		}
 	}

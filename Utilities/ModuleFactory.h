@@ -75,8 +75,9 @@ private:
 		// Read Cube config
 		bool probabilities = config["Verbose"].asBool();
 		double dimension = config["CubeDimension"].asDouble();
+		int mcRuns = config["CubeMC"].asInt();
 
-		return make_unique<CUBEApproach>(probabilities, dimension);
+		return make_unique<CUBEApproach>(probabilities, dimension, mcRuns);
 	};
 
 	static unique_ptr<OrbitTrace> CreateOTInstance(Json::Value & config) {

@@ -17,12 +17,14 @@ int main(int argc, char** argv)
 	Json::Value config, propagatorConfig, fragmentationConfig, collisionConfig;
 	Json::Reader reader;
 	
-	cout << "Reading Config File...";
+	cout << "Reading Config File...\n";
 	// Read config file
 	ifstream configFile("config.json");
+	
 	// Parse config file to identify scenario file and settings
+	cout << " Parsing Config...\n";
 	reader.parse(configFile, config);
-	cout << " Parsing Config...";
+	
 
 	// Parsing config variables
 	populationFilename = config["scenarioFilename"].asString();
@@ -51,7 +53,7 @@ int main(int argc, char** argv)
 	}
 
 	// Initialise population
-	DebrisPopulation environmentPopulation;
+	DebrisPopulation initPopulation, environmentPopulation;
 
 	// Load population
 	auto& propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
@@ -68,9 +70,14 @@ int main(int argc, char** argv)
 	vector<pair<long, long>> collisionList;
 	vector<tuple<int, double, pair<string, string>, double>> collisionLog;
 
+
+	cout << "Reading Population File : " + populationFilename + "...\n";
+	LoadScenario(initPopulation, populationFilename);
+
+
 	for (int i = 0; i < mcRuns; i++)
 	{
-		LoadScenario(environmentPopulation, populationFilename);
+		environmentPopulation = DebrisPopulation(initPopulation);
 		propagator->SyncPopulation();
 
 		// Validate Modules

@@ -76,7 +76,6 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	string date;
 
 	// Read scenario file
-	//cout << "Reading Scenario File : " + scenarioFilename + "...";
 
 	ifstream scenarioFile("Scenarios\\" + scenarioFilename);
 	if (!scenarioFile.good())
@@ -87,7 +86,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	// Parse scenario file to identify object characteristics
 	reader.parse(scenarioFile, scenario);
 
-	//cout << " Parsing Scenario...";
+	cout << " Parsing Scenario...\n";
 	SetCentralBody(scenario["centralBody"].asInt());
 	population.SetScalingPower(scenario["outputScaling"].asInt());
 
@@ -106,7 +105,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	population.SetAverageSMA(averageSemiMajorAxis / nObjects);
 			
 	// Close File
-	//cout << " Closing Scenario File..." << endl;
+	cout << " Closing Scenario File...\n" << endl;
 	scenarioFile.close();
 }
 
