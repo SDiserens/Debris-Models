@@ -75,7 +75,7 @@ int main(int argc, char** argv)
 	LoadScenario(initPopulation, populationFilename);
 
 
-	for (int i = 0; i < mcRuns; i++)
+	for (int j = 0; j < mcRuns; j++)
 	{
 		environmentPopulation = DebrisPopulation(initPopulation);
 		propagator->SyncPopulation();
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
 				for (int i = 0; i < collisionList.size(); i++) {
 					// TODO - Use Pair ID values to retrieve object names/noradID for greater clarity
 
-					collisionLog.push_back(make_tuple(i, elapsedDays, make_pair(environmentPopulation.GetObject(collisionList[i].first).GetName(), 
+					collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(environmentPopulation.GetObject(collisionList[i].first).GetName(), 
 																				environmentPopulation.GetObject(collisionList[i].second).GetName()), collisionOutput[i]));
 				}
 			}
