@@ -181,8 +181,8 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 double CollisionPair::CalculateMinimumSeparation()
 {
 	double trueAnomalyP, trueAnomalyS, seperation, altSeperation, eP, eS;
-	OrbitalElements &primaryElements = primary.GetElements();
-	OrbitalElements &secondaryElements = secondary.GetElements();
+	OrbitalElements primaryElements = primary.GetElements();
+	OrbitalElements secondaryElements = secondary.GetElements();
 
 	trueAnomalyP = TauRange(deltaPrimary - primaryElements.argPerigee);
 	trueAnomalyS = TauRange(deltaSecondary - secondaryElements.argPerigee);
@@ -201,7 +201,8 @@ double CollisionPair::CalculateMinimumSeparation()
 			double uRP, uRS, A, B, C, D, axP, ayP, axS, ayS;
 			double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES;
 			double tempAnomalyP, tempAnomalyS, circularAnomalyP, circularAnomalyS, cosRI;
-			double k, h = 1.0;
+			double k = 2.0, h = 2.0;
+			double hOld, kOld;
 
 			circularAnomalyP = tempAnomalyP = trueP;
 			circularAnomalyS = tempAnomalyS = trueS;
@@ -241,20 +242,28 @@ double CollisionPair::CalculateMinimumSeparation()
 				GdfP = -rP / (1 + eP * cos(tempAnomalyP)) * (A * C + B * D * cosRI);
 				GdfS = rS * eS * cos(ES) + rP * (cosURP * cosURS + sinURP * sinURS * cosRI);
 
+				hOld = abs(h);
+				kOld = abs(k);
 
 				h = (F * GdfS - G * FdfS) / (FdfS*GdfP - FdfP*GdfS);
 				k = (G * FdfP - F * GdfP) / (FdfS*GdfP - FdfP*GdfS);
 
+				if (it > 5 && (abs(h) > hOld || abs(k) > kOld))
+				{
+					//Implement line search
+					it = it;
+				}
+
 				// Update values
-				tempAnomalyP += h;
-				tempAnomalyS += k;
+				tempAnomalyP = TauRange(tempAnomalyP + h);
+				tempAnomalyS = TauRange(tempAnomalyS + k);
 				it++;
 			}
 			//TODO Handle case where iterations reached
 			if (it == NEWTONMAXITERATIONS)
 				throw NewtonConvergenceException();
-			trueP = TauRange(tempAnomalyP);
-			trueS = TauRange(tempAnomalyS);
+			trueP = tempAnomalyP;
+			trueS = tempAnomalyS;
 		};
 
 		NewtonSeperation(trueAnomalyP, trueAnomalyS);
