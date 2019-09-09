@@ -193,6 +193,8 @@ double CollisionPair::CalculateMinimumSeparation()
 	// Find closest approach for elliptical orbits
 	if (eP != 0 || eS != 0)
 	{
+		int error;
+
 		auto NewtonSeperation = [&](double &trueP, double &trueS)
 		{
 
@@ -202,11 +204,16 @@ double CollisionPair::CalculateMinimumSeparation()
 			double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES;
 			double tempAnomalyP, tempAnomalyS, circularAnomalyP, circularAnomalyS, cosRI;
 			double k = 2.0, h = 2.0;
-			double hOld, kOld;
+			double base, baseMin = 999;
 
 			circularAnomalyP = tempAnomalyP = trueP;
 			circularAnomalyS = tempAnomalyS = trueS;
 			cosRI = cos(relativeInclination);
+
+			axP = eP * cos(-circularAnomalyP);
+			ayP = eP * sin(-circularAnomalyP);
+			axS = eS * cos(-circularAnomalyS);
+			ayS = eS * sin(-circularAnomalyS);
 
 			// Min Sep newton method
 			while ((abs(h) >= NEWTONTOLERANCE || abs(k) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
@@ -220,11 +227,6 @@ double CollisionPair::CalculateMinimumSeparation()
 				cosURP = cos(uRP);
 				sinURS = sin(uRS);
 				cosURS = cos(uRS);
-
-				axP = eP * cos(-circularAnomalyP);
-				ayP = eP * sin(-circularAnomalyP);
-				axS = eS * cos(-circularAnomalyS);
-				ayS = eS * sin(-circularAnomalyS);
 
 				A = sinURP + ayP;
 				C = sinURS + ayS;
@@ -242,16 +244,19 @@ double CollisionPair::CalculateMinimumSeparation()
 				GdfP = -rP / (1 + eP * cos(tempAnomalyP)) * (A * C + B * D * cosRI);
 				GdfS = rS * eS * cos(ES) + rP * (cosURP * cosURS + sinURP * sinURS * cosRI);
 
-				hOld = abs(h);
-				kOld = abs(k);
+				base = (FdfS*GdfP - FdfP*GdfS);
+				if (abs(base) < baseMin)
+					baseMin = abs(base);
 
-				h = (F * GdfS - G * FdfS) / (FdfS*GdfP - FdfP*GdfS);
-				k = (G * FdfP - F * GdfP) / (FdfS*GdfP - FdfP*GdfS);
+				h = (F * GdfS - G * FdfS) / base;
+				k = (G * FdfP - F * GdfP) / base;
 
-				if (it > 5 && (abs(h) > hOld || abs(k) > kOld))
+
+				if (it > 1 && abs(base) < 25)
 				{
 					//Implement line search
-					it = it;
+					it = NEWTONMAXITERATIONS;
+					break;
 				}
 
 				// Update values
@@ -260,13 +265,33 @@ double CollisionPair::CalculateMinimumSeparation()
 				it++;
 			}
 			//TODO Handle case where iterations reached
-			if (it == NEWTONMAXITERATIONS)
-				throw NewtonConvergenceException();
+			if (it == NEWTONMAXITERATIONS + 1)
+				it = it;
+			else if (it == NEWTONMAXITERATIONS)
+				return 1;
 			trueP = tempAnomalyP;
 			trueS = tempAnomalyS;
+			return 0;
 		};
 
-		NewtonSeperation(trueAnomalyP, trueAnomalyS);
+		error = NewtonSeperation(trueAnomalyP, trueAnomalyS);
+		if (error)
+		{
+			if (coplanar)
+			{
+				trueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
+				trueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
+			}
+			else
+			{
+				trueAnomalyP = TauRange(trueAnomalyP + Pi);
+				trueAnomalyS = TauRange(trueAnomalyS + Pi);
+			}
+			error = NewtonSeperation(trueAnomalyP, trueAnomalyS);
+		}
+
+		if (error)
+			throw NewtonConvergenceException();
 	}
 
 	primaryElements.SetTrueAnomaly(trueAnomalyP);
