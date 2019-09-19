@@ -1,0 +1,342 @@
+{
+  "EpochDate": "2018-02-08", // Date of simulation start (YYYY-MM-DD)
+  "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter
+  "objects": [
+    {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 I-INSPIRE II",
+      "TLELine2": "1 42731U 98067ML  18152.95702488 +.00062502 +00000-0 +43739-3 0  9991",
+      "TLELine3": "2 42731 051.6343 070.4690 0006414 119.9624 240.2012 15.73616255058054"
+    },
+    {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 EXALTA-1",
+      "TLELine2": "1 42734U 98067MP  18152.94517784 +.00059104 +00000-0 +40461-3 0  9999",
+      "TLELine3": "2 42734 051.6332 070.3668 0006831 137.1796 222.9736 15.74147124058004"
+    },
+    {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 SHARC",
+      "TLELine2": "1 42712U 98067LT  18152.79631550  .00029605  00000-0  31652-3 0  9991",
+      "TLELine3": "2 42712  51.6386  83.0369 0003579 113.6273 246.5097 15.63627405 59289"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 ALTAIR PATHFINDER",
+      "TLELine2": "1 42711U 98067LS  18152.92330360 +.00019818 +00000-0 +21088-3 0  9997",
+      "TLELine3": "2 42711 051.6369 080.8306 0004696 114.3385 245.8100 15.64002133059089"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 FENGYUN 1C DEB",
+      "TLELine2": "1 36201U 99025DUA 18122.35016938  .00476027  10802-3  72376-3 0  9994",
+      "TLELine3": "2 36201  99.2825 268.7454 0011850 341.3621  18.7218 16.04353711571337"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 FREGAT/IRIS",
+      "TLELine2": "1 35867U 09049C   18152.86619068  .00011293  00000-0  11682-3 0  9999",
+      "TLELine3": "2 35867  97.0137 181.7997 0003248 348.8244  11.2944 15.64884047488828"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 POLYITAN-2-SAU",
+      "TLELine2": "1 42732U 98067MM  18152.16887697  .00024539  00000-0  19883-3 0  9992",
+      "TLELine3": "2 42732  51.6357  77.2414 0006622 113.3584 246.8111 15.70604037 57898"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 MONITOR-E 1",
+      "TLELine2": "1 28822U 05032A   18152.90260803 +.00014714 +00000-0 +17134-3 0  9993",
+      "TLELine3": "2 28822 097.1171 173.1290 0004205 079.0623 281.1108 15.61774911710305"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 DUTHSAT",
+      "TLELine2": "1 42724U 98067MD  18152.79373796 +.00112781 +00000-0 +53351-3 0  9997",
+      "TLELine3": "2 42724 051.6333 064.8248 0004742 150.8484 209.2784 15.82155944058257"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 UNSW-ECO",
+      "TLELine2": "1 42723U 98067MC  18152.95815941 +.00055609 +00000-0 +39981-3 0  9995",
+      "TLELine3": "2 42723 051.6374 071.2979 0005046 150.7347 209.3935 15.73041809058263"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 BREEZE-M DEB",
+      "TLELine2": "1 32037U 06006Q   18152.40948620 +.00001343 +00000-0 +46318-3 0  9993",
+      "TLELine3": "2 32037 051.5868 215.8868 4966366 086.7902 326.5761 05.60873353225054"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 SUMBANDILA",
+      "TLELine2": "1 35870U 09049F   18152.78410458 +.00004754 +00000-0 +65348-4 0  9999",
+      "TLELine3": "2 35870 097.0827 171.9869 0002005 143.4538 302.1469 15.57782225487574"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 FENGYUN 1C DEB",
+      "TLELine2": "1 31299U 99025BPH 18152.54372554  .00003826  00000-0  16142-3 0  9997",
+      "TLELine3": "2 31299  96.9832 265.0454 0215484 338.4191  20.8055 15.05240020598418"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 QBITO",
+      "TLELine2": "1 42728U 98067MH  18152.92082472 +.00040935 +00000-0 +33339-3 0  9999",
+      "TLELine3": "2 42728 051.6388 074.0991 0002962 138.3993 221.7230 15.70219558057957"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 AALTO-2",
+      "TLELine2": "1 42729U 98067MJ  18152.90249091 +.00041417 +00000-0 +33384-3 0  9996",
+      "TLELine3": "2 42729 051.6360 073.9217 0002973 138.7293 221.3930 15.70463771057968"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 ATLANTIS",
+      "TLELine2": "1 42737U 98067MS  18087.11387049  .13966215  12356-4  93055-3 0  9999",
+      "TLELine3": "2 42737  51.6095  27.8979 0006293 234.7874 125.2564 16.40626348 47903"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 NJUST-1",
+      "TLELine2": "1 42722U 98067MB  18152.88712175 +.00025168 +00000-0 +24226-3 0  9994",
+      "TLELine3": "2 42722 051.6366 078.3352 0005503 158.4532 201.6696 15.66367602058189"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 STSAT 2C",
+      "TLELine2": "1 39068U 13003A   18152.62843968 +.00053922 +24413-7 +36643-3 0  9993",
+      "TLELine3": "2 39068 080.1894 010.8981 0265135 012.0962 348.6472 15.39958327285862"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 FLOCK 2EP 18",
+      "TLELine2": "1 41769U 98067KM  18152.95207334 +.00060852 +00000-0 +45683-3 0  9997",
+      "TLELine3": "2 41769 051.6347 057.7052 0004126 164.7879 195.3244 15.71990650097654"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 BANXING-2",
+      "TLELine2": "1 41834U 16057H   18152.94768692 +.00013912 +00000-0 +80978-4 0  9999",
+      "TLELine3": "2 41834 042.7819 028.0992 0011326 220.9256 261.5885 15.78229612092180"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 PSLV R/B",
+      "TLELine2": "1 43129U 18004U   18152.89696252 +.00039879 +00000-0 +20594-3 0  9995",
+      "TLELine3": "2 43129 097.1935 221.3333 0020314 270.5382 089.3559 15.80715723022168"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 LEMUR 2 REDFERN-GOES",
+      "TLELine2": "1 42059U 98067LA  18152.91800995 +.00050768 +00000-0 +32697-3 0  9994",
+      "TLELine3": "2 42059 051.6356 062.6765 0005657 149.4916 210.6414 15.75628146070805"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 SILKROAD 1",
+      "TLELine2": "1 42903U 17021F   18152.89838441 +.00018937 +00000-0 +14923-3 0  9991",
+      "TLELine3": "2 42903 042.7789 060.7888 0011577 201.2147 248.1356 15.70986896047528"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 METEOR 2-5 DEB",
+      "TLELine2": "1 36886U 79095AB  18143.88423414 +.00168481 +00000-0 +20956-2 0  9994",
+      "TLELine3": "2 36886 081.0986 349.8036 0003704 184.2435 175.8786 15.59371881809309"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 FLOCK 2EP 15",
+      "TLELine2": "1 41764U 98067KL  18152.91708536 +.00068865 +00000-0 +52367-3 0  9997",
+      "TLELine3": "2 41764 051.6355 058.2282 0005158 143.7343 216.4006 15.71629770097640"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 BREEZE-M DEB (TANK)",
+      "TLELine2": "1 37187U 10053C   18152.40181585 +.00000549 +00000-0 +15945-3 0  9999",
+      "TLELine3": "2 37187 049.5664 322.1665 5198480 025.8095 352.8802 05.27013241145453"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 SHENZHOU-11 MODULE",
+      "TLELine2": "1 41868U 16061G   18152.83877442 +.00006935 +00000-0 +54744-4 0  9992",
+      "TLELine3": "2 41868 042.7955 045.0027 0002371 293.4467 151.1800 15.71998119087863"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 DIWATA-1",
+      "TLELine2": "1 41463U 98067HT  18152.79097740  .00008717  00000-0  75790-4 0  9993",
+      "TLELine3": "2 41463  51.6401  51.1801 0002193  87.3565  19.8745 15.69981452119580"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 BREEZE-M DEB",
+      "TLELine2": "1 35544U 06006CM  18151.24971885  .00010721  00000-0  13398-2 0  9990",
+      "TLELine3": "2 35544  51.4298 114.2525 2976517 198.5454 147.9034  9.27107154253616"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 ELECTRON R/B",
+      "TLELine2": "1 43166U 18010D   18152.80852528 +.00073641 +19671-6 +48613-3 0  9991",
+      "TLELine3": "2 43166 082.9112 008.4874 0141369 092.0990 269.6464 15.62771635020506"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 QBEE50-LTU-OC",
+      "TLELine2": "1 42708U 98067LR  18152.86781373 +.00039187 +00000-0 +32174-3 0  9999",
+      "TLELine3": "2 42708 051.6370 073.6809 0002635 110.4134 249.7147 15.70046264059461"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 HOOPOE",
+      "TLELine2": "1 42718U 98067LZ  18152.95094101 +.00050513 +00000-0 +37375-3 0  9990",
+      "TLELine3": "2 42718 051.6358 071.2202 0003075 147.2660 212.8529 15.72415688058589"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 PSLV R/B",
+      "TLELine2": "1 32477U 08002B   18152.89128536 +.00017808 +00000-0 +16530-3 0  9994",
+      "TLELine3": "2 32477 041.0267 323.9106 0025610 347.1993 012.8188 15.66572299579538"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 IRIDIUM 03",
+      "TLELine2": "1 25431U 98048A   18039.68901606  .15407232 -13618-5  14806-3 0  9992",
+      "TLELine3": "2 25431  86.3557 154.9265 0051746 279.7408  80.8369 16.45548534 19776"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 DELTA 1 DEB (YO)",
+      "TLELine2": "1   399U 62047C   18152.91585910 +.00050923 +00000-0 +35166-3 0  9998",
+      "TLELine3": "2   399 058.3984 081.1414 0009517 092.1041 338.6096 15.74120727009165"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 SENSE SV2",
+      "TLELine2": "1 39392U 13064N   18152.68568612 +.00017715 +00000-0 +17673-3 0  9997",
+      "TLELine3": "2 39392 040.4949 013.0169 0003784 331.3312 028.7303 15.65146532254255"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 HAVELSAT",
+      "TLELine2": "1 42700U 98067LH  18152.87986702 +.00042308 +00000-0 +34186-3 0  9999",
+      "TLELine3": "2 42700 051.6360 073.0184 0003906 166.6206 193.4896 15.70391251059619"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 XCUBESAT",
+      "TLELine2": "1 42707U 98067LQ  18152.35653405  .00034029  00000-0  27136-3 0  9998",
+      "TLELine3": "2 42707  51.6332  75.4630 0002766 108.0010 252.1289 15.70818033 59434"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 SUSAT",
+      "TLELine2": "1 42730U 98067MK  18152.94423764 +.00037511 +00000-0 +32039-3 0  9999",
+      "TLELine3": "2 42730 051.6362 074.9459 0002978 141.7469 218.3740 15.69108142057955"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 SOMP 2",
+      "TLELine2": "1 42701U 98067LJ  18152.92190720 +.00035386 +00000-0 +29794-3 0  9990",
+      "TLELine3": "2 42701 051.6365 074.0520 0003912 164.9062 195.2052 15.69482057059592"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 CXBN-2",
+      "TLELine2": "1 42704U 98067LM  18152.96050227 +.00038394 +00000-0 +31645-3 0  9994",
+      "TLELine3": "2 42704 051.6369 073.5729 0003315 108.2492 251.8866 15.69960651059536"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 SPACECUBE",
+      "TLELine2": "1 42717U 98067LY  18152.95714777 +.00037898 +00000-0 +31177-3 0  9992",
+      "TLELine3": "2 42717 051.6346 073.5095 0002905 153.9637 206.1507 15.70014315058558"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 ZA-AEROSAT",
+      "TLELine2": "1 42713U 98067LU  18152.83561344  .00025272  00000-0  23477-3 0  9992",
+      "TLELine3": "2 42713  51.6356  77.2216 0003481 102.7317 257.4069 15.67259018 59121"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 BIRD GG",
+      "TLELine2": "1 42821U 98067MV  18152.84308819 +.00027118 +00000-0 +25792-3 0  9992",
+      "TLELine3": "2 42821 051.6357 079.5184 0004125 100.7043 259.4417 15.66628453051427"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 BIRD NN",
+      "TLELine2": "1 42824U 98067MY  18152.84612459  .00029805  00000-0  28132-3 0  9999",
+      "TLELine3": "2 42824  51.6370  79.5739 0006035 121.4517 238.7070 15.66753467 51417"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 CZ-6 R/B",
+      "TLELine2": "1 40913U 15049Q   18152.84486698  .00004765  00000-0  89677-4 0  9999",
+      "TLELine3": "2 40913  97.3390 189.2907 0076222  67.5014 293.4282 15.45850360151800"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 CSUNSAT 1",
+      "TLELine2": "1 42715U 98067LW  18152.35053925  .00025429  00000-0  23117-3 0  9997",
+      "TLELine3": "2 42715  51.6365  79.2514 0004968 105.5209 254.6336 15.67784693 59058"
+  },
+  {
+      "radius": 5, 
+      "dataType": 2, // 0: Orbital elements, 1: state vector, 2: TLEs
+      "TLELine1": "0 PEGASUS DEB",
+      "TLELine2": "1 24547U 94029WX  18152.61653172 +.00040512 +00000-0 +41222-3 0  9990",
+      "TLELine3": "2 24547 082.0190 004.7512 0018013 015.9436 039.1194 15.64752008306008"
+  }
+  ]
+}

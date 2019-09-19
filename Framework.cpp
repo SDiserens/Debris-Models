@@ -49,6 +49,28 @@ int main(int argc, char** argv)
 		if ((arg == "-h") || (arg == "--help"))
 		{
 			//TODO - Create help output
+			/*
+			-b or --fragmentation
+			"Fragmentation": null, // "NSBM",
+
+			-p or --propagator
+			"Propagator": "SGP4", // "SGP4", "SimpleJ2"
+
+			-c or --collision
+			"CollsionAlgorithm": "OrbitTrace", // "Cube", "OrbitTrace", "Hoots"
+			*/
+		}
+		if ((arg == "-c") || (arg == "--collision"))
+		{
+			collisionType = argv[++i];
+		}
+		if ((arg == "-b") || (arg == "--fragmentation"))
+		{
+			breakUpType = argv[++i];
+		}
+		if ((arg == "-p") || (arg == "--propagator"))
+		{
+			propagatorType = argv[++i];
 		}
 	}
 
@@ -74,7 +96,7 @@ int main(int argc, char** argv)
 	cout << "Reading Population File : " + populationFilename + "...\n";
 	LoadScenario(initPopulation, populationFilename);
 
-
+	cout << "Running " + to_string(mcRuns) + " simulations using " + propagatorType + ", " + breakUpType + " and " + collisionType + "...\n";
 	for (int j = 0; j < mcRuns; j++)
 	{
 		environmentPopulation = DebrisPopulation(initPopulation);
