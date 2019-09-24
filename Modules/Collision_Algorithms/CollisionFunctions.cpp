@@ -267,36 +267,53 @@ double CollisionPair::CalculateMinimumSeparation()
 			//TODO Handle case where iterations reached
 			if (it == NEWTONMAXITERATIONS + 1)
 				it = it;
-			else if (it == NEWTONMAXITERATIONS)
+			else
+			{
+				trueP = tempAnomalyP;
+				trueS = tempAnomalyS;
+			}
+			if (it == NEWTONMAXITERATIONS)
 				return 1;
-			trueP = tempAnomalyP;
-			trueS = tempAnomalyS;
-			return 0;
+			else
+				return 0;
 		};
 
 		error = NewtonSeperation(trueAnomalyP, trueAnomalyS);
+
+		primaryElements.SetTrueAnomaly(trueAnomalyP);
+		secondaryElements.SetTrueAnomaly(trueAnomalyS);
+		seperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
+
 		if (error)
 		{
+			double altTrueAnomalyP, altTrueAnomalyS;
 			if (coplanar)
 			{
-				trueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
-				trueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
+				altTrueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
+				altTrueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
 			}
 			else
 			{
-				trueAnomalyP = TauRange(trueAnomalyP + Pi);
-				trueAnomalyS = TauRange(trueAnomalyS + Pi);
+				altTrueAnomalyP = TauRange(trueAnomalyP + Pi);
+				altTrueAnomalyS = TauRange(trueAnomalyS + Pi);
 			}
 			error = NewtonSeperation(trueAnomalyP, trueAnomalyS);
+
+			primaryElements.SetTrueAnomaly(altTrueAnomalyP);
+			secondaryElements.SetTrueAnomaly(altTrueAnomalyS);
+			altSeperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
+
+			if (error && altSeperation < seperation)
+			{
+				//throw NewtonConvergenceException();
+				trueAnomalyP = altTrueAnomalyP;
+				trueAnomalyS = altTrueAnomalyS;
+				seperation = altSeperation;
+			}
 		}
 
-		if (error)
-			throw NewtonConvergenceException();
 	}
 
-	primaryElements.SetTrueAnomaly(trueAnomalyP);
-	secondaryElements.SetTrueAnomaly(trueAnomalyS);
-	seperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
 	// Test second intersection point
 	if (coplanar)
