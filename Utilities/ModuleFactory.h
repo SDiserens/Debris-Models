@@ -83,7 +83,7 @@ private:
 	static unique_ptr<OrbitTrace> CreateOTInstance(Json::Value & config) {
 		// Read OT config
 		bool probabilities = config["Verbose"].asBool();
-		double threshold = config["conjunctionThreshold"].asDouble();
+		double threshold = config["ConjunctionThreshold"].asDouble();
 
 		return make_unique<OrbitTrace>( probabilities, threshold);
 	};
@@ -91,8 +91,8 @@ private:
 	static unique_ptr<HootsFilter> CreateHootsInstance(Json::Value & config) {
 		// Read Hoots config
 		bool times = config["Verbose"].asBool();
-		double conjunctionThreshold = config["conjunctionThreshold"].asDouble();
-		double collisionThreshold = config["collisionThreshold"].asDouble();
+		double conjunctionThreshold = config["ConjunctionThreshold"].asDouble();
+		double collisionThreshold = config["CollisionThreshold"].asDouble();
 
 		return make_unique<HootsFilter>( times, conjunctionThreshold, collisionThreshold);
 	};

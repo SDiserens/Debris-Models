@@ -49,8 +49,9 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 
 			//	-- Determine if collision occurs through MC (random number generation)
-			if (outputProbabilities)
+			if (outputProbabilities && tempProbability>0)
 			{
+
 				//	-- Store collision probability
 				//collisionProbabilities.push_back(tempProbability);
 				//collisionList.push_back(collisionPair);

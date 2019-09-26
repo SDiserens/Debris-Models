@@ -28,7 +28,7 @@
   "CollisionConfig": {
     "CubeDimension": 10.0, // Cube Size or threshold distance
     "CubeMC": 100, // Cube runs to do each step
-    "ConjunctionThreshold": 10.0, //Threshold for orbit-trace and hoots
+    "ConjunctionThreshold": 1.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.1, // inner threshold for Hoots
     "Verbose": true, // Probability output / time output for different methods
     "outputScaling": 5 // collision probabilities of the order of 10^(-outputScaling)

@@ -1,8 +1,7 @@
-﻿  CollisionFunctions.cpp
-Modules\Collision_Algorithms\CollisionFunctions.cpp(258): warning C4244: '=': conversion from 'const double' to 'int', possible loss of data
+﻿  Framework.cpp
   Generating code
-  114 of 2517 functions ( 4.5%) were compiled, the rest were copied from previous compilation.
-    2 functions were new in current compilation
-    35 functions had inline decision re-evaluated but remain unchanged
+  101 of 2517 functions ( 4.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    34 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

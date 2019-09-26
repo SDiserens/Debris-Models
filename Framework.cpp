@@ -64,6 +64,10 @@ int main(int argc, char** argv)
 		{
 			collisionType = argv[++i];
 		}
+		if ((arg == "-m") || (arg == "--montecarlo"))
+		{
+			mcRuns = stoi(argv[++i]);
+		}
 		if ((arg == "-b") || (arg == "--fragmentation"))
 		{
 			breakUpType = argv[++i];

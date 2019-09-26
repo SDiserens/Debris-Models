@@ -154,11 +154,11 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	if (collisionModel == "Cube")
 		outputFile << "\nCube Dimension (km):," + to_string(collisionConfig["CubeDimension"].asDouble());
 	if (collisionModel == "OrbitTrace")
-		outputFile << "\nThreshold (km):," + to_string(collisionConfig["conjunctionThreshold"].asDouble());
+		outputFile << "\nThreshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble());
 	if (collisionModel == "Hoots")
 	{
-		outputFile << "\nConjunction Threshold (km):," + to_string(collisionConfig["conjunctionThreshold"].asDouble());
-		outputFile << "\nCollision Threshold (km):," + to_string(collisionConfig["collisionThreshold"].asDouble());
+		outputFile << "\nConjunction Threshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble());
+		outputFile << "\nCollision Threshold (km):," + to_string(collisionConfig["CollisionThreshold"].asDouble());
 	}
 
 	// Break data with line
