@@ -9,6 +9,7 @@ class OrbitTrace : public CollisionAlgorithm
 
 public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
+	void SetThreshold(double threshold);
 	OrbitTrace(bool probabilities = false, double threshold = 10);
 
 protected:

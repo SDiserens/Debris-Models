@@ -10,7 +10,8 @@ int main(int argc, char** argv)
 	// ------ Initialisation ------
 	// ----------------------------
 	string arg, populationFilename, propagatorType, breakUpType, collisionType;
-	double timeStep, stepDays, elapsedDays, simulationDays;
+	double timeStep, stepDays, elapsedDays, simulationDays, threshold;
+	bool setThreshold = false;
 	int mcRuns;
 
 	//TODO - Create independent function for config 
@@ -64,7 +65,7 @@ int main(int argc, char** argv)
 		{
 			collisionType = argv[++i];
 		}
-		if ((arg == "-m") || (arg == "--montecarlo"))
+		if ((arg == "-mc") || (arg == "--montecarlo"))
 		{
 			mcRuns = stoi(argv[++i]);
 		}
@@ -76,6 +77,11 @@ int main(int argc, char** argv)
 		{
 			propagatorType = argv[++i];
 		}
+		if ((arg == "-t") || (arg == "--threshold"))
+		{
+			setThreshold = true;
+			threshold = stod(argv[++i]);
+		}
 	}
 
 	// Initialise population
@@ -83,8 +89,10 @@ int main(int argc, char** argv)
 
 	// Load population
 	auto& propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
-	// Load Modulea
+	// Load Modules
 	auto& collisionModel = ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
+	if (setThreshold)
+		collisionModel->SetThreshold(threshold);
 
 	auto& breakUp = *ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
 

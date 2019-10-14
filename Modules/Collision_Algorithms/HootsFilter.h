@@ -14,6 +14,7 @@ protected:
 public:
 	HootsFilter(bool times = false, double init_conjThreshold=10, double init_collThreshold=0.1);
 	void MainCollision(DebrisPopulation& population, double timestep);
+	void SetThreshold(double threshold);
 
 	vector<double> GetCollisionVerbose();
 	vector<double> GetNewCollisionVerbose();

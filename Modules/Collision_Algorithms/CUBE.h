@@ -19,6 +19,7 @@ public:
 	CUBEApproach(bool probabilities = false, double dimension = 10, int runs=1);
 
 	void MainCollision(DebrisPopulation& population, double timeStep);
+	void SetThreshold(double threshold);
 
 protected:
 	double CollisionRate(CollisionPair& objectPair);

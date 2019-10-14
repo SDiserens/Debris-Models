@@ -15,6 +15,12 @@ CUBEApproach::CUBEApproach(bool probabilities, double dimension, int runs)
 
 void FilterRecursion(vector<CollisionPair>& pairList, vector<pair<long, long>> hashList, int i, int step);
 
+void CUBEApproach::SetThreshold(double threshold)
+{
+	cubeDimension = threshold;
+	cubeVolume = threshold * threshold * threshold;
+}
+
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate;

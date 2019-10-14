@@ -11,6 +11,11 @@ OrbitTrace::OrbitTrace(bool probabilities, double threshold)
 }
 
 
+void OrbitTrace::SetThreshold(double threshold)
+{
+	pAThreshold = threshold;
+}
+
 void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
 	double tempProbability, collisionRate;

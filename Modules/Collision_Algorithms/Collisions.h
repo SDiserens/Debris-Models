@@ -58,6 +58,7 @@ protected:
 
 public:
 	virtual void MainCollision(DebrisPopulation& population, double timeStep) = 0;
+	virtual void SetThreshold(double threshold) = 0;
 	void SwitchGravityComponent();
 	vector<pair<long, long>> GetCollisionList();
 	vector<pair<long, long>> GetNewCollisionList();

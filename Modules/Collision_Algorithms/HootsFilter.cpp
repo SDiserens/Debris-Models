@@ -9,6 +9,11 @@ HootsFilter::HootsFilter(bool times, double init_conjThreshold, double init_coll
 	outputTimes = times;
 }
 
+void HootsFilter::SetThreshold(double threshold)
+{
+	pAThreshold = threshold;
+}
+
 void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 {
 	vector<CollisionPair> pairList;
