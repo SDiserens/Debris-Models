@@ -188,7 +188,7 @@ int main(int argc, char** argv)
 	// Write Logs to output files
 	if (collisionConfig["Verbose"].asBool()) {
 
-		// TODO - Pass population data
+		// TODO - Fix issue with cmd line threshold setting
 		WriteCollisionData(populationFilename, config, collisionType, collisionConfig, collisionLog);
 	}
 
