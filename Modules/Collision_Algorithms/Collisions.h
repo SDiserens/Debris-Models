@@ -10,7 +10,7 @@ public:
 	double approachAnomalyP, approachAnomalyS;
 	bool coplanar;
 protected:
-	double relativeInclination, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii;
+	double relativeInclination, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii, collisionAltitude;
 
 public:
 	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
@@ -28,6 +28,8 @@ public:
 	void CalculateArgumenstOfIntersectionCoplanar();
 	void CalculateRelativeInclination();
 	double GetBoundingRadii();
+	double GetCollisionAltitude();
+	void SetCollisionAltitude(double altitude);
 
 protected:
 	vector<double> CalculateAngularWindow(DebrisObject& object, double distance, double delta);
@@ -44,6 +46,7 @@ protected:
 	vector<double> collisionProbabilities;
 	vector<pair<long, long>> collisionList;
 	vector<double> newCollisionProbabilities;
+	vector<double> newCollisionAltitudes;
 	vector<pair<long, long>> newCollisionList;
 	bool DetermineCollision(double collisionProbability);
 	double CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ);
@@ -66,4 +69,5 @@ public:
 
 	vector<double> GetCollisionVerbose();
 	vector<double> GetNewCollisionVerbose();
+	vector<double> GetNewCollisionAltitudes();
 };

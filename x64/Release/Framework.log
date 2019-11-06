@@ -2,7 +2,6 @@
   Framework.cpp
   CUBE.cpp
   CollisionFunctions.cpp
-Modules\Collision_Algorithms\CollisionFunctions.cpp(258): warning C4244: '=': conversion from 'const double' to 'int', possible loss of data
   HootsFilter.cpp
   OrbitTrace.cpp
   FragmentCloud.cpp
@@ -23,8 +22,8 @@ Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): warning C4477: 'sscanf_s' : fo
   OrbitalElements.cpp
   OrbitalUtilities.cpp
   Generating code
-  111 of 2520 functions ( 4.4%) were compiled, the rest were copied from previous compilation.
-    3 functions were new in current compilation
-    34 functions had inline decision re-evaluated but remain unchanged
+  310 of 2527 functions (12.3%) were compiled, the rest were copied from previous compilation.
+    119 functions were new in current compilation
+    26 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

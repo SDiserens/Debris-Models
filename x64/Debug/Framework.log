@@ -19,7 +19,6 @@ e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(2223): wa
   OrbitTrace.cpp
   HootsFilter.cpp
   CollisionFunctions.cpp
-e:\work\modelling framework\modules\collision_algorithms\collisionfunctions.cpp(258): warning C4244: '=': conversion from 'const double' to 'int', possible loss of data
   CUBE.cpp
   Framework.cpp
   Generating Code...

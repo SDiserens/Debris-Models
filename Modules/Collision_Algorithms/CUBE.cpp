@@ -23,7 +23,7 @@ void CUBEApproach::SetThreshold(double threshold)
 
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
-	double tempProbability, collisionRate;
+	double tempProbability, collisionRate, altitude;
 	vector<CollisionPair> pairList;
 	// Filter Cube List
 	for (int j = 0; j < mcRuns; j++)
@@ -43,19 +43,23 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities)
 			{
+				altitude = collisionPair.primary.GetElements().GetRadialPosition();
 				//	-- Store collision probability
 				//collisionProbabilities.push_back(tempProbability);
 				//collisionList.push_back(collisionPair);
 				newCollisionProbabilities.push_back(tempProbability);
 				newCollisionList.push_back(pairID);
+				newCollisionAltitudes.push_back(altitude);
 			}
 			else
 			{
 				if (DetermineCollision(tempProbability))
 				{
 					// Store Collisions 
+					altitude = collisionPair.primary.GetElements().GetRadialPosition();
 					collisionList.push_back(pairID);
 					newCollisionList.push_back(pairID);
+					newCollisionAltitudes.push_back(altitude);
 				}
 			}
 		}

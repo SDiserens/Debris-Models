@@ -19,6 +19,13 @@ vector<double> CollisionAlgorithm::GetNewCollisionVerbose()
 	return GetNewCollisionProbabilities();
 }
 
+vector<double> CollisionAlgorithm::GetNewCollisionAltitudes()
+{
+	vector<double> newList(newCollisionAltitudes);
+	newCollisionAltitudes.clear();
+	return newList;
+}
+
 vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
 {
 	vector<CollisionPair> pairList;
@@ -314,6 +321,7 @@ double CollisionPair::CalculateMinimumSeparation()
 
 	}
 
+	SetCollisionAltitude(primaryElements.GetRadialPosition());
 
 	// Test second intersection point
 	if (coplanar)
@@ -341,6 +349,7 @@ double CollisionPair::CalculateMinimumSeparation()
 		seperation = altSeperation;
 		trueAnomalyP = TauRange(trueAnomalyP + Pi);
 		trueAnomalyS = TauRange(trueAnomalyS + Pi);
+		SetCollisionAltitude(primaryElements.GetRadialPosition());
 	}
 	approachAnomalyP = trueAnomalyP;
 	approachAnomalyS = trueAnomalyS;
@@ -351,6 +360,16 @@ double CollisionPair::CalculateMinimumSeparation()
 double CollisionPair::GetBoundingRadii()
 {
 	return boundingRadii; // Combined radii in kilometres;
+}
+
+double CollisionPair::GetCollisionAltitude()
+{
+	return collisionAltitude;
+}
+
+void CollisionPair::SetCollisionAltitude(double altitude)
+{
+	collisionAltitude = altitude;
 }
 
 double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)

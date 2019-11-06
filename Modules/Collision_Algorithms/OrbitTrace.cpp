@@ -18,7 +18,7 @@ void OrbitTrace::SetThreshold(double threshold)
 
 void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
-	double tempProbability, collisionRate;
+	double tempProbability, collisionRate, altitude;
 	vector<CollisionPair> pairList;
 	pair<long, long> pairID;
 	bool collision;
@@ -56,20 +56,23 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities && tempProbability>0)
 			{
-
+				altitude = objectPair.GetCollisionAltitude();
 				//	-- Store collision probability
 				//collisionProbabilities.push_back(tempProbability);
 				//collisionList.push_back(collisionPair);
 				newCollisionProbabilities.push_back(tempProbability);
 				newCollisionList.push_back(pairID);
+				newCollisionAltitudes.push_back(altitude);
 			}
 			else
 			{
 				if (DetermineCollision(tempProbability))
 				{
+					altitude = objectPair.GetCollisionAltitude();
 					// Store Collisions 
 					collisionList.push_back(pairID);
 					newCollisionList.push_back(pairID);
+					newCollisionAltitudes.push_back(altitude);
 				}
 			}
 		}

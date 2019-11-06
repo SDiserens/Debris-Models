@@ -102,8 +102,10 @@ int main(int argc, char** argv)
 	stepDays = config["StepSize"].asDouble();
 
 	vector<pair<long, long>> collisionList;
-	vector<tuple<int, double, pair<string, string>, double>> collisionLog;
-
+	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog;
+	vector<double> collisionOutput;
+	vector<double> collisionAltitudes;
+	
 
 	cout << "Reading Population File : " + populationFilename + "...\n";
 	LoadScenario(initPopulation, populationFilename);
@@ -137,17 +139,20 @@ int main(int argc, char** argv)
 
 			// if extra output requested
 			if (collisionConfig["Verbose"].asBool()) {
-				vector<double> collisionOutput;
+
 				// Retrieve collision output
 				collisionOutput = collisionModel->GetNewCollisionVerbose();
+				collisionAltitudes = collisionModel->GetNewCollisionAltitudes();
 
 				// Log data
 				for (int i = 0; i < collisionList.size(); i++) {
 					// TODO - Use Pair ID values to retrieve object names/noradID for greater clarity
 
 					collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(environmentPopulation.GetObject(collisionList[i].first).GetName(), 
-																				environmentPopulation.GetObject(collisionList[i].second).GetName()), collisionOutput[i]));
+																				environmentPopulation.GetObject(collisionList[i].second).GetName()), collisionOutput[i], collisionAltitudes[i]));
 				}
+				collisionOutput.clear();
+				collisionAltitudes.clear();
 			}
 
 			// For each pair in collision list

@@ -2,7 +2,7 @@
 extern mt19937_64 * generator;
 //extern mt19937 * generator;
 
-const double NEWTONMAXITERATIONS = 50;
+const int NEWTONMAXITERATIONS = 50;
 const double NEWTONTOLERANCE = 1e-10;
 
 const double Pi = _Pi;
