@@ -6,6 +6,7 @@ DebrisObject::DebrisObject()
 {
 	positionSync = velocitySync = false;
 	periodSync = false;
+	noradID = -1;
 }
 
 DebrisObject::DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination,
@@ -23,6 +24,8 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	periodSync = false;
 	coefficientDrag = 2.2;
 	bStar = NAN;
+
+	noradID = -1;
 }
 
 DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3) : DebrisObject(TLE2, TLE3)
@@ -97,7 +100,10 @@ long DebrisObject::GetParentID()
 
 int DebrisObject::GetNoradID()
 {
-	return noradID;
+	if (noradID != -1)
+		return noradID;
+	else
+		return objectID;
 }
 
 int DebrisObject::GetType()

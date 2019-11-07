@@ -148,8 +148,9 @@ int main(int argc, char** argv)
 				for (int i = 0; i < collisionList.size(); i++) {
 					// TODO - Use Pair ID values to retrieve object names/noradID for greater clarity
 
-					collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(environmentPopulation.GetObject(collisionList[i].first).GetName(), 
-																				environmentPopulation.GetObject(collisionList[i].second).GetName()), collisionOutput[i], collisionAltitudes[i]));
+					collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collisionList[i].first).GetNoradID()), 
+																				to_string(environmentPopulation.GetObject(collisionList[i].second).GetNoradID())),
+											collisionOutput[i], collisionAltitudes[i]));
 				}
 				collisionOutput.clear();
 				collisionAltitudes.clear();
