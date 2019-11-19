@@ -80,6 +80,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	ifstream scenarioFile("Scenarios\\" + scenarioFilename);
 	if (!scenarioFile.good())
 	{
+		cout << "Scenario file failed to load";
 		throw std::runtime_error("Scenario file failed to load");
 	}
 
@@ -93,6 +94,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	date = scenario["EpochDate"].asString();
 	epoch = DateToEpoch(date);
 	population.InitialiseEpoch(epoch);
+	population.SetDuration(scenario["Duration"].asDouble());
 
 	for (Json::Value objectParameters : scenario["objects"])
 	{

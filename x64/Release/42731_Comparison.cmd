@@ -1,4 +1,6 @@
 ::Test
+Framework.exe -c "OrbitTrace" -t 0.0 -mc 1 -f "Collisions_42731.json"
+Framework.exe -c "OrbitTrace" -t 0.01 -mc 1 -f "Collisions_42731.json"
 Framework.exe -c "OrbitTrace" -t 0.1 -mc 1 -f "Collisions_42731.json"
 Framework.exe -c "OrbitTrace" -t 1 -mc 1 -f "Collisions_42731.json"
 

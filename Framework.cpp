@@ -98,7 +98,6 @@ int main(int argc, char** argv)
 
 	// Load Environment Parameters
 	elapsedDays = 0;
-	simulationDays = config["Duration"].asDouble();
 	stepDays = config["StepSize"].asDouble();
 
 	vector<pair<long, long>> collisionList;
@@ -110,7 +109,9 @@ int main(int argc, char** argv)
 	cout << "Reading Population File : " + populationFilename + "...\n";
 	LoadScenario(initPopulation, populationFilename);
 
-	cout << "Running " + to_string(mcRuns) + " simulations using " + propagatorType + ", " + breakUpType + " and " + collisionType + "...\n";
+	simulationDays = initPopulation.GetDuration();
+
+	cout << "Running " + to_string(mcRuns) + " simulations of " + to_string(simulationDays) + " days, using " + propagatorType + ", " + breakUpType + " and " + collisionType + "...\n";
 	for (int j = 0; j < mcRuns; j++)
 	{
 		environmentPopulation = DebrisPopulation(initPopulation);

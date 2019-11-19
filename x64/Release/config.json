@@ -1,6 +1,5 @@
 {
   "scenarioFilename": "Collisions_43900.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
-  "Duration": 135, // Length of simulation (days)
   "StepSize": 0.05, // Size of default timestep (days)
   "MonteCarlo": 10,
 

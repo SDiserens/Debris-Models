@@ -66,6 +66,16 @@ double DebrisPopulation::GetAverageSMA()
 	return averageSemiMajorAxis;
 }
 
+void DebrisPopulation::SetDuration(double duration)
+{
+	durationDays = duration;
+}
+
+double DebrisPopulation::GetDuration()
+{
+	return durationDays;
+}
+
 void DebrisPopulation::SetAverageSMA(double averageSMA)
 {
 	averageSemiMajorAxis = averageSMA;

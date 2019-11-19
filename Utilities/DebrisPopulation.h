@@ -21,7 +21,7 @@ class DebrisPopulation
 protected:
 	long populationCount = 0;
 	int scalingPower;
-	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis;
+	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis, durationDays;
 	map<long, DebrisObject> loadingPopulation;
 	vector<pair<double, long>> initEpochs;
 
@@ -41,6 +41,8 @@ public:
 	int GetPopulationSize();
 	int GetScalingPower();
 	double GetAverageSMA();
+	void SetDuration(double duration);
+	double GetDuration();
 	void SetAverageSMA(double averageSMA);
 	void SetScalingPower(int power);
 	void UpdateEpoch(double timeStep);

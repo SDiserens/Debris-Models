@@ -1,5 +1,6 @@
 {
   "EpochDate": "2019-05-26", // Date of simulation start (YYYY-MM-DD)
+  "Duration": 135, // Length of simulation (days)
   "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter
   "objects": [
     {
