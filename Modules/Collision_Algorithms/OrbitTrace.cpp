@@ -95,7 +95,6 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	boundingRadii = max(pAThreshold, objectPair.GetBoundingRadii());
 
 	sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
-	//sinAngleV2 = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm()); // sinAngle * velocityJ
 
 	// OT collision rate
 	if (boundingRadii > minSeperation)
