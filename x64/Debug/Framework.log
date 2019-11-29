@@ -17,6 +17,7 @@ e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(2223): wa
   FragmentationFunctions.cpp
   FragmentCloud.cpp
   OrbitTrace.cpp
+e:\work\modelling framework\modules\collision_algorithms\orbittrace.cpp(113): warning C4101: 'sinAngle': unreferenced local variable
   HootsFilter.cpp
   CollisionFunctions.cpp
   CUBE.cpp

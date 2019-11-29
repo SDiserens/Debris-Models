@@ -1,0 +1,39 @@
+{
+  "scenarioFilename": "Collisions_43900.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
+  "StepSize": 0.05, // Size of default timestep (days)
+  "MonteCarlo": 10,
+
+  //
+  "Propagator": "SGP4", // "SGP4", "SimpleJ2"
+  "PropagatorConfig": {
+    "opsMode": "i", // operation mode of the SGP4, either i (improved) or a (afspc).
+    "gravModel": "wgs72" // which set of constants to use  wgs72, wgs84
+  },
+
+  //
+  "Fragmentation": null, // "NSBM",
+  "FragmentationConfig": {
+    "minLength": 0.01, // Min fragment length in metres
+    "catastrophicThreshold": 40, // theshold for cat breakup in J/g
+    "numberBuckets": 30, //number of buckets to split fragments sizes between
+    "bridgingFucntion": "Weighted", // brdiign function to use between 8cm and 11cm : "Small", "Large", "Mean", "Weighted",
+    "explosionScaling": 1, //Value to use for scaling number of explosion fragments
+    "representativeFragmentThreshold": 0.02, // Fragment size in metres below which represetntative fragmnets should be used
+    "representativeFragmentNumber": 10 // Max number of fragments to be respresented by a single object
+  },
+
+  //
+  "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots"
+  "CollisionConfig": {
+    "CubeDimension": 1.0, // Cube Size or threshold distance
+    "CubeMC": 100, // Cube runs to do each step
+    "ConjunctionThreshold": 0.01, //Threshold for orbit-trace and hoots
+    "CollisionThreshold": 0.1, // inner threshold for Hoots
+    "Verbose": true, // Probability output / time output for different methods
+    "outputScaling": 5 // collision probabilities of the order of 10^(-outputScaling)
+  },
+  //
+
+  "BackgroundPop": null
+  //
+}
