@@ -2,6 +2,8 @@
 //
 
 #include "stdafx.h"
+#include "Modules\Modules.h"
+#include "Utilities\ModuleFactory.h"
 using namespace std;
 
 int main(int argc, char** argv)

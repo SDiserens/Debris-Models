@@ -1,13 +1,60 @@
-﻿  stdafx.cpp
-  OrbitTraceWrapper.cpp
-  OrbitalUtilities.cpp
-  OrbitalElements.cpp
-  OrbitalAnomalies.cpp
-  DebrisPopulation.cpp
-  DebrisObject.cpp
-  OrbitTrace.cpp
+﻿  OrbitTrace.cpp
+e:\work\modelling framework\utilities\modulefactory.h(84): error C2065: 'OrbitTrace': undeclared identifier
+e:\work\modelling framework\utilities\modulefactory.h(84): error C2923: 'std::unique_ptr': 'OrbitTrace' is not a valid template type argument for parameter '_Ty'
+e:\work\modelling framework\utilities\modulefactory.h(84): error C3203: 'default_delete': unspecialized class template can't be used as a template argument for template parameter '_Dx', expected a real type
+e:\work\modelling framework\utilities\modulefactory.h(38): error C2440: 'return': cannot convert from 'std::unique_ptr' to 'std::unique_ptr<CollisionAlgorithm,std::default_delete<_Ty>>'
+          with
+          [
+              _Ty=CollisionAlgorithm
+          ]
+  e:\work\modelling framework\utilities\modulefactory.h(38): note: No constructor could take the source type, or constructor overload resolution was ambiguous
+e:\work\modelling framework\utilities\modulefactory.h(89): error C2065: 'OrbitTrace': undeclared identifier
+e:\work\modelling framework\utilities\modulefactory.h(89): error C2672: 'std::make_unique': no matching overloaded function found
+e:\work\modelling framework\utilities\modulefactory.h(89): error C2974: 'std::make_unique': invalid template argument for '_Ty', type expected
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.10.25017\include\memory(2068): note: see declaration of 'std::make_unique'
   CollisionFunctions.cpp
+e:\work\modelling framework\modules\collision_algorithms\cube.h(7): error C2504: 'CollisionAlgorithm': base class undefined
+e:\work\modelling framework\modules\collision_algorithms\cube.h(23): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\cube.h(24): error C2065: 'CollisionPair': undeclared identifier
+e:\work\modelling framework\modules\collision_algorithms\cube.h(24): error C2923: 'std::vector': 'CollisionPair' is not a valid template type argument for parameter '_Ty'
+e:\work\modelling framework\modules\collision_algorithms\cube.h(24): error C3203: 'allocator': unspecialized class template can't be used as a template argument for template parameter '_Alloc', expected a real type
+e:\work\modelling framework\modules\collision_algorithms\cube.h(29): error C2065: 'CollisionPair': undeclared identifier
+e:\work\modelling framework\modules\collision_algorithms\cube.h(29): error C2923: 'std::vector': 'CollisionPair' is not a valid template type argument for parameter '_Ty'
+e:\work\modelling framework\modules\collision_algorithms\cube.h(29): error C3203: 'allocator': unspecialized class template can't be used as a template argument for template parameter '_Alloc', expected a real type
+e:\work\modelling framework\modules\collision_algorithms\orbittrace.h(7): error C2504: 'CollisionAlgorithm': base class undefined
+e:\work\modelling framework\modules\collision_algorithms\orbittrace.h(16): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\orbittrace.h(24): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\orbittrace.h(25): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\orbittrace.h(26): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\orbittrace.h(27): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(7): error C2504: 'CollisionAlgorithm': base class undefined
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(24): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(25): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(26): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(27): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(28): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(33): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(34): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\modules\collision_algorithms\hootsfilter.h(35): error C2061: syntax error: identifier 'CollisionPair'
+e:\work\modelling framework\utilities\modulefactory.h(34): error C2065: 'CollisionAlgorithm': undeclared identifier
+e:\work\modelling framework\utilities\modulefactory.h(34): error C2923: 'std::unique_ptr': 'CollisionAlgorithm' is not a valid template type argument for parameter '_Ty'
+e:\work\modelling framework\utilities\modulefactory.h(34): error C3203: 'default_delete': unspecialized class template can't be used as a template argument for template parameter '_Dx', expected a real type
+e:\work\modelling framework\utilities\modulefactory.h(36): error C2440: 'return': cannot convert from 'std::unique_ptr<CUBEApproach,std::default_delete<_Ty>>' to 'std::unique_ptr'
+          with
+          [
+              _Ty=CUBEApproach
+          ]
+  e:\work\modelling framework\utilities\modulefactory.h(36): note: No constructor could take the source type, or constructor overload resolution was ambiguous
+e:\work\modelling framework\utilities\modulefactory.h(38): error C2440: 'return': cannot convert from 'std::unique_ptr<OrbitTrace,std::default_delete<_Ty>>' to 'std::unique_ptr'
+          with
+          [
+              _Ty=OrbitTrace
+          ]
+  e:\work\modelling framework\utilities\modulefactory.h(38): note: No constructor could take the source type, or constructor overload resolution was ambiguous
+e:\work\modelling framework\utilities\modulefactory.h(40): error C2440: 'return': cannot convert from 'std::unique_ptr<HootsFilter,std::default_delete<_Ty>>' to 'std::unique_ptr'
+          with
+          [
+              _Ty=HootsFilter
+          ]
+  e:\work\modelling framework\utilities\modulefactory.h(40): note: No constructor could take the source type, or constructor overload resolution was ambiguous
   Generating Code...
-e:\work\modelling framework\modules\collision_algorithms\orbittrace.cpp(154): warning C4700: uninitialized local variable 'deltaMS' used
-  OrbitTrace.vcxproj -> E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Debug\OrbitTrace.exe
-  OrbitTrace.vcxproj -> E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Debug\OrbitTrace.pdb (Partial PDB)

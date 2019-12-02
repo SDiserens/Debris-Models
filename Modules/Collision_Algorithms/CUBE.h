@@ -3,8 +3,6 @@
 #include "stdafx.h"
 #include "Collisions.h"
 
-
-
 class CUBEApproach : public CollisionAlgorithm
 {
 protected:

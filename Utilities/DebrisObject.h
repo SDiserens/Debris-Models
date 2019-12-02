@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Modules\Propagators\SGP4\SGP4Code\SGP4.h"
+#include "Modules\Propagators\SGP4\SGP4Code\SGP4.h"
 
 class DebrisObject
 {

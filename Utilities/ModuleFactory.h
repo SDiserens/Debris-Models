@@ -16,6 +16,7 @@
 //	SimpleJ2
 //};
 
+#include "stdafx.h"
 
 class ModuleFactory {
 public:

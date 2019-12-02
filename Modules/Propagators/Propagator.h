@@ -1,5 +1,8 @@
 #pragma once
 
+const double rhoZero = 0.1570;
+
+
 
 class Propagator
 {

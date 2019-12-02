@@ -3,7 +3,7 @@
 
 
 #include "stdafx.h"
-#include "Modules/Collision_Algorithms/OrbitTrace.h"
+#include "Modules\Collision_Algorithms\OrbitTrace.h"
 #include <json\json.h>
 
 void RandomiseOrbitOrientations(DebrisPopulation& population);
@@ -162,7 +162,7 @@ int main(int argc, char** argv)
 			progress.DisplayProgress(eval * evaluationSteps + step);
 		}
 		// Store collision data
-		collisionProbabilities = collisionModel.GetNewCollisionProbabilities();
+		collisionProbabilities = collisionModel.GetNewCollisionVerbose();
 		collisionList = collisionModel.GetNewCollisionList();
 
 		for (k = 0; k < collisionProbabilities.size(); k++)

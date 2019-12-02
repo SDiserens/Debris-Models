@@ -110,7 +110,7 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 
 double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 {
-	double collisionRate, boundingRadii, minSeperation, sinAngle;//  , sinAngleV2;
+	double collisionRate, boundingRadii, minSeperation;
 	vector3D velocityI, velocityJ, relativeVelocity;
 
 	minSeperation = objectPair.CalculateMinimumSeparation();

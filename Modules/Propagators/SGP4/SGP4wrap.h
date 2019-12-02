@@ -3,9 +3,6 @@
 #include "..\Propagator.h"
 #include "SGP4Code\SGP4.h"
 
-const double rhoZero = 0.1570;
-
-
 class SGP4 :
 	public Propagator
 {
