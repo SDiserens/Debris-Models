@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Modules\Collision_Algorithms\Collisions.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\OrbitTrace.h" />
+    <ClInclude Include="..\..\Utilities\BaseUtilities.h" />
     <ClInclude Include="..\..\Utilities\DebrisObject.h" />
     <ClInclude Include="..\..\Utilities\DebrisPopulation.h" />
     <ClInclude Include="..\..\Utilities\OrbitalAnomalies.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CollisionFunctions.cpp" />
     <ClCompile Include="..\..\Modules\Collision_Algorithms\OrbitTrace.cpp" />
     <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp" />
+    <ClCompile Include="..\..\Utilities\BaseUtilities.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisObject.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp" />
     <ClCompile Include="..\..\Utilities\OrbitalAnomalies.cpp" />

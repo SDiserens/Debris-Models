@@ -2,7 +2,7 @@
 
 bool fileExists(const string& name);
 
-DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
+DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch=0);
 
 void LoadScenario(DebrisPopulation & population, string scenarioFilename);
 

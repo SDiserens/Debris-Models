@@ -8,5 +8,5 @@
   "stepSize": 1, // size of timestep in days
   "randomSeed": null, // integer seed value or null to use system time
   "numberEvaluations": 10000, // Number of timesteps to be evaluated
-  "stepsPerEvaluation": 365 // Number of evaluations per section - sensible size is 365
+  "stepsPerEvaluation": 3650 // Number of evaluations per section - sensible size is 365
 }

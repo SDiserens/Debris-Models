@@ -1,4 +1,6 @@
 {
+
+  "EpochDate": "2001-01-01", // Date of simulation start (YYYY-MM-DD)
     "centralBody": 0,
     "outputScaling": 8,
     "objects": [

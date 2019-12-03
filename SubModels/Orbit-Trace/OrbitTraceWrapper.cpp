@@ -11,8 +11,6 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 	vector<map<pair<long, long>, double>>& collisionRates, vector<map<pair<long, long>, int>>& collisionCount, int scalingPower);
 void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
 	vector<map<pair<long, long>, double>>& collisionRates, vector<map<pair<long, long>, int>>& collisionCount, int scalingPower);
-DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
-bool fileExists(const string& name);
 
 
 int main(int argc, char** argv)
@@ -21,7 +19,7 @@ int main(int argc, char** argv)
 	string arg, scenarioFilename, outputFilename, eventType, metaData;
 	unsigned long evaluationBlocks, evaluationSteps;
 	uint64_t seed, argseed = -1;
-	int scalingPower, nObjects;
+	int scalingPower;
 	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits;
 	double timeStepDays, timeStep, scaling;
 
@@ -82,35 +80,12 @@ int main(int argc, char** argv)
 	cout << " Closing Config File...\n";
 	configFile.close();
 
-	// Read scenario file
-	cout << "Reading Scenario File : " + scenarioFilename + "...";
-
-	ifstream scenarioFile("Scenarios\\" + scenarioFilename);
-	if (!scenarioFile.good())
-	{
-		throw std::runtime_error("Scenario file failed to load");
-	}
-
-	// Parse scenario file to identify object characteristics
-	reader.parse(scenarioFile, scenario);
-
-	cout << " Parsing Scenario...";
-	SetCentralBody(scenario["centralBody"].asInt());
-	scalingPower = scenario["outputScaling"].asInt();
-	scaling = pow(10, scalingPower);
-
 	// Create population of objects & Identify average SMA
 	DebrisPopulation objectPopulation;
-	for (Json::Value objectParameters : scenario["objects"])
-	{
-		DebrisObject tempObject(GenerateDebrisObject(objectParameters));
-		objectPopulation.AddDebrisObject(tempObject);
-	}
-	nObjects = scenario["objects"].size();
+	LoadScenario(objectPopulation, scenarioFilename);
 
-	// Close File
-	cout << " Closing Scenario File..." << endl;
-	scenarioFile.close();
+	scalingPower = objectPopulation.GetScalingPower();
+	scaling = pow(10, scalingPower);
 
 	// Run simulation
 	if (config["randomSeed"].isUInt64() || (argseed != -1))
@@ -251,31 +226,6 @@ void RandomiseOrbitOrientations(DebrisPopulation& population)
 	}
 }
 
-DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
-{
-	double radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly;
-	int type;
-	string name;
-
-	Json::Value elements = parsedObject["orbitalElements"];
-	// Parse Json 
-	radius = parsedObject["radius"].asDouble();
-	mass = parsedObject["mass"].asDouble();
-	length = parsedObject["length"].asDouble();
-	meanAnomaly = parsedObject["meanAnomaly"].asDouble();
-	type = parsedObject["type"].asInt();
-	semiMajorAxis = elements["a"].asDouble();
-	eccentricity = elements["e"].asDouble();
-	inclination = elements["i"].asDouble();
-	rightAscension = elements["Om"].asDouble();
-	argPerigee = elements["om"].asDouble();
-	name = parsedObject["name"].asString();
-	// Generate Object - Possible issue with reconstruction
-	DebrisObject debris(radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type);
-	debris.SetName(name);
-	return debris;
-}
-
 void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
 	vector<map<pair<long, long>, double>>& collisionRates, vector<map<pair<long, long>, int>>& collisionCount, int scalingPower)
 {
@@ -411,19 +361,6 @@ void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation &
 
 		dataFile << "\n";
 	}
-}
-
-bool fileExists(const string& name)
-{
-	FILE *file;
-	fopen_s(&file, name.c_str(), "r");
-	if (file)
-	{
-		fclose(file);
-		return true;
-	}
-	else
-		return false;
 }
 
 

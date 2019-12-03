@@ -1,6 +1,7 @@
 {
+  "EpochDate": "2001-01-01", // Date of simulation start (YYYY-MM-DD)
   "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter
-  "outputScaling" :  15, // collision probabilities of the order of 10^(-outputScaling)
+  "outputScaling" :  5, // collision probabilities of the order of 10^(-outputScaling)
   "objects": [
     {
       "name": "Alice",

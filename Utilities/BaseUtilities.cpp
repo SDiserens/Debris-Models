@@ -14,7 +14,7 @@ bool fileExists(const string& name)
 }
 
 
-DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
+DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 {
 	Json::Value elements;
 	double radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly;
@@ -46,6 +46,7 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
 		// Generate Object - Possible issue with reconstruction
 		debris = DebrisObject(radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type);
 		debris.SetName(name);
+		debris.SetInitEpoch(epoch);
 		break;
 
 	case 1:
@@ -98,7 +99,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 
 	for (Json::Value objectParameters : scenario["objects"])
 	{
-		DebrisObject tempObject(GenerateDebrisObject(objectParameters));
+		DebrisObject tempObject(GenerateDebrisObject(objectParameters, epoch));
 		averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
 		population.AddDebrisObject(tempObject);
 	}
