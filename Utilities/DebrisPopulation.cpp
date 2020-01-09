@@ -150,7 +150,15 @@ void DebrisPopulation::LoadPopulation()
 
 void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 {
+	int type = debrisEvent.GetEventType();
 	eventLog.push_back(debrisEvent);
+	eventCount++;
+	if (type == 0)
+		explosionCount++;
+	else if (type == 1)
+		collisionCount++;
+	else if (type == 2)
+		collisionAvoidanceCount++;
 }
 
 DebrisObject& DebrisPopulation::GetObject(long ID)
@@ -191,6 +199,31 @@ void DebrisPopulation::CollideObject(long ID)
 	populationCount--;
 }
 
+int DebrisPopulation::GetEventCount()
+{
+	return eventCount;
+}
+
+int DebrisPopulation::GetExplosionCount()
+{
+	return explosionCount;
+}
+
+int DebrisPopulation::GetCollsionCount()
+{
+	return collisionCount;
+}
+
+int DebrisPopulation::GetCAMCount()
+{
+	return collisionAvoidanceCount;
+}
+
+tuple<double, int, int, tuple<int, int, int>> DebrisPopulation::GetPopulationState()
+{
+	return make_tuple(currentEpoch, populationCount, eventCount, make_tuple(explosionCount, collisionCount, collisionAvoidanceCount));
+}
+
 Event::Event(double epoch, int type, bool consMomentum, bool catastr, double mass)
 {
 	eventID = ++eventSEQ;
@@ -216,7 +249,12 @@ Event::~Event()
 {
 }
 
-string Event::GetEventType()
+int Event::GetEventType()
+{
+	return eventType;
+}
+
+string Event::GetEventTypeString()
 {
 	string eventName;
 	if (eventType == 0)

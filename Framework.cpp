@@ -102,8 +102,10 @@ int main(int argc, char** argv)
 	elapsedDays = 0;
 	stepDays = config["StepSize"].asDouble();
 
+	vector<tuple<int, double, int, int, tuple<int, int, int>>> simulationLog; // (MC, #days, #objects, (), #events, (Explosion, Collision, Collision Avoidance)) 
+																									//TODO- add object type coutnts
 	vector<pair<long, long>> collisionList;
-	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog;
+	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog; // (MC, #days, objectIDs, probability, altitude)
 	vector<double> collisionOutput;
 	vector<double> collisionAltitudes;
 	
@@ -186,13 +188,16 @@ int main(int argc, char** argv)
 
 					// Log
 
-		//TODO - Save Event log for MC run
+			simulationLog.push_back(tuple_cat(make_tuple(j), environmentPopulation.GetPopulationState()));
+				
 		}
+
+		// ----------------------------
+		// ------ End Simulation ------
+		// ----------------------------
+		// Save final population
+		//TODO - Save Event log for MC run
 	}
-	// ----------------------------
-	// ------ End Simulation ------
-	// ----------------------------
-	// Save final population
 
 	// Write Logs to output files
 	if (collisionConfig["Verbose"].asBool()) {
@@ -201,6 +206,7 @@ int main(int argc, char** argv)
 		WriteCollisionData(populationFilename, config, collisionType, collisionConfig, collisionLog);
 	}
 
+	WriteSimulationData(populationFilename, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
     return 0;
 }
 

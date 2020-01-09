@@ -176,3 +176,41 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 
 }
 
+void WriteSimulationData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType,
+						Json::Value & fragmentationConfig, vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog)
+{
+	char date[100];
+	int ID = 1;
+	string outputFilename, eventType, pairID;
+	double scaling;
+	// Store data
+	time_t dateTime = time(NULL);
+	struct tm currtime;
+	localtime_s(&currtime, &dateTime);
+	strftime(date, sizeof(date), "%F", &currtime);
+
+	eventType = scenario.substr(0, scenario.find("."));
+
+	outputFilename = "Output\\" + string(date) + "_SimulationData_" + eventType + ".csv";
+	while (fileExists(outputFilename))
+	{
+		ID++;
+		outputFilename = "Output\\" + string(date) + "_SimulationData_" + eventType + "_" + to_string(ID) + ".csv";
+	}
+
+	cout << "Creating Data File : " + outputFilename + "...";
+	// Create Output file
+	ofstream outputFile;
+	outputFile.open(outputFilename, ofstream::out);
+
+	// Write data into file
+	cout << "  Writing to Data File...";
+
+	outputFile << "Scenario File:," + scenario;
+	outputFile << "\nDuration:," + config["Duration"].asString() + ",Days"; // Length of simulation (days)
+	outputFile << "\nStep Length:," + config["StepSize"].asString() + ",Days";
+	outputFile << "\nCollision Model:," + collisionModel;
+	outputFile << "\nFragmentation Model:," + breakUpType;
+	outputFile << "\nPropagator:," + propagatorType;
+}
+

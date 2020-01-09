@@ -13,7 +13,8 @@ public:
 	Event(double epoch, int type, bool consMomentum, bool catastrophic, double mass);
 	Event(double epoch, int type, bool consMomentum, bool catastr, double mass, long debrisCount);
 	~Event();
-	string GetEventType();
+	int GetEventType();
+	string GetEventTypeString();
 };
 
 class DebrisPopulation
@@ -24,6 +25,8 @@ protected:
 	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis, durationDays;
 	map<long, DebrisObject> loadingPopulation;
 	vector<pair<double, long>> initEpochs;
+	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount;
+	//TODO - add count of object types
 
 public:
 	map<long, DebrisObject> population, removedPopulation;
@@ -53,5 +56,10 @@ public:
 	void DecayObject(long ID);
 	void ExplodeObject(long ID);
 	void CollideObject(long ID);
+	int GetEventCount();
+	int GetExplosionCount();
+	int GetCollsionCount();
+	int GetCAMCount();
+	tuple<double, int, int, tuple<int, int, int>> GetPopulationState();
 };
 
