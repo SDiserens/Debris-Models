@@ -167,7 +167,7 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	// Break data with line
 	outputFile << "\n";
 
-	outputFile << "\nSimulation Run, Simulation Elapsed Time (days), Object Pair, Collision Probability";
+	outputFile << "\nSimulation Run, Simulation Elapsed Time (days), Object Pair, Collision Probability, Altitude (km)";
 	for (auto logEntry : collisionLog) 
 	{
 		pairID = "'" + get<2>(logEntry).first + " - " + get<2>(logEntry).second;
@@ -177,12 +177,12 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 }
 
 void WriteSimulationData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType,
-						Json::Value & fragmentationConfig, vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog)
+						Json::Value & fragmentationConfig, vector<tuple<int, double, int, int, tuple<int, int, int>>> simulationLog)
 {
 	char date[100];
 	int ID = 1;
 	string outputFilename, eventType, pairID;
-	double scaling;
+	tuple<int, int, int> eventSplit;
 	// Store data
 	time_t dateTime = time(NULL);
 	struct tm currtime;
@@ -206,11 +206,33 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 	// Write data into file
 	cout << "  Writing to Data File...";
 
-	outputFile << "Scenario File:," + scenario;
-	outputFile << "\nDuration:," + config["Duration"].asString() + ",Days"; // Length of simulation (days)
-	outputFile << "\nStep Length:," + config["StepSize"].asString() + ",Days";
-	outputFile << "\nCollision Model:," + collisionModel;
-	outputFile << "\nFragmentation Model:," + breakUpType;
-	outputFile << "\nPropagator:," + propagatorType;
+	outputFile << "Scenario File:," + scenario + ", ,";
+	outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
+	outputFile << ",Step Length:," + config["StepSize"].asString() + ",Days" + "\n";
+	outputFile << "Collision Model:," + collisionModel + ", ,";
+	outputFile << "Fragmentation Model:," + breakUpType + ", ,";
+	outputFile << "Propagator:," + propagatorType;
+
+	if (collisionModel == "Cube")
+		outputFile << "\nCube Dimension (km):," + to_string(collisionConfig["CubeDimension"].asDouble());
+	if (collisionModel == "OrbitTrace")
+		outputFile << "\nThreshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble());
+	if (collisionModel == "Hoots")
+	{
+		outputFile << "\nConjunction Threshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble());
+		outputFile << "\nCollision Threshold (km):," + to_string(collisionConfig["CollisionThreshold"].asDouble());
+	}
+	outputFile << "\nMinimum Fragment Size (m):," + to_string(fragmentationConfig["minLength"].asDouble());
+
+	// Break data with line
+	outputFile << "\n";
+
+	outputFile << "\nSimulation Run, Simulation Elapsed Time (days), Object Count, Event Count, Explosion Count, Collision Count, Collision Avoidance Count"; // (MC, #days, #objects, (), #events, (Explosion, Collision, Collision Avoidance))
+	for (auto logEntry : simulationLog)
+	{
+		eventSplit = get<4>(logEntry);
+		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + to_string(get<1>(logEntry)) + "," + to_string(get<2>(logEntry));
+		outputFile << to_string(get<3>(logEntry)) + "," + to_string(get<0>(eventSplit)) + "," + to_string(get<1>(eventSplit)) + "," + to_string(get<2>(eventSplit));
+	}
 }
 
