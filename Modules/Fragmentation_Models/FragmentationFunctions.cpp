@@ -7,14 +7,22 @@ double  catastrophicThreshold = 40;
 
 void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud& cloud)
 {
+	Event tempEvent;
 	// Add event MetaData
-	Event tempEvent(currentPopulation.GetEpoch(),
-					!cloud.explosion,
-					cloud.consMomentumFlag, 
-					(cloud.energyMassRatio > catastrophicThreshold),
-					cloud.totalMass,
-					cloud.debrisCount);
-
+	if (!cloud.explosion)
+		tempEvent = Event(currentPopulation.GetEpoch(),
+							cloud.relativeVelocity,
+							cloud.consMomentumFlag, 
+							(cloud.energyMassRatio > catastrophicThreshold),
+							cloud.totalMass,
+							cloud.debrisCount);
+	else
+		tempEvent = Event(currentPopulation.GetEpoch(),
+			cloud.consMomentumFlag,
+			(cloud.energyMassRatio > catastrophicThreshold),
+			cloud.totalMass,
+			cloud.debrisCount);
+	
 	currentPopulation.eventLog.push_back(tempEvent);
 
 	// Merge population

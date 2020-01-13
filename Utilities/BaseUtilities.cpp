@@ -116,7 +116,7 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 {
 	char date[100];
 	int ID = 1;
-	string outputFilename, eventType, pairID;
+	string outputFilename, pairID, mcRun;
 	double scaling;
 	// Store data
 	time_t dateTime = time(NULL);
@@ -124,13 +124,15 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	localtime_s(&currtime, &dateTime);
 	strftime(date, sizeof(date), "%F", &currtime);
 
-	eventType = scenario.substr(0, scenario.find("."));
 
-	outputFilename = "Output\\" + string(date) + "_CollisionData_" + eventType + ".csv";
+	mcRun = scenario.substr(scenario.find("#") - 1, scenario.find("."));
+	scenario = scenario.substr(0, scenario.find("#") - 1);
+
+	outputFilename = "Output\\" + string(date) + scenario + "_CollisionData_" + mcRun + ".csv";
 	while (fileExists(outputFilename))
 	{
 		ID++;
-		outputFilename = "Output\\" + string(date) + "_CollisionData_" + eventType + "_" + to_string(ID) + ".csv";
+		outputFilename = "Output\\" + string(date) + scenario + "_" + to_string(ID) + "_CollisionData_" + mcRun + ".csv";
 	}
 
 	cout << "Creating Data File : " + outputFilename + "...";
@@ -181,7 +183,7 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 {
 	char date[100];
 	int ID = 1;
-	string outputFilename, eventType, pairID;
+	string outputFilename, pairID, mcRun;
 	tuple<int, int, int> eventSplit;
 	// Store data
 	time_t dateTime = time(NULL);
@@ -189,14 +191,17 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 	localtime_s(&currtime, &dateTime);
 	strftime(date, sizeof(date), "%F", &currtime);
 
-	eventType = scenario.substr(0, scenario.find("."));
 
-	outputFilename = "Output\\" + string(date) + "_SimulationData_" + eventType + ".csv";
+	mcRun = scenario.substr(scenario.find("#") - 1, scenario.find("."));
+	scenario = scenario.substr(0, scenario.find("#") - 1);
+
+	outputFilename = "Output\\" + string(date) + scenario + "_SimulationData_" + mcRun + ".csv";
 	while (fileExists(outputFilename))
 	{
 		ID++;
-		outputFilename = "Output\\" + string(date) + "_SimulationData_" + eventType + "_" + to_string(ID) + ".csv";
+		outputFilename = "Output\\" + string(date) + scenario + "_" + to_string(ID) + "_SimulationData_" + mcRun + ".csv";
 	}
+
 
 	cout << "Creating Data File : " + outputFilename + "...";
 	// Create Output file
@@ -234,5 +239,58 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + to_string(get<1>(logEntry)) + "," + to_string(get<2>(logEntry));
 		outputFile << to_string(get<3>(logEntry)) + "," + to_string(get<0>(eventSplit)) + "," + to_string(get<1>(eventSplit)) + "," + to_string(get<2>(eventSplit));
 	}
+}
+
+void WriteEventData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType, Json::Value & fragmentationConfig, vector<Event> eventLog)
+{
+	char date[100];
+	int ID = 1;
+	string outputFilename, pairID, mcRun;
+	tuple<int, int, int> eventSplit;
+	// Store data
+	time_t dateTime = time(NULL);
+	struct tm currtime;
+	localtime_s(&currtime, &dateTime);
+	strftime(date, sizeof(date), "%F", &currtime);
+
+	mcRun = scenario.substr(scenario.find("#")-1, scenario.find("."));
+	scenario = scenario.substr(0, scenario.find("#")-1);
+
+	outputFilename = "Output\\" + string(date) + scenario + "_EventData_" + mcRun + ".csv";
+	while (fileExists(outputFilename))
+	{
+		ID++;
+		outputFilename = "Output\\" + string(date) + scenario + "_" + to_string(ID) + "_EventData_"  + mcRun + ".csv";
+	}
+
+	cout << "Creating Data File : " + outputFilename + "...";
+	// Create Output file
+	ofstream outputFile;
+	outputFile.open(outputFilename, ofstream::out);
+
+	// Write data into file
+	cout << "  Writing to Data File...";
+
+	outputFile << "Scenario File:," + scenario + ", ,";
+	outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
+	outputFile << ",Step Length:," + config["StepSize"].asString() + ",Days" + "\n";
+	outputFile << "Collision Model:," + collisionModel + ", ,";
+	outputFile << "Fragmentation Model:," + breakUpType + ", ,";
+	outputFile << "Propagator:," + propagatorType;
+
+	if (collisionModel == "Cube")
+		outputFile << "\nCube Dimension (km):," + to_string(collisionConfig["CubeDimension"].asDouble());
+	if (collisionModel == "OrbitTrace")
+		outputFile << "\nThreshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble());
+	if (collisionModel == "Hoots")
+	{
+		outputFile << "\nConjunction Threshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble());
+		outputFile << "\nCollision Threshold (km):," + to_string(collisionConfig["CollisionThreshold"].asDouble());
+	}
+	outputFile << "\nMinimum Fragment Size (m):," + to_string(fragmentationConfig["minLength"].asDouble());
+
+	// Break data with line
+	outputFile << "\n";
+
 }
 

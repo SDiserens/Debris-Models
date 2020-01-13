@@ -6,12 +6,15 @@ protected:
 	static int eventSEQ;
 	long eventID, debrisGenerated;
 	int eventType; // ( 0 : Explosion, 1 : Collision,  2 : Collision Avoidance,)
-	double eventEpoch, involvedMass;
+	double eventEpoch, involvedMass, relativeVelocity;
 	bool catastrophic, momentumConserved;
 
 public:
-	Event(double epoch, int type, bool consMomentum, bool catastrophic, double mass);
-	Event(double epoch, int type, bool consMomentum, bool catastr, double mass, long debrisCount);
+	Event(double epoch, bool consMomentum, bool catastrophic, double mass);
+	Event(double epoch, bool consMomentum, bool catastr, double mass, long debrisCount);
+	Event(double epoch, double relV, bool consMomentum, bool catastrophic, double mass);
+	Event(double epoch, double relV, bool consMomentum, bool catastr, double mass, long debrisCount);
+	Event(double epoch, double relV, double mass);
 	~Event();
 	int GetEventType();
 	string GetEventTypeString();

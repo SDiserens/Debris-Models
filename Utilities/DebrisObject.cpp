@@ -194,6 +194,14 @@ double DebrisObject::GetBStar()
 	return bStar;
 }
 
+double DebrisObject::GetAvoidanceSuccess()
+{
+	if (isActive)
+		return avoidanceSucess;
+	else
+		return 0;
+}
+
 vector3D DebrisObject::GetVelocity()
 {
 	if (!velocitySync)

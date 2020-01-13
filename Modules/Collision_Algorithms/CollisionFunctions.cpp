@@ -101,7 +101,10 @@ vector<double> CollisionAlgorithm::GetNewCollisionProbabilities()
 	return newList;
 }
 
-
+bool CollisionAlgorithm::DetermineCollisionAvoidance(double avoidanceProbability)
+{
+	return randomNumber() < avoidanceProbability;
+}
 
 bool CollisionAlgorithm::DetermineCollision(double collisionProbability)
 {

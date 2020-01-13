@@ -11,8 +11,8 @@ int main(int argc, char** argv)
 	// ----------------------------
 	// ------ Initialisation ------
 	// ----------------------------
-	string arg, populationFilename, propagatorType, breakUpType, collisionType;
-	double timeStep, stepDays, elapsedDays, simulationDays, threshold;
+	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName;
+	double timeStep, stepDays, elapsedDays, simulationDays, threshold, avoidanceProbability=0;
 	bool setThreshold = false;
 	int mcRuns;
 
@@ -108,11 +108,12 @@ int main(int argc, char** argv)
 	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog; // (MC, #days, objectIDs, probability, altitude)
 	vector<double> collisionOutput;
 	vector<double> collisionAltitudes;
-	
+	DebrisObject target;
+	DebrisObject projectile;
 
 	cout << "Reading Population File : " + populationFilename + "...\n";
 	LoadScenario(initPopulation, populationFilename);
-
+	populationFilename = populationFilename.substr(0, populationFilename.find("."));
 	simulationDays = initPopulation.GetDuration();
 
 	cout << "Running " + to_string(mcRuns) + " simulations of " + to_string(simulationDays) + " days, using " + propagatorType + ", " + breakUpType + " and " + collisionType + "...\n";
@@ -162,31 +163,30 @@ int main(int argc, char** argv)
 			}
 
 			// For each pair in collision list
+			for (auto pair : collisionList) {
 				// determine if collision avoidance occurs
-
+				target = environmentPopulation.GetObject(pair.first);
+				projectile = environmentPopulation.GetObject(pair.second);
+				avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
+				if (!collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
 					// Log
-
-
-				// Generate Explosions
-
-					// Log
-
-				// Check for Pre-specified Events
-
-					// Log
-
-			// Update population
+					environmentPopulation.AddDebrisEvent(Event(environmentPopulation.GetEpoch(), 0, projectile.GetMass() + target.GetMass()));
+					// TODO - identify relative velocity at collision point
+				}
 				// Simulate Fragmentations
 
-					// Log
 
-				// Generate Launches
+			// Generate Explosions
 
-					// Log
+			// Check for Pre-specified Events
 
-				// Remove Decayed Objects
+			// Generate Launches
 
-					// Log
+				// Log
+
+			// Remove Decayed Objects
+
+				// Log
 
 			simulationLog.push_back(tuple_cat(make_tuple(j), environmentPopulation.GetPopulationState()));
 				
@@ -197,16 +197,19 @@ int main(int argc, char** argv)
 		// ----------------------------
 		// Save final population
 		//TODO - Save Event log for MC run
+		ouputName = populationFilename + "_#" + to_string(j + 1);
+		// Write Logs to output files
+		if (collisionConfig["Verbose"].asBool()) {
+
+			// TODO - Fix issue with cmd line threshold setting
+			WriteCollisionData(ouputName, config, collisionType, collisionConfig, collisionLog);
+			collisionLog.clear();
+		}
+
+		WriteSimulationData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
+		simulationLog.clear();
 	}
 
-	// Write Logs to output files
-	if (collisionConfig["Verbose"].asBool()) {
-
-		// TODO - Fix issue with cmd line threshold setting
-		WriteCollisionData(populationFilename, config, collisionType, collisionConfig, collisionLog);
-	}
-
-	WriteSimulationData(populationFilename, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
     return 0;
 }
 

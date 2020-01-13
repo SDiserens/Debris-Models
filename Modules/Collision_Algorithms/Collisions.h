@@ -70,4 +70,6 @@ public:
 	vector<double> GetCollisionVerbose();
 	vector<double> GetNewCollisionVerbose();
 	vector<double> GetNewCollisionAltitudes();
+
+	bool DetermineCollisionAvoidance(double avoidanceProbability);
 };

@@ -224,25 +224,57 @@ tuple<double, int, int, tuple<int, int, int>> DebrisPopulation::GetPopulationSta
 	return make_tuple(currentEpoch, populationCount, eventCount, make_tuple(explosionCount, collisionCount, collisionAvoidanceCount));
 }
 
-Event::Event(double epoch, int type, bool consMomentum, bool catastr, double mass)
+Event::Event(double epoch, bool consMomentum, bool catastr, double mass)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
-	eventType = type;
+	eventType = 0;
 	momentumConserved = consMomentum;
 	catastrophic = catastr;
 	involvedMass = mass;
 }
 
-Event::Event(double epoch, int type, bool consMomentum, bool catastr, double mass, long debrisCount)
+Event::Event(double epoch, bool consMomentum, bool catastr, double mass, long debrisCount)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
-	eventType = type;
+	eventType = 0;
 	momentumConserved = consMomentum;
 	catastrophic = catastr;
 	debrisGenerated = debrisCount;
 	involvedMass = mass;
+}
+
+Event::Event(double epoch, double relV, bool consMomentum, bool catastr, double mass)
+{
+	eventID = ++eventSEQ;
+	eventEpoch = epoch;
+	eventType = 1;
+	momentumConserved = consMomentum;
+	catastrophic = catastr;
+	involvedMass = mass;
+	relativeVelocity = relV;
+}
+
+Event::Event(double epoch, double relV, bool consMomentum, bool catastr, double mass, long debrisCount)
+{
+	eventID = ++eventSEQ;
+	eventEpoch = epoch;
+	eventType = 1;
+	momentumConserved = consMomentum;
+	catastrophic = catastr;
+	debrisGenerated = debrisCount;
+	involvedMass = mass;
+	relativeVelocity = relV;
+}
+
+Event::Event(double epoch, double relV, double mass)
+{
+	eventID = ++eventSEQ;
+	eventEpoch = epoch;
+	eventType = 2;
+	involvedMass = mass;
+	relativeVelocity = relV;
 }
 
 Event::~Event()
