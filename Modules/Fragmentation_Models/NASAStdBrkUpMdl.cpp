@@ -80,6 +80,8 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double init_min
 
 	// Create Fragment Buckets
 	GenerateFragmentBuckets(targetObject);
+	targetID = targetObject.GetID();
+	projectileID = -1;
 }
 
 NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double init_minLength) //Create a collision Cloud
@@ -105,6 +107,8 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 
 	// Create Fragment Buckets
 	GenerateFragmentBuckets(targetObject);
+	targetID = targetObject.GetID();
+	projectileID = projectileObject.GetID();
 }
 
 

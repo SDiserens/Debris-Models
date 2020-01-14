@@ -11,18 +11,20 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 	// Add event MetaData
 	if (!cloud.explosion)
 		tempEvent = Event(currentPopulation.GetEpoch(),
-							cloud.relativeVelocity,
+							cloud.targetID, cloud.projectileID,
+							cloud.relativeVelocity.vectorNorm(),
 							cloud.consMomentumFlag, 
 							(cloud.energyMassRatio > catastrophicThreshold),
 							cloud.totalMass,
 							cloud.debrisCount);
 	else
-		tempEvent = Event(currentPopulation.GetEpoch(),
-			cloud.consMomentumFlag,
-			(cloud.energyMassRatio > catastrophicThreshold),
-			cloud.totalMass,
-			cloud.debrisCount);
-	
+		tempEvent = Event(currentPopulation.GetEpoch(), cloud.targetID,
+						cloud.consMomentumFlag,
+						(cloud.energyMassRatio > catastrophicThreshold),
+						cloud.totalMass,
+						cloud.debrisCount);
+	// TODO add altitude logging
+
 	currentPopulation.eventLog.push_back(tempEvent);
 
 	// Merge population

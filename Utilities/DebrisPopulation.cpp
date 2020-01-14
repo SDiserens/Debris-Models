@@ -224,7 +224,11 @@ tuple<double, int, int, tuple<int, int, int>> DebrisPopulation::GetPopulationSta
 	return make_tuple(currentEpoch, populationCount, eventCount, make_tuple(explosionCount, collisionCount, collisionAvoidanceCount));
 }
 
-Event::Event(double epoch, bool consMomentum, bool catastr, double mass)
+Event::Event()
+{
+}
+
+Event::Event(double epoch, long objectID, bool consMomentum, bool catastr, double mass)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
@@ -232,9 +236,11 @@ Event::Event(double epoch, bool consMomentum, bool catastr, double mass)
 	momentumConserved = consMomentum;
 	catastrophic = catastr;
 	involvedMass = mass;
+	primaryID = objectID;
+	secondaryID = -1;
 }
 
-Event::Event(double epoch, bool consMomentum, bool catastr, double mass, long debrisCount)
+Event::Event(double epoch, long objectID, bool consMomentum, bool catastr, double mass, long debrisCount)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
@@ -243,9 +249,11 @@ Event::Event(double epoch, bool consMomentum, bool catastr, double mass, long de
 	catastrophic = catastr;
 	debrisGenerated = debrisCount;
 	involvedMass = mass;
+	primaryID = objectID;
+	secondaryID = -1;
 }
 
-Event::Event(double epoch, double relV, bool consMomentum, bool catastr, double mass)
+Event::Event(double epoch, long targetID, long projectileID, double relV, bool consMomentum, bool catastr, double mass)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
@@ -254,9 +262,11 @@ Event::Event(double epoch, double relV, bool consMomentum, bool catastr, double 
 	catastrophic = catastr;
 	involvedMass = mass;
 	relativeVelocity = relV;
+	primaryID = targetID;
+	secondaryID = projectileID;
 }
 
-Event::Event(double epoch, double relV, bool consMomentum, bool catastr, double mass, long debrisCount)
+Event::Event(double epoch, long targetID, long projectileID, double relV, bool consMomentum, bool catastr, double mass, long debrisCount)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
@@ -266,15 +276,19 @@ Event::Event(double epoch, double relV, bool consMomentum, bool catastr, double 
 	debrisGenerated = debrisCount;
 	involvedMass = mass;
 	relativeVelocity = relV;
+	primaryID = targetID;
+	secondaryID = projectileID;
 }
 
-Event::Event(double epoch, double relV, double mass)
+Event::Event(double epoch, long targetID, long projectileID, double relV, double mass)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
 	eventType = 2;
 	involvedMass = mass;
 	relativeVelocity = relV;
+	primaryID = targetID;
+	secondaryID = projectileID;
 }
 
 Event::~Event()
@@ -299,4 +313,19 @@ string Event::GetEventTypeString()
 	else if (eventType == 2)
 		eventName = "Collision Avoidance";
 	return eventName;
+}
+
+double Event::GetEventEpoch()
+{
+	return eventEpoch;
+}
+
+long Event::GetPrimary()
+{
+	return primaryID;
+}
+
+long Event::GetSecondary()
+{
+	return secondaryID;
 }

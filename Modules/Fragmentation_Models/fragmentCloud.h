@@ -11,6 +11,7 @@ public:
 	// Initialise object variables
 	bool explosion, consMomentumFlag = false;
 	int debrisCount;
+	long targetID, projectileID;
 	double totalMass, averageMass, minLength, maxLength, averageLength; // Working variables
 	double assignedMass, averageSpeed, totalKineticEnergy, averageKineticEnergy, totalVolume, averageVolume, averageDensity, averageMomentumNorm, energyMassRatio; // Recorded variables
 	

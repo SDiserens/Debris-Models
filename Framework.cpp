@@ -170,12 +170,13 @@ int main(int argc, char** argv)
 				avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
 				if (!collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
 					// Log
-					environmentPopulation.AddDebrisEvent(Event(environmentPopulation.GetEpoch(), 0, projectile.GetMass() + target.GetMass()));
+					environmentPopulation.AddDebrisEvent(Event(environmentPopulation.GetEpoch(), pair.first, pair.second, 0, projectile.GetMass() + target.GetMass()));
 					// TODO - identify relative velocity at collision point
+					// TODO add altitude logging
 				}
 				// Simulate Fragmentations
 
-
+			}
 			// Generate Explosions
 
 			// Check for Pre-specified Events

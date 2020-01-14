@@ -2,22 +2,26 @@
 class Event
 {
 
-protected:
+public:
 	static int eventSEQ;
-	long eventID, debrisGenerated;
+	long eventID, debrisGenerated, primaryID, secondaryID;
 	int eventType; // ( 0 : Explosion, 1 : Collision,  2 : Collision Avoidance,)
-	double eventEpoch, involvedMass, relativeVelocity;
+	double eventEpoch, altitude, involvedMass, relativeVelocity;
 	bool catastrophic, momentumConserved;
 
 public:
-	Event(double epoch, bool consMomentum, bool catastrophic, double mass);
-	Event(double epoch, bool consMomentum, bool catastr, double mass, long debrisCount);
-	Event(double epoch, double relV, bool consMomentum, bool catastrophic, double mass);
-	Event(double epoch, double relV, bool consMomentum, bool catastr, double mass, long debrisCount);
-	Event(double epoch, double relV, double mass);
+	Event();
+	Event(double epoch, long objectID, bool consMomentum, bool catastrophic, double mass);
+	Event(double epoch, long objectID, bool consMomentum, bool catastr, double mass, long debrisCount);
+	Event(double epoch, long targetID, long projectileID, double relV, bool consMomentum, bool catastr, double mass);
+	Event(double epoch, long targetID, long projectileID, double relV, bool consMomentum, bool catastr, double mass, long debrisCount);
+	Event(double epoch, long targetID, long projectileID, double relV, double mass);
 	~Event();
 	int GetEventType();
 	string GetEventTypeString();
+	double GetEventEpoch();
+	long GetPrimary();
+	long GetSecondary();
 };
 
 class DebrisPopulation
