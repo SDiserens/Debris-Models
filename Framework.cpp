@@ -141,6 +141,8 @@ int main(int argc, char** argv)
 			// Determine Events
 				// Collision Detection
 			collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
+			// TODO - identify relative velocity at collision point
+			// TODO add altitude logging
 			collisionList = collisionModel->GetNewCollisionList();
 
 			// if extra output requested
@@ -152,7 +154,6 @@ int main(int argc, char** argv)
 
 				// Log data
 				for (int i = 0; i < collisionList.size(); i++) {
-					// TODO - Use Pair ID values to retrieve object names/noradID for greater clarity
 
 					collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collisionList[i].first).GetNoradID()), 
 																				to_string(environmentPopulation.GetObject(collisionList[i].second).GetNoradID())),
@@ -171,8 +172,7 @@ int main(int argc, char** argv)
 				if (!collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
 					// Log
 					environmentPopulation.AddDebrisEvent(Event(environmentPopulation.GetEpoch(), pair.first, pair.second, 0, projectile.GetMass() + target.GetMass()));
-					// TODO - identify relative velocity at collision point
-					// TODO add altitude logging
+
 				}
 				// Simulate Fragmentations
 
@@ -197,7 +197,6 @@ int main(int argc, char** argv)
 		// ------ End Simulation ------
 		// ----------------------------
 		// Save final population
-		//TODO - Save Event log for MC run
 		ouputName = populationFilename + "_#" + to_string(j + 1);
 		// Write Logs to output files
 		if (collisionConfig["Verbose"].asBool()) {
@@ -206,7 +205,7 @@ int main(int argc, char** argv)
 			WriteCollisionData(ouputName, config, collisionType, collisionConfig, collisionLog);
 			collisionLog.clear();
 		}
-
+		WriteEventData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, environmentPopulation.eventLog);
 		WriteSimulationData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
 		simulationLog.clear();
 	}
