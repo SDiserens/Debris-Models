@@ -19,6 +19,7 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 	vector<CollisionPair> pairList;
 	vector<double> candidateTimeList, collisionTimes;
 	pair<long, long> pairID;
+	double altitude, mass;
 	// Filter Cube List
 	pairList = CreatePairList(population);
 	timeStep = timestep;
@@ -57,19 +58,23 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 		{
 			collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList);
 			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
+
+			altitude = objectPair.primary.GetElements().GetRadialPosition();
+			mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
 			if (outputTimes)
 			{
 				//	-- Store collision probability
 				//collisionTimes.push_back(tempTime);
 				//collisionList.push_back(collisionPair);
 				newCollisionTimes.insert(newCollisionTimes.end(), collisionTimes.begin(), collisionTimes.end());
-				newCollisionList.insert(newCollisionList.end(), collisionTimes.size(), pairID);
+				newCollisionList.push_back(tempEvent);
 			}
 			else
 			{
 				// Store Collisions 
-				collisionList.push_back(pairID);
-				newCollisionList.push_back(pairID); // Note in this scenario only adds once regardless of number of # potential collisions for pair
+				collisionList.push_back(tempEvent);
+				newCollisionList.push_back(tempEvent); // Note in this scenario only adds once regardless of number of # potential collisions for pair
 			}
 		}
 	}

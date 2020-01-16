@@ -9,14 +9,18 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 {
 	Event tempEvent;
 	// Add event MetaData
-	if (!cloud.explosion)
+	if (!cloud.explosion) {
+		//TODO- Add logix to update exisiting event
+		/*
 		tempEvent = Event(currentPopulation.GetEpoch(),
 							cloud.targetID, cloud.projectileID,
 							cloud.relativeVelocity.vectorNorm(),
-							cloud.consMomentumFlag, 
+							cloud.consMomentumFlag,
 							(cloud.energyMassRatio > catastrophicThreshold),
 							cloud.totalMass,
 							cloud.debrisCount);
+							*/
+	}
 	else
 		tempEvent = Event(currentPopulation.GetEpoch(), cloud.targetID,
 						cloud.consMomentumFlag,

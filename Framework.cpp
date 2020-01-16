@@ -102,12 +102,11 @@ int main(int argc, char** argv)
 	elapsedDays = 0;
 	stepDays = config["StepSize"].asDouble();
 
-	vector<tuple<int, double, int, int, tuple<int, int, int>>> simulationLog; // (MC, #days, #objects, (), #events, (Explosion, Collision, Collision Avoidance)) 
-																									//TODO- add object type coutnts
-	vector<pair<long, long>> collisionList;
+	vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog; // (MC, #days, #objects, (upperstage, spacecraft, debris), #events, (Explosion, Collision, Collision Avoidance)) 
+																									
+	vector<Event> collisionList;
 	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog; // (MC, #days, objectIDs, probability, altitude)
 	vector<double> collisionOutput;
-	vector<double> collisionAltitudes;
 	DebrisObject target;
 	DebrisObject projectile;
 
@@ -150,32 +149,32 @@ int main(int argc, char** argv)
 
 				// Retrieve collision output
 				collisionOutput = collisionModel->GetNewCollisionVerbose();
-				collisionAltitudes = collisionModel->GetNewCollisionAltitudes();
 
 				// Log data
 				for (int i = 0; i < collisionList.size(); i++) {
 
-					collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collisionList[i].first).GetNoradID()), 
-																				to_string(environmentPopulation.GetObject(collisionList[i].second).GetNoradID())),
-											collisionOutput[i], collisionAltitudes[i]));
+					collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collisionList[i].primaryID).GetNoradID()), 
+																				to_string(environmentPopulation.GetObject(collisionList[i].secondaryID).GetNoradID())),
+											collisionOutput[i], collisionList[i].altitude));
 				}
 				collisionOutput.clear();
-				collisionAltitudes.clear();
 			}
 
 			// For each pair in collision list
-			for (auto pair : collisionList) {
+			for (auto collision : collisionList) {
 				// determine if collision avoidance occurs
-				target = environmentPopulation.GetObject(pair.first);
-				projectile = environmentPopulation.GetObject(pair.second);
+				target = environmentPopulation.GetObject(collision.primaryID);
+				projectile = environmentPopulation.GetObject(collision.secondaryID);
 				avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
-				if (!collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
+				if (collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
 					// Log
-					environmentPopulation.AddDebrisEvent(Event(environmentPopulation.GetEpoch(), pair.first, pair.second, 0, projectile.GetMass() + target.GetMass()));
-
+					collision.CollisionAvoidance();
+					environmentPopulation.AddDebrisEvent(collision);
 				}
+				else {
 				// Simulate Fragmentations
-
+					//TODO - ADD fragmentation
+				}
 			}
 			// Generate Explosions
 

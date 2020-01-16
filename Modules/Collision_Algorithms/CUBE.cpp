@@ -23,7 +23,7 @@ void CUBEApproach::SetThreshold(double threshold)
 
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
-	double tempProbability, collisionRate, altitude;
+	double tempProbability, collisionRate, altitude, mass;
 	vector<CollisionPair> pairList;
 	// Filter Cube List
 	for (int j = 0; j < mcRuns; j++)
@@ -39,27 +39,25 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			collisionRate = CollisionRate(collisionPair);
 			tempProbability = timeStep * collisionRate / mcRuns;
 
-
+			altitude = collisionPair.primary.GetElements().GetRadialPosition();
+			mass = collisionPair.primary.GetMass() + collisionPair.secondary.GetMass();
+			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, collisionPair.GetRelativeVelocity(), mass, altitude);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities)
 			{
-				altitude = collisionPair.primary.GetElements().GetRadialPosition();
 				//	-- Store collision probability
 				//collisionProbabilities.push_back(tempProbability);
 				//collisionList.push_back(collisionPair);
 				newCollisionProbabilities.push_back(tempProbability);
-				newCollisionList.push_back(pairID);
-				newCollisionAltitudes.push_back(altitude);
+				newCollisionList.push_back(tempEvent);
 			}
 			else
 			{
 				if (DetermineCollision(tempProbability))
 				{
 					// Store Collisions 
-					altitude = collisionPair.primary.GetElements().GetRadialPosition();
-					collisionList.push_back(pairID);
-					newCollisionList.push_back(pairID);
-					newCollisionAltitudes.push_back(altitude);
+					collisionList.push_back(tempEvent);
+					newCollisionList.push_back(tempEvent);
 				}
 			}
 		}
@@ -96,17 +94,17 @@ vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population)
 
 double CUBEApproach::CollisionRate(CollisionPair& objectPair)
 {
-	double collisionCrossSection;
-	vector3D velocityI, velocityJ, relativeVelocity;
+	double collisionCrossSection, relativeVelocity;
+	vector3D velocityI, velocityJ;
 
 	velocityI = objectPair.primary.GetVelocity();
 	velocityJ = objectPair.secondary.GetVelocity();
 
-	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
-
+	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
+	objectPair.SetRelativeVelocity(relativeVelocity);
 	collisionCrossSection = CollisionCrossSection(objectPair.primary, objectPair.secondary);
 
-	return  collisionCrossSection * relativeVelocity.vectorNorm() / cubeVolume;
+	return  collisionCrossSection * relativeVelocity / cubeVolume;
 }
 
 long CUBEApproach::PositionHash(tuple<int, int, int> position)

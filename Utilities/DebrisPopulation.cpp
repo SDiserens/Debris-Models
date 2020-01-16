@@ -101,7 +101,14 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 {
 	double debEpoch = debris.GetInitEpoch();
 	long ID = debris.GetID();
+	int type = debris.GetType();
 
+	if (type == 0)
+		upperStageCount++;
+	else if (type == 1)
+		spacecraftCount++;
+	else if (type == 2)
+		debrisCount++;
 
 	if (isnan(debEpoch))
 	{
@@ -219,9 +226,9 @@ int DebrisPopulation::GetCAMCount()
 	return collisionAvoidanceCount;
 }
 
-tuple<double, int, int, tuple<int, int, int>> DebrisPopulation::GetPopulationState()
+tuple<double, int, tuple<int, int, int>, int, tuple<int, int, int>> DebrisPopulation::GetPopulationState()
 {
-	return make_tuple(currentEpoch, populationCount, eventCount, make_tuple(explosionCount, collisionCount, collisionAvoidanceCount));
+	return make_tuple(currentEpoch, populationCount, make_tuple(upperStageCount, spacecraftCount, debrisCount) ,eventCount, make_tuple(explosionCount, collisionCount, collisionAvoidanceCount));
 }
 
 Event::Event()
@@ -253,46 +260,27 @@ Event::Event(double epoch, long objectID, bool consMomentum, bool catastr, doubl
 	secondaryID = -1;
 }
 
-Event::Event(double epoch, long targetID, long projectileID, double relV, bool consMomentum, bool catastr, double mass)
+
+
+Event::Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
 	eventType = 1;
-	momentumConserved = consMomentum;
-	catastrophic = catastr;
 	involvedMass = mass;
 	relativeVelocity = relV;
 	primaryID = targetID;
 	secondaryID = projectileID;
-}
-
-Event::Event(double epoch, long targetID, long projectileID, double relV, bool consMomentum, bool catastr, double mass, long debrisCount)
-{
-	eventID = ++eventSEQ;
-	eventEpoch = epoch;
-	eventType = 1;
-	momentumConserved = consMomentum;
-	catastrophic = catastr;
-	debrisGenerated = debrisCount;
-	involvedMass = mass;
-	relativeVelocity = relV;
-	primaryID = targetID;
-	secondaryID = projectileID;
-}
-
-Event::Event(double epoch, long targetID, long projectileID, double relV, double mass)
-{
-	eventID = ++eventSEQ;
-	eventEpoch = epoch;
-	eventType = 2;
-	involvedMass = mass;
-	relativeVelocity = relV;
-	primaryID = targetID;
-	secondaryID = projectileID;
+	altitude = alt;
 }
 
 Event::~Event()
 {
+}
+
+void Event::CollisionAvoidance()
+{
+	eventType = 2;
 }
 
 int Event::GetEventType()

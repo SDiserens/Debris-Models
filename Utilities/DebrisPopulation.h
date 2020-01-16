@@ -13,10 +13,9 @@ public:
 	Event();
 	Event(double epoch, long objectID, bool consMomentum, bool catastrophic, double mass);
 	Event(double epoch, long objectID, bool consMomentum, bool catastr, double mass, long debrisCount);
-	Event(double epoch, long targetID, long projectileID, double relV, bool consMomentum, bool catastr, double mass);
-	Event(double epoch, long targetID, long projectileID, double relV, bool consMomentum, bool catastr, double mass, long debrisCount);
-	Event(double epoch, long targetID, long projectileID, double relV, double mass);
+	Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt);
 	~Event();
+	void CollisionAvoidance();
 	int GetEventType();
 	string GetEventTypeString();
 	double GetEventEpoch();
@@ -33,7 +32,7 @@ protected:
 	map<long, DebrisObject> loadingPopulation;
 	vector<pair<double, long>> initEpochs;
 	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount;
-	//TODO - add count of object types
+	int upperStageCount, spacecraftCount, debrisCount;
 
 public:
 	map<long, DebrisObject> population, removedPopulation;
@@ -67,6 +66,6 @@ public:
 	int GetExplosionCount();
 	int GetCollsionCount();
 	int GetCAMCount();
-	tuple<double, int, int, tuple<int, int, int>> GetPopulationState();
+	tuple<double, int, tuple<int, int, int>, int, tuple<int, int, int>> GetPopulationState();
 };
 

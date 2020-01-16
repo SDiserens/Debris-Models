@@ -77,7 +77,7 @@ double CollisionAlgorithm::CollisionCrossSection(DebrisObject& objectI, DebrisOb
 	return gravitationalPerturbation * Pi * boundingRadii * boundingRadii;
 }
 
-vector<pair<long, long>> CollisionAlgorithm::GetCollisionList()
+vector<Event> CollisionAlgorithm::GetCollisionList()
 {
 	return collisionList;
 }
@@ -87,9 +87,9 @@ vector<double> CollisionAlgorithm::GetCollisionProbabilities()
 	return collisionProbabilities;
 }
 
-vector<pair<long, long>> CollisionAlgorithm::GetNewCollisionList()
+vector<Event> CollisionAlgorithm::GetNewCollisionList()
 {
-	vector<pair<long, long>> newList(newCollisionList);
+	vector<Event> newList(newCollisionList);
 	newCollisionList.clear();
 	return newList;
 }
@@ -373,6 +373,16 @@ double CollisionPair::GetCollisionAltitude()
 void CollisionPair::SetCollisionAltitude(double altitude)
 {
 	collisionAltitude = altitude;
+}
+
+void CollisionPair::SetRelativeVelocity(double relV)
+{
+	relativeVelocity = relV;
+}
+
+double CollisionPair::GetRelativeVelocity()
+{
+	return relativeVelocity;
 }
 
 double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)

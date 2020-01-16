@@ -18,7 +18,7 @@ void OrbitTrace::SetThreshold(double threshold)
 
 void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
-	double tempProbability, collisionRate, altitude;
+	double tempProbability, collisionRate, altitude, mass;
 	vector<CollisionPair> pairList;
 	pair<long, long> pairID;
 	bool collision;
@@ -53,26 +53,26 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 			tempProbability = timeStep * collisionRate;
 			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 
+			altitude = objectPair.primary.GetElements().GetRadialPosition();
+			mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities && tempProbability>0)
 			{
-				altitude = objectPair.GetCollisionAltitude();
+				
 				//	-- Store collision probability
 				//collisionProbabilities.push_back(tempProbability);
 				//collisionList.push_back(collisionPair);
 				newCollisionProbabilities.push_back(tempProbability);
-				newCollisionList.push_back(pairID);
-				newCollisionAltitudes.push_back(altitude);
+				newCollisionList.push_back(tempEvent);
 			}
 			else
 			{
 				if (DetermineCollision(tempProbability))
 				{
-					altitude = objectPair.GetCollisionAltitude();
 					// Store Collisions 
-					collisionList.push_back(pairID);
-					newCollisionList.push_back(pairID);
-					newCollisionAltitudes.push_back(altitude);
+					collisionList.push_back(tempEvent);
+					newCollisionList.push_back(tempEvent);
 				}
 			}
 		}
@@ -110,22 +110,22 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 
 double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 {
-	double collisionRate, boundingRadii, minSeperation;
-	vector3D velocityI, velocityJ, relativeVelocity;
+	double collisionRate, boundingRadii, minSeperation, relativeVelocity;
+	vector3D velocityI, velocityJ;
 
 	minSeperation = objectPair.CalculateMinimumSeparation();
 
 	velocityI = objectPair.primary.GetVelocity();
 	velocityJ = objectPair.secondary.GetVelocity();
 
-	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
+	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
 	boundingRadii = max(pAThreshold, objectPair.GetBoundingRadii());
-
+	objectPair.SetRelativeVelocity(relativeVelocity);
 	//sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
 
 	// OT collision rate
 	if (boundingRadii > minSeperation)
-		collisionRate = Pi * boundingRadii * relativeVelocity.vectorNorm() /
+		collisionRate = Pi * boundingRadii * relativeVelocity /
 						(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primary.GetPeriod() * objectPair.secondary.GetPeriod());
 	else
 		collisionRate = 0;

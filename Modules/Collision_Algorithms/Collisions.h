@@ -10,7 +10,7 @@ public:
 	double approachAnomalyP, approachAnomalyS;
 	bool coplanar;
 protected:
-	double relativeInclination, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii, collisionAltitude;
+	double relativeInclination, relativeVelocity, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii, collisionAltitude;
 
 public:
 	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
@@ -30,6 +30,8 @@ public:
 	double GetBoundingRadii();
 	double GetCollisionAltitude();
 	void SetCollisionAltitude(double altitude);
+	void SetRelativeVelocity(double relV);
+	double GetRelativeVelocity();
 
 protected:
 	vector<double> CalculateAngularWindow(DebrisObject& object, double distance, double delta);
@@ -44,10 +46,10 @@ protected:
 protected:
 	bool PerigeeApogeeTest(CollisionPair & objectPair);
 	vector<double> collisionProbabilities;
-	vector<pair<long, long>> collisionList;
+	vector<Event> collisionList;
 	vector<double> newCollisionProbabilities;
 	vector<double> newCollisionAltitudes;
-	vector<pair<long, long>> newCollisionList;
+	vector<Event> newCollisionList;
 	bool DetermineCollision(double collisionProbability);
 	double CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ);
 	//double CalculateClosestApproach(CollisionPair objectPair);
@@ -63,8 +65,8 @@ public:
 	virtual void MainCollision(DebrisPopulation& population, double timeStep) = 0;
 	virtual void SetThreshold(double threshold) = 0;
 	void SwitchGravityComponent();
-	vector<pair<long, long>> GetCollisionList();
-	vector<pair<long, long>> GetNewCollisionList();
+	vector<Event> GetCollisionList();
+	vector<Event> GetNewCollisionList();
 	double GetElapsedTime();
 
 	vector<double> GetCollisionVerbose();
