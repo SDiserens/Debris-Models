@@ -7,7 +7,7 @@
 
 // Declaration of generic fragmentation functions - definition in FragmentationFunctions.cpp
 
-void MergeFragmentPopulations(DebrisPopulation& population, FragmentCloud& cloud);
+void MergeFragmentPopulations(DebrisPopulation& population, FragmentCloud& cloud, Event& fragmentationEvent);
 
 double CalculateEnergyToMass(double kineticEnergy, double mass);
 
@@ -17,6 +17,6 @@ public:
 	double minLength, representativeFragmentThreshold, catastrophicThreshold;// J/g of target mass
 	int representativeFragmentNumber;
 
-	virtual void mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL) = 0;
+	virtual void mainBreakup(DebrisPopulation& population, Event& fragmentationEvent) = 0;
 	
 };

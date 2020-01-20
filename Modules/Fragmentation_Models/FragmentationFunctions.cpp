@@ -5,31 +5,13 @@
 
 double  catastrophicThreshold = 40;
 
-void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud& cloud)
+void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud& cloud, Event& fragmentationEvent)
 {
-	Event tempEvent;
 	// Add event MetaData
-	if (!cloud.explosion) {
-		//TODO- Add logix to update exisiting event
-		/*
-		tempEvent = Event(currentPopulation.GetEpoch(),
-							cloud.targetID, cloud.projectileID,
-							cloud.relativeVelocity.vectorNorm(),
-							cloud.consMomentumFlag,
-							(cloud.energyMassRatio > catastrophicThreshold),
-							cloud.totalMass,
-							cloud.debrisCount);
-							*/
-	}
-	else
-		tempEvent = Event(currentPopulation.GetEpoch(), cloud.targetID,
-						cloud.consMomentumFlag,
-						(cloud.energyMassRatio > catastrophicThreshold),
-						cloud.totalMass,
-						cloud.debrisCount);
-	// TODO add altitude logging
-
-	currentPopulation.eventLog.push_back(tempEvent);
+	fragmentationEvent.SetCatastrophic(cloud.energyMassRatio > catastrophicThreshold);
+	fragmentationEvent.SetConservationMomentum(cloud.consMomentumFlag);
+	fragmentationEvent.SetEMR(cloud.energyMassRatio);
+	fragmentationEvent.SetDebrisCount(cloud.debrisCount);
 
 	// Merge population
 	for (auto &bucketCloud : cloud.fragmentBuckets)

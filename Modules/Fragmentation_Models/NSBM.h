@@ -17,7 +17,7 @@ public:
 	NASABreakupModel();
 	NASABreakupModel(double mL);
 	NASABreakupModel(double mL, double cT, int nFB = 30, string bF = "Weighted", double sc=1, double rFT=0.02, int rFN=10);
-	void mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer = NULL);
+	void mainBreakup(DebrisPopulation& population, Event& fragmentationEvent);
 
 };
 

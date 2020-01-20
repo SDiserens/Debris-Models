@@ -235,13 +235,11 @@ Event::Event()
 {
 }
 
-Event::Event(double epoch, long objectID, bool consMomentum, bool catastr, double mass)
+Event::Event(double epoch, long objectID, double mass)
 {
 	eventID = ++eventSEQ;
 	eventEpoch = epoch;
 	eventType = 0;
-	momentumConserved = consMomentum;
-	catastrophic = catastr;
 	involvedMass = mass;
 	primaryID = objectID;
 	secondaryID = -1;
@@ -281,6 +279,34 @@ Event::~Event()
 void Event::CollisionAvoidance()
 {
 	eventType = 2;
+}
+
+void Event::SwapPrimarySecondary()
+{
+	long tempID = primaryID;
+	primaryID = secondaryID;
+	secondaryID = tempID;
+}
+
+void Event::SetConservationMomentum(bool conservedFlag)
+{
+	momentumConserved = conservedFlag;
+}
+
+
+void Event::SetCatastrophic(bool catastrophicFlag)
+{
+	catastrophic = catastrophicFlag;
+}
+
+void Event::SetEMR(double eMRatio)
+{
+	energyMassRatio = eMRatio;
+}
+
+void Event::SetDebrisCount(long count)
+{
+	debrisGenerated = count;
 }
 
 int Event::GetEventType()

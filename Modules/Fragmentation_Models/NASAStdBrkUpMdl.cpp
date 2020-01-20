@@ -35,29 +35,34 @@ NASABreakupModel::NASABreakupModel(double mL, double cT, int nFB, string bF, dou
 	NSBMFragmentCloud::scaling = scaling = sc;
 }
 
-void  NASABreakupModel::mainBreakup(DebrisPopulation& population, DebrisObject& targetObject, DebrisObject *projectilePointer)
+void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmentationEvent)
 {
     // Initialise Variables
     bool explosion;
 
 	// Store relevant object variables
-    
-	if (!projectilePointer)
+	DebrisObject& targetObject = population.GetObject(fragmentationEvent.primaryID);
+
+	if (fragmentationEvent.GetEventType() == 0)
 	{
 		explosion = true;
 		NSBMFragmentCloud targetDebrisCloud(targetObject, minLength);
-		MergeFragmentPopulations(population, targetDebrisCloud);
+		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent);
 	}
 
 	else
 	{
+
 		explosion = false;
-		DebrisObject& projectileObject = *projectilePointer;
+		DebrisObject& projectileObject = population.GetObject(fragmentationEvent.secondaryID);
 		//delete projectilePointer;
 		NSBMFragmentCloud targetDebrisCloud(targetObject, projectileObject, minLength);
 		NSBMFragmentCloud projectileDebrisCloud(projectileObject, targetObject, minLength);
-		MergeFragmentPopulations(population, targetDebrisCloud);
-		MergeFragmentPopulations(population, projectileDebrisCloud);
+		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent);
+		Event tempEvent(fragmentationEvent);
+		tempEvent.SwapPrimarySecondary();
+		MergeFragmentPopulations(population, projectileDebrisCloud, tempEvent);
+		population.eventLog.push_back(tempEvent);
 	}
 
 }

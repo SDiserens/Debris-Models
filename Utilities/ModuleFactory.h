@@ -42,6 +42,17 @@ public:
 			throw "Invalid Collision Algorithm Type";
 	};
 
+	static void  UpdateCollisionThreshold(string collisionType, Json::Value & config, double threshold) {
+		if (collisionType == "Cube")
+			config["CubeDimension"] = threshold;
+		if (collisionType == "OrbitTrace")
+			config["ConjunctionThreshold"] = threshold;
+		if (collisionType == "Hoots")
+			config["ConjunctionThreshold"] = threshold;
+		else
+			throw "Invalid Collision Algorithm Type";
+	}
+
 	static unique_ptr<BreakupModel> CreateBreakupModel(string breakupType, Json::Value & config) {
 		if (breakupType == "NSBM")
 			return CreateNSBMInstance(config);

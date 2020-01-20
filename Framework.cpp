@@ -93,8 +93,10 @@ int main(int argc, char** argv)
 	auto& propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
 	// Load Modules
 	auto& collisionModel = ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
-	if (setThreshold)
+	if (setThreshold) {
 		collisionModel->SetThreshold(threshold);
+		ModuleFactory::UpdateCollisionThreshold(collisionType, collisionConfig, threshold);
+	}
 
 	auto& breakUp = *ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
 
