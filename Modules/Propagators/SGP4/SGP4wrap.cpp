@@ -79,6 +79,6 @@ void SGP4::HandleError(DebrisObject &object)
 	else if (errorCode == 1 || errorCode == 3 || errorCode == 4)
 	{
 		removeID.push_back(object.GetID());
-		// Todo add handling for non elliptical orbtis
+		// Todo add error handling for non elliptical orbtis
 	}
 }

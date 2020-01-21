@@ -66,6 +66,20 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 	return debris;
 }
 
+void LoadConfigFile(Json::Value & config)
+{
+	Json::Reader reader;
+
+	cout << "Reading Config File...\n";
+	// Read config file
+	ifstream configFile("config.json");
+
+	// Parse config file to identify scenario file and settings
+	cout << " Parsing Config...\n";
+	reader.parse(configFile, config);
+
+}
+
 void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 {
 	population.Clear();

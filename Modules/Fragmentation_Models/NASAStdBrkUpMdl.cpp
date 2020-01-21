@@ -210,7 +210,6 @@ void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, doub
 	{
 		// Up to 8 fragments
 		tempFragmentCloud.numFrag = 7;
-		//TODO - mass assignment here
 		tempFragmentCloud.GenerateDebrisFragments(targetObject);
 
 		energyMassRatio = 0;

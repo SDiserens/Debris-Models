@@ -11,25 +11,30 @@ int main(int argc, char** argv)
 	// ----------------------------
 	// ------ Initialisation ------
 	// ----------------------------
+
+	// Config objects
+	Json::Value config, propagatorConfig, fragmentationConfig, collisionConfig;
+
+	// Variable
 	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName;
 	double timeStep, stepDays, elapsedDays, simulationDays, threshold, avoidanceProbability=0;
 	bool setThreshold = false;
 	int mcRuns;
+	DebrisObject target, projectile;
 
-	//TODO - Create independent function for config 
-	Json::Value config, propagatorConfig, fragmentationConfig, collisionConfig;
-	Json::Reader reader;
+	// Data logs
+	vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog;
+		// (MC, #days, #objects, (upperstage, spacecraft, debris), #events, (Explosion, Collision, Collision Avoidance)) 
+	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog;
+		// (MC, #days, objectIDs, probability, altitude)
+	vector<Event> collisionList;
+	vector<double> collisionOutput;
 	
-	cout << "Reading Config File...\n";
-	// Read config file
-	ifstream configFile("config.json");
-	
-	// Parse config file to identify scenario file and settings
-	cout << " Parsing Config...\n";
-	reader.parse(configFile, config);
-	
+	// ----------------------------
+	// - Parsing config variables -
+	// ----------------------------
+	LoadConfigFile(config);
 
-	// Parsing config variables
 	populationFilename = config["scenarioFilename"].asString();
 	mcRuns = config["MonteCarlo"].asInt();
 
@@ -42,7 +47,9 @@ int main(int argc, char** argv)
 	collisionType = config["CollsionAlgorithm"].asString();
 	collisionConfig = config["CollisionConfig"];
 
+	// ----------------------------
 	// Parse command line arguments
+	// ----------------------------
 	for (int i = 1; i < argc; ++i) {
 		arg = argv[i];
 		if ((arg == "-f") || (arg == "--filename"))
@@ -86,12 +93,17 @@ int main(int argc, char** argv)
 		}
 	}
 
-	// Initialise population
+	// ----------------------------
+	// --- Initialise population --
+	// ----------------------------
 	DebrisPopulation initPopulation, environmentPopulation;
 
 	// Load population
 	auto& propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
-	// Load Modules
+
+	// ----------------------------
+	// ------- Load Modules -------
+	// ----------------------------
 	auto& collisionModel = ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
 	if (setThreshold) {
 		collisionModel->SetThreshold(threshold);
@@ -100,23 +112,20 @@ int main(int argc, char** argv)
 
 	auto& breakUp = *ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
 
+	// ----------------------------
 	// Load Environment Parameters
+	// ----------------------------
 	elapsedDays = 0;
 	stepDays = config["StepSize"].asDouble();
-
-	vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog; // (MC, #days, #objects, (upperstage, spacecraft, debris), #events, (Explosion, Collision, Collision Avoidance)) 
-																									
-	vector<Event> collisionList;
-	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog; // (MC, #days, objectIDs, probability, altitude)
-	vector<double> collisionOutput;
-	DebrisObject target;
-	DebrisObject projectile;
 
 	cout << "Reading Population File : " + populationFilename + "...\n";
 	LoadScenario(initPopulation, populationFilename);
 	populationFilename = populationFilename.substr(0, populationFilename.find("."));
 	simulationDays = initPopulation.GetDuration();
 
+	// ----------------------------
+	//  Simulate Environment Runs  
+	// ----------------------------
 	cout << "Running " + to_string(mcRuns) + " simulations of " + to_string(simulationDays) + " days, using " + propagatorType + ", " + breakUpType + " and " + collisionType + "...\n";
 	for (int j = 0; j < mcRuns; j++)
 	{
@@ -142,8 +151,6 @@ int main(int argc, char** argv)
 			// Determine Events
 				// Collision Detection
 			collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
-			// TODO - identify relative velocity at collision point
-			// TODO add altitude logging
 			collisionList = collisionModel->GetNewCollisionList();
 
 			// if extra output requested
@@ -202,7 +209,6 @@ int main(int argc, char** argv)
 		// Write Logs to output files
 		if (collisionConfig["Verbose"].asBool()) {
 
-			// TODO - Fix issue with cmd line threshold setting
 			WriteCollisionData(ouputName, config, collisionType, collisionConfig, collisionLog);
 			collisionLog.clear();
 		}
