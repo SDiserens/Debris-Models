@@ -179,6 +179,12 @@ DebrisObject& DebrisPopulation::GetObject(long ID)
 
 }
 
+vector<Event> DebrisPopulation::GenerateExplosionList()
+{
+	// ToDo - Iterate over intact population to generate explosions
+	return vector<Event>();
+}
+
 void DebrisPopulation::DecayObject(long ID)
 {
 	DebrisObject tempObject(population[ID]);
@@ -206,6 +212,16 @@ void DebrisPopulation::CollideObject(long ID)
 	populationCount--;
 }
 
+void DebrisPopulation::RemoveObject(long ID, int type) // type: (0 = explosion; 1 = collision; 2 = decay)
+{
+	if (type == 0)
+		ExplodeObject(ID);
+	else if (type == 1)
+		CollideObject(ID);
+	else if (type == 2)
+		DecayObject(ID);
+}
+
 int DebrisPopulation::GetEventCount()
 {
 	return eventCount;
@@ -229,6 +245,11 @@ int DebrisPopulation::GetCAMCount()
 tuple<double, int, tuple<int, int, int>, int, tuple<int, int, int>> DebrisPopulation::GetPopulationState()
 {
 	return make_tuple(currentEpoch, populationCount, make_tuple(upperStageCount, spacecraftCount, debrisCount) ,eventCount, make_tuple(explosionCount, collisionCount, collisionAvoidanceCount));
+}
+
+vector<Event> DebrisPopulation::GetEventLog()
+{
+	return eventLog;
 }
 
 Event::Event()

@@ -38,39 +38,45 @@ protected:
 	vector<pair<double, long>> initEpochs;
 	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount;
 	int upperStageCount, spacecraftCount, debrisCount;
+	vector<Event> eventLog;
 
 public:
 	map<long, DebrisObject> population, removedPopulation;
-	vector<Event> eventLog;
 
 public:
 	DebrisPopulation();
 	~DebrisPopulation();
 	void LoadPopulation();
-
+	void UpdateEpoch(double timeStep);
+	void InitialiseEpoch(double epoch);
 	void Clear();
+
 	double GetNextInitEpoch();
 	double GetTimeToNextInitEpoch();
 	double GetEpoch();
 	int GetPopulationSize();
 	int GetScalingPower();
 	double GetAverageSMA();
-	void SetDuration(double duration);
-	double GetDuration();
-	void SetAverageSMA(double averageSMA);
-	void SetScalingPower(int power);
-	void UpdateEpoch(double timeStep);
-	void InitialiseEpoch(double epoch);
-	void AddDebrisObject(DebrisObject debris);
-	void AddDebrisEvent(Event debrisEvent);
-	DebrisObject& GetObject(long ID);
-	void DecayObject(long ID);
-	void ExplodeObject(long ID);
-	void CollideObject(long ID);
 	int GetEventCount();
 	int GetExplosionCount();
 	int GetCollsionCount();
 	int GetCAMCount();
+	double GetDuration();
+	DebrisObject& GetObject(long ID);
+
+	void AddDebrisObject(DebrisObject debris);
+	void AddDebrisEvent(Event debrisEvent);
+	void SetDuration(double duration);
+	void SetAverageSMA(double averageSMA);
+	void SetScalingPower(int power);
+
+	vector<Event> GenerateExplosionList();
+	void DecayObject(long ID);
+	void ExplodeObject(long ID);
+	void CollideObject(long ID);
+	void RemoveObject(long ID, int type); // type: (0 = explosion; 1 = collision; 2 = decay)
+
 	tuple<double, int, tuple<int, int, int>, int, tuple<int, int, int>> GetPopulationState();
+	vector<Event> GetEventLog();
 };
 

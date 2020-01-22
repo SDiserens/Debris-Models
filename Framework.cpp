@@ -28,6 +28,7 @@ int main(int argc, char** argv)
 	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog;
 		// (MC, #days, objectIDs, probability, altitude)
 	vector<Event> collisionList;
+	vector<Event> explosionList;
 	vector<double> collisionOutput;
 	
 	// ----------------------------
@@ -110,7 +111,7 @@ int main(int argc, char** argv)
 		ModuleFactory::UpdateCollisionThreshold(collisionType, collisionConfig, threshold);
 	}
 
-	auto& breakUp = *ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
+	auto& breakUp = ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
 
 	// ----------------------------
 	// Load Environment Parameters
@@ -148,6 +149,14 @@ int main(int argc, char** argv)
 			(*propagator).PropagatePopulation(timeStep);
 			elapsedDays += timeStep;
 
+			// Check for Pre-specified Events
+			/*
+			// TODO - Implement pre-defined events
+			while (definedEvent[0].epoch < elapsedDays){
+				breakUp->mainBreakup(environmentPopulation, definedEvent.pop(0));
+			}
+			*/
+
 			// Determine Events
 				// Collision Detection
 			collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
@@ -170,30 +179,30 @@ int main(int argc, char** argv)
 			}
 
 			// For each pair in collision list
-			for (auto collision : collisionList) {
-				// determine if collision avoidance occurs
+			for (Event collision : collisionList) {
 				target = environmentPopulation.GetObject(collision.primaryID);
 				projectile = environmentPopulation.GetObject(collision.secondaryID);
+
+				// determine if collision avoidance occurs
 				avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
 				if (collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
-					// Log
+					// Update and Log
 					collision.CollisionAvoidance();
 					environmentPopulation.AddDebrisEvent(collision);
 				}
 				else {
-				// Simulate Fragmentations
-					//TODO - ADD fragmentation
+					// Simulate Fragmentations
+					breakUp->mainBreakup(environmentPopulation, collision);
 				}
 			}
-			// Generate Explosions
 
-			// Check for Pre-specified Events
+			// Generate Explosions
+			explosionList = environmentPopulation.GenerateExplosionList();
+			for (Event explosion : explosionList) {
+				breakUp->mainBreakup(environmentPopulation, explosion);
+			}
 
 			// Generate Launches
-
-				// Log
-
-			// Remove Decayed Objects
 
 				// Log
 
@@ -212,7 +221,7 @@ int main(int argc, char** argv)
 			WriteCollisionData(ouputName, config, collisionType, collisionConfig, collisionLog);
 			collisionLog.clear();
 		}
-		WriteEventData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, environmentPopulation.eventLog);
+		WriteEventData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, environmentPopulation.GetEventLog());
 		WriteSimulationData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
 		simulationLog.clear();
 	}

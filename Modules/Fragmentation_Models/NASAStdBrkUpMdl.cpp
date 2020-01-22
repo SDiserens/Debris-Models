@@ -46,6 +46,7 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 	if (fragmentationEvent.GetEventType() == 0)
 	{
 		explosion = true;
+		// Simulate primary object breakup
 		NSBMFragmentCloud targetDebrisCloud(targetObject, minLength);
 		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent);
 	}
@@ -55,14 +56,16 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 
 		explosion = false;
 		DebrisObject& projectileObject = population.GetObject(fragmentationEvent.secondaryID);
-		//delete projectilePointer;
+		
+		// Simulate primary object breakup
 		NSBMFragmentCloud targetDebrisCloud(targetObject, projectileObject, minLength);
-		NSBMFragmentCloud projectileDebrisCloud(projectileObject, targetObject, minLength);
 		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent);
+
+		// Simulate secondary object breakup
+		NSBMFragmentCloud projectileDebrisCloud(projectileObject, targetObject, minLength);
 		Event tempEvent(fragmentationEvent);
 		tempEvent.SwapPrimarySecondary();
 		MergeFragmentPopulations(population, projectileDebrisCloud, tempEvent);
-		population.eventLog.push_back(tempEvent);
 	}
 
 }

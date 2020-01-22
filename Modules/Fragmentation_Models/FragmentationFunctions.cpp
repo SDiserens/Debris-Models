@@ -7,11 +7,17 @@ double  catastrophicThreshold = 40;
 
 void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud& cloud, Event& fragmentationEvent)
 {
+	// Prevent accidental breakup of collision avoidance event
+	if (fragmentationEvent.GetEventType() == 2) return;
+
 	// Add event MetaData
 	fragmentationEvent.SetCatastrophic(cloud.energyMassRatio > catastrophicThreshold);
 	fragmentationEvent.SetConservationMomentum(cloud.consMomentumFlag);
 	fragmentationEvent.SetEMR(cloud.energyMassRatio);
 	fragmentationEvent.SetDebrisCount(cloud.debrisCount);
+
+	currentPopulation.AddDebrisEvent(fragmentationEvent);
+	currentPopulation.RemoveObject(fragmentationEvent.GetPrimary(), fragmentationEvent.GetEventType());
 
 	// Merge population
 	for (auto &bucketCloud : cloud.fragmentBuckets)
