@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "Modules\Collision_Algorithms\OrbitTrace.h"
-#include <json\json.h>
 
 void RandomiseOrbitOrientations(DebrisPopulation& population);
 void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
@@ -26,14 +25,9 @@ int main(int argc, char** argv)
 	char date[100];
 	int ID = 1;
 	Json::Value config, scenario, parsedObject;
-	Json::Reader reader;
 
-	cout << "Reading Config File...";
-	// Read config file
-	ifstream configFile("config.json");
-	// Parse config file to identify scenario file and settings
-	reader.parse(configFile, config);
-	cout << " Parsing Config...";
+	LoadConfigFile(config);
+
 
 	// Identify config variables
 	scenarioFilename = config["scenarioFilename"].asString();
@@ -76,9 +70,6 @@ int main(int argc, char** argv)
 		}
 	}
 
-	// Close File
-	cout << " Closing Config File...\n";
-	configFile.close();
 
 	// Create population of objects & Identify average SMA
 	DebrisPopulation objectPopulation;
@@ -103,7 +94,8 @@ int main(int argc, char** argv)
 	unsigned int step, eval, k;
 	double tempCollisionRate, blockRatio;
 	vector<double> collisionProbabilities;
-	vector<pair<long, long>> collisionList;
+	vector<Event> collisionList;
+	pair<long, long> pairID;
 	map<pair<long, long>, double> totalCollisionRates;
 	map<pair<long, long>, int> totalCollisionCount;
 	vector<map<pair<long, long>, double>> collisionRates;
@@ -143,18 +135,17 @@ int main(int argc, char** argv)
 		for (k = 0; k < collisionProbabilities.size(); k++)
 		{
 			tempCollisionRate = scaling * collisionProbabilities[k] * blockRatio;
-			totalCollisionRates[collisionList[k]] = totalCollisionRates[collisionList[k]] + tempCollisionRate;
-			totalCollisionCount[collisionList[k]] = totalCollisionCount[collisionList[k]] + 1;
-			collisionRates[eval][collisionList[k]] = collisionRates[eval][collisionList[k]] + tempCollisionRate;
-			collisionCount[eval][collisionList[k]] = collisionCount[eval][collisionList[k]] + 1;
+			pairID = collisionList[k].GetCollisionPair();
+			totalCollisionRates[pairID] = totalCollisionRates[pairID] + tempCollisionRate;
+			totalCollisionCount[pairID] = totalCollisionCount[pairID] + 1;
+			collisionRates[eval][pairID] = collisionRates[eval][pairID] + tempCollisionRate;
+			collisionCount[eval][pairID] = collisionCount[eval][pairID] + 1;
 		}
 	}
 
 	progress.DisplayProgress(evaluationBlocks * evaluationSteps); cout << "\n" << flush;
 
-	pair<long, long> pairID;
 	string collisionName;
-
 
 	cout << "Calculated in runtime of " << timeDiff.count() << "s\n" << endl;
 

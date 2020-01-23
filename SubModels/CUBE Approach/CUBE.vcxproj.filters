@@ -92,6 +92,9 @@
     <ClCompile Include="..\..\Utilities\BaseUtilities.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="config.json">

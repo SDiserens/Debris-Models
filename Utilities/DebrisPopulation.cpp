@@ -364,3 +364,8 @@ long Event::GetSecondary()
 {
 	return secondaryID;
 }
+
+pair<long, long> Event::GetCollisionPair()
+{
+	return make_pair(primaryID, secondaryID);
+}

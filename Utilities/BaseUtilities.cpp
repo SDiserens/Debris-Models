@@ -78,6 +78,9 @@ void LoadConfigFile(Json::Value & config)
 	cout << " Parsing Config...\n";
 	reader.parse(configFile, config);
 
+	// Close File
+	cout << " Closing Config File...\n";
+	configFile.close();
 }
 
 void LoadScenario(DebrisPopulation & population, string scenarioFilename)

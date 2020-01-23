@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CollisionFunctions.cpp" />
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CUBE.cpp" />
+    <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp" />
     <ClCompile Include="..\..\Utilities\BaseUtilities.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisObject.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp" />

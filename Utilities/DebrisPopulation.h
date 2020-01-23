@@ -26,6 +26,7 @@ public:
 	double GetEventEpoch();
 	long GetPrimary();
 	long GetSecondary();
+	pair<long, long> GetCollisionPair();
 };
 
 class DebrisPopulation
