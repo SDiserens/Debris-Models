@@ -22,8 +22,8 @@ Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): warning C4477: 'sscanf_s' : fo
   OrbitalElements.cpp
   OrbitalUtilities.cpp
   Generating code
-  483 of 2724 functions (17.7%) were compiled, the rest were copied from previous compilation.
-    6 functions were new in current compilation
-    77 functions had inline decision re-evaluated but remain unchanged
+  295 of 2726 functions (10.8%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    46 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

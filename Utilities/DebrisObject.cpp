@@ -26,6 +26,7 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	bStar = NAN;
 
 	noradID = -1;
+	//TODO - use isActive and isIntact flags
 }
 
 DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3) : DebrisObject(TLE2, TLE3)
@@ -199,7 +200,16 @@ double DebrisObject::GetAvoidanceSuccess()
 	if (isActive)
 		return avoidanceSucess;
 	else
-		return 0;
+		return 0.;
+}
+
+double DebrisObject::GetExplosionProbability()
+{
+	if (isIntact)
+		// ToDo - implement variation in explosion probability
+		return explosionProbability;
+	else
+		return 0.;
 }
 
 vector3D DebrisObject::GetVelocity()

@@ -149,6 +149,8 @@
     <ClInclude Include="..\..\Modules\Fragmentation_Models\fragmentation.h" />
     <ClInclude Include="..\..\Modules\Fragmentation_Models\FragmentCloud.h" />
     <ClInclude Include="..\..\Modules\Fragmentation_Models\NSBM.h" />
+    <ClInclude Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.h" />
+    <ClInclude Include="..\..\Utilities\BaseUtilities.h" />
     <ClInclude Include="..\..\Utilities\DebrisObject.h" />
     <ClInclude Include="..\..\Utilities\DebrisPopulation.h" />
     <ClInclude Include="..\..\Utilities\OrbitalAnomalies.h" />
@@ -162,6 +164,8 @@
     <ClCompile Include="..\..\Modules\Fragmentation_Models\FragmentationFunctions.cpp" />
     <ClCompile Include="..\..\Modules\Fragmentation_Models\FragmentCloud.cpp" />
     <ClCompile Include="..\..\Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp" />
+    <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp" />
+    <ClCompile Include="..\..\Utilities\BaseUtilities.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisObject.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp" />
     <ClCompile Include="..\..\Utilities\OrbitalAnomalies.cpp" />

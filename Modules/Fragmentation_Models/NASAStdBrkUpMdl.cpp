@@ -53,7 +53,6 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 
 	else
 	{
-
 		explosion = false;
 		DebrisObject& projectileObject = population.GetObject(fragmentationEvent.secondaryID);
 		
@@ -418,6 +417,7 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion, 
 {
 	objectID = ++objectSEQ;
 	sourceType = source;
+	objectType = 2;
 	nFrag = numFrag;
 	//std::default_random_engine generator;
 	length = init_length;
@@ -476,7 +476,7 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, boo
 	else
 		sourceEvent = 2;
 
-	objectType = source;
+	objectType = 2;
 	sourceType = source;
 
 	CalculateAreaToMass();
@@ -488,7 +488,6 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, boo
 
 void NSBMDebrisFragment::SetUpperStageAreaMassParameters()
 {
-	objectType = 0;
 	// alpha
 	if (lambda <= -1.4)
 		alpha = 1;
@@ -522,7 +521,6 @@ void NSBMDebrisFragment::SetUpperStageAreaMassParameters()
 
 void NSBMDebrisFragment::SetSpacecraftAreaMassParameters()
 {
-	objectType = 1;
 	// alpha
 	if (lambda <= -1.95)
 		alpha = 0;
@@ -572,7 +570,6 @@ void NSBMDebrisFragment::AreaMassBridgingFunction()
 	//string bridgingFunction = "Mean";
 	//string bridgingFunction = "Weighted";
 
-	objectType = 2;
 	SetSmallAreaMassParameters();
 
 	if (bridgingFunction != "Small")

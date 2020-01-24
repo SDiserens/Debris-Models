@@ -3,13 +3,9 @@
 
 #include "stdafx.h"
 #include "../../Modules/Fragmentation_Models/NSBM.h"
-#include <json\json.h>
 
 
-void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, DebrisObject& targetObject, DebrisObject *projectilePointer, NASABreakupModel model);
-DebrisObject GenerateDebrisObject(Json::Value & parsedObject);
-bool fileExists(const string& name);
-
+void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, Event breakupEvent, Json::Value & config);
 
 int main()
 {
@@ -21,15 +17,11 @@ int main()
 	Json::Value config, scenario, parsedObject;
 	Json::Reader reader;
 
-	cout << "Reading Config File...";
-	// Read config file
-	ifstream configFile("config.json");
+	// ----------------------------
+	// - Parsing config variables -
+	// ----------------------------
+	LoadConfigFile(config);
 
-	// Parse config file to identify scenario file and settings
-	reader.parse(configFile, config);
-
-
-	cout << " Parsing Config...";
 	minLength = config["minLength"].asDouble();
 	scenarioFilename = "Scenarios\\" + config["scenarioFilename"].asString();
 	numFragBuckets = config["numberOfBuckets"].asInt();
@@ -40,10 +32,6 @@ int main()
 	// Create Breakup Model
 	NASABreakupModel NSBM(minLength, catastrophicThreshold, numFragBuckets, bridgingFunction, scaling);
 
-
-	cout << " Closing Config File...\n";
-	// Close File
-	configFile.close();
 
 	cout << "Reading Scenario File : " + scenarioFilename + "...";
 	// Read scenario file
@@ -67,19 +55,24 @@ int main()
 	cout << "Preparing Objects for Breakup...";
 	// Generate population cloud
 	DebrisPopulation fragmentPopulation;
+	Event breakupEvent;
 
 	// Generate parent debris objects
 	DebrisObject primaryObject(GenerateDebrisObject(scenario["primaryObject"]));
-	DebrisObject * secondaryPointer = NULL;
+	fragmentPopulation.AddDebrisObject(primaryObject);
 	// Run breakup model to generate fragment populations using settings
 	if (scenario["secondaryObject"].isObject())
 	{
 		 DebrisObject secondaryObject(GenerateDebrisObject(scenario["secondaryObject"]));
-		 secondaryPointer = &secondaryObject;
+		 fragmentPopulation.AddDebrisObject(secondaryObject);
+		 double relativeV = (primaryObject.GetVelocity() - secondaryObject.GetVelocity()).vectorNorm();
+		 breakupEvent = Event(0. , primaryObject.GetID(), secondaryObject.GetID(), relativeV, primaryObject.GetMass() +  secondaryObject.GetMass(), primaryObject.GetElements().GetRadialPosition());
 	}
+	else
+		breakupEvent = Event(0, primaryObject.GetID(), primaryObject.GetMass());
 
 	cout << "    Simulating Breakup...";
-	NSBM.mainBreakup(fragmentPopulation, primaryObject, secondaryPointer);
+	NSBM.mainBreakup(fragmentPopulation, breakupEvent);
 	cout << "    Breakup Simulation Complete\n";
 
 	// Store data
@@ -88,7 +81,7 @@ int main()
 	localtime_s(&currtime, &dateTime);
 	strftime(date, sizeof(date), "%F", &currtime);
 
-	eventType = fragmentPopulation.eventLog[0].GetEventType();
+	eventType = fragmentPopulation.GetEventLog()[0].GetEventType();
 
 	outputFilename = "Output\\" + string(date) + "_" + eventType + ".csv";
 	while (fileExists(outputFilename))
@@ -103,7 +96,7 @@ int main()
 	outputFile.open(outputFilename, ofstream::out);
 		// Write fragment data into file
 	cout << "  Writing to Data File...";
-	WritePopulationData(outputFile, fragmentPopulation, primaryObject, secondaryPointer, NSBM);
+	WritePopulationData(outputFile, fragmentPopulation, breakupEvent, config);
 	cout << "Finished\n";
 		// Close file
 	outputFile.close();
@@ -113,45 +106,31 @@ int main()
 }
 
 
-DebrisObject GenerateDebrisObject(Json::Value & parsedObject)
-{
-	double radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly;
-	int type;
-	Json::Value elements = parsedObject["orbitalElements"];
-	// Parse Json 
-	radius         = parsedObject["radius"].asDouble();
-	mass           = parsedObject["mass"].asDouble();
-	length         = parsedObject["length"].asDouble();
-	meanAnomaly    = parsedObject["meanAnomaly"].asDouble();
-	type           = parsedObject["type"].asInt();
-	semiMajorAxis  = elements["a"].asDouble();
-	eccentricity   = elements["e"].asDouble();
-	inclination    = elements["i"].asDouble();
-	rightAscension = elements["Om"].asDouble();
-	argPerigee     = elements["om"].asDouble();
-	// Generate Object - Possible issue with reconstruction
-	DebrisObject debris(radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type);
-	return debris;
-}
-
-void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, DebrisObject& targetObject, DebrisObject *projectilePointer, NASABreakupModel model)
+void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, Event breakupEvent, Json::Value & config)
 {
 	string tempData, header, metaData, eventType;
 	long ID, parentID;
 	int nFrag;
 	vector3D deltaV;
 	double length, mass, area, areaToMass, deltaVnorm, relativeVelocity;
+	DebrisObject targetObject = population.GetObject(breakupEvent.GetPrimary());
+	DebrisObject projectileObject;
 
 	// Define MetaData
-	eventType = population.eventLog[0].GetEventType();
+	eventType = breakupEvent.GetEventTypeString();
+	string bridgingFunction = config["bridgingFunction"].asString();
+	double catastrophicThreshold = config["catastrophicThreshold"].asDouble();
+	double minLength = config["minLength"].asDouble();
+
 	if (eventType == "Explosion")
 		metaData = "Breakup Type : ," + eventType + "\n Mass of Target :," + to_string(targetObject.GetMass()) + ",[kg]\n Mass of Projectile : ," + "N/A" + ",[kg]\n Minimum Length : ," +
-					to_string(model.minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(model.catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + model.bridgingFunction;
+					to_string(minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + bridgingFunction;
 	else
 	{
-		relativeVelocity = (targetObject.GetVelocity() - projectilePointer->GetVelocity()).vectorNorm();
-		metaData = "Breakup Type : ," + eventType + "\n Mass of Target : ," + to_string(targetObject.GetMass()) + ",[kg]\n Mass of Projectile : ," + to_string(projectilePointer->GetMass()) + ",[kg]\n Relative Velocity : ," + to_string(relativeVelocity)
-			+ ",[km/s]\n Minimum Length : ," + to_string(model.minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(model.catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + model.bridgingFunction;
+		projectileObject = population.GetObject(breakupEvent.GetSecondary());
+		relativeVelocity = breakupEvent.relativeVelocity;
+		metaData = "Breakup Type : ," + eventType + "\n Mass of Target : ," + to_string(targetObject.GetMass()) + ",[kg]\n Mass of Projectile : ," + to_string(projectileObject.GetMass()) + ",[kg]\n Relative Velocity : ," + to_string(relativeVelocity)
+			+ ",[km/s]\n Minimum Length : ," + to_string(minLength) + ",[m]\n Catastrophic Threshold : ," + to_string(catastrophicThreshold) + ",[J/g]\n Bridiging Function :," + bridgingFunction;
 	}
 	dataFile << metaData + "\n";
 
@@ -174,8 +153,8 @@ void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, Deb
 		areaToMass = debris.GetAreaToMass();
 		if (targetObject.GetID() == parentID)
 			deltaV = debris.GetVelocity() - targetObject.GetVelocity();
-		else if (projectilePointer->GetID() == parentID)
-			deltaV = debris.GetVelocity() - projectilePointer->GetVelocity();
+		else if (projectileObject.GetID() == parentID)
+			deltaV = debris.GetVelocity() - projectileObject.GetVelocity();
 		deltaVnorm = deltaV.vectorNorm();
 
 		// Create String
@@ -185,17 +164,4 @@ void WritePopulationData(ofstream & dataFile, DebrisPopulation & population, Deb
 		// Pipe output
 		dataFile << tempData + "\n";
 	}
-}
-
-bool fileExists(const string& name)
-{
-	FILE *file;
-	fopen_s(&file, name.c_str(), "r");
-	if (file) 
-	{
-		fclose(file);
-		return true;
-	}
-	else 
-		return false;
 }

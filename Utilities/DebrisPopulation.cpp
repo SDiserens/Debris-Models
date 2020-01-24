@@ -181,8 +181,17 @@ DebrisObject& DebrisPopulation::GetObject(long ID)
 
 vector<Event> DebrisPopulation::GenerateExplosionList()
 {
-	// ToDo - Iterate over intact population to generate explosions
-	return vector<Event>();
+	vector<Event> explosionList;
+	for (auto&  object : population) {
+		//ToDo introduce explosion pre-filtering based on isIntact
+		if (object.second.GetType() != 2) {
+			if (object.second.GetExplosionProbability() > randomNumber()) {
+				Event tempExplosion(currentEpoch, object.first, object.second.GetMass());
+				explosionList.push_back(tempExplosion);
+			}
+		}
+	}
+	return explosionList;
 }
 
 void DebrisPopulation::DecayObject(long ID)
