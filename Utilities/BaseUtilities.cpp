@@ -119,7 +119,24 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 		DebrisObject tempObject(GenerateDebrisObject(objectParameters, epoch));
 		averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
 		population.AddDebrisObject(tempObject);
+		if (objectParameters.isMember("definedEvent")) {
+			//TODO - refine pre-defined events to allow collision etc. to be introduced
+			Event tempEvent(objectParameters["definedEvent"]["epoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
+			population.AddDefinedEvent(tempEvent);
+		}
 	}
+
+	vector<DebrisObject> launchTraffic;
+	double launchCyle = scenario["LaunchCycle"].asDouble();
+
+	// ToDo - Update to read from launch .pop file
+	for (Json::Value objectParameters : scenario["launches"])
+	{
+		DebrisObject tempObject(GenerateDebrisObject(objectParameters, epoch));
+		launchTraffic.push_back(tempObject);
+	}
+	sort(launchTraffic.begin(), launchTraffic.end(), CompareInitEpochs);
+	population.AddLaunchTraffic(launchTraffic, launchCyle);
 
 	nObjects = scenario["objects"].size();
 	population.SetAverageSMA(averageSemiMajorAxis / nObjects);
@@ -318,4 +335,3 @@ void WriteEventData(string scenario, Json::Value & config, string collisionModel
 		outputFile << to_string(logEntry.involvedMass) + "," +  to_string(logEntry.relativeVelocity) + "," + to_string(logEntry.catastrophic) + "," + to_string(logEntry.momentumConserved);
 	}
 }
-

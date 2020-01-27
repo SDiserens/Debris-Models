@@ -26,6 +26,7 @@ public:
 	DebrisObject(string TLE1, string TLE2, string TLE3);
 	DebrisObject(string TLE2, string TLE3);
 	~DebrisObject();
+	void RegenerateID();
 
 	long GetID();
 	long GetSourceID();
@@ -97,3 +98,6 @@ protected:
 	void CalculateAreaToMass();
 };
 
+bool CompareInitEpochs(DebrisObject objectA, DebrisObject objectB) { return objectA.GetInitEpoch() < objectB.GetInitEpoch();  };
+
+DebrisObject CopyDebrisObject(DebrisObject & object) { DebrisObject newObject = object; newObject.RegenerateID(); return newObject; }

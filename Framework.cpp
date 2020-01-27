@@ -29,6 +29,7 @@ int main(int argc, char** argv)
 		// (MC, #days, objectIDs, probability, altitude)
 	vector<Event> collisionList;
 	vector<Event> explosionList;
+	vector<Event> definedList;
 	vector<double> collisionOutput;
 	
 	// ----------------------------
@@ -133,6 +134,9 @@ int main(int argc, char** argv)
 		environmentPopulation = DebrisPopulation(initPopulation);
 		propagator->SyncPopulation();
 
+		// Check for Pre-specified Events
+		definedList = environmentPopulation.GenerateDefinedEventList();
+
 		// Validate Modules
 
 
@@ -149,13 +153,10 @@ int main(int argc, char** argv)
 			(*propagator).PropagatePopulation(timeStep);
 			elapsedDays += timeStep;
 
-			// Check for Pre-specified Events
-			/*
-			// TODO - Implement pre-defined events
-			while (definedEvent[0].epoch < elapsedDays){
-				breakUp->mainBreakup(environmentPopulation, definedEvent.pop(0));
+			while (definedList[0].GetEventEpoch() < environmentPopulation.GetEpoch()) {
+				breakUp->mainBreakup(environmentPopulation, definedList[0]);
+				definedList.erase(definedList.begin());
 			}
-			*/
 
 			// Determine Events
 				// Collision Detection
@@ -201,10 +202,6 @@ int main(int argc, char** argv)
 			for (Event explosion : explosionList) {
 				breakUp->mainBreakup(environmentPopulation, explosion);
 			}
-
-			// Generate Launches
-
-				// Log
 
 			simulationLog.push_back(tuple_cat(make_tuple(j), environmentPopulation.GetPopulationState()));
 				

@@ -35,12 +35,16 @@ void DebrisPopulation::Clear()
 double DebrisPopulation::GetNextInitEpoch()
 {
 	if (initEpochs.size() == 0)
+		LoadLaunchTraffic();
+	if (initEpochs.size() == 0)
 		return NAN;
 	else
 		return initEpochs.front().first;
 }
 double DebrisPopulation::GetTimeToNextInitEpoch()
 {
+	if (initEpochs.size() == 0)
+		LoadLaunchTraffic();
 	if (initEpochs.size() == 0)
 		return NAN;
 	else
@@ -92,6 +96,22 @@ void DebrisPopulation::InitialiseEpoch(double epoch)
 	startEpoch = epoch;
 }
 
+void DebrisPopulation::LoadLaunchTraffic()
+{ 
+	DebrisObject tempObject, newObject;
+	int loadCount = min(100, (int) launchTraffic.size());
+
+	for (int i=0; i < loadCount; i++) {
+		tempObject = launchTraffic[0];
+		AddDebrisObject(tempObject);
+		launchTraffic.erase(launchTraffic.begin());
+
+		newObject = CopyDebrisObject(tempObject);
+		newObject.SetInitEpoch(newObject.GetInitEpoch() + launchCycle);
+		launchTraffic.push_back(newObject);
+	}
+}
+
 void DebrisPopulation::UpdateEpoch(double timeStep)
 {
 	currentEpoch += timeStep;
@@ -129,6 +149,26 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 		initEpochs.push_back(make_pair(debEpoch, ID));
 		sort(initEpochs.begin(), initEpochs.end());
 	}
+}
+
+void DebrisPopulation::AddDefinedEvent(Event breakup)
+{
+	if (definedEvents.size() > 0) {
+		for (int n = 0; n < definedEvents.size(); n++) {
+			if (breakup.GetEventEpoch() < definedEvents[n].GetEventEpoch()) {
+				definedEvents.emplace(definedEvents.begin() + n, breakup);
+				break;
+			}
+		}
+	}
+	else
+		definedEvents.push_back(breakup);
+}
+
+void DebrisPopulation::AddLaunchTraffic(vector<DebrisObject> launch, double cycle)
+{
+	launchCycle = cycle;
+	launchTraffic = launch;
 }
 
 
@@ -192,6 +232,11 @@ vector<Event> DebrisPopulation::GenerateExplosionList()
 		}
 	}
 	return explosionList;
+}
+
+vector<Event> DebrisPopulation::GenerateDefinedEventList()
+{
+	return definedEvents;
 }
 
 void DebrisPopulation::DecayObject(long ID)

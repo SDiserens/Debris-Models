@@ -34,12 +34,14 @@ class DebrisPopulation
 protected:
 	long populationCount = 0;
 	int scalingPower;
-	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis, durationDays;
+	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis, durationDays, launchCycle;
 	map<long, DebrisObject> loadingPopulation;
 	vector<pair<double, long>> initEpochs;
 	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount;
 	int upperStageCount, spacecraftCount, debrisCount;
 	vector<Event> eventLog;
+	vector<Event> definedEvents;
+	vector<DebrisObject> launchTraffic;
 
 public:
 	map<long, DebrisObject> population, removedPopulation;
@@ -50,6 +52,7 @@ public:
 	void LoadPopulation();
 	void UpdateEpoch(double timeStep);
 	void InitialiseEpoch(double epoch);
+	void LoadLaunchTraffic();
 	void Clear();
 
 	double GetNextInitEpoch();
@@ -66,12 +69,15 @@ public:
 	DebrisObject& GetObject(long ID);
 
 	void AddDebrisObject(DebrisObject debris);
+	void AddDefinedEvent(Event breakup);
+	void AddLaunchTraffic(vector<DebrisObject> launchTraffic, double launchCycle);
 	void AddDebrisEvent(Event debrisEvent);
 	void SetDuration(double duration);
 	void SetAverageSMA(double averageSMA);
 	void SetScalingPower(int power);
 
 	vector<Event> GenerateExplosionList();
+	vector<Event> GenerateDefinedEventList();
 	void DecayObject(long ID);
 	void ExplodeObject(long ID);
 	void CollideObject(long ID);

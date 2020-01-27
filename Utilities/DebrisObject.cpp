@@ -84,6 +84,11 @@ DebrisObject::~DebrisObject()
 {
 }
 
+void DebrisObject::RegenerateID()
+{
+	objectID = ++objectSEQ;
+}
+
 long DebrisObject::GetID()
 {
 	return objectID;
@@ -206,7 +211,7 @@ double DebrisObject::GetAvoidanceSuccess()
 double DebrisObject::GetExplosionProbability()
 {
 	if (isIntact)
-		// ToDo - implement variation in explosion probability
+		// ToDo - implement variation in explosion probability based on age/passivation
 		return explosionProbability;
 	else
 		return 0.;
