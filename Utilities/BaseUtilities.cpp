@@ -66,6 +66,64 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 	return debris;
 }
 
+DebrisObject GenerateDebrisObject(string line)
+{
+	Json::Value elements;
+	double diameter, area, radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, launchDate;
+	int type, type2;
+
+	switch (type) {
+	case 1: type2 = 0;
+	case 2: type2 = 1;
+	case 3: type2 = 2;
+	case 4: type2 = 2;
+	}
+
+	istringstream iss(line);
+	//#  Type Mass Diameter Area a e i RAAN AoP M LA-DATE    
+	iss >> type >> mass >> diameter >> area >> semiMajorAxis >> eccentricity >> inclination >> rightAscension >> argPerigee >> meanAnomaly >> launchDate;
+	radius = sqrt(area / Pi);
+	DebrisObject tempObject(radius, mass, diameter, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type2);
+	tempObject.SetInitEpoch(launchDate);
+	return tempObject;
+}
+
+
+vector<DebrisObject> GenerateLaunchTraffic(Json::Value & launches)
+{
+	vector<DebrisObject> launchTraffic;
+	double launchEpoch;
+	DebrisObject tempObject;
+	// ToDo - Update to read from launch .pop file
+	if (launches.isArray()) {
+		for (Json::Value objectParameters : launches)
+		{
+			launchEpoch = objectParameters["LaunchDate"].asDouble();
+			tempObject = GenerateDebrisObject(objectParameters, launchEpoch);
+			launchTraffic.push_back(tempObject);
+		}
+	}
+	else if (launches.isString())
+	{
+		string line;
+		string scenarioFilename = launches.asString();
+		ifstream launchFile("Environment\\Launch_Traffic\\" + scenarioFilename);
+		if (!launchFile.good())
+		{
+			cout << "Launch file failed to load";
+			throw std::runtime_error("Launch file failed to load");
+		}
+		while (getline(launchFile, line)) {
+			if (line.at(0) != '#') {
+				tempObject = GenerateDebrisObject(line);
+				launchTraffic.push_back(tempObject);
+			}
+		}
+	}
+	sort(launchTraffic.begin(), launchTraffic.end(), CompareInitEpochs);
+	return launchTraffic;
+}
+
 void LoadConfigFile(Json::Value & config)
 {
 	Json::Reader reader;
@@ -92,6 +150,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	double averageSemiMajorAxis = 0;
 	double epoch;
 	string date;
+	DebrisObject tempObject;
 
 	// Read scenario file
 
@@ -113,30 +172,40 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	epoch = DateToEpoch(date);
 	population.InitialiseEpoch(epoch);
 	population.SetDuration(scenario["Duration"].asDouble());
-
-	for (Json::Value objectParameters : scenario["objects"])
+	if (scenario["objects"].isArray()) {
+		for (Json::Value objectParameters : scenario["objects"])
+		{
+			tempObject = GenerateDebrisObject(objectParameters, epoch);
+			averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
+			population.AddDebrisObject(tempObject);
+			if (objectParameters.isMember("definedEvent")) {
+				//TODO - refine pre-defined events to allow collision etc. to be introduced
+				Event tempEvent(objectParameters["definedEvent"]["epoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
+				population.AddDefinedEvent(tempEvent);
+			}
+		}
+	}
+	else if (scenario["objects"].isString())
 	{
-		DebrisObject tempObject(GenerateDebrisObject(objectParameters, epoch));
-		averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
-		population.AddDebrisObject(tempObject);
-		if (objectParameters.isMember("definedEvent")) {
-			//TODO - refine pre-defined events to allow collision etc. to be introduced
-			Event tempEvent(objectParameters["definedEvent"]["epoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
-			population.AddDefinedEvent(tempEvent);
+		string line;
+		string scenarioFilename = scenario["objects"].asString();
+		ifstream populationFile("Environment\\Background_Population\\" + scenarioFilename);
+		if (!populationFile.good())
+		{
+			cout << "Population file failed to load";
+			throw std::runtime_error("Population file failed to load");
+		}
+		while (getline(populationFile, line)) {
+			if (line.at(0) != '#') {
+				tempObject = GenerateDebrisObject(line);
+				population.AddDebrisObject(tempObject);
+			}
 		}
 	}
 
-	vector<DebrisObject> launchTraffic;
-	double launchCyle = scenario["LaunchCycle"].asDouble();
 
-	// ToDo - Update to read from launch .pop file
-	for (Json::Value objectParameters : scenario["launches"])
-	{
-		DebrisObject tempObject(GenerateDebrisObject(objectParameters, epoch));
-		launchTraffic.push_back(tempObject);
-	}
-	sort(launchTraffic.begin(), launchTraffic.end(), CompareInitEpochs);
-	population.AddLaunchTraffic(launchTraffic, launchCyle);
+	double launchCyle = scenario["LaunchCycle"].asDouble();	
+	population.AddLaunchTraffic(GenerateLaunchTraffic(scenario["launches"]), launchCyle);
 
 	nObjects = scenario["objects"].size();
 	population.SetAverageSMA(averageSemiMajorAxis / nObjects);

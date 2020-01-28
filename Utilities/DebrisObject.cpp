@@ -14,6 +14,8 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 {
 	objectID = ++objectSEQ; // This should be generating a unique ID per object incl. when threading (needs revision for multi-thread)
 	radius = init_radius;
+	area = Pi * radius * radius;
+	CalculateAreaToMass();
 	mass = init_mass;
 	length = init_length;
 	elements = OrbitalElements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly);

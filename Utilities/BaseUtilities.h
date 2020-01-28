@@ -4,6 +4,8 @@ bool fileExists(const string& name);
 
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch=0);
 
+vector<DebrisObject> GenerateLaunchTraffic(Json::Value & launches);
+
 void LoadConfigFile(Json::Value& config);
 
 void LoadScenario(DebrisPopulation & population, string scenarioFilename);
