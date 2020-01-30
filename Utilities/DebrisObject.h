@@ -2,12 +2,15 @@
 
 #include "Modules\Propagators\SGP4\SGP4Code\SGP4.h"
 
+const double rocketBodyExplosionProbability = 0;
+const double satelliteExplosionProbability = 0;
+
 class DebrisObject
 {
 protected:
 	OrbitalElements elements; // semi-major axis, eccentricity, inclination, right ascension of ascending node, arguement of perigee, anomalies
 	static int objectSEQ;
-	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag, initEpoch, bStar, currEpoch, avoidanceSucess=0, explosionProbability=0;
+	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag, initEpoch, lifetime, bStar, currEpoch, avoidanceSucess=0, explosionProbability=0;
 	string name;
 	long parentID, sourceID, objectID;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.

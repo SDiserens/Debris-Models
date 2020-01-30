@@ -28,7 +28,22 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	bStar = NAN;
 
 	noradID = -1;
-	//TODO - use isActive and isIntact flags
+
+	switch (type) {
+	case 0 : 
+		isIntact = true;
+		isActive = false;
+		explosionProbability = rocketBodyExplosionProbability;
+	case 1:
+		isIntact = true;
+		isActive = true;
+		explosionProbability = satelliteExplosionProbability;
+		avoidanceSucess = 1;
+	case 2:
+		isIntact = false;
+		isActive = false;
+		explosionProbability = 0.;
+	}
 }
 
 DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3) : DebrisObject(TLE2, TLE3)
@@ -80,6 +95,9 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 	positionSync = velocitySync = false;
 	periodSync = false;
 	coefficientDrag = 2.2;
+	isIntact = false;
+	isActive = false;
+	explosionProbability = 0.;
 }
 
 DebrisObject::~DebrisObject()
@@ -212,11 +230,17 @@ double DebrisObject::GetAvoidanceSuccess()
 
 double DebrisObject::GetExplosionProbability()
 {
-	if (isIntact)
-		// ToDo - implement variation in explosion probability based on age/passivation
-		return explosionProbability;
+	double modifier;
+	if (isActive)
+		// ToDo - implement variation in explosion probability based on age
+		modifier = 1;
+	else if (isIntact)
+		// ToDo - implement modifier based on passivation
+		modifier = 1;
 	else
-		return 0.;
+		modifier = 0.;
+
+	return explosionProbability * modifier;
 }
 
 vector3D DebrisObject::GetVelocity()
@@ -416,6 +440,12 @@ void DebrisObject::SetEpoch(double epoch)
 void DebrisObject::UpdateEpoch(double epochStep)
 {
 	currEpoch += epochStep;
+
+	// Determine if spacecraft reaches end of life
+	if (currEpoch >= initEpoch + lifetime)
+	{
+		isActive = false;
+	}
 }
 
 void DebrisObject::SetRadius(double radii)

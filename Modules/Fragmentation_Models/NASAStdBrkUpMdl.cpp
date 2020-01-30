@@ -424,6 +424,9 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion, 
 	lambda = log10(length);
 	explosion = init_explosion;
 	CalculateArea();
+	isIntact = false;
+	isActive = false;
+	explosionProbability = 0.;
 
 	if (explosion)
 		sourceEvent = 1;
@@ -470,6 +473,9 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, double init_mass, boo
 	nFrag = numFrag;
 	explosion = init_explosion;
 	CalculateArea();
+	isIntact = false;
+	isActive = false;
+	explosionProbability = 0.;
 
 	if (explosion)
 		sourceEvent = 1;
