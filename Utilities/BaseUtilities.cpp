@@ -69,8 +69,12 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 DebrisObject GenerateDebrisObject(string line)
 {
 	Json::Value elements;
-	double diameter, area, radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, launchDate;
+	double diameter, area, radius, mass, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, launchDate;
 	int type, type2;
+
+	istringstream iss(line);
+	//#  Type Mass Diameter Area a e i RAAN AoP M LA-DATE    
+	iss >> type >> mass >> diameter >> area >> semiMajorAxis >> eccentricity >> inclination >> rightAscension >> argPerigee >> meanAnomaly >> launchDate;
 
 	switch (type) {
 	case 1: type2 = 0;
@@ -79,9 +83,6 @@ DebrisObject GenerateDebrisObject(string line)
 	case 4: type2 = 2;
 	}
 
-	istringstream iss(line);
-	//#  Type Mass Diameter Area a e i RAAN AoP M LA-DATE    
-	iss >> type >> mass >> diameter >> area >> semiMajorAxis >> eccentricity >> inclination >> rightAscension >> argPerigee >> meanAnomaly >> launchDate;
 	radius = sqrt(area / Pi);
 	DebrisObject tempObject(radius, mass, diameter, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type2);
 	tempObject.SetInitEpoch(launchDate);
@@ -144,13 +145,14 @@ void LoadConfigFile(Json::Value & config)
 void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 {
 	population.Clear();
-	Json::Value config, scenario, parsedObject;
+	Json::Value config, scenario, parsedObject, definedEvent;
 	Json::Reader reader;
-	int nObjects;
+	int nObjects, collisionID;
 	double averageSemiMajorAxis = 0;
-	double epoch;
+	double epoch, mass;
 	string date;
 	DebrisObject tempObject;
+	map<int, long> definedCollisions;
 
 	// Read scenario file
 
@@ -178,10 +180,30 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 			tempObject = GenerateDebrisObject(objectParameters, epoch);
 			averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
 			population.AddDebrisObject(tempObject);
+
+			// Load any pre-defined events
 			if (objectParameters.isMember("definedEvent")) {
-				//TODO - refine pre-defined events to allow collision etc. to be introduced
-				Event tempEvent(objectParameters["definedEvent"]["epoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
-				population.AddDefinedEvent(tempEvent);
+				definedEvent = objectParameters["definedEvent"];
+				if (!definedEvent.isMember("CollisionID")) {
+					// Load explosion
+					Event tempEvent(definedEvent["epoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
+					population.AddDefinedEvent(tempEvent);
+				}
+				else {
+					// Store collision data
+					collisionID = definedEvent["CollisionID"].asInt();
+					if (definedCollisions.count(collisionID) > 0) {
+						// Check if other collision object exists yet
+						mass = tempObject.GetMass() + population.GetObject(definedCollisions[collisionID]).GetMass();
+						Event tempEvent(definedEvent["epoch"].asDouble(), definedCollisions[collisionID], tempObject.GetID(), definedEvent["RelativeVelocity"].asDouble(), mass, definedEvent["Altitude"].asDouble());
+						population.AddDefinedEvent(tempEvent);
+					}
+					else
+						// Store object ID for later
+						definedCollisions[collisionID] = tempObject.GetID();
+				}
+
+
 			}
 		}
 	}

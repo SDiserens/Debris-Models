@@ -101,6 +101,7 @@ protected:
 	void CalculateAreaToMass();
 };
 
-bool CompareInitEpochs(DebrisObject objectA, DebrisObject objectB) { return objectA.GetInitEpoch() < objectB.GetInitEpoch();  };
 
-DebrisObject CopyDebrisObject(DebrisObject & object) { DebrisObject newObject = object; newObject.RegenerateID(); return newObject; }
+DebrisObject CopyDebrisObject(DebrisObject & object);
+
+bool CompareInitEpochs(DebrisObject objectA, DebrisObject objectB);

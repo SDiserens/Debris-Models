@@ -514,3 +514,15 @@ void DebrisObject::SetEccentricAnomaly(double E)
 	elements.SetEccentricAnomaly(E);
 	positionSync = velocitySync = false;
 }
+
+DebrisObject CopyDebrisObject(DebrisObject & object)
+{
+	DebrisObject newObject = object;
+	newObject.RegenerateID(); 
+	return newObject; 
+}
+
+bool CompareInitEpochs(DebrisObject objectA, DebrisObject objectB)
+{
+	return objectA.GetInitEpoch() < objectB.GetInitEpoch();
+}
