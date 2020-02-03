@@ -2,8 +2,9 @@
 
 #include "Modules\Propagators\SGP4\SGP4Code\SGP4.h"
 
-const double rocketBodyExplosionProbability = 0;
-const double satelliteExplosionProbability = 0;
+static double rocketBodyExplosionProbability = 0;
+static double satelliteExplosionProbability = 0;
+static double pmdSuccess = 0;
 
 class DebrisObject
 {
@@ -58,6 +59,8 @@ public:
 	double GetBStar();
 	double GetAvoidanceSuccess();
 	double GetExplosionProbability();
+	bool IsIntact();
+	bool IsActive();
 	vector3D GetVelocity();
 	vector3D GetPosition();
 	vector<double> GetStateVector();

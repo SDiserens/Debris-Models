@@ -232,7 +232,7 @@ double DebrisObject::GetExplosionProbability()
 {
 	double modifier;
 	if (isActive)
-		// ToDo - implement variation in explosion probability based on age
+		//ToDo - implement variation in explosion probability based on age
 		modifier = 1;
 	else if (isIntact)
 		// ToDo - implement modifier based on passivation
@@ -241,6 +241,16 @@ double DebrisObject::GetExplosionProbability()
 		modifier = 0.;
 
 	return explosionProbability * modifier;
+}
+
+bool DebrisObject::IsIntact()
+{
+	return isIntact;
+}
+
+bool DebrisObject::IsActive()
+{
+	return isActive;
 }
 
 vector3D DebrisObject::GetVelocity()
@@ -445,6 +455,7 @@ void DebrisObject::UpdateEpoch(double epochStep)
 	if (currEpoch >= initEpoch + lifetime)
 	{
 		isActive = false;
+		//TODO - include PMD steps
 	}
 }
 

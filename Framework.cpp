@@ -49,6 +49,7 @@ int main(int argc, char** argv)
 	collisionType = config["CollsionAlgorithm"].asString();
 	collisionConfig = config["CollisionConfig"];
 
+
 	// ----------------------------
 	// Parse command line arguments
 	// ----------------------------

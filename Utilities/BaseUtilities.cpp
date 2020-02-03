@@ -95,7 +95,6 @@ vector<DebrisObject> GenerateLaunchTraffic(Json::Value & launches)
 	vector<DebrisObject> launchTraffic;
 	double launchEpoch;
 	DebrisObject tempObject;
-	// ToDo - Update to read from launch .pop file
 	if (launches.isArray()) {
 		for (Json::Value objectParameters : launches)
 		{
@@ -104,6 +103,7 @@ vector<DebrisObject> GenerateLaunchTraffic(Json::Value & launches)
 			launchTraffic.push_back(tempObject);
 		}
 	}
+	//read from launch .pop file
 	else if (launches.isString())
 	{
 		string line;
@@ -165,6 +165,13 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 
 	// Parse scenario file to identify object characteristics
 	reader.parse(scenarioFile, scenario);
+
+	//Set explosion probabilities
+	rocketBodyExplosionProbability = scenario["RB_Explosion"].asDouble();
+	satelliteExplosionProbability = scenario["Satllite_Explosion"].asDouble();
+
+	//Set pmd success
+	pmdSuccess = scenario["PMD_SuccessRate"].asDouble();
 
 	cout << " Parsing Scenario...\n";
 	SetCentralBody(scenario["centralBody"].asInt());
