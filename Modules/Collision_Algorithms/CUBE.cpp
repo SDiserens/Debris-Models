@@ -4,16 +4,18 @@
 #include "stdafx.h"
 #include "CUBE.h"
 
-CUBEApproach::CUBEApproach(bool probabilities, double dimension, int runs)
+CUBEApproach::CUBEApproach(bool probabilities, double dimension, int runs, bool switchOffset)
 {
 	cubeDimension = dimension;
 	cubeVolume = dimension * dimension * dimension;
 	outputProbabilities = probabilities;
 	mcRuns = runs;
+	offset = switchOffset;
 	elapsedTime = 0;
 }
 
 void FilterRecursion(vector<CollisionPair>& pairList, vector<pair<long, long>> hashList, int i, int step);
+void FilterRecursionOffset(map<pair<long, long>, int>& pairCount,	vector<pair<long, pair<long, int>>> hashList, map<long, vector<tuple<int, int, int>>> cubeIDList, int i, int step);
 
 void CUBEApproach::SetThreshold(double threshold)
 {
@@ -23,12 +25,20 @@ void CUBEApproach::SetThreshold(double threshold)
 
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
-	double tempProbability, collisionRate, altitude, mass;
+	double tempProbability, collisionRate, altitude, mass, adjustment;
 	vector<CollisionPair> pairList;
 	// Filter Cube List
 	for (int j = 0; j < mcRuns; j++)
 	{
-		pairList = CreatePairList(population);
+		if (offset) {
+			pairList = CreateOffsetPairList(population);
+			// Should this probability be divided by 8?
+			adjustment = timeStep / mcRuns;
+		}
+		else {
+			pairList = CreatePairList(population);
+			adjustment = timeStep / mcRuns;
+		}
 
 		// For each conjunction (cohabiting pair)
 		for (CollisionPair &collisionPairID : pairList)
@@ -37,7 +47,7 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			CollisionPair collisionPair(population.GetObject(pairID.first), population.GetObject(pairID.second));
 			//	-- Calculate collision rate in cube
 			collisionRate = CollisionRate(collisionPair);
-			tempProbability = timeStep * collisionRate / mcRuns;
+			tempProbability = adjustment * collisionRate;
 
 			altitude = collisionPair.primary.GetElements().GetRadialPosition();
 			mass = collisionPair.primary.GetMass() + collisionPair.secondary.GetMass();
@@ -91,6 +101,50 @@ vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population)
 	return CubeFilter(cubeIDList);
 }
 
+vector<CollisionPair> CUBEApproach::CreateOffsetPairList(DebrisPopulation& population)
+{
+	tuple<int, int, int> cube;
+	double M;
+	map<long, vector<tuple<int, int, int>>> cubeIDList;
+	vector<tuple<int, int, int>> cubes;
+	vector<CollisionPair> pairList;
+	// Prepare List
+	cubeIDList.clear();
+
+	// For each object in population -
+	for (auto& debris : population.population)
+	{
+		//	-- Generate Mean anomaly (randomTau)
+		M = randomNumberTau();
+		debris.second.SetMeanAnomaly(M);
+		// is this persistent outside of loop? - Does it need to be - Yes for velocity calculation - fixed with reference auto&
+
+		//	-- Calculate position & Identify CUBE ID
+		cube = IdentifyOffsetCube(debris.second.GetPosition());
+
+		//	-- Store Cube IDs
+		// x+, y+, z+
+		cubes.push_back(make_tuple(get<0>(cube) + 1, get<1>(cube) + 1, get<2>(cube) + 1));
+		// x+, y+, z-
+		cubes.push_back(make_tuple(get<0>(cube) + 1, get<1>(cube) + 1, get<2>(cube)));
+		// x+, y-, z+
+		cubes.push_back(make_tuple(get<0>(cube) + 1, get<1>(cube), get<2>(cube) + 1));
+		// x+, y-, z-
+		cubes.push_back(make_tuple(get<0>(cube) + 1, get<1>(cube), get<2>(cube)));
+		// x-, y+, z+
+		cubes.push_back(make_tuple(get<0>(cube), get<1>(cube) + 1, get<2>(cube) + 1));
+		// x-, y+, z-
+		cubes.push_back(make_tuple(get<0>(cube), get<1>(cube) + 1, get<2>(cube)));
+		// x-, y-, z+
+		cubes.push_back(make_tuple(get<0>(cube), get<1>(cube), get<2>(cube) + 1));
+		// x-, y-, z-
+		cubes.push_back(make_tuple(get<0>(cube), get<1>(cube), get<2>(cube)));
+
+		cubeIDList.emplace(debris.first, cubes);
+
+	}
+	return OffsetCubeFilter(cubeIDList);
+}
 
 double CUBEApproach::CollisionRate(CollisionPair& objectPair)
 {
@@ -104,7 +158,7 @@ double CUBEApproach::CollisionRate(CollisionPair& objectPair)
 	objectPair.SetRelativeVelocity(relativeVelocity);
 	collisionCrossSection = CollisionCrossSection(objectPair.primary, objectPair.secondary);
 
-	return  collisionCrossSection * relativeVelocity / cubeVolume;
+	return  collisionCrossSection * relativeVelocity * objectPair.overlapCount / cubeVolume;
 }
 
 long CUBEApproach::PositionHash(tuple<int, int, int> position)
@@ -141,11 +195,11 @@ vector<CollisionPair> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>> c
 			ID1 = hashList[i].second;
 			ID2 = hashList[i + 1].second;
 			pairList.push_back(CollisionPair(ID1, ID2));
-
+			pairList.back().overlapCount = 1;
 			if (i != 0 && (hashList[i].first == hashList[i - 1].first))
 				FilterRecursion( pairList, hashList, i+1, 2);
 		}
-		
+	
 	}
 	//	-- (Sanitize results to remove hash clashes)
 	if (pairList.size() != 0)
@@ -156,6 +210,54 @@ vector<CollisionPair> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>> c
  	return pairList;
 }
 
+vector<CollisionPair> CUBEApproach::OffsetCubeFilter(map<long, vector<tuple<int, int, int>>> cubeIDList)
+{
+	vector<CollisionPair> pairList;
+	map<pair<long, long>, int> pairCount;
+	vector<pair<long, pair<long, int>>> hashList;
+	long hash, ID1, ID2;
+	int i, position1, position2;
+	// Cube Filter
+	// Filter CUBEIDs
+	for (auto cubeList : cubeIDList)
+	{
+		i = 0;
+		for (auto cubeID : cubeList.second) {
+			//	-- Hash ID
+			hash = PositionHash(cubeID);
+			hashList.push_back(make_pair(hash, make_pair(cubeList.first, i++)));
+		}
+	}
+	//	-- Sort Hash list : sorted by nature of being a map
+	sort(hashList.begin(), hashList.end());
+
+	for (i = 0; i + 1 < hashList.size(); i++)
+	{
+		//	-- Identify duplicate hash values
+		if (hashList[i].first == hashList[i + 1].first)
+		{
+			ID1 = hashList[i].second.first;
+			position1 = hashList[i].second.second;
+			ID2 = hashList[i + 1].second.first;
+			position2 = hashList[i + 1].second.second;
+
+			//	-- (Sanitize results to remove hash clashes)
+			if (cubeIDList[ID1][position1] == cubeIDList[ID2][position2]) {
+				++pairCount[make_pair(ID1, ID2)];
+			}
+
+			if (i != 0 && (hashList[i].first == hashList[i - 1].first))
+				FilterRecursionOffset(pairCount, hashList, cubeIDList, i + 1, 2);
+		}
+
+	}
+
+	for (auto pair : pairCount) {
+		pairList.push_back(CollisionPair(pair.first.first, pair.first.second));
+		pairList.back().overlapCount = pair.second;
+	}
+	return pairList;
+}
 
 void FilterRecursion(vector<CollisionPair>& pairList, vector<pair<long, long>> hashList, int i, int step)
 {
@@ -163,10 +265,28 @@ void FilterRecursion(vector<CollisionPair>& pairList, vector<pair<long, long>> h
 	ID1 = hashList[i - step].second;
 	ID2 = hashList[i ].second;
 	pairList.push_back(CollisionPair(ID1, ID2));
+	pairList.back().overlapCount = 1;
 	if (i - step != 0 && (hashList[i].first == hashList[i - step - 1].first))
 		FilterRecursion(pairList, hashList, i,  step +1 );
 }
 
+void FilterRecursionOffset(map<pair<long, long>, int>& pairCount, vector<pair<long, pair<long, int>>> hashList, map<long, vector<tuple<int, int, int>>> cubeIDList, int i, int step)
+{
+	long ID1, ID2;
+	int position1, position2;
+	ID1 = hashList[i].second.first;
+	position1 = hashList[i].second.second;
+	ID2 = hashList[i + 1].second.first;
+	position2 = hashList[i + 1].second.second;
+
+	//	-- (Sanitize results to remove hash clashes)
+	if (cubeIDList[ID1][position1] == cubeIDList[ID2][position2]) {
+		++pairCount[make_pair(ID1, ID2)];
+	}
+
+	if (i - step != 0 && (hashList[i].first == hashList[i - step - 1].first))
+		FilterRecursionOffset(pairCount, hashList, cubeIDList, i, step + 1);
+}
 
 tuple<int, int, int> CUBEApproach::IdentifyCube(vector3D& position)
 {
@@ -175,6 +295,18 @@ tuple<int, int, int> CUBEApproach::IdentifyCube(vector3D& position)
 	X = int(position.x / cubeDimension);
 	Y = int(position.y / cubeDimension);
 	Z = int(position.z / cubeDimension);
+
+	return tuple<int, int, int>(X, Y, Z);
+}
+
+tuple<int, int, int> CUBEApproach::IdentifyOffsetCube(vector3D& position)
+{
+	int X, Y, Z;
+	double halfCube = cubeDimension / 2.;
+
+	X = int((position.x - halfCube) / cubeDimension);
+	Y = int((position.y - halfCube) / cubeDimension);
+	Z = int((position.z - halfCube) / cubeDimension);
 
 	return tuple<int, int, int>(X, Y, Z);
 }

@@ -9,6 +9,7 @@ public:
 	long primaryID, secondaryID;
 	double approachAnomalyP, approachAnomalyS;
 	bool coplanar;
+	int overlapCount;
 protected:
 	double relativeInclination, relativeVelocity, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii, collisionAltitude;
 

@@ -88,8 +88,9 @@ private:
 		bool probabilities = config["Verbose"].asBool();
 		double dimension = config["CubeDimension"].asDouble();
 		int mcRuns = config["CubeMC"].asInt();
+		bool offset = config["OffsetCubes"].asBool();
 
-		return make_unique<CUBEApproach>(probabilities, dimension, mcRuns);
+		return make_unique<CUBEApproach>(probabilities, dimension, mcRuns, offset);
 	};
 
 	static unique_ptr<OrbitTrace> CreateOTInstance(Json::Value & config) {
