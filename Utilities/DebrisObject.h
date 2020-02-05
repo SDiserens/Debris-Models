@@ -19,7 +19,7 @@ protected:
 	int removeEvent; // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
 	int nFrag, noradID;
 	vector3D velocity, position;
-	bool positionSync, velocitySync, periodSync, isActive, isIntact;
+	bool positionSync, velocitySync, periodSync, isActive, isIntact, isPassive=false;
 	elsetrec sgp4Sat;
 	bool sgp4Initialised = false;
 

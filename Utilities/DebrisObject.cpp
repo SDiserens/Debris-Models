@@ -28,21 +28,26 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	bStar = NAN;
 
 	noradID = -1;
-
 	switch (type) {
 	case 0 : 
 		isIntact = true;
 		isActive = false;
+		isPassive = (pmdSuccess > randomNumber());
 		explosionProbability = rocketBodyExplosionProbability;
+		lifetime = 10;
 	case 1:
 		isIntact = true;
 		isActive = true;
 		explosionProbability = satelliteExplosionProbability;
 		avoidanceSucess = 1;
+
+		lifetime = 7 * 365.25;
+		//TODO - update lifetime to be object dependent
 	case 2:
 		isIntact = false;
 		isActive = false;
 		explosionProbability = 0.;
+		lifetime = 0;
 	}
 }
 
@@ -234,7 +239,7 @@ double DebrisObject::GetExplosionProbability()
 	if (isActive)
 		//ToDo - implement variation in explosion probability based on age
 		modifier = 1;
-	else if (isIntact)
+	else if (isIntact && !isPassive)
 		// ToDo - implement modifier based on passivation
 		modifier = 1;
 	else
@@ -455,7 +460,8 @@ void DebrisObject::UpdateEpoch(double epochStep)
 	if (currEpoch >= initEpoch + lifetime)
 	{
 		isActive = false;
-		//TODO - include PMD steps
+		isPassive = (pmdSuccess > randomNumber());
+		//TODO - include PMD disposal orbit
 	}
 }
 
