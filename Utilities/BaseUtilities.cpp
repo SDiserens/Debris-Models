@@ -260,11 +260,11 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	mcRun = scenario.substr(scenario.find("#") - 1, scenario.find("."));
 	scenario = scenario.substr(0, scenario.find("#") - 1);
 
-	outputFilename = "Output\\" + string(date) + scenario + "_CollisionData_" + mcRun + ".csv";
+	outputFilename = "Output\\" + string(date) + "_" + scenario + "_CollisionData" + mcRun + ".csv";
 	while (fileExists(outputFilename))
 	{
 		ID++;
-		outputFilename = "Output\\" + string(date) + scenario + "_" + to_string(ID) + "_CollisionData_" + mcRun + ".csv";
+		outputFilename = "Output\\" + string(date) + "_" + scenario + "_" + to_string(ID) + "_CollisionData" + mcRun + ".csv";
 	}
 
 	cout << "Creating Data File : " + outputFilename + "...";
@@ -276,7 +276,7 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	cout << "  Writing to Data File...";
 
 	outputFile << "Scenario File:," + scenario;
-	outputFile << "\nDuration:," + config["Duration"].asString() + ",Days"; // Length of simulation (days)
+	//outputFile << "\nDuration:," + config["Duration"].asString() + ",Days"; // Length of simulation (days)
 	outputFile << "\nStep Length:," + config["StepSize"].asString() + ",Days";
 	outputFile << "\nCollision Model:," + collisionModel;
 
@@ -327,11 +327,11 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 	mcRun = scenario.substr(scenario.find("#") - 1, scenario.find("."));
 	scenario = scenario.substr(0, scenario.find("#") - 1);
 
-	outputFilename = "Output\\" + string(date) + scenario + "_SimulationData_" + mcRun + ".csv";
+	outputFilename = "Output\\" + string(date) + "_" + scenario + "_SimulationData" + mcRun + ".csv";
 	while (fileExists(outputFilename))
 	{
 		ID++;
-		outputFilename = "Output\\" + string(date) + scenario + "_" + to_string(ID) + "_SimulationData_" + mcRun + ".csv";
+		outputFilename = "Output\\" + string(date) + "_" + scenario + "_" + to_string(ID) + "_SimulationData" + mcRun + ".csv";
 	}
 
 
@@ -344,7 +344,7 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 	cout << "  Writing to Data File...";
 
 	outputFile << "Scenario File:," + scenario + ", ,";
-	outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
+	//outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
 	outputFile << ",Step Length:," + config["StepSize"].asString() + ",Days" + "\n";
 	outputFile << "Collision Model:," + collisionModel + ", ,";
 	outputFile << "Fragmentation Model:," + breakUpType + ", ,";
@@ -389,11 +389,11 @@ void WriteEventData(string scenario, Json::Value & config, string collisionModel
 	mcRun = scenario.substr(scenario.find("#")-1, scenario.find("."));
 	scenario = scenario.substr(0, scenario.find("#")-1);
 
-	outputFilename = "Output\\" + string(date) + scenario + "_EventData_" + mcRun + ".csv";
+	outputFilename = "Output\\" + string(date) + "_" + scenario + "_EventData" + mcRun + ".csv";
 	while (fileExists(outputFilename))
 	{
 		ID++;
-		outputFilename = "Output\\" + string(date) + scenario + "_" + to_string(ID) + "_EventData_"  + mcRun + ".csv";
+		outputFilename = "Output\\" + string(date) + "_" + scenario + "_" + to_string(ID) + "_EventData"  + mcRun + ".csv";
 	}
 
 	cout << "Creating Data File : " + outputFilename + "...";
@@ -405,7 +405,7 @@ void WriteEventData(string scenario, Json::Value & config, string collisionModel
 	cout << "  Writing to Data File...";
 
 	outputFile << "Scenario File:," + scenario + ", ,";
-	outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
+	//outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
 	outputFile << ",Step Length:," + config["StepSize"].asString() + ",Days" + "\n";
 	outputFile << "Collision Model:," + collisionModel + ", ,";
 	outputFile << "Fragmentation Model:," + breakUpType + ", ,";

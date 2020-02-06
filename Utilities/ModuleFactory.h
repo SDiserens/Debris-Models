@@ -45,9 +45,9 @@ public:
 	static void  UpdateCollisionThreshold(string collisionType, Json::Value & config, double threshold) {
 		if (collisionType == "Cube")
 			config["CubeDimension"] = threshold;
-		if (collisionType == "OrbitTrace")
+		else if (collisionType == "OrbitTrace")
 			config["ConjunctionThreshold"] = threshold;
-		if (collisionType == "Hoots")
+		else if (collisionType == "Hoots")
 			config["ConjunctionThreshold"] = threshold;
 		else
 			throw "Invalid Collision Algorithm Type";

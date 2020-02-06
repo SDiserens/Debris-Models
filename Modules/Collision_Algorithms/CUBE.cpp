@@ -274,10 +274,10 @@ void FilterRecursionOffset(map<pair<long, long>, int>& pairCount, vector<pair<lo
 {
 	long ID1, ID2;
 	int position1, position2;
-	ID1 = hashList[i].second.first;
-	position1 = hashList[i].second.second;
-	ID2 = hashList[i + 1].second.first;
-	position2 = hashList[i + 1].second.second;
+	ID1 = hashList[i-step].second.first;
+	position1 = hashList[i-step].second.second;
+	ID2 = hashList[i].second.first;
+	position2 = hashList[i].second.second;
 
 	//	-- (Sanitize results to remove hash clashes)
 	if (cubeIDList[ID1][position1] == cubeIDList[ID2][position2]) {
@@ -302,11 +302,10 @@ tuple<int, int, int> CUBEApproach::IdentifyCube(vector3D& position)
 tuple<int, int, int> CUBEApproach::IdentifyOffsetCube(vector3D& position)
 {
 	int X, Y, Z;
-	double halfCube = cubeDimension / 2.;
 
-	X = int((position.x - halfCube) / cubeDimension);
-	Y = int((position.y - halfCube) / cubeDimension);
-	Z = int((position.z - halfCube) / cubeDimension);
+	X = int(position.x / cubeDimension - 0.5);
+	Y = int(position.y / cubeDimension - 0.5);
+	Z = int(position.z / cubeDimension - 0.5);
 
 	return tuple<int, int, int>(X, Y, Z);
 }

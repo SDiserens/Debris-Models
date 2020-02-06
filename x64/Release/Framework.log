@@ -1,12 +1,7 @@
-﻿  Framework.cpp
-  CUBE.cpp
-  CollisionFunctions.cpp
-  HootsFilter.cpp
-  OrbitTrace.cpp
-  DebrisObject.cpp
+﻿  CUBE.cpp
   Generating code
-  757 of 3592 functions (21.1%) were compiled, the rest were copied from previous compilation.
-    550 functions were new in current compilation
-    256 functions had inline decision re-evaluated but remain unchanged
+  128 of 3594 functions ( 3.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    25 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 	// Variable
 	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName;
 	double timeStep, stepDays, elapsedDays, simulationDays, threshold, avoidanceProbability=0;
-	bool setThreshold = false;
+	bool logging = true, setThreshold = false;
 	int mcRuns;
 	DebrisObject target, projectile;
 
@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 
 	populationFilename = config["scenarioFilename"].asString();
 	mcRuns = config["MonteCarlo"].asInt();
+	logging = config["logging"].asBool();
 
 	propagatorType = config["Propagator"].asString();
 	propagatorConfig = config["PropagatorConfig"];
@@ -93,6 +94,10 @@ int main(int argc, char** argv)
 		{
 			setThreshold = true;
 			threshold = stod(argv[++i]);
+		}
+		if ((arg == "-l") || (arg == "--logging"))
+		{
+			logging = stod(argv[++i]);
 		}
 	}
 
@@ -154,9 +159,13 @@ int main(int argc, char** argv)
 			(*propagator).PropagatePopulation(timeStep);
 			elapsedDays += timeStep;
 
-			while (definedList[0].GetEventEpoch() < environmentPopulation.GetEpoch()) {
-				breakUp->mainBreakup(environmentPopulation, definedList[0]);
-				definedList.erase(definedList.begin());
+			while (!definedList.empty()){
+				if (definedList[0].GetEventEpoch() < environmentPopulation.GetEpoch()) {
+					breakUp->mainBreakup(environmentPopulation, definedList[0]);
+					definedList.erase(definedList.begin());
+				}
+				else
+					break;
 			}
 
 			// Determine Events
@@ -180,32 +189,33 @@ int main(int argc, char** argv)
 				collisionOutput.clear();
 			}
 
-			// For each pair in collision list
-			for (Event collision : collisionList) {
-				target = environmentPopulation.GetObject(collision.primaryID);
-				projectile = environmentPopulation.GetObject(collision.secondaryID);
+			if (breakUp) {
+				// For each pair in collision list
+				for (Event collision : collisionList) {
+					target = environmentPopulation.GetObject(collision.primaryID);
+					projectile = environmentPopulation.GetObject(collision.secondaryID);
 
-				// determine if collision avoidance occurs
-				avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
-				if (collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
-					// Update and Log
-					collision.CollisionAvoidance();
-					environmentPopulation.AddDebrisEvent(collision);
+					// determine if collision avoidance occurs
+					avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
+					if (collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
+						// Update and Log
+						collision.CollisionAvoidance();
+						environmentPopulation.AddDebrisEvent(collision);
+					}
+					else {
+						// Simulate Fragmentations
+						breakUp->mainBreakup(environmentPopulation, collision);
+					}
 				}
-				else {
-					// Simulate Fragmentations
-					breakUp->mainBreakup(environmentPopulation, collision);
+
+				// Generate Explosions
+				explosionList = environmentPopulation.GenerateExplosionList();
+				for (Event explosion : explosionList) {
+					breakUp->mainBreakup(environmentPopulation, explosion);
 				}
-			}
 
-			// Generate Explosions
-			explosionList = environmentPopulation.GenerateExplosionList();
-			for (Event explosion : explosionList) {
-				breakUp->mainBreakup(environmentPopulation, explosion);
+				simulationLog.push_back(tuple_cat(make_tuple(j), environmentPopulation.GetPopulationState()));
 			}
-
-			simulationLog.push_back(tuple_cat(make_tuple(j), environmentPopulation.GetPopulationState()));
-				
 		}
 
 		// ----------------------------
@@ -219,8 +229,10 @@ int main(int argc, char** argv)
 			WriteCollisionData(ouputName, config, collisionType, collisionConfig, collisionLog);
 			collisionLog.clear();
 		}
-		WriteEventData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, environmentPopulation.GetEventLog());
-		WriteSimulationData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
+		if (logging) {
+			WriteEventData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, environmentPopulation.GetEventLog());
+			WriteSimulationData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
+		}
 		simulationLog.clear();
 	}
 
