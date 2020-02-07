@@ -210,8 +210,10 @@ int main(int argc, char** argv)
 
 				// Generate Explosions
 				explosionList = environmentPopulation.GenerateExplosionList();
-				for (Event explosion : explosionList) {
-					breakUp->mainBreakup(environmentPopulation, explosion);
+				if (!explosionList.empty()) {
+					for (Event explosion : explosionList) {
+						breakUp->mainBreakup(environmentPopulation, explosion);
+					}
 				}
 
 				simulationLog.push_back(tuple_cat(make_tuple(j), environmentPopulation.GetPopulationState()));

@@ -141,6 +141,7 @@ vector<CollisionPair> CUBEApproach::CreateOffsetPairList(DebrisPopulation& popul
 		cubes.push_back(make_tuple(get<0>(cube), get<1>(cube), get<2>(cube)));
 
 		cubeIDList.emplace(debris.first, cubes);
+		cubes.clear();
 
 	}
 	return OffsetCubeFilter(cubeIDList);

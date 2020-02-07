@@ -1,8 +1,8 @@
 {
-  "scenarioFilename": "Collisions_Starlink.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
+  "scenarioFilename": "Collisions_43900.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
   "StepSize": 0.05, // Size of default timestep (days)
   "MonteCarlo": 10,
-
+  "logging": false, 
   //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
   "PropagatorConfig": {
@@ -27,6 +27,7 @@
   "CollisionConfig": {
     "CubeDimension": 1.0, // Cube Size or threshold distance
     "CubeMC": 100, // Cube runs to do each step
+    "OffsetCubes": true, // Use 1 cube or offset cubes
     "ConjunctionThreshold": 0.01, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.1, // inner threshold for Hoots
     "Verbose": true, // Probability output / time output for different methods

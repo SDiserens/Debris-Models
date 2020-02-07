@@ -33,7 +33,9 @@ public:
 
 	static unique_ptr<CollisionAlgorithm> CreateCollisionAlgorithm(string collisionType, Json::Value & config) {
 		if (collisionType == "Cube")
-			return CreateCubeInstance(config);
+			return CreateCubeInstance(config, false);
+		if (collisionType == "Cube-offset")
+			return CreateCubeInstance(config, true);
 		if (collisionType == "OrbitTrace")
 			return CreateOTInstance(config);
 		if (collisionType ==  "Hoots")
@@ -43,7 +45,7 @@ public:
 	};
 
 	static void  UpdateCollisionThreshold(string collisionType, Json::Value & config, double threshold) {
-		if (collisionType == "Cube")
+		if (collisionType == "Cube" || collisionType == "Cube-offset")
 			config["CubeDimension"] = threshold;
 		else if (collisionType == "OrbitTrace")
 			config["ConjunctionThreshold"] = threshold;
@@ -83,12 +85,12 @@ private:
 	};
 
 	// Collision Factories
-	static unique_ptr<CUBEApproach> CreateCubeInstance(Json::Value & config) {
+	static unique_ptr<CUBEApproach> CreateCubeInstance(Json::Value & config, bool offsetCubes) {
 		// Read Cube config
 		bool probabilities = config["Verbose"].asBool();
 		double dimension = config["CubeDimension"].asDouble();
 		int mcRuns = config["CubeMC"].asInt();
-		bool offset = config["OffsetCubes"].asBool();
+		bool offset = offsetCubes;
 
 		return make_unique<CUBEApproach>(probabilities, dimension, mcRuns, offset);
 	};

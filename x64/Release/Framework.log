@@ -1,7 +1,7 @@
 ﻿  CUBE.cpp
   Generating code
-  128 of 3594 functions ( 3.6%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    25 functions had inline decision re-evaluated but remain unchanged
+  120 of 3595 functions ( 3.3%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    34 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe
