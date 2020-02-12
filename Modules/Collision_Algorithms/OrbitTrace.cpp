@@ -19,7 +19,7 @@ void OrbitTrace::SetThreshold(double threshold)
 void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
 	double tempProbability, collisionRate, altitude, mass;
-	vector<CollisionPair> pairList;
+	list<CollisionPair> pairList;
 	pair<long, long> pairID;
 	bool collision;
 	// Filter Cube List
@@ -71,7 +71,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 				if (DetermineCollision(tempProbability))
 				{
 					// Store Collisions 
-					collisionList.push_back(tempEvent);
+					//collisionList.push_back(tempEvent);
 					newCollisionList.push_back(tempEvent);
 				}
 			}

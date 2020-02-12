@@ -120,7 +120,7 @@ double randomNumberTau()
 
 void SetCentralBody(int centralBody)
 {
-	double centralMass;
+	double centralMass = massEarth;
 	if (centralBody == 0)
 		centralMass = massSol;
 	else if (centralBody == 3)

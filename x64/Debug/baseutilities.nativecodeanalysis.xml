@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>e:\work\modelling framework\utilities\</FILEPATH>
+      <FILENAME>baseutilities.cpp</FILENAME>
+      <LINE>220</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Local declaration of 'scenarioFilename' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '145' of 'e:\work\modelling framework\utilities\baseutilities.cpp'.</DESCRIPTION>
+    <FUNCTION>LoadScenario</FUNCTION>
+    <DECORATED>?LoadScenario@@YAXAEAVDebrisPopulation@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z</DECORATED>
+    <FUNCLINE>145</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\utilities\</FILEPATH>
+        <FILENAME>baseutilities.cpp</FILENAME>
+        <LINE>145</LINE>
+        <COLUMN>72</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>

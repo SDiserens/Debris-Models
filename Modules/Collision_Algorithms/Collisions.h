@@ -57,7 +57,7 @@ protected:
 
 	// Virtual function
 	virtual double CollisionRate(CollisionPair &objectPair) = 0;
-	virtual vector<CollisionPair> CreatePairList(DebrisPopulation& population);
+	virtual list<CollisionPair> CreatePairList(DebrisPopulation& population);
 
 	vector<double> GetCollisionProbabilities();
 	vector<double> GetNewCollisionProbabilities();

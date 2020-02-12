@@ -22,14 +22,14 @@ public:
 
 protected:
 	double CollisionRate(CollisionPair& objectPair);
-	vector<CollisionPair> CreatePairList(DebrisPopulation& population);
-	vector<CollisionPair> CreateOffsetPairList(DebrisPopulation& population);
+	list<CollisionPair> CreatePairList(DebrisPopulation& population);
+	list<CollisionPair> CreateOffsetPairList(DebrisPopulation& population);
 
 
 	long PositionHash(tuple<int, int, int>);
 	tuple<int, int, int> IdentifyCube(vector3D& position);
 	tuple<int, int, int> IdentifyOffsetCube(vector3D& position);
-	vector<CollisionPair> CubeFilter(map<long, tuple<int, int, int>> cubeIDList);
-	vector<CollisionPair> OffsetCubeFilter(map<long, vector<tuple<int, int, int>>> cubeIDList);
+	list<CollisionPair> CubeFilter(map<long, tuple<int, int, int>> cubeIDList);
+	list<CollisionPair> OffsetCubeFilter(map<long, vector<tuple<int, int, int>>> cubeIDList);
 
 };

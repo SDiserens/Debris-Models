@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>e:\work\modelling framework\utilities\</FILEPATH>
+      <FILENAME>orbitalutilities.cpp</FILENAME>
+      <LINE>13</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>6244</DEFECTCODE>
+    <DESCRIPTION>Local declaration of 'seed' hides previous declaration at line '6' of 'e:\work\modelling framework\utilities\orbitalutilities.cpp'.</DESCRIPTION>
+    <FUNCTION>SeedRNG</FUNCTION>
+    <DECORATED>?SeedRNG@@YAX_K@Z</DECORATED>
+    <FUNCLINE>13</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\utilities\</FILEPATH>
+        <FILENAME>orbitalutilities.cpp</FILENAME>
+        <LINE>6</LINE>
+        <COLUMN>14</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>

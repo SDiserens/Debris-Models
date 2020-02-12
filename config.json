@@ -2,7 +2,7 @@
   "scenarioFilename": "Collisions_43900.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
   "StepSize": 0.05, // Size of default timestep (days)
   "MonteCarlo": 2,
-  "logging": true,
+  "logging": false,
   //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
   "PropagatorConfig": {
@@ -11,7 +11,7 @@
   },
 
   //
-  "Fragmentation": "NSBM", // "NSBM",
+  "Fragmentation": null, // "NSBM",
   "FragmentationConfig": {
     "minLength": 0.01, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g
@@ -23,14 +23,14 @@
   },
 
   //
-  "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
+  "CollsionAlgorithm": "OrbitTrace", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
     "CubeDimension": 1.0, // Cube Size or threshold distance
     "CubeMC": 100, // Cube runs to do each step
     "OffsetCubes": false, // Use 1 cube or offset cubes
-    "ConjunctionThreshold": 0.01, //Threshold for orbit-trace and hoots
+    "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.1, // inner threshold for Hoots
-    "Verbose": false, // Probability output / time output for different methods
+    "Verbose": true, // Probability output / time output for different methods
     "outputScaling": 5 // collision probabilities of the order of 10^(-outputScaling)
   },
   //

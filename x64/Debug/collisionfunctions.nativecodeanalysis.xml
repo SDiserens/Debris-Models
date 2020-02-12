@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+      <FILENAME>collisionfunctions.cpp</FILENAME>
+      <LINE>208</LINE>
+      <COLUMN>7</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Local declaration of 'NewtonSeperation' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '201' of 'e:\work\modelling framework\modules\collision_algorithms\collisionfunctions.cpp'.</DESCRIPTION>
+    <FUNCTION>CollisionPair::CalculateMinimumSeparation</FUNCTION>
+    <DECORATED>?CalculateMinimumSeparation@CollisionPair@@QEAANXZ</DECORATED>
+    <FUNCLINE>191</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>201</LINE>
+        <COLUMN>23</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+      <FILENAME>collisionfunctions.cpp</FILENAME>
+      <LINE>350</LINE>
+      <COLUMN>19</COLUMN>
+    </SFA>
+    <DEFECTCODE>6001</DEFECTCODE>
+    <DESCRIPTION>Using uninitialized memory 'seperation'.</DESCRIPTION>
+    <FUNCTION>CollisionPair::CalculateMinimumSeparation</FUNCTION>
+    <DECORATED>?CalculateMinimumSeparation@CollisionPair@@QEAANXZ</DECORATED>
+    <FUNCLINE>191</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>3</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>193</LINE>
+        <COLUMN>8</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>193</LINE>
+        <COLUMN>22</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>193</LINE>
+        <COLUMN>36</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>declaration</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'seperation' is not initialized</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>193</LINE>
+        <COLUMN>48</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>193</LINE>
+        <COLUMN>63</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>193</LINE>
+        <COLUMN>67</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>194</LINE>
+        <COLUMN>17</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>195</LINE>
+        <COLUMN>17</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>197</LINE>
+        <COLUMN>14</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>198</LINE>
+        <COLUMN>14</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>199</LINE>
+        <COLUMN>4</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>200</LINE>
+        <COLUMN>4</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>201</LINE>
+        <COLUMN>59</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>201</LINE>
+        <COLUMN>6</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>204</LINE>
+        <COLUMN>13</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Skip this branch, (assume 'eP!=0.000000||eS!=0.000000' is false)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>327</LINE>
+        <COLUMN>21</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>330</LINE>
+        <COLUMN>5</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>337</LINE>
+        <COLUMN>15</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>338</LINE>
+        <COLUMN>15</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>341</LINE>
+        <COLUMN>31</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>342</LINE>
+        <COLUMN>33</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>344</LINE>
+        <COLUMN>13</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Skip this branch, (assume 'eP!=0.000000||eS!=0.000000' is false)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>348</LINE>
+        <COLUMN>15</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
+        <FILENAME>collisionfunctions.cpp</FILENAME>
+        <LINE>350</LINE>
+        <COLUMN>19</COLUMN>
+        <KEYEVENT>
+          <ID>4</ID>
+          <KIND>usage</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'seperation' is used, but may not have been initialized</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>

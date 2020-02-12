@@ -16,7 +16,7 @@ void HootsFilter::SetThreshold(double threshold)
 
 void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 {
-	vector<CollisionPair> pairList;
+	list<CollisionPair> pairList;
 	vector<double> candidateTimeList, collisionTimes;
 	pair<long, long> pairID;
 	double altitude, mass;

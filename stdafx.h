@@ -22,6 +22,7 @@
 #include <sstream>
 #include <string>
 
+#include <list>
 #include <json\json.h>
 #include <ctime>
 #include <chrono>

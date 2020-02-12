@@ -218,6 +218,7 @@ int main(int argc, char** argv)
 
 				simulationLog.push_back(tuple_cat(make_tuple(j), environmentPopulation.GetPopulationState()));
 			}
+			collisionList.clear();
 		}
 
 		// ----------------------------

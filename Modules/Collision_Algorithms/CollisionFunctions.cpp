@@ -26,9 +26,9 @@ vector<double> CollisionAlgorithm::GetNewCollisionAltitudes()
 	return newList;
 }
 
-vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
+list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
 {
-	vector<CollisionPair> pairList;
+	list<CollisionPair> pairList;
 	// For each object in population -
 	for (auto it=population.population.begin(); it!= population.population.end(); it++)
 	{
@@ -41,6 +41,8 @@ vector<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popu
 			CollisionPair pair(it->second, jt->second);
 			if (PerigeeApogeeTest(pair))
 				pairList.push_back(pair);
+			else
+				pair.~CollisionPair();
 		}
 	}
 
@@ -323,40 +325,42 @@ double CollisionPair::CalculateMinimumSeparation()
 		}
 
 	}
-
+	else {
+		seperation = abs(primaryElements.semiMajorAxis - secondaryElements.semiMajorAxis);
+	}
 	SetCollisionAltitude(primaryElements.GetRadialPosition());
-
-	// Test second intersection point
-	if (coplanar)
-	{
-		trueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
-		trueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
-	}
-	else
-	{
-		trueAnomalyP = TauRange(trueAnomalyP + Pi);
-		trueAnomalyS = TauRange(trueAnomalyS + Pi);
-	}
-
-	primaryElements.SetTrueAnomaly(trueAnomalyP);
-	secondaryElements.SetTrueAnomaly(trueAnomalyS);
 
 	if (eP != 0 || eS != 0)
 	{
+		// Test second intersection point
+		if (coplanar)
+		{
+			trueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
+			trueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
+		}
+		else
+		{
+			trueAnomalyP = TauRange(trueAnomalyP + Pi);
+			trueAnomalyS = TauRange(trueAnomalyS + Pi);
+		}
+
+		primaryElements.SetTrueAnomaly(trueAnomalyP);
+		secondaryElements.SetTrueAnomaly(trueAnomalyS);
+
 		NewtonSeperation(trueAnomalyP, trueAnomalyS);
-	}
-	altSeperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
-	if (altSeperation < seperation)
-	{
-		seperation = altSeperation;
-		trueAnomalyP = TauRange(trueAnomalyP + Pi);
-		trueAnomalyS = TauRange(trueAnomalyS + Pi);
-		SetCollisionAltitude(primaryElements.GetRadialPosition());
-	}
-	approachAnomalyP = trueAnomalyP;
-	approachAnomalyS = trueAnomalyS;
+		altSeperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
+		if (altSeperation < seperation)
+		{
+			seperation = altSeperation;
+			trueAnomalyP = TauRange(trueAnomalyP + Pi);
+			trueAnomalyS = TauRange(trueAnomalyS + Pi);
+			SetCollisionAltitude(primaryElements.GetRadialPosition());
+		}
+		approachAnomalyP = trueAnomalyP;
+		approachAnomalyS = trueAnomalyS;
+	}
 	return seperation;
 }
 
@@ -496,6 +500,7 @@ vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, doub
 		// Check for singular case where close approach at perige
 		Qroot = 0;
 		cosUrPlus = -aX;
+		cosUrMinus = 0;
 	}
 	else
 	{

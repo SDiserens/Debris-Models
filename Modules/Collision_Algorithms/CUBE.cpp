@@ -14,7 +14,7 @@ CUBEApproach::CUBEApproach(bool probabilities, double dimension, int runs, bool 
 	elapsedTime = 0;
 }
 
-void FilterRecursion(vector<CollisionPair>& pairList, vector<pair<long, long>> hashList, int i, int step);
+void FilterRecursion(list<CollisionPair>& pairList, vector<pair<long, long>> hashList, int i, int step);
 void FilterRecursionOffset(map<pair<long, long>, int>& pairCount,	vector<pair<long, pair<long, int>>> hashList, map<long, vector<tuple<int, int, int>>> cubeIDList, int i, int step);
 
 void CUBEApproach::SetThreshold(double threshold)
@@ -26,7 +26,7 @@ void CUBEApproach::SetThreshold(double threshold)
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate, altitude, mass, adjustment;
-	vector<CollisionPair> pairList;
+	list<CollisionPair> pairList;
 	// Filter Cube List
 	for (int j = 0; j < mcRuns; j++)
 	{
@@ -66,7 +66,7 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 				if (DetermineCollision(tempProbability))
 				{
 					// Store Collisions 
-					collisionList.push_back(tempEvent);
+					//collisionList.push_back(tempEvent);
 					newCollisionList.push_back(tempEvent);
 				}
 			}
@@ -75,12 +75,12 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 	elapsedTime += timeStep;
 }
 
-vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population)
+list<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population)
 {
 	tuple<int, int, int> cube;
 	double M;
 	map<long, tuple<int, int, int>> cubeIDList;
-	vector<CollisionPair> pairList;
+	list<CollisionPair> pairList;
 	// Prepare List
 	cubeIDList.clear();
 
@@ -101,13 +101,13 @@ vector<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population)
 	return CubeFilter(cubeIDList);
 }
 
-vector<CollisionPair> CUBEApproach::CreateOffsetPairList(DebrisPopulation& population)
+list<CollisionPair> CUBEApproach::CreateOffsetPairList(DebrisPopulation& population)
 {
 	tuple<int, int, int> cube;
 	double M;
 	map<long, vector<tuple<int, int, int>>> cubeIDList;
 	vector<tuple<int, int, int>> cubes;
-	vector<CollisionPair> pairList;
+	list<CollisionPair> pairList;
 	// Prepare List
 	cubeIDList.clear();
 
@@ -171,9 +171,9 @@ long CUBEApproach::PositionHash(tuple<int, int, int> position)
 	return hash;
 }
 
-vector<CollisionPair> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>> cubeIDList)
+list<CollisionPair> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>> cubeIDList)
 {
-	vector<CollisionPair> pairList;
+	list<CollisionPair> pairList;
 	vector<pair<long, long>> hashList;
 	long hash, ID1, ID2;
 	int i;
@@ -211,9 +211,9 @@ vector<CollisionPair> CUBEApproach::CubeFilter(map<long, tuple<int, int, int>> c
  	return pairList;
 }
 
-vector<CollisionPair> CUBEApproach::OffsetCubeFilter(map<long, vector<tuple<int, int, int>>> cubeIDList)
+list<CollisionPair> CUBEApproach::OffsetCubeFilter(map<long, vector<tuple<int, int, int>>> cubeIDList)
 {
-	vector<CollisionPair> pairList;
+	list<CollisionPair> pairList;
 	map<pair<long, long>, int> pairCount;
 	vector<pair<long, pair<long, int>>> hashList;
 	long hash, ID1, ID2;
@@ -260,7 +260,7 @@ vector<CollisionPair> CUBEApproach::OffsetCubeFilter(map<long, vector<tuple<int,
 	return pairList;
 }
 
-void FilterRecursion(vector<CollisionPair>& pairList, vector<pair<long, long>> hashList, int i, int step)
+void FilterRecursion(list<CollisionPair>& pairList, vector<pair<long, long>> hashList, int i, int step)
 {
 	long ID1, ID2;
 	ID1 = hashList[i - step].second;

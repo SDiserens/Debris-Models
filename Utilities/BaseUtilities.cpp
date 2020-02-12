@@ -70,7 +70,7 @@ DebrisObject GenerateDebrisObject(string line)
 {
 	Json::Value elements;
 	double diameter, area, radius, mass, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, launchDate;
-	int type, type2;
+	int type, type2=2;
 
 	istringstream iss(line);
 	//#  Type Mass Diameter Area a e i RAAN AoP M LA-DATE    
