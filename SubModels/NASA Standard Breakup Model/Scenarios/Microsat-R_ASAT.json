@@ -1,7 +1,7 @@
 {
   "primaryObject": {
     "mass": 740,
-    "radius": 1,
+    "radius": 1.5,
     "length": 5,
     "type": 1, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
     "orbitalElements": {
@@ -11,7 +11,7 @@
       "Om": 6.269423386027611,
       "om": 3.8494528196381412
     },
-    "meanAnomaly": 0
+    "meanAnomaly": 2.7919866681561376
   },
   "secondaryObject": {
     "mass": 1800,

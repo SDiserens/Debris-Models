@@ -145,6 +145,7 @@ int main(int argc, char** argv)
 
 		// Validate Modules
 
+		ProgressBar progress(simulationDays, '=');
 
 		// --------------------------
 		// --- Evolve Environment ---
@@ -219,6 +220,8 @@ int main(int argc, char** argv)
 				simulationLog.push_back(tuple_cat(make_tuple(j), environmentPopulation.GetPopulationState()));
 			}
 			collisionList.clear();
+
+			progress.DisplayProgress(elapsedDays);
 		}
 
 		// ----------------------------
