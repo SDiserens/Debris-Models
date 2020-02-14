@@ -25,7 +25,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 	// Filter Cube List
 	pairList = CreatePairList(population);
 	timeStep = timestep;
-
+	
 	for (CollisionPair& objectPair : pairList)
 	{
 		collision = false;

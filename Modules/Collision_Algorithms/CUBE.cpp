@@ -101,6 +101,30 @@ list<CollisionPair> CUBEApproach::CreatePairList(DebrisPopulation& population)
 	return CubeFilter(cubeIDList);
 }
 
+list<CollisionPair> CUBEApproach::CreatePairList_P(DebrisPopulation& population)
+{
+	map<long, tuple<int, int, int>> cubeIDList;
+	// Prepare List
+	cubeIDList.clear();
+
+	mutex mtx;
+	concurrency::parallel_for(begin(population.population), end(population.population), [](auto debris) {
+	// For each object in population -
+		//	-- Generate Mean anomaly (randomTau)
+		double M = randomNumberTau();
+		debris->second.SetMeanAnomaly(M);
+		// is this persistent outside of loop? - Does it need to be - Yes for velocity calculation - fixed with reference auto&
+
+		//	-- Calculate position & Identify CUBE ID
+		tuple<int, int, int> cube = IdentifyCube(debris->second.GetPosition());
+
+		//	-- Store Cube ID
+		mtx.lock()
+		cubeIDList.emplace(debris->first, cube);
+		mtx.unlock();
+	});
+	return CubeFilter(cubeIDList);
+}
 list<CollisionPair> CUBEApproach::CreateOffsetPairList(DebrisPopulation& population)
 {
 	tuple<int, int, int> cube;
@@ -244,7 +268,7 @@ list<CollisionPair> CUBEApproach::OffsetCubeFilter(map<long, vector<tuple<int, i
 
 			//	-- (Sanitize results to remove hash clashes)
 			if (cubeIDList[ID1][position1] == cubeIDList[ID2][position2]) {
-				++pairCount[make_pair(ID1, ID2)];
+				pairCount[make_pair(ID1, ID2)]++;
 			}
 
 			if (i != 0 && (hashList[i].first == hashList[i - 1].first))

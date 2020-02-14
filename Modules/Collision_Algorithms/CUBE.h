@@ -23,6 +23,7 @@ public:
 protected:
 	double CollisionRate(CollisionPair& objectPair);
 	list<CollisionPair> CreatePairList(DebrisPopulation& population);
+	list<CollisionPair> CreatePairList_P(DebrisPopulation& population);
 	list<CollisionPair> CreateOffsetPairList(DebrisPopulation& population);
 
 

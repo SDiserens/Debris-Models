@@ -29,6 +29,26 @@ vector<double> CollisionAlgorithm::GetNewCollisionAltitudes()
 list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
 {
 	list<CollisionPair> pairList;
+	//TODO - test parallel construction of list
+	// For each object in population - parallelised
+	/*
+	mutex mtx;
+	concurrency::parallel_for(begin(population.population), end(population.population), [](auto it) {
+		auto jt = it;
+		for (jt++; jt != population.population.end(); ++jt)
+		{
+			/// Add pair to list
+			//DebrisObject& primaryObject(population.Ge), secondaryObject;
+			CollisionPair pair(it->second, jt->second);
+			if (PerigeeApogeeTest(pair))
+				mtx.lock();
+				pairList.push_back(pair);
+				mtx.unlock();
+			else
+				pair.~CollisionPair();
+		}
+	});
+	*/
 	// For each object in population -
 	for (auto it=population.population.begin(); it!= population.population.end(); it++)
 	{
@@ -48,6 +68,34 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popula
 
 	return pairList;
 }
+
+
+list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & population)
+{
+	list<CollisionPair> pairList;
+	//TODO - test parallel construction of list
+	// For each object in population - parallelised
+	
+	mutex mtx;
+	concurrency::parallel_for(begin(population.population), end(population.population), [](auto it) {
+		auto jt = it;
+		for (jt++; jt != population.population.end(); ++jt)
+		{
+			/// Add pair to list
+			//DebrisObject& primaryObject(population.Ge), secondaryObject;
+			CollisionPair pair(it->second, jt->second);
+			if (PerigeeApogeeTest(pair)) {
+				mtx.lock();
+				pairList.push_back(pair);
+				mtx.unlock();
+			}
+		else
+			pair.~CollisionPair();
+		}
+		});
+	return pairList;
+}
+
 
 bool CollisionAlgorithm::PerigeeApogeeTest(CollisionPair& objectPair)
 {
@@ -135,6 +183,7 @@ CollisionPair::CollisionPair(DebrisObject & objectI, DebrisObject & objectJ)
 	//CalculateRelativeInclination();
 	//CalculateArgumenstOfIntersection();
 	boundingRadii = (primary.GetRadius() + secondary.GetRadius()) * 0.001;
+	overlapCount = 1;
 }
 
 CollisionPair::CollisionPair(long IDI, long IDJ)
