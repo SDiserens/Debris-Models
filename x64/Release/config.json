@@ -23,9 +23,9 @@
   },
 
   //
-  "CollsionAlgorithm": "OrbitTrace", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
+  "CollsionAlgorithm": "Cube-offset", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
-    "CubeDimension": 1.0, // Cube Size or threshold distance
+    "CubeDimension": 10.0, // Cube Size or threshold distance
     "CubeMC": 100, // Cube runs to do each step
     "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.1, // inner threshold for Hoots

@@ -32,14 +32,14 @@ class NewtonConvergenceException : public exception
 class ProgressBar
 {
 public:
-	uint64_t n;
+	double n;
 	char display;
 	double percent;
 	uint64_t pInt;
 
-	ProgressBar(uint64_t n, char d) : n(n/100), display(d) {}
+	ProgressBar(double n, char d) : n(n/100), display(d) {}
 
-	void DisplayProgress(uint64_t i)
+	void DisplayProgress(double i)
 	{
 		/* A function for displaying a progress bar.
 		*/
@@ -48,7 +48,7 @@ public:
 			cout << fixed << setprecision(2) << showpoint;
 			cout << '\r' + string(100, ' ') + ": " << 0.00 << "%" << flush;
 		}
-		if ((i % (n / 100)) == 0)
+		else
 		{
 			percent = ((double)i / n);
 			pInt = uint64_t(percent);

@@ -113,6 +113,7 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	double collisionRate, boundingRadii, minSeperation, relativeVelocity;
 	vector3D velocityI, velocityJ;
 
+	//TODO - Quick filter on possible separation
 	minSeperation = objectPair.CalculateMinimumSeparation();
 
 	velocityI = objectPair.primary.GetVelocity();

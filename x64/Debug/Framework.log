@@ -1,34 +1,3 @@
-﻿  stdafx.cpp
-  OrbitalUtilities.cpp
-  OrbitalElements.cpp
-  OrbitalAnomalies.cpp
-  DebrisPopulation.cpp
-  DebrisObject.cpp
-  BaseUtilities.cpp
-  SGP4.cpp
-e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(2223): warning C4477: 'sscanf_s' : format string '%1c' requires an argument of type 'unsigned int', but variadic argument 4 has type '::size_t'
-  e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(2223): note: this argument is used as a buffer size
-e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(2223): warning C4477: 'sscanf_s' : format string '%10s' requires an argument of type 'unsigned int', but variadic argument 6 has type 'unsigned __int64'
-  e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(2223): note: this argument is used as a buffer size
-  SGP4wrap.cpp
-  Propagator.cpp
-  Analytic_J2.cpp
-  Framework.cpp
-  NASAStdBrkUpMdl.cpp
-  FragmentCloud.cpp
-  FragmentationFunctions.cpp
-  OrbitTrace.cpp
-  HootsFilter.cpp
-  CUBE.cpp
-  CollisionFunctions.cpp
-  Compiling...
-  Generating Code...
-jsoncpp.lib(json_reader.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_reader.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_value.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_value.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_writer.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_writer.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-  Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.exe
+﻿  Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.exe
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.pdb (Partial PDB)
 BSCMAKE : warning BK4503: minor error in .SBR file 'x64\Debug\CUBE.sbr' ignored
-e:\work\modelling framework\modules\collision_algorithms\collisionfunctions.cpp(350): warning C6001: Using uninitialized memory 'seperation'.
-e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(1953): warning C6001: Using uninitialized memory 'coseo1'.
-e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(2223): warning C6328: Size mismatch: 'unsigned __int64' passed as _Param_(6) when 'unsigned int' is required in call to 'sscanf_s'. 

@@ -224,6 +224,7 @@ int main(int argc, char** argv)
 			progress.DisplayProgress(elapsedDays);
 		}
 
+		cout << "\n";
 		// ----------------------------
 		// ------ End Simulation ------
 		// ----------------------------

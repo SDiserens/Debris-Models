@@ -29,26 +29,7 @@ vector<double> CollisionAlgorithm::GetNewCollisionAltitudes()
 list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
 {
 	list<CollisionPair> pairList;
-	//TODO - test parallel construction of list
-	// For each object in population - parallelised
-	/*
-	mutex mtx;
-	concurrency::parallel_for(begin(population.population), end(population.population), [](auto it) {
-		auto jt = it;
-		for (jt++; jt != population.population.end(); ++jt)
-		{
-			/// Add pair to list
-			//DebrisObject& primaryObject(population.Ge), secondaryObject;
-			CollisionPair pair(it->second, jt->second);
-			if (PerigeeApogeeTest(pair))
-				mtx.lock();
-				pairList.push_back(pair);
-				mtx.unlock();
-			else
-				pair.~CollisionPair();
-		}
-	});
-	*/
+
 	// For each object in population -
 	for (auto it=population.population.begin(); it!= population.population.end(); it++)
 	{
@@ -77,13 +58,13 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & popu
 	// For each object in population - parallelised
 	
 	mutex mtx;
-	concurrency::parallel_for(begin(population.population), end(population.population), [](auto it) {
-		auto jt = it;
+	concurrency::parallel_for_each(population.population.begin(), population.population.end(), [&](auto& it) {
+		auto jt = population.population.find(it.first);
 		for (jt++; jt != population.population.end(); ++jt)
 		{
 			/// Add pair to list
 			//DebrisObject& primaryObject(population.Ge), secondaryObject;
-			CollisionPair pair(it->second, jt->second);
+			CollisionPair pair(it.second, jt->second);
 			if (PerigeeApogeeTest(pair)) {
 				mtx.lock();
 				pairList.push_back(pair);
@@ -262,7 +243,7 @@ double CollisionPair::CalculateMinimumSeparation()
 			int it = 0;
 			double F, G, FdfP, FdfS, GdfP, GdfS;
 			double uRP, uRS, A, B, C, D, axP, ayP, axS, ayS;
-			double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES;
+			double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES, sinVP, cosVP, sinVS, cosVS;
 			double tempAnomalyP, tempAnomalyS, circularAnomalyP, circularAnomalyS, cosRI;
 			double k = 2.0, h = 2.0;
 			double base, baseMin = 999;
@@ -272,9 +253,9 @@ double CollisionPair::CalculateMinimumSeparation()
 			cosRI = cos(relativeInclination);
 
 			axP = eP * cos(-circularAnomalyP);
-			ayP = eP * sin(-circularAnomalyP);
+			ayP = sqrt(eP * eP - axP * axP); //eP * sin(-circularAnomalyP);
 			axS = eS * cos(-circularAnomalyS);
-			ayS = eS * sin(-circularAnomalyS);
+			ayS = sqrt( eS * eS - axS * axS); // eS * sin(-circularAnomalyS);
 
 			// Min Sep newton method
 			while ((abs(h) >= NEWTONTOLERANCE || abs(k) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
@@ -285,24 +266,28 @@ double CollisionPair::CalculateMinimumSeparation()
 				uRS = tempAnomalyS - circularAnomalyS;
 
 				sinURP = sin(uRP);
-				cosURP = cos(uRP);
+				cosURP = sqrt(1 - sinURP * sinURP);  //cos(uRP);
 				sinURS = sin(uRS);
-				cosURS = cos(uRS);
+				cosURS = sqrt(1 - sinURS * sinURS);  //cos(uRS);
+				sinVP = sin(tempAnomalyP);
+				cosVP = sqrt(1 - sinVP * sinVP); // cos(tempAnomalyP);
+				sinVS = sin(tempAnomalyS);
+				cosVS = sqrt(1 - sinVS * sinVS); // cos(tempAnomalyS);
 
 				A = sinURP + ayP;
 				C = sinURS + ayS;
 				B = cosURP + axP;
 				D = cosURS + axS;
 
-				EP = atan2(sqrt(1 - eP * eP) * sin(tempAnomalyP), eP + cos(tempAnomalyP));
-				ES = atan2(sqrt(1 - eS * eS) * sin(tempAnomalyS), eS + cos(tempAnomalyS));
+				EP = atan2(sqrt(1 - eP * eP) * sinVP, eP + cosVP);
+				ES = atan2(sqrt(1 - eS * eS) * sinVS, eS + cosVS);
 
-				F = rP * eP * sin(tempAnomalyP) + rS * (A * cosURS - B * cosRI * sinURS);
-				G = rS * eS * sin(tempAnomalyS) + rP * (C * cosURP - D * cosRI * sinURP);
+				F = rP * eP * sinVP + rS * (A * cosURS - B * cosRI * sinURS);
+				G = rS * eS * sinVS + rP * (C * cosURP - D * cosRI * sinURP);
 
 				FdfP = rP * eP * cos(EP) + rS * (cosURP * cosURS + sinURP * sinURS * cosRI);
-				FdfS = -rS / (1 + eS * cos(tempAnomalyS)) * (A * C + B * D * cosRI);
-				GdfP = -rP / (1 + eP * cos(tempAnomalyP)) * (A * C + B * D * cosRI);
+				FdfS = -rS / (1 + eS * cosVS) * (A * C + B * D * cosRI);
+				GdfP = -rP / (1 + eP * cosVP) * (A * C + B * D * cosRI);
 				GdfS = rS * eS * cos(ES) + rP * (cosURP * cosURS + sinURP * sinURS * cosRI);
 
 				base = (FdfS*GdfP - FdfP*GdfS);
