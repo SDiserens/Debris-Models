@@ -19,13 +19,13 @@
     "length": 2,
     "type": 0, // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively.
     "orbitalElements": {
-      "a": 7000, // semiMajor Axis
-      "e": 0, // Eccentricity
-      "i": 1.570796, // Inclination
-      "Om": 0, // Right Ascension of Ascending Node
-      "om": 0 // Argument of Perigee
+      "a": 3685.5185855990944, // semiMajor Axis
+      "e": 0.9084757423849084, // Eccentricity
+      "i": 1.45494312, // Inclination
+      "Om": 3.12783073, // Right Ascension of Ascending Node
+      "om": 6.03142327 // Argument of Perigee
     },
-    "meanAnomaly": 0
+    "meanAnomaly": 2.24665692
   }
   
 }

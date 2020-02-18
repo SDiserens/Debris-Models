@@ -3,6 +3,6 @@
   "catastrophicThreshold": 40,
   "minLength": 0.001, // Defaults to 0.001
   "numberOfBuckets": 30, // Defaults to 30
-  "scenarioFilename": "basicCollision.json", // "basicCollision.json" , "basicExplosion.json"
+  "scenarioFilename": "Microsat-R_ASAT.json", // "basicCollision.json" , "basicExplosion.json", "Microsat-R_ASAT.json"
   "scaling" :  1
 }

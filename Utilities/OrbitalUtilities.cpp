@@ -157,7 +157,10 @@ double DegToRad(double angle)
 }
 
 // 3D vector functions
-vector3D::vector3D() {}
+vector3D::vector3D() 
+{
+	x = y = z = 0;
+}
 
 vector3D::vector3D(double X, double Y, double Z)
 {

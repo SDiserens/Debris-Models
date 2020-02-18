@@ -13,6 +13,8 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	double rightAscension, double argPerigee, double init_meanAnomaly, int type)
 {
 	objectID = ++objectSEQ; // This should be generating a unique ID per object incl. when threading (needs revision for multi-thread)
+	sourceID = objectID;
+	parentID = 0;
 	radius = init_radius;
 	area = Pi * radius * radius;
 	CalculateAreaToMass();
@@ -62,7 +64,8 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 	double meanMotion, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly, epochDay;
 	
 	objectID = ++objectSEQ;
-
+	sourceID = objectID;
+	parentID = 0;
 	noradID = stoi(TLE3.substr(2, 5));
 
 	// Convert to days since 1957-OCT-04

@@ -275,7 +275,7 @@ void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 	double logMaxLength = log10(maxLength);
 	double logMinLength = log10(minLength);
 
-	for (int i = 0; i < numFrag; ++i)
+	for (int i = 0; i < numFrag; i)
 	{
 		// Assign fragment length
 		tempLength = pow(10, randomNumber(logMinLength, logMaxLength));
@@ -292,6 +292,7 @@ void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 			else
 				repFrags = remainingFrags;
 		}
+		i += repFrags;
 
 		NSBMDebrisFragment tempFragment(tempLength, explosion, targetObject.GetType(), repFrags);
 		tempFragment.SetSourceID(targetObject.GetSourceID());
@@ -300,6 +301,8 @@ void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 		tempFragment.SetPosition(targetObject.GetPosition());
 		tempFragment.SetVelocity(targetObject.GetVelocity());
 		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
+		tempFragment.SetInitEpoch(targetObject.GetEpoch());
+		tempFragment.SetEpoch(targetObject.GetEpoch());
 
 		// Update FragmentCloud variables for bucket
 		StoreFragmentVariables(tempFragment);
@@ -356,7 +359,7 @@ void NSBMFragmentCloud::UpdateAverageVariables()
 	if (debrisCount == 0)
 		ratio = 0.0;
 	else
-		ratio = 1 / debrisCount;
+		ratio = 1.0 / debrisCount;
 
 	averageMass = assignedMass * ratio;
 	averageKineticEnergy = totalKineticEnergy * ratio;
@@ -673,7 +676,7 @@ void NSBMDebrisFragment::CalculateRelativeVelocity()
 
 	nu = velocityDistribution(*generator);
 
-	deltaVNorm = pow(10, nu);
+	deltaVNorm = 0.001 * pow(10, nu);
 	theta = randomNumberPi();
 	phi = randomNumberTau();
 
