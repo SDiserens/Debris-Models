@@ -171,7 +171,7 @@ int main(int argc, char** argv)
 
 			// Determine Events
 				// Collision Detection
-			collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
+			collisionModel->MainCollision_P(environmentPopulation, timeStep * secondsDay);
 			collisionList = collisionModel->GetNewCollisionList();
 
 			// if extra output requested

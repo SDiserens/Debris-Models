@@ -37,8 +37,9 @@ public:
 
 public:
 	NSBMDebrisFragment(double init_length, bool init_explosion, int source, int numFrag = 1);
-	NSBMDebrisFragment(double init_length, double init_mass, bool init_explosion, int source, int numFrag = 1);
+	NSBMDebrisFragment(double tempLength, double init_mass, bool init_explosion, int source, int numFrag = 1);
 	void CalculateArea();
+	void CalculateLength();
 	void CalculateRelativeVelocity();
 	void GenerateAreaToMassValue();
 	void CalculateVolume();

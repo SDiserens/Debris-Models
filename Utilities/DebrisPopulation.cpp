@@ -264,6 +264,7 @@ void DebrisPopulation::DecayObject(long ID)
 	population.erase(ID);
 	tempObject.RemoveObject(0, currentEpoch);
 	removedPopulation.emplace(ID, tempObject);
+	totalMass -= tempObject.GetMass();
 	populationCount--;
 	switch (tempObject.GetType()) {
 		case 0: upperStageCount--;
@@ -278,6 +279,7 @@ void DebrisPopulation::ExplodeObject(long ID)
 	population.erase(ID);
 	tempObject.RemoveObject(1, currentEpoch);
 	removedPopulation.emplace(ID, tempObject);
+	totalMass -= tempObject.GetMass();
 	populationCount--;
 	switch (tempObject.GetType()) {
 	case 0: upperStageCount--;
@@ -292,6 +294,7 @@ void DebrisPopulation::CollideObject(long ID)
 	population.erase(ID);
 	tempObject.RemoveObject(2, currentEpoch);
 	removedPopulation.emplace(ID, tempObject);
+	totalMass -= tempObject.GetMass();
 	populationCount--;
 	switch (tempObject.GetType()) {
 	case 0: upperStageCount--;

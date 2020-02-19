@@ -81,7 +81,7 @@ int main()
 	localtime_s(&currtime, &dateTime);
 	strftime(date, sizeof(date), "%F", &currtime);
 
-	eventType = fragmentPopulation.GetEventLog()[0].GetEventType();
+	eventType = fragmentPopulation.GetEventLog()[0].GetEventTypeString();
 
 	outputFilename = "Output\\" + string(date) + "_" + eventType + ".csv";
 	while (fileExists(outputFilename))

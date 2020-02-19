@@ -23,6 +23,64 @@ void CUBEApproach::SetThreshold(double threshold)
 	cubeVolume = threshold * threshold * threshold;
 }
 
+void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep)
+{
+	double tempProbability, collisionRate, altitude, mass, adjustment;
+	list<CollisionPair> pairList;
+	mutex mtx;
+	// Filter Cube List
+	for (int j = 0; j < mcRuns; j++)
+	{
+		if (offset) {
+			pairList = CreateOffsetPairList(population);
+			// Should this probability be divided by 8?
+			adjustment = timeStep / mcRuns;
+		}
+		else {
+			pairList = CreatePairList(population);
+			adjustment = timeStep / mcRuns;
+		}
+
+		// For each conjunction (cohabiting pair)
+		concurrency::parallel_for_each(pairList.begin(), pairList.end(), [&](CollisionPair& collisionPairID)
+		{
+			pair<long, long> pairID(collisionPairID.primaryID, collisionPairID.secondaryID);
+			CollisionPair collisionPair(population.GetObject(pairID.first), population.GetObject(pairID.second));
+			//	-- Calculate collision rate in cube
+			collisionRate = CollisionRate(collisionPair);
+			tempProbability = adjustment * collisionRate;
+
+			altitude = collisionPair.primary.GetElements().GetRadialPosition();
+			mass = collisionPair.primary.GetMass() + collisionPair.secondary.GetMass();
+			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, collisionPair.GetRelativeVelocity(), mass, altitude);
+			//	-- Determine if collision occurs through MC (random number generation)
+			if (outputProbabilities)
+			{
+				//	-- Store collision probability
+				//collisionProbabilities.push_back(tempProbability);
+				//collisionList.push_back(collisionPair);
+				mtx.lock();
+				newCollisionProbabilities.push_back(tempProbability);
+				newCollisionList.push_back(tempEvent);
+				mtx.unlock();
+			}
+			else
+			{
+				if (DetermineCollision(tempProbability))
+				{
+					// Store Collisions 
+					//collisionList.push_back(tempEvent);
+					mtx.lock();
+					newCollisionList.push_back(tempEvent);
+					mtx.unlock();
+				}
+			}
+		});
+	}
+	elapsedTime += timeStep;
+}
+
+
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate, altitude, mass, adjustment;

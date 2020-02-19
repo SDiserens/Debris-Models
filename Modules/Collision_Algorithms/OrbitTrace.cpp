@@ -15,6 +15,75 @@ void OrbitTrace::SetThreshold(double threshold)
 {
 	pAThreshold = threshold;
 }
+void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
+{
+	double tempProbability, collisionRate, altitude, mass;
+	list<CollisionPair> pairList;
+	pair<long, long> pairID;
+	bool collision;
+	mutex mtx;
+	// Filter Cube List
+	pairList = CreatePairList_P(population);
+	timeStep = timestep;
+
+	concurrency::parallel_for_each(pairList.begin(), pairList.end(), [&](CollisionPair& objectPair)
+	{
+		collision = false;
+
+		objectPair.CalculateRelativeInclination();
+
+		if (CoplanarFilter(objectPair))
+		{
+			// Calculate orbit intersections for coplanar
+			objectPair.CalculateArgumenstOfIntersectionCoplanar();
+			if (HeadOnFilter(objectPair) || !SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
+				collision = true;
+		}
+		else
+		{
+			// Calculate intersections for non coplanar
+			objectPair.CalculateArgumenstOfIntersection();
+			if (!SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
+				collision = true;
+		}
+
+		if (collision)
+		{
+			collisionRate = CollisionRate(objectPair);
+			tempProbability = timeStep * collisionRate;
+			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
+
+			altitude = objectPair.primary.GetElements().GetRadialPosition();
+			mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
+			//	-- Determine if collision occurs through MC (random number generation)
+			if (outputProbabilities && tempProbability>0)
+			{
+
+				//	-- Store collision probability
+				//collisionProbabilities.push_back(tempProbability);
+				//collisionList.push_back(collisionPair);
+				mtx.lock();
+				newCollisionProbabilities.push_back(tempProbability);
+				newCollisionList.push_back(tempEvent);
+				mtx.unlock();
+			}
+			else
+			{
+				if (DetermineCollision(tempProbability))
+				{
+					// Store Collisions 
+					//collisionList.push_back(tempEvent);
+					mtx.lock();
+					newCollisionList.push_back(tempEvent);
+					mtx.unlock();
+				}
+			}
+		}
+	});
+	elapsedTime += timeStep;
+
+}
 
 void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
@@ -22,6 +91,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 	list<CollisionPair> pairList;
 	pair<long, long> pairID;
 	bool collision;
+
 	// Filter Cube List
 	pairList = CreatePairList(population);
 	timeStep = timestep;

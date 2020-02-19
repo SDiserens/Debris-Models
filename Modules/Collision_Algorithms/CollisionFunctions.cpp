@@ -150,6 +150,11 @@ double CollisionAlgorithm::CalculateClosestApproach(CollisionPair objectPair)
 }
 */
 
+void CollisionAlgorithm::MainCollision_P(DebrisPopulation & population, double timeStep)
+{
+	MainCollision(population, timeStep);
+}
+
 void CollisionAlgorithm::SwitchGravityComponent()
 {
 	relativeGravity = !relativeGravity;
