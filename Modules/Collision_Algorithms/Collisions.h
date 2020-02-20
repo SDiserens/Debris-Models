@@ -2,6 +2,8 @@
 
 //#include "stdafx.h"
 
+#include "MOID\distlink.h"
+
 class CollisionPair
 {
 public:
@@ -25,6 +27,7 @@ public:
 	vector3D GetSecondaryVelocityAtTime(double timeFromEpoch);
 	double CalculateSeparationAtTime(double timeFromEpoch);
 	double CalculateMinimumSeparation();
+	double CalculateMinimumSeparation_DL();
 	void CalculateArgumenstOfIntersection();
 	void CalculateArgumenstOfIntersectionCoplanar();
 	void CalculateRelativeInclination();

@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
+#include "stdafx.h"
 #include "distlink.h"
 
 #include <cstdlib>
@@ -233,7 +233,7 @@ void polynomial_valder(int n, const complex<realfp> c[], const complex<realfp>& 
 }
 
 template<typename realfp>
-inline complex<realfp> ratio(int n, const complex<realfp> c[], const complex<realfp>& z)
+inline complex<realfp> _ratio(int n, const complex<realfp> c[], const complex<realfp>& z)
 {
  complex<realfp> f, fd;
  polynomial_valder(n, c, z, f, fd);
@@ -271,7 +271,7 @@ unsigned int Newton(int n, complex<realfp> c[], complex<realfp> &z,
  realfp err2;
  do
  {
-  dz=ratio(n, c, z);
+  dz=_ratio(n, c, z);
   z-=dz;
   err2=norm(dz);
 
@@ -289,7 +289,7 @@ unsigned int Newton(int n, complex<realfp> c[], complex<realfp> &z,
   realfp derr2;
   do
   {
-    dz=ratio(n,c,z);
+    dz=_ratio(n,c,z);
     z-=dz;
     const realfp err2_=norm(dz);
     derr2=err2-err2_;

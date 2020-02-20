@@ -189,7 +189,7 @@ vector<double> HootsFilter::TimeFilter(CollisionPair& objectPair, double timeSte
 		// Loop up to matched point in list
 		while (window.first >= timeWindowsS[i].first)
 			{
-				i++;
+				++i;
 				if (i == timeWindowsS.size())
 					break;
 			}
@@ -327,7 +327,7 @@ double HootsFilter::CalculateClosestApproachTime(CollisionPair& objectPair, doub
 		Rdot = CalculateSecondDerivativeSeparation(objectPair, approachTime);
 		h = R / Rdot;
 		approachTime -= h;
-		it++;
+		++it;
 	}
 	if (it == NEWTONMAXITERATIONS)
 		throw NewtonConvergenceException();

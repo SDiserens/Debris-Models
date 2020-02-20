@@ -35,7 +35,7 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popula
 	{
 		// For each subsequent object
 		auto jt = it;
-		for (jt++; jt != population.population.end(); ++jt)
+		for (++jt; jt != population.population.end(); ++jt)
 		{
 			/// Add pair to list
 			//DebrisObject& primaryObject(population.Ge), secondaryObject;
@@ -60,7 +60,7 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & popu
 	mutex mtx;
 	concurrency::parallel_for_each(population.population.begin(), population.population.end(), [&](auto& it) {
 		auto jt = population.population.find(it.first);
-		for (jt++; jt != population.population.end(); ++jt)
+		for (++jt; jt != population.population.end(); ++jt)
 		{
 			/// Add pair to list
 			//DebrisObject& primaryObject(population.Ge), secondaryObject;
@@ -225,6 +225,38 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 	return secondary.GetVelocity();
 }
 
+
+double CollisionPair::CalculateMinimumSeparation_DL()
+{
+	OrbitalElements primaryElements = primary.GetElements();
+	OrbitalElements secondaryElements = secondary.GetElements();
+
+	COrbitData<double> object1(primaryElements.semiMajorAxis, primaryElements.eccentricity, primaryElements.inclination, primaryElements.rightAscension, primaryElements.argPerigee);
+	COrbitData<double> object2(secondaryElements.semiMajorAxis, secondaryElements.eccentricity, secondaryElements.inclination, secondaryElements.rightAscension, secondaryElements.argPerigee);
+
+	double max_root_error, min_root_error, max_anom_error;
+	detect_suitable_options(max_root_error, min_root_error, max_anom_error);
+	SMOIDResult<double> result = MOID_fast(object1, object2, max_root_error, min_root_error);
+
+	if (!result.good) {
+		result = MOID_fast(object2, object1, max_root_error, min_root_error);
+
+		if (!result.good) {
+			unsigned int densities[4] = { 1000, 30, 3, 0 };
+			result = MOID_direct_search(object1, object2, densities, 0.01, max_anom_error);
+		}
+	}
+	primaryElements.SetEccentricAnomaly(result.u1);
+	secondaryElements.SetEccentricAnomaly(result.u2);
+
+	approachAnomalyP = primaryElements.GetTrueAnomaly();
+	approachAnomalyS = secondaryElements.GetTrueAnomaly();
+	SetCollisionAltitude(primaryElements.GetRadialPosition());
+
+	return result.distance;
+}
+
+
 double CollisionPair::CalculateMinimumSeparation()
 {
 	double trueAnomalyP, trueAnomalyS, seperation, altSeperation, eP, eS;
@@ -313,7 +345,7 @@ double CollisionPair::CalculateMinimumSeparation()
 				// Update values
 				tempAnomalyP = TauRange(tempAnomalyP + h);
 				tempAnomalyS = TauRange(tempAnomalyS + k);
-				it++;
+				++it;
 			}
 			//TODO Handle case where iterations reached
 			if (it == NEWTONMAXITERATIONS + 1)
@@ -367,7 +399,7 @@ double CollisionPair::CalculateMinimumSeparation()
 	else {
 		seperation = abs(primaryElements.semiMajorAxis - secondaryElements.semiMajorAxis);
 	}
-	SetCollisionAltitude(primaryElements.GetRadialPosition());
+	
 
 	if (eP != 0 || eS != 0)
 	{
@@ -400,6 +432,7 @@ double CollisionPair::CalculateMinimumSeparation()
 		approachAnomalyP = trueAnomalyP;
 		approachAnomalyS = trueAnomalyS;
 	}
+	SetCollisionAltitude(primaryElements.GetRadialPosition());
 	return seperation;
 }
 

@@ -82,7 +82,7 @@ double OrbitalAnomalies::MeanToEccentricAnomaly(double mA, double eccentricity)
 		h = f / fPrime;
 		tempAnomaly -= h;
 
-		it++;
+		++it;
 	}
 	return TauRange(tempAnomaly);
 }

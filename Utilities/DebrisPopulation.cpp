@@ -140,23 +140,23 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 	{
 		debris.SetInitEpoch(currentEpoch);
 		population.emplace(ID, debris);
-		populationCount++;
+		++populationCount;
 		totalMass += debris.GetMass();
 		switch (debris.GetType()) {
-		case 0: upperStageCount++;
-		case 1: spacecraftCount++;
-		case 2: debrisCount++;
+		case 0: ++upperStageCount;
+		case 1: ++spacecraftCount;
+		case 2: ++debrisCount;
 		}
 	}
 	else if (debEpoch <= currentEpoch)
 	{
 		population.emplace(ID, debris);
-		populationCount++;
+		++populationCount;
 		totalMass += debris.GetMass();
 		switch (debris.GetType()) {
-		case 0: upperStageCount++;
-		case 1: spacecraftCount++;
-		case 2: debrisCount++;
+		case 0: ++upperStageCount;
+		case 1: ++spacecraftCount;
+		case 2: ++debrisCount;
 		}
 	}
 	else
@@ -200,12 +200,12 @@ void DebrisPopulation::LoadPopulation()
 			DebrisObject tempObject(loadingPopulation[ID.second]);
 			loadingPopulation.erase(ID.second);
 			population.emplace(ID.second, tempObject);
-			populationCount++;
+			++populationCount;
 			totalMass += tempObject.GetMass();
 			switch (tempObject.GetType()) {
-				case 0: upperStageCount++;
-				case 1: spacecraftCount++;
-				case 2: debrisCount++;
+			case 0: ++upperStageCount;
+			case 1: ++spacecraftCount;
+			case 2: ++debrisCount;
 			}
 			if (initEpochs.size() == 0)
 				break;
@@ -219,13 +219,13 @@ void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 {
 	int type = debrisEvent.GetEventType();
 	eventLog.push_back(debrisEvent);
-	eventCount++;
+	++eventCount;
 	if (type == 0)
-		explosionCount++;
+		++explosionCount;
 	else if (type == 1)
-		collisionCount++;
+		++collisionCount;
 	else if (type == 2)
-		collisionAvoidanceCount++;
+		++collisionAvoidanceCount;
 }
 
 DebrisObject& DebrisPopulation::GetObject(long ID)

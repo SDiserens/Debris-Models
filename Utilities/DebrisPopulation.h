@@ -35,7 +35,7 @@ protected:
 	long populationCount = 0;
 	int scalingPower;
 	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis, durationDays, launchCycle;
-	map<long, DebrisObject> loadingPopulation;
+	unordered_map<long, DebrisObject> loadingPopulation;
 	vector<pair<double, long>> initEpochs;
 	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount;
 	int upperStageCount, spacecraftCount, debrisCount;
@@ -44,7 +44,7 @@ protected:
 	vector<DebrisObject> launchTraffic;
 
 public:
-	map<long, DebrisObject> population, removedPopulation;
+	unordered_map<long, DebrisObject> population, removedPopulation;
 
 public:
 	DebrisPopulation();

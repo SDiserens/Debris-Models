@@ -36,6 +36,7 @@ public:
 	char display;
 	double percent;
 	uint64_t pInt;
+	string outputString;
 
 	ProgressBar(double n, char d) : n(n/100), display(d) {}
 
@@ -45,15 +46,17 @@ public:
 		*/
 		if (i == 0)
 		{
-			cout << fixed << setprecision(2) << showpoint;
+			//cout << fixed << setprecision(2) << showpoint;
 			cout << '\r' + string(100, ' ') + ": " << 0.00 << "%" << flush;
 		}
 		else
 		{
-			percent = ((double)i / n);
+			percent = (i / n);
 			pInt = uint64_t(percent);
-			cout << fixed << setprecision(2) << showpoint;
-			cout << '\r' + string(pInt, display) + string((100 - pInt), ' ') + ": " << percent << "%" << flush;
+			//cout << fixed << setprecision(2) << showpoint;
+			outputString = '\r' + string(pInt, display) + string((100 - pInt), ' ') + ": %4.2f %%";
+			printf(outputString.c_str(), percent);
+			cout.flush();
 		}
 	}
 };

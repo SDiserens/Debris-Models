@@ -154,6 +154,7 @@
     <ClInclude Include="Modules\Collision_Algorithms\Collisions.h" />
     <ClInclude Include="Modules\Collision_Algorithms\CUBE.h" />
     <ClInclude Include="Modules\Collision_Algorithms\HootsFilter.h" />
+    <ClInclude Include="Modules\Collision_Algorithms\MOID\distlink.h" />
     <ClInclude Include="Modules\Collision_Algorithms\OrbitTrace.h" />
     <ClInclude Include="Modules\Fragmentation_Models\fragmentation.h" />
     <ClInclude Include="Modules\Fragmentation_Models\FragmentCloud.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="Modules\Collision_Algorithms\CollisionFunctions.cpp" />
     <ClCompile Include="Modules\Collision_Algorithms\CUBE.cpp" />
     <ClCompile Include="Modules\Collision_Algorithms\HootsFilter.cpp" />
+    <ClCompile Include="Modules\Collision_Algorithms\MOID\distlink.cpp" />
     <ClCompile Include="Modules\Collision_Algorithms\OrbitTrace.cpp" />
     <ClCompile Include="Modules\Fragmentation_Models\FragmentationFunctions.cpp" />
     <ClCompile Include="Modules\Fragmentation_Models\FragmentCloud.cpp" />

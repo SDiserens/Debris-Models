@@ -49,6 +49,12 @@
     <Filter Include="Source Files\05 Propagators\SGP4">
       <UniqueIdentifier>{d523669f-3a6c-4292-abe9-6be416393949}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\04 Collisions\Distlink">
+      <UniqueIdentifier>{90d586f9-e0e9-41ee-b712-c08b88434806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\04 Collision\Distlink">
+      <UniqueIdentifier>{d803f573-0322-46ad-8a52-e32612f0aab2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -120,6 +126,9 @@
     <ClInclude Include="Modules\Modules.h">
       <Filter>Header Files\01 Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\Collision_Algorithms\MOID\distlink.h">
+      <Filter>Header Files\04 Collision\Distlink</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp">
@@ -178,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="Utilities\BaseUtilities.cpp">
       <Filter>Source Files\02 Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\Collision_Algorithms\MOID\distlink.cpp">
+      <Filter>Source Files\04 Collisions\Distlink</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -263,7 +263,7 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	outputFilename = "Output\\" + string(date) + "_" + scenario + "_CollisionData" + mcRun + ".csv";
 	while (fileExists(outputFilename))
 	{
-		ID++;
+		++ID;
 		outputFilename = "Output\\" + string(date) + "_" + scenario + "_" + to_string(ID) + "_CollisionData" + mcRun + ".csv";
 	}
 
@@ -331,7 +331,7 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 	outputFilename = "Output\\" + string(date) + "_" + scenario + "_SimulationData" + mcRun + ".csv";
 	while (fileExists(outputFilename))
 	{
-		ID++;
+		++ID;
 		outputFilename = "Output\\" + string(date) + "_" + scenario + "_" + to_string(ID) + "_SimulationData" + mcRun + ".csv";
 	}
 
@@ -399,7 +399,7 @@ void WriteEventData(string scenario, Json::Value & config, string collisionModel
 	outputFilename = "Output\\" + string(date) + "_" + scenario + "_EventData" + mcRun + ".csv";
 	while (fileExists(outputFilename))
 	{
-		ID++;
+		++ID;
 		outputFilename = "Output\\" + string(date) + "_" + scenario + "_" + to_string(ID) + "_EventData"  + mcRun + ".csv";
 	}
 

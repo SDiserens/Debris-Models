@@ -24,7 +24,7 @@ FragmentCloud::~FragmentCloud()
 void FragmentCloud::AddFragment(DebrisObject fragment)
 {
 	fragments.push_back(fragment);
-	debrisCount++;
+	++debrisCount;
 	totalMass += fragment.GetMass();
 }
 

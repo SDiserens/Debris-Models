@@ -3133,7 +3133,7 @@ namespace SGP4Funcs
 		while ((dayofyr > inttemp + lmonth[i]) && (i < 12))
 		{
 			inttemp = inttemp + lmonth[i];
-			i++;
+			++i;
 		}
 		mon = i;
 		day = dayofyr - inttemp;

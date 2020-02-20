@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 	// Variable
 	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName;
 	double timeStep, stepDays, elapsedDays, simulationDays, threshold, avoidanceProbability=0;
-	bool logging = true, setThreshold = false;
+	bool parallel = true, logging = true, setThreshold = false;
 	int mcRuns;
 	DebrisObject target, projectile;
 
@@ -156,7 +156,8 @@ int main(int argc, char** argv)
 		while (elapsedDays < simulationDays)
 		{
 			// Propagate Object Orbits
-			timeStep = min(min(stepDays, environmentPopulation.GetTimeToNextInitEpoch()), simulationDays - elapsedDays);
+			//timeStep = min(min(stepDays, environmentPopulation.GetTimeToNextInitEpoch()), simulationDays - elapsedDays);
+			timeStep = min(stepDays, simulationDays - elapsedDays);
 			(*propagator).PropagatePopulation(timeStep);
 			elapsedDays += timeStep;
 
@@ -171,7 +172,10 @@ int main(int argc, char** argv)
 
 			// Determine Events
 				// Collision Detection
-			collisionModel->MainCollision_P(environmentPopulation, timeStep * secondsDay);
+			if (parallel)
+				collisionModel->MainCollision_P(environmentPopulation, timeStep * secondsDay);
+			else
+				collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
 			collisionList = collisionModel->GetNewCollisionList();
 
 			// if extra output requested

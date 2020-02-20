@@ -7,6 +7,7 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
@@ -18,35 +19,44 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-    This is the DISTLINK library for a fast, accurate, and reliable computation
+    
+
+This is the DISTLINK library for a fast, accurate, and reliable computation
 of the distance between two confocal elliptic orbits.
 
-    The library contains functions intended for calculating the Minimal Orbital
+   
+
+The library contains functions intended for calculating the Minimal Orbital
 Intersection Distance (MOID) between two confocal bounded Keplerian orbits. A
 theoretic method for the computation of the MOID used in the library agorithms
 is published in (Kholshevnikov & Vassiliev, 1999; Celest. Mech. Dyn. Astron.,
 75, 75-83). The algorithm itself is described in (Baluyev & Mikryukov, 2018;
 Astron. Comput., preprint arXiv.org: 1811.06373).
 
-    Additionally to the MOID, this library allows to calculate three different
+    
+Additionally to the MOID, this library allows to calculate three different
 linking coefficients that describe mutual topology of the orbital configuration.
 The linking coefficients can also be used as fast ``surrogates'' of the MOID and
 may supply an upper limit on it, see (Kholshevnikov, Vassiliev, 1999; CMDA 75, 67-74).
 
-    The library contains just two source files, the header file 'distlink.h' and
+    
+The library contains just two source files, the header file 'distlink.h' and
 the main file 'distlink.cpp'. They should be compiled together with the user main
 program or project.
+An example of compile command for GCC at a high optimization level:
+g++ main.cpp distlink.cpp -O3 -march=native -mfpmath=sse -o main.prg
 
-    An example of compile command for GCC at a high optimization level:
 
-    g++ main.cpp distlink.cpp -O3 -march=native -mfpmath=sse -o main.prg
 
-    The detailed description of the functions and their calling interaface is given
+The detailed description of the functions and their calling interaface is given
 in the comments inside distlink.h. Here we give only a brief general explanaition.
 
 **********************************************************************************
 
+
+
 Main data types and functions declared in the file 'distlink.h':
+
 
 
 0. The library includes template functions that accept a type parameter 'realfp'.
@@ -57,9 +67,11 @@ Main data types and functions declared in the file 'distlink.h':
    but implies significant slowdown. It can be used to reprocess numerically
    difficult almost-degenerate cases.
 
+
 1. The class 'COrbitData' is designed to store orbital elements. Fields in this
    class contain five orbital elements and auxiliary data, e.g. the basis unit
    vectors P, Q that define orbit orientation.
+
 
 2. The structure 'SMOIDResult' stores all necessary and auxiliary information
    obtained after computation of the MOID. Its fields contain information
@@ -67,8 +79,10 @@ Main data types and functions declared in the file 'distlink.h':
    of the result. The field 'good' is set to false if the algorithm finds that
    its results are not numerically reliable.
 
+
 3. The structure 'SLCResult' is designed to store two linking coefficients and the
    mutual inclination of the pair of orbits.
+
 
 4. The function
      detect_suitable_options(...)
@@ -78,16 +92,19 @@ Main data types and functions declared in the file 'distlink.h':
    root of machine epsilon, and min_root_error (or delta_min) is set to the double
    machine epsilon.
 
+
 5. The function
      test_peri_apo(O1, O2, limit)
    allow to quickly test, whether two orbits may have MOID below the specified
    limit, or it is definitely above. It is based on a simplistic comparison of
    orbital periceter and apocenter distances.
 
+
 6. The function
      LC(O1, O2, min_mut_incl)
    computes all the linking coefficients and mutual inclination between the
    specified orbits. It returns a structure of SLCResult type.
+
 
 7. The function
      MOID_fast(O1, O2, max_root_error, min_root_error, nu)
@@ -98,6 +115,7 @@ Main data types and functions declared in the file 'distlink.h':
    result then try MOID_fast(O2, O1, ...), and if it fails again then run
    MOID_fast at a higher numeric arithmetic (long double instead of double), and
    if this fails too, run MOID_direct_search(O1, O2, ...).
+
 
 8. The function
      MOID_direct_search(O1, O2, densities, max_dist_error, max_anom_error)
@@ -110,15 +128,22 @@ Main data types and functions declared in the file 'distlink.h':
    and the minimum distance are both located with the required accuracy.
 
 
+
+
 CHANGELOG
 ---------------
 
-initial release - beta version
 
-release 1.0 - Corrected estimates of the reported uncertainties in u, u', and MOID,
+initial release 
+- beta version
+
+release 1.0 
+- Corrected estimates of the reported uncertainties in u, u', and MOID,
               which appeared too low. Speed and accuracy improvements.
 
-release 1.1 - Added stage of the final MOID refining by 2D iterations, so that the
+
+release 1.1 
+- Added stage of the final MOID refining by 2D iterations, so that the
               algorithm always provides results close to the requested numeric accuracy
               min_root_error (or close to the hardware precision), even in almost-degenerate
               cases. No significant effect on the speed.
