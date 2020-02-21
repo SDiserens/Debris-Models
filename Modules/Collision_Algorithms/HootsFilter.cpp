@@ -80,6 +80,10 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 	}
 }
 
+void HootsFilter::SetMOID(int moid)
+{
+}
+
 vector<double> HootsFilter::GetCollisionVerbose()
 {
 	return GetCollisionTimes();

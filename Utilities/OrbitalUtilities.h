@@ -91,6 +91,7 @@ vector3D CalculateAcceleration(vector3D& position);
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass);
 double CalculateKineticEnergy(double speed, double mass);
 double DegToRad(double angle);
+double RadtoDeg(double angle);
 double randomNumber();
 double randomNumber(double max);
 double randomNumber(double min, double max);

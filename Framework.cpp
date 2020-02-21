@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
 	collisionType = config["CollsionAlgorithm"].asString();
 	collisionConfig = config["CollisionConfig"];
-
+	int moid = 0;
 
 	// ----------------------------
 	// Parse command line arguments
@@ -245,6 +245,10 @@ int main(int argc, char** argv)
 			WriteSimulationData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
 		}
 		simulationLog.clear();
+
+		collisionModel->SetMOID(++moid);
+		
+
 	}
 
     return 0;

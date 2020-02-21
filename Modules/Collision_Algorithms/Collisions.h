@@ -3,6 +3,7 @@
 //#include "stdafx.h"
 
 #include "MOID\distlink.h"
+#include "MOID\MOID.h"
 
 class CollisionPair
 {
@@ -28,6 +29,7 @@ public:
 	double CalculateSeparationAtTime(double timeFromEpoch);
 	double CalculateMinimumSeparation();
 	double CalculateMinimumSeparation_DL();
+	double CalculateMinimumSeparation_MOID();
 	void CalculateArgumenstOfIntersection();
 	void CalculateArgumenstOfIntersectionCoplanar();
 	void CalculateRelativeInclination();
@@ -70,6 +72,8 @@ public:
 	virtual void MainCollision(DebrisPopulation& population, double timeStep) = 0;
 	virtual void MainCollision_P(DebrisPopulation& population, double timeStep);
 	virtual void SetThreshold(double threshold) = 0;
+	virtual void SetMOID(int moid) = 0;
+
 	void SwitchGravityComponent();
 	vector<Event> GetCollisionList();
 	vector<Event> GetNewCollisionList();

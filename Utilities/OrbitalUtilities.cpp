@@ -153,7 +153,12 @@ double CalculateKineticEnergy(double speed, double mass)
 
 double DegToRad(double angle)
 {
-	return angle * Pi/180;
+	return angle * 0.01745329251;
+}
+
+double RadtoDeg(double angle)
+{
+	return angle * 57.2957795131;
 }
 
 // 3D vector functions

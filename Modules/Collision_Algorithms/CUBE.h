@@ -20,6 +20,7 @@ public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
 	void MainCollision_P(DebrisPopulation& population, double timeStep);
 	void SetThreshold(double threshold);
+	void SetMOID(int moid);
 
 protected:
 	double CollisionRate(CollisionPair& objectPair);

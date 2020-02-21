@@ -10,11 +10,25 @@ OrbitTrace::OrbitTrace(bool probabilities, double threshold)
 	pAThreshold = threshold;
 }
 
+OrbitTrace::OrbitTrace(bool probabilities, double threshold, int moid)
+{
+	outputProbabilities = probabilities;
+	pAThreshold = threshold;
+	MOIDtype = 0;
+}
+
 
 void OrbitTrace::SetThreshold(double threshold)
 {
 	pAThreshold = threshold;
 }
+
+void OrbitTrace::SetMOID(int moid)
+{
+	cout << "Moid set to " << moid << "\n";
+	MOIDtype = moid;
+}
+
 void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 {
 	double tempProbability, collisionRate, altitude, mass;
@@ -184,7 +198,12 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	vector3D velocityI, velocityJ;
 
 	//TODO - Quick filter on possible separation
-	minSeperation = objectPair.CalculateMinimumSeparation_DL();
+	switch (MOIDtype) {
+	case 0: minSeperation = objectPair.CalculateMinimumSeparation();
+	case 1: minSeperation = objectPair.CalculateMinimumSeparation_DL();
+	case 2: minSeperation = objectPair.CalculateMinimumSeparation_MOID();
+	}
+	
 
 	velocityI = objectPair.primary.GetVelocity();
 	velocityJ = objectPair.secondary.GetVelocity();

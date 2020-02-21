@@ -23,6 +23,10 @@ void CUBEApproach::SetThreshold(double threshold)
 	cubeVolume = threshold * threshold * threshold;
 }
 
+void CUBEApproach::SetMOID(int moid)
+{
+}
+
 void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate, altitude, mass, adjustment;

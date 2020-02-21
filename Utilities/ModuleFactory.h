@@ -99,8 +99,9 @@ private:
 		// Read OT config
 		bool probabilities = config["Verbose"].asBool();
 		double threshold = config["ConjunctionThreshold"].asDouble();
+		int MOIDtype = config["MOID"].asInt();
 
-		return make_unique<OrbitTrace>( probabilities, threshold);
+		return make_unique<OrbitTrace>( probabilities, threshold, MOIDtype);
 	};
 
 	static unique_ptr<HootsFilter> CreateHootsInstance(Json::Value & config) {

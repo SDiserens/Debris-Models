@@ -225,6 +225,23 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 	return secondary.GetVelocity();
 }
 
+double CollisionPair::CalculateMinimumSeparation_MOID()
+{
+	OrbitalElements primaryElements = primary.GetElements();
+	OrbitalElements secondaryElements = secondary.GetElements();
+	moid_data_t mdata;
+
+	double distance = find_moid_full(primaryElements, secondaryElements, &mdata);
+
+	approachAnomalyP = mdata.obj1_true_anom;
+	approachAnomalyS = mdata.obj2_true_anom;
+	primaryElements.SetTrueAnomaly(mdata.obj1_true_anom);
+	secondaryElements.SetTrueAnomaly(approachAnomalyS);
+
+	SetCollisionAltitude(primaryElements.GetRadialPosition());
+
+	return distance;
+}
 
 double CollisionPair::CalculateMinimumSeparation_DL()
 {

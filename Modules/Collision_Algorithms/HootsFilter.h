@@ -16,6 +16,7 @@ public:
 	void MainCollision(DebrisPopulation& population, double timestep);
 	void SetThreshold(double threshold);
 
+	void SetMOID(int moid);
 	vector<double> GetCollisionVerbose();
 	vector<double> GetNewCollisionVerbose();
 

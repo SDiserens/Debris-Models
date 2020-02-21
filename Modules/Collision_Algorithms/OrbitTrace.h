@@ -6,12 +6,15 @@
 class OrbitTrace : public CollisionAlgorithm
 {
 	//double deltaR, deltaB;
+	int MOIDtype = 0; // {0: inbuilt Newton; 1: distlink; 2: MOID}
 
 public:
 	void MainCollision(DebrisPopulation& population, double timeStep);
 	void MainCollision_P(DebrisPopulation& population, double timeStep);
 	void SetThreshold(double threshold);
+	void SetMOID(int moid);
 	OrbitTrace(bool probabilities = false, double threshold = 10);
+	OrbitTrace(bool probabilities = false, double threshold = 10, int moid = 0);
 
 protected:
 	double CollisionRate(CollisionPair &objectPair);
