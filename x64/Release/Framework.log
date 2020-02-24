@@ -1,7 +1,110 @@
-﻿  Framework.cpp
+﻿  stdafx.cpp
+  CollisionFunctions.cpp
+  CUBE.cpp
+  HootsFilter.cpp
+  brentmin.cpp
+  distlink.cpp
+Modules\Collision_Algorithms\MOID\distlink.cpp(1272): warning C4099: 'SMOIDResult<float>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see declaration of 'SMOIDResult<float>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1272): warning C4099: 'SLCResult<float>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see declaration of 'SLCResult<float>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1273): warning C4099: 'SMOIDResult<double>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1273): note: see declaration of 'SMOIDResult<double>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1273): warning C4099: 'SLCResult<double>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1273): note: see declaration of 'SLCResult<double>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1274): warning C4099: 'SMOIDResult<long double>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1274): note: see declaration of 'SMOIDResult<long double>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1274): warning C4099: 'SLCResult<long double>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1274): note: see declaration of 'SLCResult<long double>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(111): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(111): note: while compiling class template member function 'CInitializer<21>::CInitializer(void)'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(114): note: see reference to function template instantiation 'CInitializer<21>::CInitializer(void)' being compiled
+  Modules\Collision_Algorithms\MOID\distlink.cpp(114): note: see reference to class template instantiation 'CInitializer<21>' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(147): warning C4244: 'initializing': conversion from 'const double' to 'float', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'COrbitData<float>::COrbitData<double>(const COrbitData<double> &)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(147): warning C4244: 'initializing': conversion from 'const long double' to 'float', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'COrbitData<float>::COrbitData<long double>(const COrbitData<long double> &)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1055): warning C4101: 'iter_cnt': unreferenced local variable
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'SMOIDResult<float> MOID_fast<float>(const COrbitData<float> &,const COrbitData<float> &,float,float,float)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1218): warning C4244: '=': conversion from 'float' to 'unsigned int', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'SMOIDResult<float> MOID_direct_search<float>(const COrbitData<float> &,const COrbitData<float> &,const unsigned int [],float,float)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1218): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1273): note: see reference to function template instantiation 'SMOIDResult<double> MOID_direct_search<double>(const COrbitData<double> &,const COrbitData<double> &,const unsigned int [],double,double)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1218): warning C4244: '=': conversion from 'long double' to 'unsigned int', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1274): note: see reference to function template instantiation 'SMOIDResult<long double> MOID_direct_search<long double>(const COrbitData<long double> &,const COrbitData<long double> &,const unsigned int [],long double,long double)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(954): warning C4018: '<=': signed/unsigned mismatch
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1060): note: see reference to function template instantiation 'short Newton_sqdist<realfp>(const SAuxData<realfp> &,realfp &,realfp &,realfp &,realfp &,realfp &,realfp &,realfp,unsigned int &,int,realfp [],realfp [])' being compiled
+          with
+          [
+              realfp=float
+          ]
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'SMOIDResult<float> MOID_fast<float>(const COrbitData<float> &,const COrbitData<float> &,float,float,float)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1111): warning C4018: '<=': signed/unsigned mismatch
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1223): note: see reference to function template instantiation 'int search_in_segment<realfp>(const SAuxData<realfp> &,realfp,realfp,unsigned int,realfp &)' being compiled
+          with
+          [
+              realfp=float
+          ]
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'SMOIDResult<float> MOID_direct_search<float>(const COrbitData<float> &,const COrbitData<float> &,const unsigned int [],float,float)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(72): warning C4244: 'argument': conversion from 'int' to 'const std::complex<float>::_Ty', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(384): note: see reference to function template instantiation 'std::complex<float> operator *<float>(int,const std::complex<float> &)' being compiled
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1020): note: see reference to function template instantiation 'unsigned int polynomial_roots<float>(int,std::complex<float> [],std::complex<float> [],realfp,realfp)' being compiled
+          with
+          [
+              realfp=float
+          ]
+Modules\Collision_Algorithms\MOID\distlink.cpp(65): warning C4244: 'argument': conversion from 'int' to 'const std::complex<float>::_Ty', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(385): note: see reference to function template instantiation 'std::complex<float> operator *<float>(const std::complex<float> &,int)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\include\xutility(2690): warning C4244: 'argument': conversion from 'const int' to 'const std::complex<float>::_Ty', possible loss of data
+  C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\include\xutility(2704): note: see reference to function template instantiation 'void std::_Fill_unchecked1<_FwdIt,_Ty>(_FwdIt,_FwdIt,const _Ty &,std::false_type)' being compiled
+          with
+          [
+              _FwdIt=std::complex<float> *,
+              _Ty=int
+          ]
+  C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\include\xutility(2712): note: see reference to function template instantiation 'void std::_Fill_unchecked<_Iter,_Ty>(_FwdIt,_FwdIt,const _Ty &)' being compiled
+          with
+          [
+              _Iter=std::complex<float> *,
+              _Ty=int,
+              _FwdIt=std::complex<float> *
+          ]
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1004): note: see reference to function template instantiation 'void std::fill<std::complex<float>*,int>(_FwdIt,_FwdIt,const _Ty &)' being compiled
+          with
+          [
+              _FwdIt=std::complex<float> *,
+              _Ty=int
+          ]
+  moid.cpp
+  OrbitTrace.cpp
+  FragmentationFunctions.cpp
+  FragmentCloud.cpp
+  NASAStdBrkUpMdl.cpp
+  Framework.cpp
+  Analytic_J2.cpp
+  Propagator.cpp
+  SGP4wrap.cpp
+  SGP4.cpp
+Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): warning C4477: 'sscanf_s' : format string '%1c' requires an argument of type 'unsigned int', but variadic argument 4 has type '::size_t'
+  Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): note: this argument is used as a buffer size
+Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): warning C4477: 'sscanf_s' : format string '%10s' requires an argument of type 'unsigned int', but variadic argument 6 has type 'unsigned __int64'
+  Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): note: this argument is used as a buffer size
+  BaseUtilities.cpp
+  DebrisObject.cpp
+  DebrisPopulation.cpp
+  OrbitalAnomalies.cpp
+  OrbitalElements.cpp
+  Compiling...
+  Compiling...
+  OrbitalUtilities.cpp
+  Compiling...
   Generating code
-  198 of 4503 functions ( 4.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    34 functions had inline decision re-evaluated but remain unchanged
+  All 4503 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1215): warning C6001: Using uninitialized memory 'delta'.
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1120): warning C6001: Using uninitialized memory 'min_i'.
+e:\work\modelling framework\modules\collision_algorithms\moid\moid.cpp(289): warning C6011: Dereferencing NULL pointer 'mdata'. 
+e:\work\modelling framework\modules\collision_algorithms\orbittrace.cpp(217): warning C6001: Using uninitialized memory 'minSeperation'.
+e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(1953): warning C6001: Using uninitialized memory 'coseo1'.
+e:\work\modelling framework\modules\propagators\sgp4\sgp4code\sgp4.cpp(2223): warning C6328: Size mismatch: 'unsigned __int64' passed as _Param_(6) when 'unsigned int' is required in call to 'sscanf_s'. 

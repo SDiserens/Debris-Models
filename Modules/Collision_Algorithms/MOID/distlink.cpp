@@ -1209,7 +1209,7 @@ SMOIDResult<realfp> MOID_direct_search(const COrbitData<realfp>& O1, const COrbi
   if(h>0)
   {
    realfp min_val;
-   realfp delta;
+   realfp delta = max_dist_error;
    bool is_dens = (densities != NULL);
    unsigned int _dens = 3;
    for(int i=0; i<1 || h>max_anom_error || fabs(delta)>max_dist_error; i++)

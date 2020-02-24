@@ -4,19 +4,19 @@
     <SFA>
       <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
       <FILENAME>collisionfunctions.cpp</FILENAME>
-      <LINE>208</LINE>
+      <LINE>294</LINE>
       <COLUMN>7</COLUMN>
     </SFA>
     <DEFECTCODE>6246</DEFECTCODE>
-    <DESCRIPTION>Local declaration of 'NewtonSeperation' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '201' of 'e:\work\modelling framework\modules\collision_algorithms\collisionfunctions.cpp'.</DESCRIPTION>
+    <DESCRIPTION>Local declaration of 'NewtonSeperation' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '287' of 'e:\work\modelling framework\modules\collision_algorithms\collisionfunctions.cpp'.</DESCRIPTION>
     <FUNCTION>CollisionPair::CalculateMinimumSeparation</FUNCTION>
     <DECORATED>?CalculateMinimumSeparation@CollisionPair@@QEAANXZ</DECORATED>
-    <FUNCLINE>191</FUNCLINE>
+    <FUNCLINE>277</FUNCLINE>
     <PATH>
       <SFA>
         <FILEPATH>e:\work\modelling framework\modules\collision_algorithms\</FILEPATH>
         <FILENAME>collisionfunctions.cpp</FILENAME>
-        <LINE>201</LINE>
+        <LINE>287</LINE>
         <COLUMN>23</COLUMN>
       </SFA>
     </PATH>
