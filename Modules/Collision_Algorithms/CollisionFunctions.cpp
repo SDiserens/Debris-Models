@@ -54,7 +54,6 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popula
 list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & population)
 {
 	list<CollisionPair> pairList;
-	//TODO - test parallel construction of list
 	// For each object in population - parallelised
 	
 	mutex mtx;
@@ -74,6 +73,15 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & popu
 			pair.~CollisionPair();
 		}
 		});
+	return pairList;
+}
+
+list<CollisionPair> CollisionAlgorithm::CreatePairList_GPU(DebrisPopulation & population)
+{
+	list<CollisionPair> pairList;
+	// TODO - GPU code for creating pairList
+
+	//Talk to Pete about i, j where i < j < N
 	return pairList;
 }
 
@@ -151,6 +159,11 @@ double CollisionAlgorithm::CalculateClosestApproach(CollisionPair objectPair)
 */
 
 void CollisionAlgorithm::MainCollision_P(DebrisPopulation & population, double timeStep)
+{
+	MainCollision(population, timeStep);
+}
+
+void CollisionAlgorithm::MainCollision_GPU(DebrisPopulation & population, double timeStep)
 {
 	MainCollision(population, timeStep);
 }

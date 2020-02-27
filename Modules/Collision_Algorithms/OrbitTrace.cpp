@@ -99,6 +99,23 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 
 }
 
+void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, double timestep)
+{
+	double tempProbability, collisionRate, altitude, mass;
+	list<CollisionPair> pairList;
+	pair<long, long> pairID;
+	bool collision;
+
+	// Filter Cube List
+	pairList = CreatePairList_GPU(population);
+	timeStep = timestep;
+
+	//TODO - Add code for GPU use
+	// 1D iteration over pairList
+	//int index = blockIdx.x * blockDim.x + threadIdx.x;
+
+}
+
 void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
 	double tempProbability, collisionRate, altitude, mass;

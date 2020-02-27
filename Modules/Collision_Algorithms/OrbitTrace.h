@@ -9,8 +9,9 @@ class OrbitTrace : public CollisionAlgorithm
 	int MOIDtype = 0; // {0: inbuilt Newton; 1: distlink; 2: MOID}
 
 public:
-	void MainCollision(DebrisPopulation& population, double timeStep);
-	void MainCollision_P(DebrisPopulation& population, double timeStep);
+	void MainCollision(DebrisPopulation& population, double timestep);
+	void MainCollision_P(DebrisPopulation& population, double timestep);
+	void MainCollision_GPU(DebrisPopulation& population, double timestep);
 	void SetThreshold(double threshold);
 	void SetMOID(int moid);
 	OrbitTrace(bool probabilities = false, double threshold = 10);

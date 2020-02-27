@@ -64,6 +64,7 @@ protected:
 	virtual double CollisionRate(CollisionPair &objectPair) = 0;
 	virtual list<CollisionPair> CreatePairList(DebrisPopulation& population);
 	virtual list<CollisionPair> CreatePairList_P(DebrisPopulation& population);
+	virtual list<CollisionPair> CreatePairList_GPU(DebrisPopulation& population);
 
 	vector<double> GetCollisionProbabilities();
 	vector<double> GetNewCollisionProbabilities();
@@ -71,6 +72,7 @@ protected:
 public:
 	virtual void MainCollision(DebrisPopulation& population, double timeStep) = 0;
 	virtual void MainCollision_P(DebrisPopulation& population, double timeStep);
+	virtual void MainCollision_GPU(DebrisPopulation& population, double timeStep);
 	virtual void SetThreshold(double threshold) = 0;
 	virtual void SetMOID(int moid) = 0;
 
