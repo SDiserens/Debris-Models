@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 	LoadConfigFile(config);
 
 	// Identify config variables
-	scenarioFilename =  config["scenarioFilename"].asString();
+	scenarioFilename = config["scenarioFilename"].asString();
 	probabilityOutput = config["probabilityOutput"].asBool();
 	relativeGravity = config["relativeGravity"].asBool();
 	runMode = config["runType"].asInt();
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 		if ((arg == "-f") || (arg == "--filename"))
 		{
 			scenarioFilename = argv[++i];
-		} 
+		}
 		else if ((arg == "-d") || (arg == "--dimension"))
 		{
 			dimension = atof(argv[++i]);
@@ -78,10 +78,12 @@ int main(int argc, char** argv)
 
 
 	// Read scenario file
+
+	cout << "Reading Population File : " + scenarioFilename + "...\n";
 	DebrisPopulation objectPopulation;
 	LoadScenario(objectPopulation, scenarioFilename);
 
-	
+
 	averageSemiMajorAxis = objectPopulation.GetAverageSMA();
 	scalingPower = objectPopulation.GetScalingPower();
 
@@ -96,7 +98,7 @@ int main(int argc, char** argv)
 	}
 
 	// Run simulation
-	if (config["randomSeed"].isUInt64() || (argseed != -1) )
+	if (config["randomSeed"].isUInt64() || (argseed != -1))
 	{
 		seed = (argseed != -1) ? argseed : config["randomSeed"].asUInt64();
 		cout << "Using a random seed of : " << seed << endl;
@@ -104,7 +106,7 @@ int main(int argc, char** argv)
 	}
 
 	// Create Cube object
-	CUBEApproach collisionCube(cubeDimension, probabilityOutput);
+	CUBEApproach collisionCube(probabilityOutput, cubeDimension);
 	if (relativeGravity)
 		collisionCube.SwitchGravityComponent();
 
@@ -161,7 +163,7 @@ int main(int argc, char** argv)
 	}
 
 	progress.DisplayProgress(evaluationBlocks * evaluationSteps); cout << "\n" << flush;
-	
+
 	string collisionName;
 
 
@@ -170,10 +172,10 @@ int main(int argc, char** argv)
 	for (auto & collisionPair : totalCollisionRates)
 	{
 		pairID = collisionPair.first;
-		tempCollisionRate = round(1e4 * (collisionPair.second/ evaluationBlocks)) / 1e4;
+		tempCollisionRate = round(1e4 * (collisionPair.second / evaluationBlocks)) / 1e4;
 		collisionPair.second = tempCollisionRate;
 		collisionName = objectPopulation.GetObject(pairID.first).GetName() + "-" +
-						objectPopulation.GetObject(pairID.second).GetName();
+			objectPopulation.GetObject(pairID.second).GetName();
 		if (printing)
 		{
 			cout << "For collision pair: " + collisionName + ":\n" << flush;
@@ -197,28 +199,29 @@ int main(int argc, char** argv)
 		outputFilename = "Output\\" + string(date) + "_" + eventType + '_' + to_string(ID) + ".csv";
 	}
 
-	cout << "Creating Data File : " + outputFilename + "...";
-	// Create Output file
-	ofstream outputFile;
-	outputFile.open(outputFilename, ofstream::out);
-
-	// Write data into file
-	cout << "  Writing to Data File...";
-
-	metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + ",km\n" + 
-				"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",seconds\n" +
-				"Using a scaling of : ," + to_string(scaling) + "\nCalculated in runtime of : ," + to_string(timeDiff.count()) + ",s";
 	if (saveOutput)
 	{
+		cout << "Creating Data File : " + outputFilename + "...";
+		// Create Output file
+		ofstream outputFile;
+		outputFile.open(outputFilename, ofstream::out);
+
+		// Write data into file
+		cout << "  Writing to Data File...";
+
+		metaData = "Scenario : ," + eventType + "\nDimension : ," + to_string(100 * dimension) + ",% of average semiMajorAxis\n Cube Dimension : ," + to_string(cubeDimension) + ",km\n" +
+			"Number of evaluations : ," + to_string(evaluationBlocks) + "\nEvaluation Steps : ," + to_string(evaluationSteps) + "\nStep Length : ," + to_string(timeStep) + ",seconds\n" +
+			"Using a scaling of : ," + to_string(scaling) + "\nCalculated in runtime of : ," + to_string(timeDiff.count()) + ",s";
+
 		if (individualOutput)
 			WriteCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
 		else
 			WriteSystemCollisionData(outputFile, metaData, objectPopulation, totalCollisionRates, collisionRates, collisionCount, scalingPower);
-	}
+	
 	cout << "Finished\n";
 	// Close file
 	outputFile.close();
-
+	}
 	// END
 }
 

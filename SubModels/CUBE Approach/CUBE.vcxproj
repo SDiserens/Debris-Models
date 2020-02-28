@@ -146,6 +146,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\Modules\Collision_Algorithms\Collisions.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\CUBE.h" />
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\brentmin.h" />
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\distlink.h" />
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\MOID.h" />
     <ClInclude Include="..\..\Utilities\BaseUtilities.h" />
     <ClInclude Include="..\..\Utilities\DebrisObject.h" />
     <ClInclude Include="..\..\Utilities\DebrisPopulation.h" />
@@ -158,6 +161,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CollisionFunctions.cpp" />
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CUBE.cpp" />
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\brentmin.cpp" />
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\distlink.cpp" />
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\moid.cpp" />
     <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp" />
     <ClCompile Include="..\..\Utilities\BaseUtilities.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisObject.cpp" />

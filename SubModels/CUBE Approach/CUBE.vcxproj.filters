@@ -25,6 +25,12 @@
     <Filter Include="Header Files\CUBE">
       <UniqueIdentifier>{d67eb8d5-0d78-40ee-93c0-fd451dff5430}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\CUBE\MOID">
+      <UniqueIdentifier>{e2a19b81-a391-406f-b7e1-b297bb0bda42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CUBE\MOID">
+      <UniqueIdentifier>{9d7e87fc-c507-4086-b7f2-9fd4f5518bf6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -60,6 +66,15 @@
     <ClInclude Include="..\..\Utilities\BaseUtilities.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\brentmin.h">
+      <Filter>Header Files\CUBE\MOID</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\distlink.h">
+      <Filter>Header Files\CUBE\MOID</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\MOID.h">
+      <Filter>Header Files\CUBE\MOID</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +109,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp">
       <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\brentmin.cpp">
+      <Filter>Source Files\CUBE\MOID</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\distlink.cpp">
+      <Filter>Source Files\CUBE\MOID</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\moid.cpp">
+      <Filter>Source Files\CUBE\MOID</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
