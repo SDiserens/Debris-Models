@@ -218,4 +218,9 @@
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="Modules\Collision_Algorithms\OrbitTrace_GPU.cu">
+      <Filter>Source Files\04 Collisions</Filter>
+    </CudaCompile>
+  </ItemGroup>
 </Project>

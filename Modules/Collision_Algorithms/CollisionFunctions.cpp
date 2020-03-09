@@ -76,14 +76,6 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & popu
 	return pairList;
 }
 
-list<CollisionPair> CollisionAlgorithm::CreatePairList_GPU(DebrisPopulation & population)
-{
-	list<CollisionPair> pairList;
-	// TODO - GPU code for creating pairList
-
-	//Talk to Pete about i, j where i < j < N
-	return pairList;
-}
 
 
 bool CollisionAlgorithm::PerigeeApogeeTest(CollisionPair& objectPair)
