@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 #include "Collisions.h"
+#include <thrust\device_vector.h>
 
 class OrbitTrace : public CollisionAlgorithm
 {
@@ -12,6 +13,7 @@ public:
 	void MainCollision(DebrisPopulation& population, double timestep);
 	void MainCollision_P(DebrisPopulation& population, double timestep);
 	void MainCollision_GPU(DebrisPopulation& population, double timestep);
+	//void MainCollision_GPU_Cuda(DebrisPopulation& population, double timestep);
 	void SetThreshold(double threshold);
 	void SetMOID(int moid);
 	OrbitTrace(bool probabilities = false, double threshold = 10);
@@ -19,7 +21,7 @@ public:
 
 protected:
 	double CollisionRate(CollisionPair &objectPair);
-
+	thrust::device_vector<CollisionPair> CreatePairList_GPU(DebrisPopulation & population);
 	/*
 	double CalculateSpatialDensity(DebrisObject object, double radius, double latitude);
 	double CalculateRadialSpatialDensity(DebrisObject object, double radius);

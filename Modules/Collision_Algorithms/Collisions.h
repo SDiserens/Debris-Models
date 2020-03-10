@@ -10,13 +10,15 @@ class CollisionPair
 public:
 	DebrisObject primary, secondary;
 	long primaryID, secondaryID;
-	double approachAnomalyP, approachAnomalyS;
+	double approachAnomalyP, approachAnomalyS, probability;
 	bool coplanar;
 	int overlapCount;
+	Event tempEvent;
 protected:
 	double relativeInclination, relativeVelocity, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii, collisionAltitude;
 
 public:
+	CollisionPair();
 	CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
 	CollisionPair(long IDI, long IDJ);
 	double GetRelativeInclination();

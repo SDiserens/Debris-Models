@@ -165,6 +165,10 @@ void CollisionAlgorithm::SwitchGravityComponent()
 	relativeGravity = !relativeGravity;
 }
 
+CollisionPair::CollisionPair()
+{
+}
+
 CollisionPair::CollisionPair(DebrisObject & objectI, DebrisObject & objectJ)
 {
 	primary = objectI;

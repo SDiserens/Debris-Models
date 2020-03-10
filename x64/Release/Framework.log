@@ -1,44 +1,444 @@
 ﻿  Compiling CUDA source file Modules\Collision_Algorithms\OrbitTrace_GPU.cu...
   
   E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitTrace_GPU.cu.obj "E:\Work\Modelling Framework\Modules\Collision_Algorithms\OrbitTrace_GPU.cu" 
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(23): warning : variable "tempProbability" was declared but never referenced
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(29): warning : a __host__ function("OrbitTrace::CollisionRate") redeclared with __device__, hence treated as a __host__ __device__ function
   
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(23): warning : variable "collisionRate" was declared but never referenced
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(107): warning : a __host__ function("OrbitTrace::MainCollision_GPU") redeclared with __host__ __device__, hence treated as a __host__ __device__ function
   
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(23): warning : variable "altitude" was declared but never referenced
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(111): warning : calling a constexpr __host__ function("pair") from a __host__ __device__ function("MainCollision_GPU") is not allowed. The experimental flag '--expt-relaxed-constexpr' can be used to allow this.
   
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(23): warning : variable "mass" was declared but never referenced
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(145): warning : calling a constexpr __host__ function("make_pair") from a __host__ __device__ function("operator()") is not allowed. The experimental flag '--expt-relaxed-constexpr' can be used to allow this.
   
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(25): warning : variable "pairID" was declared but never referenced
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(145): warning : calling a constexpr __host__ function from a __host__ __device__ function is not allowed. The experimental flag '--expt-relaxed-constexpr' can be used to allow this.
   
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(26): warning : variable "collision" was declared but never referenced
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(110): warning : calling a __host__ function from a __host__ __device__ function is not allowed
   
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(115): warning : calling a __host__ function from a __host__ __device__ function is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(115): warning : calling a __host__ function from a __host__ __device__ function is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(160): warning : calling a __host__ function from a __host__ __device__ function is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(161): warning : calling a __host__ function from a __host__ __device__ function is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(169): warning : calling a __host__ function from a __host__ __device__ function is not allowed
+  
+CUDACOMPILE : warning : calling a __host__ function from a __host__ __device__ function is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("Event::~Event") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "Event::~Event" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("Event::~Event") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "Event::~Event" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ,  ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("Event::~Event") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "Event::~Event" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __global__ function("thrust::cuda_cub::core::_kernel_agent< ::thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ,  ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(73): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("CollisionPair::CollisionPair") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("CollisionPair::CollisionPair") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("CollisionPair::CollisionPair [subobject]") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("CollisionPair::CollisionPair [subobject]") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function("CollisionPair::~CollisionPair") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function("CollisionPair::~CollisionPair") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function("CollisionPair::~CollisionPair") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function("CollisionPair::~CollisionPair [subobject]") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function("CollisionPair::~CollisionPair [subobject]") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/core/agent_launcher.h(74): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function("CollisionPair::~CollisionPair [subobject]") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(110): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::vector_base [subobject]") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(115): warning : calling a __host__ function("OrbitTrace::CreatePairList_GPU") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(115): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::operator =") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust\device_vector.h(162): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::~vector_base [subobject]") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(118): warning : calling a __host__ function("computeGridSize") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(118): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::size const") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(120): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::begin") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(120): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::end") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(153): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::size const") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(154): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::operator []") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(154): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(154): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(154): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(154): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(154): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(160): warning : calling a __host__ function("std::vector<double, ::std::allocator<double> > ::emplace_back<const double & > ") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(161): warning : calling a __host__ function("std::vector<    ::Event, ::std::allocator<    ::Event> > ::emplace_back<const     ::Event & > ") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(166): warning : calling a __host__ function("CollisionAlgorithm::DetermineCollision") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(169): warning : calling a __host__ function("std::vector<    ::Event, ::std::allocator<    ::Event> > ::emplace_back<const     ::Event & > ") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(172): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(172): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(172): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(174): warning : calling a __host__ function("thrust::detail::vector_base<    ::CollisionPair,  ::thrust::device_allocator<    ::CollisionPair> > ::~vector_base [subobject]") from a __host__ __device__ function("OrbitTrace::MainCollision_GPU") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(32): warning : calling a __host__ function("vector3D::vector3D") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(32): warning : calling a __host__ function("vector3D::vector3D") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(35): warning : calling a __host__ function("CollisionPair::CalculateMinimumSeparation") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(36): warning : calling a __host__ function("CollisionPair::CalculateMinimumSeparation_DL") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(37): warning : calling a __host__ function("CollisionPair::CalculateMinimumSeparation_MOID") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(41): warning : calling a __host__ function("DebrisObject::GetVelocity") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(42): warning : calling a __host__ function("DebrisObject::GetVelocity") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(44): warning : calling a __host__ function("vector3D::vectorNorm") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(44): warning : calling a __host__ function("vector3D::CalculateRelativeVector const") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(45): warning : calling a __host__ function("CollisionPair::GetBoundingRadii") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(46): warning : calling a __host__ function("CollisionPair::SetRelativeVelocity") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(51): error : identifier "Pi" is undefined in device code
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(51): warning : calling a __host__ function("vector3D::vectorNorm") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(51): warning : calling a __host__ function("vector3D::VectorCrossProduct const") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(52): warning : calling a __host__ function("DebrisObject::GetPeriod") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(52): warning : calling a __host__ function("DebrisObject::GetPeriod") from a __host__ __device__ function("OrbitTrace::CollisionRate") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(124): warning : calling a __host__ function("CollisionPair::CalculateRelativeInclination") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(126): warning : calling a __host__ function("OrbitTrace::CoplanarFilter") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(126): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(126): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(126): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(126): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(126): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(129): warning : calling a __host__ function("CollisionPair::CalculateArgumenstOfIntersectionCoplanar") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("OrbitTrace::HeadOnFilter") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("OrbitTrace::SynchronizedFilter") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("OrbitTrace::ProximityFilter") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(130): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(136): warning : calling a __host__ function("CollisionPair::CalculateArgumenstOfIntersection") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("OrbitTrace::SynchronizedFilter") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("OrbitTrace::ProximityFilter") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(137): warning : calling a __host__ function("DebrisObject::~DebrisObject") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(145): warning : calling a __host__ function("std::pair<long, long> ::operator =") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(145): warning : calling a constexpr __host__ function("std::make_pair<long &, long &> ") from a __host__ __device__ function(" const") is not allowed. The experimental flag '--expt-relaxed-constexpr' can be used to allow this.
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(147): warning : calling a __host__ function("OrbitalElements::GetRadialPosition") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(147): warning : calling a __host__ function("DebrisObject::GetElements") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(148): warning : calling a __host__ function("DebrisObject::GetMass") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(148): warning : calling a __host__ function("DebrisObject::GetMass") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(149): warning : calling a __host__ function("Event::Event") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(149): warning : calling a __host__ function("DebrisPopulation::GetEpoch") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(149): warning : calling a __host__ function("CollisionPair::GetRelativeVelocity") from a __host__ __device__ function(" const") is not allowed
+  
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(149): warning : calling a __host__ function("Event::~Event") from a __host__ __device__ function(" const") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/assign_value.h(45): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator =") from a __host__ __device__ function("thrust::reference<    ::CollisionPair,  ::thrust::device_ptr<    ::CollisionPair> ,  ::thrust::device_reference<    ::CollisionPair> > ::operator =") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/assign_value.h(45): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator =") from a __host__ __device__ function("thrust::reference<    ::CollisionPair,  ::thrust::device_ptr<    ::CollisionPair> ,  ::thrust::device_reference<    ::CollisionPair> > ::operator =") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/get_value.h(60): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("thrust::reference<    ::CollisionPair,  ::thrust::device_ptr<    ::CollisionPair> ,  ::thrust::device_reference<    ::CollisionPair> > ::operator     ::CollisionPair const") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/get_value.h(60): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("thrust::reference<    ::CollisionPair,  ::thrust::device_ptr<    ::CollisionPair> ,  ::thrust::device_reference<    ::CollisionPair> > ::operator     ::CollisionPair const") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/assign_value.h(45): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator =") from a __host__ __device__ function("thrust::reference<    ::CollisionPair,  ::thrust::device_ptr<    ::CollisionPair> ,  ::thrust::device_reference<    ::CollisionPair> > ::operator =<const     ::CollisionPair,  ::thrust::device_ptr<const     ::CollisionPair> ,  ::thrust::device_reference<const     ::CollisionPair> > ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/assign_value.h(45): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator =") from a __host__ __device__ function("thrust::reference<    ::CollisionPair,  ::thrust::device_ptr<    ::CollisionPair> ,  ::thrust::device_reference<    ::CollisionPair> > ::operator =<const     ::CollisionPair,  ::thrust::device_ptr<const     ::CollisionPair> ,  ::thrust::device_reference<const     ::CollisionPair> > ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/get_value.h(60): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("thrust::reference<    ::CollisionPair,  ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> ,  ::thrust::use_default> ::operator     ::CollisionPair const") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/get_value.h(60): warning : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __host__ __device__ function("thrust::reference<    ::CollisionPair,  ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> ,  ::thrust::use_default> ::operator     ::CollisionPair const") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/detail/allocator/default_construct_range.inl(46): warning : calling a __host__ function("CollisionPair::CollisionPair") from a __host__ __device__ function("thrust::detail::allocator_traits_detail::construct1_via_allocator< ::thrust::detail::no_throw_allocator< ::thrust::detail::temporary_allocator<    ::CollisionPair,  ::thrust::cuda_cub::tag> > > ::operator ()<    ::CollisionPair> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_copy::functor< ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> ,  ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> > , long long> ::consume_tile<(bool)1> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_copy::functor< ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> ,  ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> > , long long> ::consume_tile<(bool)1> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_copy::functor< ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> ,  ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> > , long long> ::consume_tile<(bool)0> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_copy::functor< ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> ,  ::thrust::pointer<    ::CollisionPair,  ::thrust::cuda_cub::tag,  ::thrust::use_default,  ::thrust::use_default> > , long long> ::consume_tile<(bool)0> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("Event::~Event") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "Event::~Event" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("Event::~Event") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "Event::~Event" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("Event::~Event") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "Event::~Event" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("Event::~Event") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "Event::~Event" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::consume_tile<(bool)1> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::consume_tile<(bool)1> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::consume_tile<(bool)0> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__uninitialized_fill::functor< ::thrust::device_ptr<    ::CollisionPair> ,     ::CollisionPair> , unsigned long long> ::consume_tile<(bool)0> ") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(98): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("Event::~Event") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "Event::~Event" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : calling a __host__ function("DebrisObject::~DebrisObject") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(114): error : identifier "DebrisObject::~DebrisObject" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ::entry") is not allowed
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : identifier "std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string" is undefined in device code
+  
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/system/cuda/detail/parallel_for.h(119): error : calling a __host__ function("std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string") from a __device__ function("thrust::cuda_cub::__parallel_for::ParallelForAgent< ::thrust::cuda_cub::__fill::functor< ::thrust::detail::normal_iterator< ::thrust::device_ptr<    ::CollisionPair> > ,     ::CollisionPair> , long long> ::entry") is not allowed
+  
+  Error limit reached.
+  100 errors detected in the compilation of "C:/Users/sdd1n15/AppData/Local/Temp/tmpxft_00004ce4_00000000-7_OrbitTrace_GPU.cpp1.ii".
+  Compilation terminated.
   OrbitTrace_GPU.cu
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(23): warning C4101: 'collisionRate': unreferenced local variable
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(23): warning C4101: 'mass': unreferenced local variable
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(26): warning C4101: 'collision': unreferenced local variable
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(23): warning C4101: 'altitude': unreferenced local variable
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(23): warning C4101: 'tempProbability': unreferenced local variable
-  
-  E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -dlink -o x64\Release\Framework.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MT " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\libs\x64\static\Release" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" jsoncpp.lib "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64\cudart.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_30,code=sm_30  --machine 64 x64\Release\OrbitTrace_GPU.cu.obj 
-  jsoncpp.lib
-  cudart.lib
-  kernel32.lib
-  user32.lib
-  gdi32.lib
-  winspool.lib
-  comdlg32.lib
-  advapi32.lib
-  shell32.lib
-  ole32.lib
-  oleaut32.lib
-  uuid.lib
-  odbc32.lib
-  odbccp32.lib
-  OrbitTrace_GPU.cu.obj
-  Generating code
-  193 of 4504 functions ( 4.3%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    37 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\BuildCustomizations\CUDA 10.2.targets(764,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitTrace_GPU.cu.obj "E:\Work\Modelling Framework\Modules\Collision_Algorithms\OrbitTrace_GPU.cu"" exited with code 1.
