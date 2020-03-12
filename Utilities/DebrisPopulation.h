@@ -17,6 +17,7 @@ public:
 	~Event();
 	void CollisionAvoidance();
 	void SwapPrimarySecondary();
+	void SetEpoch(double epoch);
 	void SetConservationMomentum(bool conservedFlag);
 	void SetCatastrophic(bool catastrophicFlag);
 	void SetEMR(double eMRatio);

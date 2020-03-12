@@ -400,6 +400,11 @@ void Event::SwapPrimarySecondary()
 	secondaryID = tempID;
 }
 
+void Event::SetEpoch(double epoch)
+{
+	eventEpoch = epoch;
+}
+
 void Event::SetConservationMomentum(bool conservedFlag)
 {
 	momentumConserved = conservedFlag;

@@ -11,7 +11,7 @@ public:
 	DebrisObject primary, secondary;
 	long primaryID, secondaryID;
 	double approachAnomalyP, approachAnomalyS, probability;
-	bool coplanar;
+	bool coplanar, collision;
 	int overlapCount;
 	Event tempEvent;
 protected:
