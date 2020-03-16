@@ -5,8 +5,8 @@ extern mt19937_64 * generator;
 const int NEWTONMAXITERATIONS = 50;
 const double NEWTONTOLERANCE = 1e-10;
 
-const double Pi = _Pi;
-const double Tau = 2 * _Pi;
+CUDA_CONSTANT const double Pi = _Pi;
+CUDA_CONSTANT const double Tau = 2 * _Pi;
 const double secondsDay = 24 * 60 * 60;
 const double secondsYear = secondsDay * 365;
 
@@ -67,19 +67,19 @@ public:
 	double x, y, z;
 
 public:
-	vector3D();
-	vector3D(double X, double Y, double Z);
-	double vectorNorm(int ord);
-	double vectorNorm();
-	double vectorNorm2();
-	void addVector(vector3D& vectorB);
-	vector3D CalculateRelativeVector(vector3D& vectorB) const;
-	vector3D operator+(vector3D& vectorB);
-	vector3D operator-(vector3D& vectorB);
-	vector3D operator/(double scalar);
-	vector3D operator*(double scalar);
-	double VectorDotProduct(vector3D& vectorB);
-	vector3D VectorCrossProduct(vector3D& vectorB) const;
+	CUDA_CALLABLE_MEMBER vector3D();
+	CUDA_CALLABLE_MEMBER vector3D(double X, double Y, double Z);
+	CUDA_CALLABLE_MEMBER double vectorNorm(int ord);
+	CUDA_CALLABLE_MEMBER double vectorNorm();
+	CUDA_CALLABLE_MEMBER double vectorNorm2();
+	CUDA_CALLABLE_MEMBER void addVector(vector3D& vectorB);
+	CUDA_CALLABLE_MEMBER vector3D CalculateRelativeVector(vector3D& vectorB) const;
+	CUDA_CALLABLE_MEMBER vector3D operator+(vector3D& vectorB);
+	CUDA_CALLABLE_MEMBER vector3D operator-(vector3D& vectorB);
+	CUDA_CALLABLE_MEMBER vector3D operator/(double scalar);
+	CUDA_CALLABLE_MEMBER vector3D operator*(double scalar);
+	CUDA_CALLABLE_MEMBER double VectorDotProduct(vector3D& vectorB);
+	CUDA_CALLABLE_MEMBER vector3D VectorCrossProduct(vector3D& vectorB) const;
 
 };
 

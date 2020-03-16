@@ -29,7 +29,7 @@ public:
 		double argPerigee, double init_meanAnomaly, int type);
 	DebrisObject(string TLE1, string TLE2, string TLE3);
 	DebrisObject(string TLE2, string TLE3);
-	~DebrisObject();
+	CUDA_CALLABLE_MEMBER ~DebrisObject();
 	void RegenerateID();
 
 	long GetID();
@@ -46,12 +46,12 @@ public:
 	int GetNFrag();
 	double GetInitEpoch();
 	double GetEpoch();
-	double GetMass();
+	CUDA_CALLABLE_MEMBER double GetMass();
 	double GetLength();
 	double GetArea();
 	double GetAreaToMass();
 	double GetRadius();
-	double GetPeriod();
+	CUDA_CALLABLE_MEMBER double GetPeriod();
 	double GetEpochAnomaly();
 	double GetPerigee();
 	double GetApogee();
@@ -61,13 +61,13 @@ public:
 	double GetExplosionProbability();
 	bool IsIntact();
 	bool IsActive();
-	vector3D GetVelocity();
+	CUDA_CALLABLE_MEMBER vector3D GetVelocity();
 	vector3D GetPosition();
 	vector<double> GetStateVector();
 	vector3D GetNormalVector();
 
-	OrbitalAnomalies GetAnomalies();
-	OrbitalElements& GetElements();
+	CUDA_CALLABLE_MEMBER OrbitalAnomalies GetAnomalies();
+	CUDA_CALLABLE_MEMBER OrbitalElements& GetElements();
 
 	bool SGP4Initialised();
 	elsetrec& GetSGP4SatRec();

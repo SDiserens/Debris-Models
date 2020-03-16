@@ -11,7 +11,7 @@ public:
 	OrbitalElements(double a, double e, double i, double ra, double ap, double meanAnomaly);
 	OrbitalElements(vector3D &position, vector3D &velocity);
 	double GetTrueAnomaly();
-	double GetMeanAnomaly();
+	CUDA_CALLABLE_MEMBER double GetMeanAnomaly();
 	double GetEccentricAnomaly();
 	void UpdateOrbitalElements(double deltaSMA = 0, double deltaEcc = 0, double deltaInc = 0, double deltaRA = 0, double deltaAP = 0);
 	void SetOrbitalElements(double a, double e, double i, double ra, double ap);
@@ -24,8 +24,8 @@ public:
 	vector3D GetNormalVector();
 	double GetPerigee();
 	double GetApogee();
-	double GetRadialPosition();
-	double GetRadialPosition(double trueAnomaly);
+	CUDA_CALLABLE_MEMBER double GetRadialPosition();
+	CUDA_CALLABLE_MEMBER double GetRadialPosition(double trueAnomaly);
 	double CalculatePeriod();
 	double GetMeanMotion();
 

@@ -8,14 +8,14 @@ protected:
 	int priority; // Defines which anomaly has most recently been set: 0, 1, 2 respectively.
 
 public:
-	OrbitalAnomalies();
-	~OrbitalAnomalies();
-	void SetMeanAnomaly(double M);
-	void SetTrueAnomaly(double v);
-	void SetEccentricAnomaly(double E);
-	double GetMeanAnomaly(double eccentricity);
-	double GetTrueAnomaly(double eccentricity);
-	double GetEccentricAnomaly(double eccentricity);
+	CUDA_CALLABLE_MEMBER OrbitalAnomalies();
+	CUDA_CALLABLE_MEMBER ~OrbitalAnomalies();
+	CUDA_CALLABLE_MEMBER void SetMeanAnomaly(double M);
+	CUDA_CALLABLE_MEMBER void SetTrueAnomaly(double v);
+	CUDA_CALLABLE_MEMBER void SetEccentricAnomaly(double E);
+	CUDA_CALLABLE_MEMBER double GetMeanAnomaly(double eccentricity);
+	CUDA_CALLABLE_MEMBER double GetTrueAnomaly(double eccentricity);
+	CUDA_CALLABLE_MEMBER double GetEccentricAnomaly(double eccentricity);
 
 	double EccentricToMeanAnomaly(double eA, double eccentricity);
 	double EccentricToTrueAnomaly(double eA, double eccentricity);

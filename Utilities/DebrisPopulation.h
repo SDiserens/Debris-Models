@@ -10,11 +10,11 @@ public:
 	bool catastrophic, momentumConserved;
 
 public:
-	Event();
-	Event(double epoch, long objectID, double mass);
-	Event(double epoch, long objectID, bool consMomentum, bool catastr, double mass, long debrisCount);
-	Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt);
-	~Event();
+	CUDA_CALLABLE_MEMBER Event();
+	CUDA_CALLABLE_MEMBER Event(double epoch, long objectID, double mass);
+	CUDA_CALLABLE_MEMBER Event(double epoch, long objectID, bool consMomentum, bool catastr, double mass, long debrisCount);
+	CUDA_CALLABLE_MEMBER Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt);
+	CUDA_CALLABLE_MEMBER ~Event();
 	void CollisionAvoidance();
 	void SwapPrimarySecondary();
 	void SetEpoch(double epoch);

@@ -5,6 +5,18 @@
 
 #pragma once
 
+#ifdef __CUDACC__
+#define CUDA_CALLABLE_MEMBER __host__ __device__
+#else
+#define CUDA_CALLABLE_MEMBER
+#endif 
+
+#ifdef __CUDACC__
+#define CUDA_CONSTANT __constant__
+#else
+#define CUDA_CONSTANT
+#endif 
+
 #include "targetver.h"
 
 #include <stdio.h>
