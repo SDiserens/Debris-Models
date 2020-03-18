@@ -104,7 +104,7 @@ __host__ void OrbitTrace::MainCollision_GPU_Cuda(DebrisPopulation & population, 
 
 }
 */
-__device__ bool HeadOnFilter(CollisionPair objectPair)
+__device__ bool HeadOnFilter(CollisionPair& objectPair)
 {
 	bool headOn = false;
 	double deltaW;
@@ -125,7 +125,7 @@ __device__ bool HeadOnFilter(CollisionPair objectPair)
 	return headOn;
 }
 
-__device__ bool SynchronizedFilter(CollisionPair objectPair, double timeStep)
+__device__ bool SynchronizedFilter(CollisionPair& objectPair, double timeStep)
 {
 	double meanMotionP, meanMotionS, driftAngle;
 	// OT synch filter
@@ -136,7 +136,7 @@ __device__ bool SynchronizedFilter(CollisionPair objectPair, double timeStep)
 	return (driftAngle >= Tau);
 }
 
-__device__ bool ProximityFilter(CollisionPair objectPair)
+__device__ bool ProximityFilter(CollisionPair& objectPair)
 {
 	//  OT  proximity filter
 	double deltaMP, deltaMS, deltaMAngle, deltaMLinear, combinedSemiMajorAxis;
@@ -216,10 +216,11 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	computeGridSize(pairList.size(), 256, numBlocks, numThreads);
 	//TODO - Add code for GPU use
 	thrust::for_each(thrust::device, pairList.begin(), pairList.end(), CollisionSteps(timestep, MOIDtype, pAThreshold));
-	
-		
-	for (int i = 0; i < pairList.size(); i++) {
-		CollisionPair objectPair = pairList[i];
+
+	thrust::device_vector<CollisionPair> pairList_local = pairList;
+
+	for (int i = 0; i < pairList_local.size(); i++) {
+		CollisionPair objectPair = pairList_local[i];
 		tempProbability = objectPair.probability;
 		//	-- Determine if collision occurs through MC (random number generation)
 		if (outputProbabilities && tempProbability > 0)

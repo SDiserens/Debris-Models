@@ -55,7 +55,7 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 
 DebrisObject::DebrisObject(string TLE1, string TLE2, string TLE3) : DebrisObject(TLE2, TLE3)
 {
-	name = TLE1;
+	strcpy(name,TLE1.c_str());
 }
 
 DebrisObject::DebrisObject(string TLE2, string TLE3)
@@ -164,13 +164,14 @@ void DebrisObject::RemoveObject(int removeType, double epoch) // (0, 1, 2) = (De
 
 void DebrisObject::SetName(string init_name)
 {
-	name = init_name;
+	strcpy(name, init_name.c_str());
 }
 
 string DebrisObject::GetName()
 {
-	if (name.size() > 0)
-		return name;
+	string tempname(name);
+	if (tempname.size() > 0)
+		return tempname;
 	else
 		return to_string(objectID);
 }
