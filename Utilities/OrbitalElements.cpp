@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "OrbitalElements.h"
 
 // Elements functions
 OrbitalElements::OrbitalElements() {}

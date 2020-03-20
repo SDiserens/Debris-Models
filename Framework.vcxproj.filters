@@ -69,19 +69,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files\01 Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities\DebrisObject.h">
-      <Filter>Header Files\02 Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="Utilities\DebrisPopulation.h">
-      <Filter>Header Files\02 Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\OrbitalUtilities.h">
-      <Filter>Header Files\02 Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\OrbitalAnomalies.h">
-      <Filter>Header Files\02 Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\OrbitalElements.h">
       <Filter>Header Files\02 Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Modules\Fragmentation_Models\fragmentation.h">
@@ -135,6 +123,24 @@
     <ClInclude Include="Modules\Collision_Algorithms\MOID\brentmin.h">
       <Filter>Header Files\04 Collision\MOID</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities\DebrisObject.cuh">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\OrbitalElements.cuh">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\OrbitalAnomalies.cuh">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\OrbitalUtilities.cuh">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DebrisEvent.cuh">
+      <Filter>Header Files\02 Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\Collision_Algorithms\CollisionPair.cuh">
+      <Filter>Header Files\04 Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp">
@@ -143,19 +149,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files\01 Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\DebrisObject.cpp">
-      <Filter>Source Files\02 Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="Utilities\DebrisPopulation.cpp">
-      <Filter>Source Files\02 Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities\OrbitalUtilities.cpp">
-      <Filter>Source Files\02 Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities\OrbitalAnomalies.cpp">
-      <Filter>Source Files\02 Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities\OrbitalElements.cpp">
       <Filter>Source Files\02 Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Modules\Fragmentation_Models\FragmentationFunctions.cpp">
@@ -220,6 +214,24 @@
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Modules\Collision_Algorithms\OrbitTrace_GPU.cu">
+      <Filter>Source Files\04 Collisions</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Utilities\DebrisObject.cu">
+      <Filter>Source Files\02 Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Utilities\OrbitalElements.cu">
+      <Filter>Source Files\02 Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Utilities\OrbitalAnomalies.cu">
+      <Filter>Source Files\02 Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Utilities\OrbitalUtilities.cu">
+      <Filter>Source Files\02 Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Utilities\DebrisEvent.cu">
+      <Filter>Source Files\02 Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Modules\Collision_Algorithms\CollisionPair.cu">
       <Filter>Source Files\04 Collisions</Filter>
     </CudaCompile>
   </ItemGroup>

@@ -19,17 +19,17 @@ public:
 	void SetRightAscension(double init_rightAscension);
 	void SetArgPerigee(double init_argPerigee);
 
-	vector3D GetPosition();
-	vector3D GetVelocity();
-	vector3D GetNormalVector();
+	CUDA_CALLABLE_MEMBER vector3D GetPosition();
+	CUDA_CALLABLE_MEMBER vector3D GetVelocity();
+	CUDA_CALLABLE_MEMBER vector3D GetNormalVector();
 	double GetPerigee();
 	double GetApogee();
 	CUDA_CALLABLE_MEMBER double GetRadialPosition();
 	CUDA_CALLABLE_MEMBER double GetRadialPosition(double trueAnomaly);
-	double CalculatePeriod();
+	CUDA_CALLABLE_MEMBER double CalculatePeriod();
 	double GetMeanMotion();
 
-	OrbitalAnomalies GetAnomalies();
+	CUDA_CALLABLE_MEMBER OrbitalAnomalies GetAnomalies();
 	void SetMeanAnomaly(double M);
 	void SetTrueAnomaly(double v);
 	void SetEccentricAnomaly(double E);

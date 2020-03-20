@@ -1,7 +1,7 @@
 {
   "scenarioFilename": "Collisions_43900.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
   "StepSize": 0.05, // Size of default timestep (days)
-  "MonteCarlo": 10,
+  "MonteCarlo": 1,
   "logging": false, 
   //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
@@ -23,8 +23,10 @@
   },
 
   //
-  "CollsionAlgorithm": "Cube-offset", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
+  "CollsionAlgorithm": "OrbitTrace", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
+    "ParallelGPU": true, // takes priority over CPU
+    "ParallelCPU": true,
     "CubeDimension": 10.0, // Cube Size or threshold distance
     "CubeMC": 100, // Cube runs to do each step
     "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots

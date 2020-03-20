@@ -174,7 +174,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	pmdSuccess = scenario["PMD_SuccessRate"].asDouble();
 
 	cout << " Parsing Scenario...\n";
-	SetCentralBody(scenario["centralBody"].asInt());
+	//SetCentralBody(scenario["centralBody"].asInt());
 	population.SetScalingPower(scenario["outputScaling"].asInt());
 
 	date = scenario["EpochDate"].asString();

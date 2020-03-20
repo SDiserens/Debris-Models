@@ -1,32 +1,20 @@
-﻿  
-  E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -dlink -o x64\Release\Framework.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MT " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\libs\x64\static\Release" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" jsoncpp.lib "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64\cudart.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_30,code=sm_30  --machine 64 x64\Release\OrbitTrace_GPU.cu.obj 
-CUDALINK : nvlink error : Undefined reference to '_ZN8vector3DC1Ev' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair26CalculateMinimumSeparationEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair29CalculateMinimumSeparation_DLEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair31CalculateMinimumSeparation_MOIDEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN12DebrisObject11GetVelocityEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN8vector3D10vectorNormEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZNK8vector3D23CalculateRelativeVectorERS_' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair16GetBoundingRadiiEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair19SetRelativeVelocityEd' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZNK8vector3D18VectorCrossProductERS_' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN12DebrisObject9GetPeriodEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN5EventD1Ev' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN12DebrisObjectD1Ev' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN12DebrisObject11GetElementsEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN16OrbitalAnomaliesC1Ev' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN16OrbitalAnomalies14SetTrueAnomalyEd' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN16OrbitalAnomalies14GetMeanAnomalyEd' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN15OrbitalElements14GetMeanAnomalyEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN16OrbitalAnomaliesD1Ev' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair28CalculateRelativeInclinationEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair22GetRelativeInclinationEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair40CalculateArgumenstOfIntersectionCoplanarEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair32CalculateArgumenstOfIntersectionEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN15OrbitalElements17GetRadialPositionEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN12DebrisObject7GetMassEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN5EventC1Edllddd' in 'x64/Release/OrbitTrace_GPU.cu.obj'
-CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair19GetRelativeVelocityEv' in 'x64/Release/OrbitTrace_GPU.cu.obj'
+﻿  Compiling CUDA source file Modules\Collision_Algorithms\OrbitTrace_GPU.cu...
+  
+  E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitTrace_GPU.cu.obj "E:\Work\Modelling Framework\Modules\Collision_Algorithms\OrbitTrace_GPU.cu" 
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+  OrbitTrace_GPU.cu
+E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(222): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  
+  E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -dlink -o x64\Release\Framework.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MT " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\libs\x64\static\Release" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" jsoncpp.lib "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64\cudart.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_30,code=sm_30  --machine 64 x64\Release\CollisionPair.cu.obj x64\Release\DebrisEvent.cu.obj x64\Release\DebrisObject.cu.obj x64\Release\OrbitalAnomalies.cu.obj x64\Release\OrbitalElements.cu.obj x64\Release\OrbitalUtilities.cu.obj x64\Release\OrbitTrace_GPU.cu.obj 
   jsoncpp.lib
   cudart.lib
   kernel32.lib
@@ -41,5 +29,16 @@ CUDALINK : nvlink error : Undefined reference to '_ZN13CollisionPair19GetRelativ
   uuid.lib
   odbc32.lib
   odbccp32.lib
+  CollisionPair.cu.obj
+  DebrisEvent.cu.obj
+  DebrisObject.cu.obj
+  OrbitalAnomalies.cu.obj
+  OrbitalElements.cu.obj
+  OrbitalUtilities.cu.obj
   OrbitTrace_GPU.cu.obj
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\BuildCustomizations\CUDA 10.2.targets(851,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -dlink -o x64\Release\Framework.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MT " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\libs\x64\static\Release" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" jsoncpp.lib "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64\cudart.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_30,code=sm_30  --machine 64 x64\Release\OrbitTrace_GPU.cu.obj" exited with code 255.
+  Generating code
+  139 of 4381 functions ( 3.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    15 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

@@ -8,10 +8,13 @@
 #include <windows.h>
 #include <cuda_runtime.h>
 #include <cuda_gl_interop.h>
+#include "math.h"
 #include "device_launch_parameters.h"
 #include <thrust\for_each.h>
 #include <thrust\execution_policy.h>
 #include <thrust\device_vector.h>
+
+#define CUDASTRIDE 256
 
 //Round a / b to nearest higher integer value
 unsigned int  iDivUp(unsigned int  a, unsigned int  b)
@@ -26,17 +29,12 @@ void computeGridSize(unsigned int n, unsigned int blockSize, unsigned int  &numB
 	numBlocks = iDivUp(n, numThreads);
 }
 
-__device__ double CollisionRate(CollisionPair &objectPair, int MOIDtype, double pAThreshold)
+__device__ double CollisionRate(CollisionPair &objectPair, double pAThreshold)
 {
 	double collisionRate, boundingRadii, minSeperation, relativeVelocity;
 	vector3D velocityI, velocityJ;
 
-	switch (MOIDtype) {
-	case 0: minSeperation = objectPair.CalculateMinimumSeparation();
-	case 1: minSeperation = objectPair.CalculateMinimumSeparation_DL();
-	case 2: minSeperation = objectPair.CalculateMinimumSeparation_MOID();
-	}
-
+	minSeperation = objectPair.CalculateMinimumSeparation();
 
 	velocityI = objectPair.primary.GetVelocity();
 	velocityJ = objectPair.secondary.GetVelocity();
@@ -115,7 +113,7 @@ __device__ bool HeadOnFilter(CollisionPair& objectPair)
 		headOn = true;
 	else
 	{
-		deltaW = abs(Pi - objectPair.primary.GetElements().argPerigee - objectPair.secondary.GetElements().argPerigee);
+		deltaW = fabs((double)(Pi - objectPair.primary.GetElements().argPerigee - objectPair.secondary.GetElements().argPerigee));
 		if (deltaW <= 1)
 			headOn = true;
 		else if (Tau - deltaW <= 1)
@@ -132,7 +130,7 @@ __device__ bool SynchronizedFilter(CollisionPair& objectPair, double timeStep)
 	meanMotionP = Tau / objectPair.primary.GetPeriod();
 	meanMotionS = Tau / objectPair.secondary.GetPeriod();
 
-	driftAngle = abs(meanMotionP - meanMotionS) * timeStep;
+	driftAngle = fabs(meanMotionP - meanMotionS) * timeStep;
 	return (driftAngle >= Tau);
 }
 
@@ -145,82 +143,95 @@ __device__ bool ProximityFilter(CollisionPair& objectPair)
 	anomaliesP.SetTrueAnomaly(objectPair.approachAnomalyP);
 	anomaliesS.SetTrueAnomaly(objectPair.approachAnomalyS);
 
-	deltaMP = abs(anomaliesP.GetMeanAnomaly(objectPair.primary.GetElements().eccentricity) - objectPair.primary.GetElements().GetMeanAnomaly());
-	deltaMS = abs(anomaliesS.GetMeanAnomaly(objectPair.secondary.GetElements().eccentricity) - objectPair.secondary.GetElements().GetMeanAnomaly());
+	deltaMP = fabs(anomaliesP.GetMeanAnomaly(objectPair.primary.GetElements().eccentricity) - objectPair.primary.GetElements().GetMeanAnomaly());
+	deltaMS = fabs(anomaliesS.GetMeanAnomaly(objectPair.secondary.GetElements().eccentricity) - objectPair.secondary.GetElements().GetMeanAnomaly());
 
 	combinedSemiMajorAxis = (objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis) / 2;
-	deltaMAngle = abs(deltaMP - deltaMS);
+	deltaMAngle = fabs(deltaMP - deltaMS);
 	deltaMLinear = deltaMAngle * combinedSemiMajorAxis;
 
 	return (deltaMLinear <= objectPair.GetBoundingRadii());
 }
 
 
-
-struct CollisionSteps {
-	double timeStep, pAThreshold;
-	int MOIDtype;
-	CollisionSteps(double timestep, int moid, double threshold) {
+struct CollisionFilterKernel {
+	double timeStep;
+	CollisionFilterKernel(double timestep) {
 		timeStep = timestep;
-		MOIDtype = moid;
-		pAThreshold = threshold;
 	}
-__device__ void operator()(CollisionPair& objectPair) {
-	objectPair.collision = false;
+	__device__ void operator()(CollisionPair& objectPair) {
+		objectPair.collision = false;
 
-	objectPair.CalculateRelativeInclination();
-	double combinedSemiMajorAxis = objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis;
-	bool coplanar = objectPair.GetRelativeInclination() <= (2 * asin(objectPair.GetBoundingRadii() / combinedSemiMajorAxis));
-	objectPair.coplanar = coplanar;
+		objectPair.CalculateRelativeInclination();
+		double combinedSemiMajorAxis = objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis;
+		bool coplanar = objectPair.GetRelativeInclination() <= (2 * asin(objectPair.GetBoundingRadii() / combinedSemiMajorAxis));
+		objectPair.coplanar = coplanar;
 
-	if (coplanar)
-	{
-		// Calculate orbit intersections for coplanar
-		objectPair.CalculateArgumenstOfIntersectionCoplanar();
-		if (HeadOnFilter(objectPair) || !SynchronizedFilter(objectPair, timeStep) || ProximityFilter(objectPair))
-			objectPair.collision = true;
+		if (coplanar)
+		{
+			// Calculate orbit intersections for coplanar
+			objectPair.CalculateArgumenstOfIntersectionCoplanar();
+			if (HeadOnFilter(objectPair) || !SynchronizedFilter(objectPair, timeStep) || ProximityFilter(objectPair))
+				objectPair.collision = true;
+		}
+		else
+		{
+			// Calculate intersections for non coplanar
+			objectPair.CalculateArgumenstOfIntersection();
+			if (!SynchronizedFilter(objectPair, timeStep) || ProximityFilter(objectPair))
+				objectPair.collision = true;
+		}
 	}
-	else
-	{
-		// Calculate intersections for non coplanar
-		objectPair.CalculateArgumenstOfIntersection();
-		if (!SynchronizedFilter(objectPair, timeStep) || ProximityFilter(objectPair))
-			objectPair.collision = true;
-	}
+};
 
-	if (objectPair.collision)
-	{
-		double  altitude, mass;
-		thrust::pair<long, long> pairID;
-		objectPair.probability = timeStep * CollisionRate(objectPair, MOIDtype, pAThreshold);
-		pairID = thrust::make_pair(objectPair.primaryID, objectPair.secondaryID);
+struct CollisionRateKernel {
+		double timeStep, pAThreshold;
+		CollisionRateKernel(double timestep, double threshold) {
+			timeStep = timestep;
+			pAThreshold = threshold;
+		}
+	__device__ void operator()(CollisionPair& objectPair) {
+		if (objectPair.collision)
+		{
+			double  altitude, mass;
+			thrust::pair<long, long> pairID;
+			objectPair.probability = timeStep * CollisionRate(objectPair, pAThreshold);
+			pairID = thrust::make_pair(objectPair.primaryID, objectPair.secondaryID);
 
-		altitude = objectPair.primary.GetElements().GetRadialPosition();
-		mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
-		objectPair.tempEvent = Event(0, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
+			altitude = objectPair.primary.GetElements().GetRadialPosition();
+			mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+			objectPair.tempEvent = Event(0, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
+		}
+		else
+			objectPair.probability = 0;
 	}
-	else
-		objectPair.probability = 0;
-}
 };
 
 __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, double timestep)
 {
 	double tempProbability, epoch = population.GetEpoch();
 	thrust::device_vector<CollisionPair> pairList;
+	int i, j, n;
 
 	// Filter Cube List
 	pairList = CreatePairList_GPU(population);
 	timeStep = timestep;
-	unsigned int numThreads, numBlocks;
-	computeGridSize(pairList.size(), 256, numBlocks, numThreads);
+	//unsigned int numThreads, numBlocks;
+	//computeGridSize(pairList.size(), 256, numBlocks, numThreads);
 	//TODO - Add code for GPU use
-	thrust::for_each(thrust::device, pairList.begin(), pairList.end(), CollisionSteps(timestep, MOIDtype, pAThreshold));
+	n = pairList.size();
+	for (i = 0; i < n; i += CUDASTRIDE) {
+		j = min(i + CUDASTRIDE, n);
+		thrust::for_each(thrust::device, pairList.begin()+i, pairList.begin() + j, CollisionFilterKernel(timestep));
+	}
+	for (i = 0; i < n; i += CUDASTRIDE) {
+		j = min(i + CUDASTRIDE, n);
+		thrust::for_each(thrust::device, pairList.begin() + i, pairList.begin() + j, CollisionRateKernel(timestep, pAThreshold));
+	}
+	//thrust::host_vector<CollisionPair> pairList_local = pairList;
 
-	thrust::device_vector<CollisionPair> pairList_local = pairList;
-
-	for (int i = 0; i < pairList_local.size(); i++) {
-		CollisionPair objectPair = pairList_local[i];
+	for (int i = 0; i < pairList.size(); i++) {
+		CollisionPair objectPair = pairList[i];
 		tempProbability = objectPair.probability;
 		//	-- Determine if collision occurs through MC (random number generation)
 		if (outputProbabilities && tempProbability > 0)

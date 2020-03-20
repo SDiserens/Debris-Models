@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 	// Variable
 	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName;
 	double timeStep, stepDays, elapsedDays, simulationDays, threshold, avoidanceProbability=0;
-	bool parallel = true, logging = true, setThreshold = false;
+	bool  logging = true, setThreshold = false;
 	int mcRuns;
 	DebrisObject target, projectile;
 
@@ -113,6 +113,10 @@ int main(int argc, char** argv)
 	// ------- Load Modules -------
 	// ----------------------------
 	auto& collisionModel = ModuleFactory::CreateCollisionAlgorithm(collisionType, collisionConfig);
+	if (collisionConfig["ParallelGPU"].asBool())
+		collisionModel->SwitchParallelGPU();
+	if (collisionConfig["ParallelCPU"].asBool())
+		collisionModel->SwitchParallelCPU();
 	if (setThreshold) {
 		collisionModel->SetThreshold(threshold);
 		ModuleFactory::UpdateCollisionThreshold(collisionType, collisionConfig, threshold);
@@ -172,7 +176,9 @@ int main(int argc, char** argv)
 
 			// Determine Events
 				// Collision Detection
-			if (parallel)
+			if (collisionModel->UseGPU())
+				collisionModel->MainCollision_GPU(environmentPopulation, timeStep * secondsDay);
+			if (collisionModel->UseParallel())
 				collisionModel->MainCollision_P(environmentPopulation, timeStep * secondsDay);
 			else
 				collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
@@ -246,8 +252,8 @@ int main(int argc, char** argv)
 		}
 		simulationLog.clear();
 
-		collisionModel->SetMOID(++moid);
-		
+		//collisionModel->SetMOID(++moid);
+		collisionModel->SwitchParallelGPU();
 
 	}
 

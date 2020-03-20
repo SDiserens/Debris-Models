@@ -77,7 +77,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(CudaToolkitIncludeDir);$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(CudaToolkitLibDir);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -113,10 +114,18 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>$(CudaToolkitLibDir)\cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <CudaCompile>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <Include>$(CudaToolkitIncludeDir);%(Include)</Include>
+    </CudaCompile>
+    <CudaLink>
+      <AdditionalLibraryDirectories>$(CudaToolkitLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </CudaLink>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -153,6 +162,7 @@
     <CudaCompile>
       <Include>$(CudaToolkitIncludeDir);%(Include)</Include>
       <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <Runtime>InheritFromHost</Runtime>
     </CudaCompile>
     <CudaLink>
       <AdditionalLibraryDirectories>$(CudaToolkitLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -162,6 +172,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Modules\Collision_Algorithms\CollisionPair.cuh">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Modules\Collision_Algorithms\Collisions.h" />
     <ClInclude Include="Modules\Collision_Algorithms\CUBE.h" />
     <ClInclude Include="Modules\Collision_Algorithms\HootsFilter.h" />
@@ -181,12 +194,23 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utilities\BaseUtilities.h" />
-    <ClInclude Include="Utilities\DebrisObject.h" />
+    <ClInclude Include="Utilities\DebrisEvent.cuh">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Utilities\DebrisObject.cuh">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Utilities\DebrisPopulation.h" />
     <ClInclude Include="Utilities\ModuleFactory.h" />
-    <ClInclude Include="Utilities\OrbitalAnomalies.h" />
-    <ClInclude Include="Utilities\OrbitalElements.h" />
-    <ClInclude Include="Utilities\OrbitalUtilities.h" />
+    <ClInclude Include="Utilities\OrbitalAnomalies.cuh">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Utilities\OrbitalElements.cuh">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Utilities\OrbitalUtilities.cuh">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules\Collision_Algorithms\CollisionFunctions.cpp" />
@@ -211,16 +235,18 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Utilities\BaseUtilities.cpp" />
-    <ClCompile Include="Utilities\DebrisObject.cpp" />
     <ClCompile Include="Utilities\DebrisPopulation.cpp" />
-    <ClCompile Include="Utilities\OrbitalAnomalies.cpp" />
-    <ClCompile Include="Utilities\OrbitalElements.cpp" />
-    <ClCompile Include="Utilities\OrbitalUtilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Framework.rc" />
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="Modules\Collision_Algorithms\CollisionPair.cu" />
+    <CudaCompile Include="Utilities\DebrisEvent.cu" />
+    <CudaCompile Include="Utilities\DebrisObject.cu" />
+    <CudaCompile Include="Utilities\OrbitalAnomalies.cu" />
+    <CudaCompile Include="Utilities\OrbitalElements.cu" />
+    <CudaCompile Include="Utilities\OrbitalUtilities.cu" />
     <None Include="config.json" />
     <CudaCompile Include="Modules\Collision_Algorithms\OrbitTrace_GPU.cu">
       <FileType>Document</FileType>
