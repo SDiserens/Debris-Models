@@ -19,7 +19,8 @@ int main(int argc, char** argv)
 	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName;
 	double timeStep, stepDays, elapsedDays, simulationDays, threshold, avoidanceProbability=0;
 	bool  logging = true, setThreshold = false;
-	int mcRuns;
+	int mcRuns, i;
+	volatile int n;
 	DebrisObject target, projectile;
 
 	// Data logs
@@ -54,7 +55,7 @@ int main(int argc, char** argv)
 	// ----------------------------
 	// Parse command line arguments
 	// ----------------------------
-	for (int i = 1; i < argc; ++i) {
+	for (i = 1; i < argc; ++i) {
 		arg = argv[i];
 		if ((arg == "-f") || (arg == "--filename"))
 		{
@@ -184,20 +185,22 @@ int main(int argc, char** argv)
 				collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);
 			collisionList = collisionModel->GetNewCollisionList();
 
+			n = collisionList.size();
 			// if extra output requested
-			if (collisionConfig["Verbose"].asBool()) {
+			if ((collisionConfig["Verbose"].asBool()) && (n > 0)) {
 
-				// Retrieve collision output
-				collisionOutput = collisionModel->GetNewCollisionVerbose();
+					// Retrieve collision output
+					collisionOutput = collisionModel->GetNewCollisionVerbose();
 
-				// Log data
-				for (int i = 0; i < collisionList.size(); i++) {
+					// Log data
+					for (int k = 0; k < n; k++) {
 
-					collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collisionList[i].primaryID).GetNoradID()), 
-																				to_string(environmentPopulation.GetObject(collisionList[i].secondaryID).GetNoradID())),
-											collisionOutput[i], collisionList[i].altitude));
-				}
-				collisionOutput.clear();
+						collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collisionList[k].primaryID).GetNoradID()),
+							to_string(environmentPopulation.GetObject(collisionList[k].secondaryID).GetNoradID())),
+							collisionOutput[k], collisionList[k].altitude));
+					}
+					collisionOutput.clear();
+				
 			}
 
 			if (breakUp) {

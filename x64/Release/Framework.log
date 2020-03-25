@@ -12,7 +12,12 @@ CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
   
   OrbitTrace_GPU.cu
-E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(222): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Framework.cpp
+Framework.cpp(188): warning C4267: '=': conversion from 'size_t' to 'volatile int', possible loss of data
+  CUBE.cpp
+  CollisionFunctions.cpp
+  HootsFilter.cpp
+  OrbitTrace.cpp
   
   E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -dlink -o x64\Release\Framework.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MT " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\libs\x64\static\Release" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" jsoncpp.lib "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64\cudart.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_30,code=sm_30  --machine 64 x64\Release\CollisionPair.cu.obj x64\Release\DebrisEvent.cu.obj x64\Release\DebrisObject.cu.obj x64\Release\OrbitalAnomalies.cu.obj x64\Release\OrbitalElements.cu.obj x64\Release\OrbitalUtilities.cu.obj x64\Release\OrbitTrace_GPU.cu.obj 
   jsoncpp.lib
@@ -37,8 +42,8 @@ E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(222):
   OrbitalUtilities.cu.obj
   OrbitTrace_GPU.cu.obj
   Generating code
-  139 of 4381 functions ( 3.2%) were compiled, the rest were copied from previous compilation.
+  149 of 4381 functions ( 3.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    15 functions had inline decision re-evaluated but remain unchanged
+    21 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

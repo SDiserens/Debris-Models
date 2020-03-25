@@ -209,20 +209,15 @@ struct CollisionRateKernel {
 			pAThreshold = threshold;
 		}
 		__device__ void operator()(CollisionPair& objectPair) {
-			double  mass;
-			thrust::pair<long, long> pairID;
 			objectPair.probability = timeStep * CollisionRate(objectPair, pAThreshold);
-			pairID = thrust::make_pair(objectPair.primaryID, objectPair.secondaryID);
-
-			mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
-			objectPair.tempEvent = Event(0, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.altitude);
-
+			
 		}
 };
 
 __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, double timestep)
 {
-	double tempProbability, epoch = population.GetEpoch();
+	double mass, tempProbability, epoch = population.GetEpoch();
+	Event tempEvent;
 	thrust::device_vector<CollisionPair> pairList;
 
 	// Filter Cube List
@@ -235,21 +230,25 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	thrust::for_each(thrust::device, pairList.begin(), pairList.begin(), CollisionFilterKernel(timestep));
 	
 	dvit collisionEnd = thrust::remove_if(thrust::device, pairList.begin(), pairList.end(), NotCollision());
-	thrust::for_each(thrust::device, pairList.begin(), collisionEnd, MinSeperation());
-	thrust::for_each(thrust::device, pairList.begin(), collisionEnd, CollisionRateKernel(timestep, pAThreshold));
+	pairList.erase(collisionEnd, pairList.end());
+
+	thrust::for_each(thrust::device, pairList.begin(), pairList.end(), MinSeperation());
+	thrust::for_each(thrust::device, pairList.begin(), pairList.end(), CollisionRateKernel(timestep, pAThreshold));
 
 	//thrust::host_vector<CollisionPair> pairList_local = pairList;
 
 	for (int i = 0; i < pairList.size(); i++) {
 		CollisionPair objectPair = pairList[i];
 		tempProbability = objectPair.probability;
+
+		mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+		tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.altitude);
 		//	-- Determine if collision occurs through MC (random number generation)
 		if (outputProbabilities && tempProbability > 0)
 		{
 			//	-- Store collision probability
-			objectPair.tempEvent.SetEpoch(epoch);
 			newCollisionProbabilities.push_back(tempProbability);
-			newCollisionList.push_back(objectPair.tempEvent);
+			newCollisionList.push_back(tempEvent);
 
 		}
 		else
@@ -257,8 +256,7 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 			if (DetermineCollision(tempProbability))
 			{
 				// Store Collisions 
-				objectPair.tempEvent.SetEpoch(epoch);
-				newCollisionList.push_back(objectPair.tempEvent);
+				newCollisionList.push_back(tempEvent);
 			}
 		}
 	}

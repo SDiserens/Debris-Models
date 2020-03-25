@@ -1,6 +1,6 @@
 {
-  "scenarioFilename": "Collisions_43900.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
-  "StepSize": 0.05, // Size of default timestep (days)
+  "scenarioFilename": "Collisions_profileTest.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
+  "StepSize": 0.5, // Size of default timestep (days)
   "MonteCarlo": 2,
   "logging": false,
   //

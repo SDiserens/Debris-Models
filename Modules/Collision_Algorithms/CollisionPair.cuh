@@ -7,10 +7,9 @@ class CollisionPair
 public:
 	DebrisObject primary, secondary;
 	long primaryID, secondaryID;
-	double approachAnomalyP, approachAnomalyS, probability, minSeperation, altitude;
+	double approachAnomalyP, approachAnomalyS, probability=0, minSeperation, altitude;
 	bool coplanar, collision;
 	int overlapCount;
-	Event tempEvent;
 protected:
 	double relativeInclination, relativeVelocity, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii, collisionAltitude;
 
