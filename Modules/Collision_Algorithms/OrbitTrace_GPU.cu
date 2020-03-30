@@ -31,9 +31,9 @@ void computeGridSize(unsigned int n, unsigned int blockSize, unsigned int  &numB
 	numBlocks = iDivUp(n, numThreads);
 }
 
-__host__ thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(DebrisPopulation & population)
+__host__ thrust::host_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(DebrisPopulation & population)
 {
-	thrust::device_vector<CollisionPair> pairList;
+	thrust::host_vector<CollisionPair> pairList;
 	// TODO - GPU code for creating pairList
 	//Talk to Pete about i, j where i < j < N
 	for (auto it = population.population.begin(); it != population.population.end(); it++)
@@ -80,18 +80,18 @@ __host__ void OrbitTrace::MainCollision_GPU_Cuda(DebrisPopulation & population, 
 
 }
 */
-__device__ bool HeadOnFilter(CollisionPair& objectPair)
+__device__ bool HeadOnFilter(CollisionPair objectPair)
 {
 	bool headOn = false;
 	double deltaW;
-	double eLimitP = objectPair.GetBoundingRadii() / objectPair.primary.GetElements().semiMajorAxis;
-	double eLimitS = objectPair.GetBoundingRadii() / objectPair.secondary.GetElements().semiMajorAxis;
+	double eLimitP = objectPair.GetBoundingRadii() / objectPair.primaryElements.semiMajorAxis;
+	double eLimitS = objectPair.GetBoundingRadii() / objectPair.secondaryElements.semiMajorAxis;
 	// OT Head on filter
-	if ((objectPair.primary.GetElements().eccentricity <= eLimitP) && (objectPair.secondary.GetElements().eccentricity <= eLimitS))
+	if ((objectPair.primaryElements.eccentricity <= eLimitP) && (objectPair.secondaryElements.eccentricity <= eLimitS))
 		headOn = true;
 	else
 	{
-		deltaW = fabs((double)(Pi - objectPair.primary.GetElements().argPerigee - objectPair.secondary.GetElements().argPerigee));
+		deltaW = fabs((double)(Pi - objectPair.primaryElements.argPerigee - objectPair.secondaryElements.argPerigee));
 		if (deltaW <= 1)
 			headOn = true;
 		else if (Tau - deltaW <= 1)
@@ -101,18 +101,18 @@ __device__ bool HeadOnFilter(CollisionPair& objectPair)
 	return headOn;
 }
 
-__device__ bool SynchronizedFilter(CollisionPair& objectPair, double timeStep)
+__device__ bool SynchronizedFilter(CollisionPair objectPair, double timeStep)
 {
 	double meanMotionP, meanMotionS, driftAngle;
 	// OT synch filter
-	meanMotionP = Tau / objectPair.primary.GetPeriod();
-	meanMotionS = Tau / objectPair.secondary.GetPeriod();
+	meanMotionP = Tau / objectPair.primaryElements.CalculatePeriod();
+	meanMotionS = Tau / objectPair.secondaryElements.CalculatePeriod();
 
 	driftAngle = fabs(meanMotionP - meanMotionS) * timeStep;
 	return (driftAngle >= Tau);
 }
 
-__device__ bool ProximityFilter(CollisionPair& objectPair)
+__device__ bool ProximityFilter(CollisionPair objectPair)
 {
 	//  OT  proximity filter
 	double deltaMP, deltaMS, deltaMAngle, deltaMLinear, combinedSemiMajorAxis;
@@ -121,10 +121,10 @@ __device__ bool ProximityFilter(CollisionPair& objectPair)
 	anomaliesP.SetTrueAnomaly(objectPair.approachAnomalyP);
 	anomaliesS.SetTrueAnomaly(objectPair.approachAnomalyS);
 
-	deltaMP = fabs(anomaliesP.GetMeanAnomaly(objectPair.primary.GetElements().eccentricity) - objectPair.primary.GetElements().GetMeanAnomaly());
-	deltaMS = fabs(anomaliesS.GetMeanAnomaly(objectPair.secondary.GetElements().eccentricity) - objectPair.secondary.GetElements().GetMeanAnomaly());
+	deltaMP = fabs(anomaliesP.GetMeanAnomaly(objectPair.primaryElements.eccentricity) - objectPair.primaryElements.GetMeanAnomaly());
+	deltaMS = fabs(anomaliesS.GetMeanAnomaly(objectPair.secondaryElements.eccentricity) - objectPair.secondaryElements.GetMeanAnomaly());
 
-	combinedSemiMajorAxis = (objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis) / 2;
+	combinedSemiMajorAxis = (objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis) / 2;
 	deltaMAngle = fabs(deltaMP - deltaMS);
 	deltaMLinear = deltaMAngle * combinedSemiMajorAxis;
 
@@ -145,12 +145,11 @@ struct CollisionFilterKernel {
 	CollisionFilterKernel(double timestep) {
 		timeStep = timestep;
 	}
-	__device__ bool operator()(CollisionPair& objectPair) {
+	__device__ void operator()(CollisionPair &objectPair) const{
 		objectPair.collision = false;
 
-		objectPair.CalculateRelativeInclination();
-		double combinedSemiMajorAxis = objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis;
-		bool coplanar = objectPair.GetRelativeInclination() <= (2 * asin(objectPair.GetBoundingRadii() / combinedSemiMajorAxis));
+		double combinedSemiMajorAxis = objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis;
+		bool coplanar = objectPair.relativeInclination <= (2 * asin(objectPair.boundingRadii / combinedSemiMajorAxis));
 		objectPair.coplanar = coplanar;
 
 		if (coplanar)
@@ -168,37 +167,40 @@ struct CollisionFilterKernel {
 				objectPair.collision = true;
 		}
 
-		return (!objectPair.collision);
 	}
 };
 
 __device__ double CollisionRate(CollisionPair &objectPair, double pAThreshold)
 {
 	double collisionRate, boundingRadii, relativeVelocity;
+
+
+	boundingRadii = max(pAThreshold, objectPair.GetBoundingRadii());
 	vector3D velocityI, velocityJ;
-	
-	velocityI = objectPair.primary.GetVelocity();
-	velocityJ = objectPair.secondary.GetVelocity();
+	velocityI = objectPair.primaryElements.GetVelocity();
+	velocityJ = objectPair.secondaryElements.GetVelocity();
 
 	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
-	boundingRadii = max(pAThreshold, objectPair.GetBoundingRadii());
 	objectPair.SetRelativeVelocity(relativeVelocity);
 	//sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
 
 	// OT collision rate
 	if (boundingRadii > objectPair.minSeperation)
 		collisionRate = Pi * boundingRadii * relativeVelocity /
-		(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primary.GetPeriod() * objectPair.secondary.GetPeriod());
+		(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
 	else
 		collisionRate = 0;
+		objectPair.collision = false;
 
 	return collisionRate;
 }
 struct MinSeperation {
-	__device__ void operator()(CollisionPair& objectPair) {
+	MinSeperation() {};
+	__device__ void operator()(CollisionPair &objectPair) {
 		objectPair.minSeperation = objectPair.CalculateMinimumSeparation();
 
-		objectPair.altitude = objectPair.primary.GetElements().GetRadialPosition();
+		objectPair.altitude = objectPair.primaryElements.GetRadialPosition();
+
 	}
 };
 
@@ -208,9 +210,8 @@ struct CollisionRateKernel {
 			timeStep = timestep;
 			pAThreshold = threshold;
 		}
-		__device__ void operator()(CollisionPair& objectPair) {
+		__device__ void operator()(CollisionPair &objectPair) {
 			objectPair.probability = timeStep * CollisionRate(objectPair, pAThreshold);
-			
 		}
 };
 
@@ -218,30 +219,32 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 {
 	double mass, tempProbability, epoch = population.GetEpoch();
 	Event tempEvent;
-	thrust::device_vector<CollisionPair> pairList;
+	thrust::host_vector<CollisionPair> hostList(0);
 
 	// Filter Cube List
-	pairList = CreatePairList_GPU(population);
+	hostList = CreatePairList_GPU(population);
 	timeStep = timestep;
 	//unsigned int numThreads, numBlocks;
 	//computeGridSize(pairList.size(), 256, numBlocks, numThreads);
 	//TODO - Add code for GPU use
-	
+	thrust::device_vector<CollisionPair> pairList = hostList;
 	thrust::for_each(thrust::device, pairList.begin(), pairList.begin(), CollisionFilterKernel(timestep));
 	
 	dvit collisionEnd = thrust::remove_if(thrust::device, pairList.begin(), pairList.end(), NotCollision());
-	pairList.erase(collisionEnd, pairList.end());
+	//pairList.erase(collisionEnd, pairList.end());
 
-	thrust::for_each(thrust::device, pairList.begin(), pairList.end(), MinSeperation());
-	thrust::for_each(thrust::device, pairList.begin(), pairList.end(), CollisionRateKernel(timestep, pAThreshold));
+	thrust::for_each(thrust::device, pairList.begin(), collisionEnd, MinSeperation());
+	thrust::for_each(thrust::device, pairList.begin(), collisionEnd, CollisionRateKernel(timestep, pAThreshold));
 
-	//thrust::host_vector<CollisionPair> pairList_local = pairList;
+	collisionEnd = thrust::remove_if(thrust::device, pairList.begin(), pairList.end(), NotCollision());
 
-	for (int i = 0; i < pairList.size(); i++) {
-		CollisionPair objectPair = pairList[i];
+	thrust::host_vector<CollisionPair> outList(pairList.begin(), collisionEnd);
+
+	for (int i = 0; i < outList.size(); i++) {
+		CollisionPair objectPair = outList[i];
 		tempProbability = objectPair.probability;
 
-		mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+		mass = objectPair.primaryMass + objectPair.secondaryMass;
 		tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.altitude);
 		//	-- Determine if collision occurs through MC (random number generation)
 		if (outputProbabilities && tempProbability > 0)

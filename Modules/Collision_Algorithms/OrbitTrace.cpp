@@ -68,8 +68,8 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 			tempProbability = timeStep * collisionRate;
 			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 
-			altitude = objectPair.primary.GetElements().GetRadialPosition();
-			mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+			altitude = objectPair.primaryElements.GetRadialPosition();
+			mass = objectPair.primaryMass + objectPair.secondaryMass;
 			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities && tempProbability>0)
@@ -139,8 +139,8 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 			tempProbability = timeStep * collisionRate;
 			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 
-			altitude = objectPair.primary.GetElements().GetRadialPosition();
-			mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+			altitude = objectPair.primaryElements.GetRadialPosition();
+			mass = objectPair.primaryMass + objectPair.secondaryMass;
 			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities && tempProbability>0)
@@ -207,8 +207,8 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	}
 	
 
-	velocityI = objectPair.primary.GetVelocity();
-	velocityJ = objectPair.secondary.GetVelocity();
+	velocityI = objectPair.primaryElements.GetVelocity();
+	velocityJ = objectPair.secondaryElements.GetVelocity();
 
 	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
 	boundingRadii = max(pAThreshold, objectPair.GetBoundingRadii());
@@ -218,7 +218,7 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	// OT collision rate
 	if (boundingRadii > minSeperation)
 		collisionRate = Pi * boundingRadii * relativeVelocity /
-						(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primary.GetPeriod() * objectPair.secondary.GetPeriod());
+						(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
 	else
 		collisionRate = 0;
 
@@ -229,7 +229,7 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 bool OrbitTrace::CoplanarFilter(CollisionPair objectPair)
 {
 	// Coplanar filter
-	double combinedSemiMajorAxis = objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis;
+	double combinedSemiMajorAxis = objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis;
 	bool coplanar = objectPair.GetRelativeInclination() <= (2 * asin(objectPair.GetBoundingRadii() / combinedSemiMajorAxis));
 	objectPair.coplanar = coplanar;
 	return coplanar;
@@ -239,14 +239,14 @@ bool OrbitTrace::HeadOnFilter(CollisionPair objectPair)
 {
 	bool headOn = false;
 	double deltaW;
-	double eLimitP = objectPair.GetBoundingRadii() / objectPair.primary.GetElements().semiMajorAxis;
-	double eLimitS = objectPair.GetBoundingRadii() / objectPair.secondary.GetElements().semiMajorAxis;
+	double eLimitP = objectPair.GetBoundingRadii() / objectPair.primaryElements.semiMajorAxis;
+	double eLimitS = objectPair.GetBoundingRadii() / objectPair.secondaryElements.semiMajorAxis;
 	// OT Head on filter
-	if ((objectPair.primary.GetElements().eccentricity <= eLimitP) && (objectPair.secondary.GetElements().eccentricity <= eLimitS))
+	if ((objectPair.primaryElements.eccentricity <= eLimitP) && (objectPair.secondaryElements.eccentricity <= eLimitS))
 			headOn = true;
 	else
 	{
-		deltaW = abs(Pi - objectPair.primary.GetElements().argPerigee - objectPair.secondary.GetElements().argPerigee);
+		deltaW = abs(Pi - objectPair.primaryElements.argPerigee - objectPair.secondaryElements.argPerigee);
 		if (deltaW <= 1)
 			headOn = true;
 		else if (Tau - deltaW <= 1)
@@ -260,8 +260,8 @@ bool OrbitTrace::SynchronizedFilter(CollisionPair objectPair)
 {
 	double meanMotionP, meanMotionS, driftAngle;
 	// OT synch filter
-	meanMotionP = Tau / objectPair.primary.GetPeriod();
-	meanMotionS = Tau / objectPair.secondary.GetPeriod();
+	meanMotionP = Tau / objectPair.primaryElements.CalculatePeriod();
+	meanMotionS = Tau / objectPair.secondaryElements.CalculatePeriod();
 
 	driftAngle = abs(meanMotionP - meanMotionS) * timeStep;
 	return (driftAngle >= Tau);
@@ -276,10 +276,10 @@ bool OrbitTrace::ProximityFilter(CollisionPair objectPair)
 	anomaliesP.SetTrueAnomaly(objectPair.approachAnomalyP);
 	anomaliesS.SetTrueAnomaly(objectPair.approachAnomalyS);
 
-	deltaMP = abs(anomaliesP.GetMeanAnomaly(objectPair.primary.GetElements().eccentricity) - objectPair.primary.GetElements().GetMeanAnomaly());
-	deltaMS = abs(anomaliesS.GetMeanAnomaly(objectPair.secondary.GetElements().eccentricity) - objectPair.secondary.GetElements().GetMeanAnomaly());
+	deltaMP = abs(anomaliesP.GetMeanAnomaly(objectPair.primaryElements.eccentricity) - objectPair.primaryElements.GetMeanAnomaly());
+	deltaMS = abs(anomaliesS.GetMeanAnomaly(objectPair.secondaryElements.eccentricity) - objectPair.secondaryElements.GetMeanAnomaly());
 	
-	combinedSemiMajorAxis = (objectPair.primary.GetElements().semiMajorAxis + objectPair.secondary.GetElements().semiMajorAxis) / 2;
+	combinedSemiMajorAxis = (objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis) / 2;
 	deltaMAngle = abs(deltaMP - deltaMS);
 	deltaMLinear = deltaMAngle * combinedSemiMajorAxis;
 

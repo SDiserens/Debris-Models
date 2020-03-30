@@ -19,7 +19,7 @@ protected:
 	vector<double> newCollisionAltitudes;
 	vector<Event> newCollisionList;
 	bool DetermineCollision(double collisionProbability);
-	double CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ);
+	double CollisionCrossSection(CollisionPair &objectPair);
 	//double CalculateClosestApproach(CollisionPair objectPair);
 
 	// Virtual function

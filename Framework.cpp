@@ -179,7 +179,7 @@ int main(int argc, char** argv)
 				// Collision Detection
 			if (collisionModel->UseGPU())
 				collisionModel->MainCollision_GPU(environmentPopulation, timeStep * secondsDay);
-			if (collisionModel->UseParallel())
+			else if (collisionModel->UseParallel())
 				collisionModel->MainCollision_P(environmentPopulation, timeStep * secondsDay);
 			else
 				collisionModel->MainCollision(environmentPopulation, timeStep * secondsDay);

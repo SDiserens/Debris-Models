@@ -54,8 +54,8 @@ void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep
 			collisionRate = CollisionRate(collisionPair);
 			tempProbability = adjustment * collisionRate;
 
-			altitude = collisionPair.primary.GetElements().GetRadialPosition();
-			mass = collisionPair.primary.GetMass() + collisionPair.secondary.GetMass();
+			altitude = collisionPair.primaryElements.GetRadialPosition();
+			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
 			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, collisionPair.GetRelativeVelocity(), mass, altitude);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities)
@@ -111,8 +111,8 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			collisionRate = CollisionRate(collisionPair);
 			tempProbability = adjustment * collisionRate;
 
-			altitude = collisionPair.primary.GetElements().GetRadialPosition();
-			mass = collisionPair.primary.GetMass() + collisionPair.secondary.GetMass();
+			altitude = collisionPair.primaryElements.GetRadialPosition();
+			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
 			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, collisionPair.GetRelativeVelocity(), mass, altitude);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities)
@@ -243,12 +243,12 @@ double CUBEApproach::CollisionRate(CollisionPair& objectPair)
 	double collisionCrossSection, relativeVelocity;
 	vector3D velocityI, velocityJ;
 
-	velocityI = objectPair.primary.GetVelocity();
-	velocityJ = objectPair.secondary.GetVelocity();
+	velocityI = objectPair.primaryElements.GetVelocity();
+	velocityJ = objectPair.secondaryElements.GetVelocity();
 
 	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
 	objectPair.SetRelativeVelocity(relativeVelocity);
-	collisionCrossSection = CollisionCrossSection(objectPair.primary, objectPair.secondary);
+	collisionCrossSection = CollisionCrossSection(objectPair);
 
 	return  collisionCrossSection * relativeVelocity * objectPair.overlapCount / cubeVolume;
 }

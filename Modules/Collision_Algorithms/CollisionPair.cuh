@@ -5,13 +5,14 @@
 class CollisionPair
 {
 public:
-	DebrisObject primary, secondary;
+	OrbitalElements primaryElements, secondaryElements;
 	long primaryID, secondaryID;
-	double approachAnomalyP, approachAnomalyS, probability=0, minSeperation, altitude;
+	double approachAnomalyP, approachAnomalyS, probability=0, minSeperation, altitude, primaryAnomaly, secondaryAnomaly, primaryMass, secondaryMass;
 	bool coplanar, collision;
 	int overlapCount;
+	double relativeInclination, boundingRadii;
 protected:
-	double relativeInclination, relativeVelocity, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, boundingRadii, collisionAltitude;
+	double relativeVelocity, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, collisionAltitude;
 
 public:
 	CUDA_CALLABLE_MEMBER CollisionPair();
@@ -38,5 +39,5 @@ public:
 	CUDA_CALLABLE_MEMBER double GetRelativeVelocity();
 
 protected:
-	vector<double> CalculateAngularWindow(DebrisObject& object, double distance, double delta);
+	vector<double> CalculateAngularWindow(OrbitalElements& elements, double distance, double delta);
 };

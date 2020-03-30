@@ -52,7 +52,7 @@ public:
 	double GetAreaToMass();
 	CUDA_CALLABLE_MEMBER double GetRadius();
 	CUDA_CALLABLE_MEMBER double GetPeriod();
-	double GetEpochAnomaly();
+	CUDA_CALLABLE_MEMBER double GetEpochAnomaly();
 	double GetPerigee();
 	double GetApogee();
 	double GetCDrag();

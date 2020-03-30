@@ -9,14 +9,20 @@ CollisionPair::CollisionPair()
 
 CollisionPair::CollisionPair(DebrisObject & objectI, DebrisObject & objectJ)
 {
-	primary = objectI;
-	secondary = objectJ;
+	primaryElements = objectI.GetElements();
+	secondaryElements = objectJ.GetElements();
 	primaryID = objectI.GetID();
 	secondaryID = objectJ.GetID();
+	primaryAnomaly = objectI.GetEpochAnomaly();
+	secondaryAnomaly = objectJ.GetEpochAnomaly();
+	primaryMass = objectI.GetMass();
+	secondaryMass = objectJ.GetMass();
 	//CalculateRelativeInclination();
 	//CalculateArgumenstOfIntersection();
-	boundingRadii = (primary.GetRadius() + secondary.GetRadius()) * 0.001;
+	boundingRadii = (objectI.GetRadius() + objectJ.GetRadius()) * 0.001;
 	overlapCount = 1;
+
+	CalculateRelativeInclination();
 }
 
 CollisionPair::CollisionPair(long IDI, long IDJ)
@@ -32,50 +38,48 @@ double CollisionPair::GetRelativeInclination()
 
 vector<double> CollisionPair::CalculateAngularWindowPrimary(double distance)
 {
-	return CalculateAngularWindow(primary, distance, deltaPrimary);
+	return CalculateAngularWindow(primaryElements, distance, deltaPrimary);
 }
 
 vector<double> CollisionPair::CalculateAngularWindowSecondary(double distance)
 {
-	return CalculateAngularWindow(secondary, distance, deltaSecondary);
+	return CalculateAngularWindow(secondaryElements, distance, deltaSecondary);
 }
 
 vector3D CollisionPair::GetPrimaryPositionAtTime(double timeFromEpoch)
 {
 	// position at time
-	double meanAnomaly = TauRange(primary.GetEpochAnomaly() + Tau * timeFromEpoch / primary.GetPeriod());
-	primary.SetMeanAnomaly(meanAnomaly);
-	return primary.GetPosition();
+	double meanAnomaly = TauRange(primaryAnomaly + Tau * timeFromEpoch / primaryElements.CalculatePeriod());
+	primaryElements.SetMeanAnomaly(meanAnomaly);
+	return primaryElements.GetPosition();
 }
 
 vector3D CollisionPair::GetPrimaryVelocityAtTime(double timeFromEpoch)
 {
 	// velcoity at time
-	double meanAnomaly = TauRange(primary.GetEpochAnomaly() + Tau * timeFromEpoch / primary.GetPeriod());
-	primary.SetMeanAnomaly(meanAnomaly);
-	return primary.GetVelocity();
+	double meanAnomaly = TauRange(primaryAnomaly + Tau * timeFromEpoch / primaryElements.CalculatePeriod());
+	primaryElements.SetMeanAnomaly(meanAnomaly);
+	return primaryElements.GetVelocity();
 }
 
 vector3D CollisionPair::GetSecondaryPositionAtTime(double timeFromEpoch)
 {
 	// position at time
-	double meanAnomaly = TauRange(secondary.GetEpochAnomaly() + Tau * timeFromEpoch / secondary.GetPeriod());
-	secondary.SetMeanAnomaly(meanAnomaly);
-	return secondary.GetPosition();
+	double meanAnomaly = TauRange(secondaryAnomaly + Tau * timeFromEpoch / secondaryElements.CalculatePeriod());
+	secondaryElements.SetMeanAnomaly(meanAnomaly);
+	return secondaryElements.GetPosition();
 }
 
 vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 {
 	// velcoity at time
-	double meanAnomaly = TauRange(secondary.GetEpochAnomaly() + Tau * timeFromEpoch / secondary.GetPeriod());
-	secondary.SetMeanAnomaly(meanAnomaly);
-	return secondary.GetVelocity();
+	double meanAnomaly = TauRange(secondaryAnomaly + Tau * timeFromEpoch / secondaryElements.CalculatePeriod());
+	secondaryElements.SetMeanAnomaly(meanAnomaly);
+	return secondaryElements.GetVelocity();
 }
 
 double CollisionPair::CalculateMinimumSeparation_MOID()
 {
-	OrbitalElements primaryElements = primary.GetElements();
-	OrbitalElements secondaryElements = secondary.GetElements();
 	moid_data_t mdata;
 
 	double distance = find_moid_full(primaryElements, secondaryElements, &mdata);
@@ -92,9 +96,6 @@ double CollisionPair::CalculateMinimumSeparation_MOID()
 
 double CollisionPair::CalculateMinimumSeparation_DL()
 {
-	OrbitalElements primaryElements = primary.GetElements();
-	OrbitalElements secondaryElements = secondary.GetElements();
-
 	COrbitData<double> object1(primaryElements.semiMajorAxis, primaryElements.eccentricity, primaryElements.inclination, primaryElements.rightAscension, primaryElements.argPerigee);
 	COrbitData<double> object2(secondaryElements.semiMajorAxis, secondaryElements.eccentricity, secondaryElements.inclination, secondaryElements.rightAscension, secondaryElements.argPerigee);
 
@@ -124,8 +125,6 @@ double CollisionPair::CalculateMinimumSeparation_DL()
 double CollisionPair::CalculateMinimumSeparation()
 {
 	double trueAnomalyP, trueAnomalyS, seperation, altSeperation, eP, eS;
-	OrbitalElements primaryElements = primary.GetElements();
-	OrbitalElements secondaryElements = secondary.GetElements();
 
 	trueAnomalyP = TauRange(deltaPrimary - primaryElements.argPerigee);
 	trueAnomalyS = TauRange(deltaSecondary - secondaryElements.argPerigee);
@@ -344,8 +343,8 @@ void CollisionPair::CalculateRelativeInclination()
 
 	where r hP is the normal to the orbit plane of the primary object
 	*/
-	vector3D hP = primary.GetNormalVector();
-	vector3D hS = secondary.GetNormalVector();
+	vector3D hP = primaryElements.GetNormalVector();
+	vector3D hS = secondaryElements.GetNormalVector();
 	double k = hP.VectorCrossProduct(hS).vectorNorm();
 
 	relativeInclination = asin(k);
@@ -358,12 +357,12 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 	double cscIr, sinIp, sinIs, cosIp, cosIs, sinOmDif, cosOmDif, XP, XS, YP, YS;
 
 	cscIr = 1 / sin(relativeInclination);
-	sinIp = sin(primary.GetElements().inclination);
-	cosIp = cos(primary.GetElements().inclination);
-	sinIs = sin(secondary.GetElements().inclination);
-	cosIs = cos(secondary.GetElements().inclination);
-	sinOmDif = sin(primary.GetElements().rightAscension - secondary.GetElements().rightAscension);
-	cosOmDif = cos(primary.GetElements().rightAscension - secondary.GetElements().rightAscension);
+	sinIp = sin(primaryElements.inclination);
+	cosIp = cos(primaryElements.inclination);
+	sinIs = sin(secondaryElements.inclination);
+	cosIs = cos(secondaryElements.inclination);
+	sinOmDif = sin(primaryElements.rightAscension - secondaryElements.rightAscension);
+	cosOmDif = cos(primaryElements.rightAscension - secondaryElements.rightAscension);
 
 	XP = cscIr*(sinIp*cosIs - sinIs*cosIp*cosOmDif);
 	XS = cscIr*(sinIp*cosIs*cosOmDif - sinIs*cosIp);
@@ -389,8 +388,6 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 {
 	double cP, cS, A, B, C, X, X2, Yplus, Yminus;
-	OrbitalElements &primaryElements = primary.GetElements();
-	OrbitalElements &secondaryElements = secondary.GetElements();
 
 	cP = primaryElements.semiMajorAxis * (1 - primaryElements.eccentricity * primaryElements.eccentricity);
 	cS = secondaryElements.semiMajorAxis * (1 - secondaryElements.eccentricity * secondaryElements.eccentricity);
@@ -411,12 +408,11 @@ void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 	deltaPrimary2 = deltaSecondary2 = X2;
 }
 
-vector<double> CollisionPair::CalculateAngularWindow(DebrisObject & object, double distance, double delta)
+vector<double> CollisionPair::CalculateAngularWindow(OrbitalElements & elements, double distance, double delta)
 {
 	vector<double> angleWindows;
 	double circularAnomaly, alpha, aX, aY, Q, Qroot, cosUrMinus, cosUrPlus, windowStart, windowEnd, windowStart2, windowEnd2;
 
-	OrbitalElements& elements(object.GetElements());
 	// Calculate Angular Windows
 	circularAnomaly = delta - elements.argPerigee;
 	alpha = elements.semiMajorAxis * (1 - elements.eccentricity * elements.eccentricity) * sin(relativeInclination);

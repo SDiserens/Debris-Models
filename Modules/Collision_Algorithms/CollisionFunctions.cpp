@@ -79,24 +79,24 @@ bool CollisionAlgorithm::PerigeeApogeeTest(CollisionPair& objectPair)
 {
 	double maxPerigee, minApogee;
 	// Perigee Apogee Test
-	maxPerigee = max(objectPair.primary.GetPerigee(), objectPair.secondary.GetPerigee());
-	minApogee = min(objectPair.primary.GetApogee(), objectPair.secondary.GetApogee());
+	maxPerigee = max(objectPair.primaryElements.GetPerigee(), objectPair.secondaryElements.GetPerigee());
+	minApogee = min(objectPair.primaryElements.GetApogee(), objectPair.secondaryElements.GetApogee());
 
 	return (maxPerigee - minApogee) <= pAThreshold;
 }
 
-double CollisionAlgorithm::CollisionCrossSection(DebrisObject& objectI, DebrisObject& objectJ)
+double CollisionAlgorithm::CollisionCrossSection(CollisionPair& objectPair)
 {
 	double boundingRadii, escapeVelocity2, gravitationalPerturbation;
-	vector3D velocityI = objectI.GetVelocity();
-	vector3D velocityJ = objectJ.GetVelocity();
+	vector3D velocityI = objectPair.primaryElements.GetVelocity();
+	vector3D velocityJ = objectPair.secondaryElements.GetVelocity();
 
 	vector3D relativeVelocity = velocityI.CalculateRelativeVector(velocityJ);
-	boundingRadii = (objectI.GetRadius() + objectJ.GetRadius()) * 0.001; // Combined radii in kilometres
+	boundingRadii = objectPair.GetBoundingRadii(); // Combined radii in kilometres
 
 	if (relativeGravity)
 	{
-		escapeVelocity2 = 2 * (objectI.GetMass() + objectJ.GetMass()) * GravitationalConstant / boundingRadii;
+		escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
 		gravitationalPerturbation = (1 + escapeVelocity2 / relativeVelocity.vectorNorm2());
 	}
 	else

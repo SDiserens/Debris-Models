@@ -59,8 +59,8 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 			collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList);
 			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 
-			altitude = objectPair.primary.GetElements().GetRadialPosition();
-			mass = objectPair.primary.GetMass() + objectPair.secondary.GetMass();
+			altitude = objectPair.primaryElements.GetRadialPosition();
+			mass = objectPair.primaryMass + objectPair.secondaryMass;
 			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
 			if (outputTimes)
 			{
@@ -134,13 +134,13 @@ vector<double> HootsFilter::TimeFilter(CollisionPair& objectPair, double timeSte
 		return angularWindowSecondary;
 
 	// Convert to mean anomalies
-	eP = objectPair.primary.GetElements().eccentricity;
-	periodP = objectPair.primary.GetPeriod();
+	eP = objectPair.primaryElements.eccentricity;
+	periodP = objectPair.primaryElements.CalculatePeriod();
 	lastTime = 0;
 	for (double angle : angularWindowPrimary)
 	{
-		angle = objectPair.primary.GetElements().anomalies.TrueToMeanAnomaly(angle, eP);
-		time = periodP * (angle - objectPair.primary.GetEpochAnomaly()) / Tau;
+		angle = objectPair.primaryElements.anomalies.TrueToMeanAnomaly(angle, eP);
+		time = periodP * (angle - objectPair.primaryAnomaly) / Tau;
 		if (time < lastTime)
 			time += periodP;
 		timeWindowPrimary.push_back(time);
@@ -150,13 +150,13 @@ vector<double> HootsFilter::TimeFilter(CollisionPair& objectPair, double timeSte
 	if (timeWindowPrimary[3] < timeWindowPrimary[2])
 		timeWindowPrimary[3] += periodP;
 		*/
-	eS = objectPair.secondary.GetElements().eccentricity;
-	periodS = objectPair.secondary.GetPeriod();
+	eS = objectPair.secondaryElements.eccentricity;
+	periodS = objectPair.secondaryElements.CalculatePeriod();
 	lastTime = 0;
 	for (double angle : angularWindowSecondary)
 	{
-		angle = objectPair.secondary.GetElements().anomalies.TrueToMeanAnomaly(angle, eS);
-		time = periodP * (angle - objectPair.secondary.GetEpochAnomaly()) / Tau;
+		angle = objectPair.secondaryElements.anomalies.TrueToMeanAnomaly(angle, eS);
+		time = periodP * (angle - objectPair.secondaryAnomaly) / Tau;
 		if (time < lastTime)
 			time += periodS;
 		timeWindowSecondary.push_back(time);
@@ -231,8 +231,8 @@ vector<double> HootsFilter::CoplanarFilter(CollisionPair& objectPair, double tim
 	vector<double> candidateTimeList;
 
 	time = rate = previousTime = 0;
-	periodP = objectPair.primary.GetPeriod();
-	periodS = objectPair.secondary.GetPeriod();
+	periodP = objectPair.primaryElements.CalculatePeriod();
+	periodS = objectPair.secondaryElements.CalculatePeriod();
 	interval = min(periodP, periodS) / 5;  // recommended fraction
 
 	while (time < timeStep)

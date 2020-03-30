@@ -71,7 +71,7 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 	// Convert to days since 1957-OCT-04
 	epochYear = stoi(TLE2.substr(18, 2));
 	epochDay = stod(TLE2.substr(20, 12));
-
+	
 	//Handle y2k
 	if (epochYear < 57)
 		epochYear += 2000;
@@ -97,6 +97,7 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 
 	elements = OrbitalElements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly);
 
+	mass = 1;
 	meanAnomalyEpoch = init_meanAnomaly;
 	nFrag = 1;
 	objectType = 2;
