@@ -36,22 +36,23 @@ __host__ thrust::host_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(Debri
 	thrust::host_vector<CollisionPair> pairList;
 	// TODO - GPU code for creating pairList
 	//Talk to Pete about i, j where i < j < N
-	for (auto it = population.population.begin(); it != population.population.end(); it++)
-	{
-		// For each subsequent object
-		auto jt = it;
+	mutex mtx;
+	concurrency::parallel_for_each(population.population.begin(), population.population.end(), [&](auto& it) {
+		auto jt = population.population.find(it.first);
 		for (++jt; jt != population.population.end(); ++jt)
 		{
 			/// Add pair to list
 			//DebrisObject& primaryObject(population.Ge), secondaryObject;
-			CollisionPair pair(it->second, jt->second);
-			if (PerigeeApogeeTest(pair))
+			CollisionPair pair(it.second, jt->second);
+			if (PerigeeApogeeTest(pair)) {
+				mtx.lock();
 				pairList.push_back(pair);
+				mtx.unlock();
+			}
 			else
 				pair.~CollisionPair();
 		}
-	}
-
+	});
 	return pairList;
 }
 
@@ -131,12 +132,12 @@ __device__ bool ProximityFilter(CollisionPair objectPair)
 	return (deltaMLinear <= objectPair.GetBoundingRadii());
 }
 
-struct NotCollision
+struct Collision
 {
 	__host__ __device__
 		bool operator()(CollisionPair objectPair)
 	{
-		return (!objectPair.collision);
+		return (objectPair.collision);
 	}
 };
 
@@ -145,7 +146,7 @@ struct CollisionFilterKernel {
 	CollisionFilterKernel(double timestep) {
 		timeStep = timestep;
 	}
-	__device__ bool operator()(CollisionPair objectPair) const{
+	__device__ bool operator()(CollisionPair &objectPair) {
 		objectPair.collision = false;
 
 		double combinedSemiMajorAxis = objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis;
@@ -172,11 +173,10 @@ struct CollisionFilterKernel {
 
 struct MinSeperation {
 	MinSeperation() {};
-	__device__ double operator()(CollisionPair &objectPair) {
+	__device__ void operator()(CollisionPair &objectPair) {
 		objectPair.minSeperation = objectPair.CalculateMinimumSeparation();
 
-		objectPair.altitude = objectPair.primaryElements.GetRadialPosition();
-		return objectPair.minSeperation;
+		//return objectPair.minSeperation;
 	}
 };
 
@@ -225,31 +225,40 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	//unsigned int numThreads, numBlocks;
 	//computeGridSize(pairList.size(), 256, numBlocks, numThreads);
 	//TODO - Add code for GPU use
-	thrust::device_vector<CollisionPair> pairListIn = hostList;
+	thrust::device_vector<CollisionPair> pairListIn(hostList.begin(), hostList.end());
 	size_t n = pairListIn.size();
 	thrust::device_vector<CollisionPair> pairList(n);
-	n = thrust::copy_if(thrust::device, pairListIn.begin(), pairListIn.end(), pairList.begin(), CollisionFilterKernel(timestep)) - pairList.begin();
+	thrust::for_each(thrust::device, pairListIn.begin(), pairListIn.end(), CollisionFilterKernel(timestep));
+
+	n = thrust::copy_if(thrust::device, pairListIn.begin(), pairListIn.end(), pairList.begin(), Collision()) - pairList.begin();
 	pairList.resize(n);
 	
-	thrust::device_vector<double> seperationList(n);
+	//thrust::device_vector<double> seperationList(n);
 	//thrust::transform(thrust::device, pairList.begin(), pairList.end(), seperationList.begin(), MinSeperation());
-	
+	/*
 	for (dvit start = pairList.begin(); start < pairList.end(); start += CUDASTRIDE) {
 		dvit end = start + CUDASTRIDE;
 		if (end > pairList.end())
 			end = pairList.end();
 		thrust::for_each(thrust::device, start, end, MinSeperation());
 	}
-	/*
+	
+	//TODO - consider bespoke min-seperation fucntions (run as different kernels for sep and altsep
 	thrust::for_each(thrust::device, pairList.begin(), collisionEnd, CollisionRateKernel(timestep, pAThreshold));
 	*/
-	
+	thrust::host_vector<CollisionPair> outList(pairList.begin(), pairList.end());
+	concurrency::parallel_for_each(outList.begin(), outList.end(), [&](CollisionPair& objectPair)
+	{
+		objectPair.minSeperation = objectPair.CalculateMinimumSeparation();
+	});
+
+	pairList = thrust::device_vector<CollisionPair>(outList.begin(), outList.end());
 	thrust::device_vector<double> probabilityList(n);
 	thrust::transform(thrust::device, pairList.begin(), pairList.end(), probabilityList.begin(), CollisionRateKernel(timestep, pAThreshold));
 
 	//dvit collisionEnd = thrust::remove_if(thrust::device, pairList.begin(), pairList.end(), NotCollision());
 
-	thrust::host_vector<CollisionPair> outList(pairList.begin(), pairList.end());
+	outList = thrust::host_vector<CollisionPair>(pairList.begin(), pairList.end());
 	thrust::host_vector<double> probOut(probabilityList.begin(), probabilityList.end());
 
 	for (int i = 0; i < outList.size(); i++) {
@@ -257,7 +266,7 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 		tempProbability = probOut[i];
 
 		mass = objectPair.primaryMass + objectPair.secondaryMass;
-		tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.altitude);
+		tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude());
 		//	-- Determine if collision occurs through MC (random number generation)
 		if (outputProbabilities && tempProbability > 0)
 		{

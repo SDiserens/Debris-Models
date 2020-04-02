@@ -7,7 +7,7 @@ class CollisionPair
 public:
 	OrbitalElements primaryElements, secondaryElements;
 	long primaryID, secondaryID;
-	double approachAnomalyP, approachAnomalyS, probability=0, minSeperation, altitude, primaryAnomaly, secondaryAnomaly, primaryMass, secondaryMass;
+	double approachAnomalyP, approachAnomalyS, probability=0, minSeperation, primaryAnomaly, secondaryAnomaly, primaryMass, secondaryMass;
 	bool coplanar, collision;
 	int overlapCount;
 	double relativeInclination, boundingRadii;

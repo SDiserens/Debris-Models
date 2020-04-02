@@ -140,9 +140,15 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 		++populationCount;
 		totalMass += debris.GetMass();
 		switch (debris.GetType()) {
-		case 0: ++upperStageCount;
-		case 1: ++spacecraftCount;
-		case 2: ++debrisCount;
+		case 0: 
+			++upperStageCount;
+			break;
+		case 1: 
+			++spacecraftCount;
+			break;
+		case 2: 
+			++debrisCount;
+			break;
 		}
 	}
 	else if (debEpoch <= currentEpoch)
@@ -151,9 +157,15 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 		++populationCount;
 		totalMass += debris.GetMass();
 		switch (debris.GetType()) {
-		case 0: ++upperStageCount;
-		case 1: ++spacecraftCount;
-		case 2: ++debrisCount;
+		case 0: 
+			++upperStageCount;
+			break;
+		case 1: 
+			++spacecraftCount;
+			break;
+		case 2: 
+			++debrisCount;
+			break;
 		}
 	}
 	else
@@ -200,9 +212,15 @@ void DebrisPopulation::LoadPopulation()
 			++populationCount;
 			totalMass += tempObject.GetMass();
 			switch (tempObject.GetType()) {
-			case 0: ++upperStageCount;
-			case 1: ++spacecraftCount;
-			case 2: ++debrisCount;
+			case 0: 
+				++upperStageCount;
+				break;
+			case 1: 
+				++spacecraftCount;
+				break;
+			case 2: 
+				++debrisCount;
+				break;
 			}
 			if (initEpochs.size() == 0)
 				break;
@@ -265,9 +283,15 @@ void DebrisPopulation::DecayObject(long ID)
 	totalMass -= tempObject.GetMass();
 	populationCount--;
 	switch (tempObject.GetType()) {
-		case 0: upperStageCount--;
-		case 1: spacecraftCount--;
-		case 2: debrisCount--;
+		case 0: 
+			upperStageCount--;
+			break;
+		case 1: 
+			spacecraftCount--;
+			break;
+		case 2: 
+			debrisCount--;
+			break;
 	}
 }
 
@@ -280,9 +304,15 @@ void DebrisPopulation::ExplodeObject(long ID)
 	totalMass -= tempObject.GetMass();
 	populationCount--;
 	switch (tempObject.GetType()) {
-	case 0: upperStageCount--;
-	case 1: spacecraftCount--;
-	case 2: debrisCount--;
+	case 0:
+		upperStageCount--;
+		break;
+	case 1:
+		spacecraftCount--;
+		break;
+	case 2:
+		debrisCount--;
+		break;
 	}
 }
 
@@ -295,9 +325,15 @@ void DebrisPopulation::CollideObject(long ID)
 	totalMass -= tempObject.GetMass();
 	populationCount--;
 	switch (tempObject.GetType()) {
-	case 0: upperStageCount--;
-	case 1: spacecraftCount--;
-	case 2: debrisCount--;
+	case 0:
+		upperStageCount--;
+		break;
+	case 1:
+		spacecraftCount--;
+		break;
+	case 2:
+		debrisCount--;
+		break;
 	}
 }
 

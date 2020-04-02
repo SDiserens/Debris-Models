@@ -124,18 +124,20 @@ double CollisionPair::CalculateMinimumSeparation_DL()
 
 double CollisionPair::CalculateMinimumSeparation()
 {
-	double trueAnomalyP, trueAnomalyS, seperation, altSeperation, eP, eS;
+	double trueAnomalyP, altTrueAnomalyP, trueAnomalyS, altTrueAnomalyS, seperation, altSeperation, eP, eS;
 
 	trueAnomalyP = TauRange(deltaPrimary - primaryElements.argPerigee);
 	trueAnomalyS = TauRange(deltaSecondary - secondaryElements.argPerigee);
+	altTrueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
+	altTrueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
 	eP = primaryElements.eccentricity;
 	eS = secondaryElements.eccentricity;
-	auto NewtonSeperation = [](double &trueP, double &trueS) {};
+	//auto NewtonSeperation = [&](double &trueP, double &trueS) {};
 
 	// Find closest approach for elliptical orbits
 	if (eP != 0 || eS != 0)
 	{
-		int error;
+		int error1, error2;
 
 		auto NewtonSeperation = [&](double &trueP, double &trueS)
 		{
@@ -224,77 +226,38 @@ double CollisionPair::CalculateMinimumSeparation()
 				return 0;
 		};
 
-		error = NewtonSeperation(trueAnomalyP, trueAnomalyS);
+		error1 = NewtonSeperation(trueAnomalyP, trueAnomalyS);
 
 		primaryElements.SetTrueAnomaly(trueAnomalyP);
 		secondaryElements.SetTrueAnomaly(trueAnomalyS);
 		seperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
-		if (error)
-		{
-			double altTrueAnomalyP, altTrueAnomalyS;
-			if (coplanar)
-			{
-				altTrueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
-				altTrueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
-			}
-			else
-			{
-				altTrueAnomalyP = TauRange(trueAnomalyP + Pi);
-				altTrueAnomalyS = TauRange(trueAnomalyS + Pi);
-			}
-			error = NewtonSeperation(trueAnomalyP, trueAnomalyS);
-
-			primaryElements.SetTrueAnomaly(altTrueAnomalyP);
-			secondaryElements.SetTrueAnomaly(altTrueAnomalyS);
-			altSeperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
-
-			if (error && altSeperation < seperation)
-			{
-				//throw NewtonConvergenceException();
-				trueAnomalyP = altTrueAnomalyP;
-				trueAnomalyS = altTrueAnomalyS;
-				seperation = altSeperation;
-			}
-		}
-
-	}
-	else {
-		seperation = abs(primaryElements.semiMajorAxis - secondaryElements.semiMajorAxis);
-	}
-
-
-	if (eP != 0 || eS != 0)
-	{
 		// Test second intersection point
-		if (coplanar)
-		{
-			trueAnomalyP = TauRange(deltaPrimary2 - primaryElements.argPerigee);
-			trueAnomalyS = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
-		}
-		else
-		{
-			trueAnomalyP = TauRange(trueAnomalyP + Pi);
-			trueAnomalyS = TauRange(trueAnomalyS + Pi);
-		}
 
-		primaryElements.SetTrueAnomaly(trueAnomalyP);
-		secondaryElements.SetTrueAnomaly(trueAnomalyS);
+		error2 = NewtonSeperation(altTrueAnomalyP, altTrueAnomalyS);
 
-		NewtonSeperation(trueAnomalyP, trueAnomalyS);
+		primaryElements.SetTrueAnomaly(altTrueAnomalyP);
+		secondaryElements.SetTrueAnomaly(altTrueAnomalyS);
 
 		altSeperation = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
-		if (altSeperation < seperation)
+		if ((altSeperation < seperation) && ((error1) ||(!error2)))
 		{
 			seperation = altSeperation;
 			trueAnomalyP = TauRange(trueAnomalyP + Pi);
 			trueAnomalyS = TauRange(trueAnomalyS + Pi);
-			SetCollisionAltitude(primaryElements.GetRadialPosition());
 		}
-		approachAnomalyP = trueAnomalyP;
-		approachAnomalyS = trueAnomalyS;
+		else {
+			primaryElements.SetTrueAnomaly(trueAnomalyP);
+			secondaryElements.SetTrueAnomaly(trueAnomalyS);
+		}
 	}
+
+	else {
+		seperation = abs(primaryElements.semiMajorAxis - secondaryElements.semiMajorAxis);
+	}
+	approachAnomalyP = trueAnomalyP;
+	approachAnomalyS = trueAnomalyS;
 	SetCollisionAltitude(primaryElements.GetRadialPosition());
 	return seperation;
 }
@@ -381,8 +344,8 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 	else if (YS < 0)
 		deltaSecondary += Tau;
 
-	deltaPrimary2 = deltaPrimary + Pi;
-	deltaSecondary2 = deltaSecondary + Pi;
+	deltaPrimary2 =  TauRange(deltaPrimary + Pi);
+	deltaSecondary2 = TauRange(deltaSecondary + Pi);
 }
 
 void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
@@ -404,8 +367,8 @@ void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()
 	X2 = 2 * atan(Yminus);
 
 	// (Rate of change of seperations?)
-	deltaPrimary = deltaSecondary = X;
-	deltaPrimary2 = deltaSecondary2 = X2;
+	deltaPrimary = deltaSecondary = TauRange(X);
+	deltaPrimary2 = deltaSecondary2 = TauRange(X2);
 }
 
 vector<double> CollisionPair::CalculateAngularWindow(OrbitalElements & elements, double distance, double delta)

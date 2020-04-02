@@ -77,10 +77,18 @@ DebrisObject GenerateDebrisObject(string line)
 	iss >> type >> mass >> diameter >> area >> semiMajorAxis >> eccentricity >> inclination >> rightAscension >> argPerigee >> meanAnomaly >> launchDate;
 
 	switch (type) {
-	case 1: type2 = 0;
-	case 2: type2 = 1;
-	case 3: type2 = 2;
-	case 4: type2 = 2;
+	case 1: 
+		type2 = 0;
+		break;
+	case 2: 
+		type2 = 1;
+		break;
+	case 3: 
+		type2 = 2;
+		break;
+	case 4: 
+		type2 = 2;
+		break;
 	}
 
 	radius = sqrt(area / Pi);

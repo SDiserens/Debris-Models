@@ -37,6 +37,7 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 		isPassive = (pmdSuccess > randomNumber());
 		explosionProbability = rocketBodyExplosionProbability;
 		lifetime = 10;
+		break;
 	case 1:
 		isIntact = true;
 		isActive = true;
@@ -44,12 +45,14 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 		avoidanceSucess = 1;
 
 		lifetime = 7 * 365.25;
+		break;
 		//TODO - update lifetime to be object dependent
 	case 2:
 		isIntact = false;
 		isActive = false;
 		explosionProbability = 0.;
 		lifetime = 0;
+		break;
 	}
 }
 

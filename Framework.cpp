@@ -255,8 +255,8 @@ int main(int argc, char** argv)
 		}
 		simulationLog.clear();
 
-		//collisionModel->SetMOID(++moid);
-		collisionModel->SwitchParallelGPU();
+		collisionModel->SetMOID(++moid);
+		//collisionModel->SwitchParallelGPU();
 
 	}
 

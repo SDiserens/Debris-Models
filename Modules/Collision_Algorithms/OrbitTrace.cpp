@@ -34,6 +34,7 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 {
 	double tempProbability, collisionRate, altitude, mass;
 	list<CollisionPair> pairList;
+	list<CollisionPair>::iterator listEnd;
 	pair<long, long> pairID;
 	bool collision;
 	mutex mtx;
@@ -43,7 +44,7 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 
 	concurrency::parallel_for_each(pairList.begin(), pairList.end(), [&](CollisionPair& objectPair)
 	{
-		collision = false;
+		objectPair.collision = false;
 
 		objectPair.CalculateRelativeInclination();
 
@@ -52,50 +53,55 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 			// Calculate orbit intersections for coplanar
 			objectPair.CalculateArgumenstOfIntersectionCoplanar();
 			if (HeadOnFilter(objectPair) || !SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
-				collision = true;
+				objectPair.collision = true;
 		}
 		else
 		{
 			// Calculate intersections for non coplanar
 			objectPair.CalculateArgumenstOfIntersection();
 			if (!SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
-				collision = true;
+				objectPair.collision = true;
 		}
 
-		if (collision)
+		if (objectPair.collision)
 		{
 			collisionRate = CollisionRate(objectPair);
-			tempProbability = timeStep * collisionRate;
-			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
+			objectPair.probability = collisionRate;
+		}
+		else
+			objectPair.probability = 0;
+	});
+	listEnd = remove_if(pairList.begin(), pairList.end(), [&](CollisionPair& objectPair) {
+		return (objectPair.probability == 0);
+	});
+	pairList.erase(listEnd, pairList.end());
 
-			altitude = objectPair.primaryElements.GetRadialPosition();
-			mass = objectPair.primaryMass + objectPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
-			//	-- Determine if collision occurs through MC (random number generation)
-			if (outputProbabilities && tempProbability>0)
+	for (CollisionPair objectPair : pairList) {
+
+		tempProbability = timeStep * objectPair.probability;
+		pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
+
+		altitude = objectPair.primaryElements.GetRadialPosition();
+		mass = objectPair.primaryMass + objectPair.secondaryMass;
+		Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
+		//	-- Determine if collision occurs through MC (random number generation)
+		if (outputProbabilities && tempProbability > 0)
+		{
+			//	-- Store collision probability
+			newCollisionProbabilities.push_back(tempProbability);
+			newCollisionList.push_back(tempEvent);
+		}
+		else
+		{
+			if (DetermineCollision(tempProbability))
 			{
-
-				//	-- Store collision probability
-				//collisionProbabilities.push_back(tempProbability);
-				//collisionList.push_back(collisionPair);
-				mtx.lock();
-				newCollisionProbabilities.push_back(tempProbability);
+				// Store Collisions 
 				newCollisionList.push_back(tempEvent);
-				mtx.unlock();
-			}
-			else
-			{
-				if (DetermineCollision(tempProbability))
-				{
-					// Store Collisions 
-					//collisionList.push_back(tempEvent);
-					mtx.lock();
-					newCollisionList.push_back(tempEvent);
-					mtx.unlock();
-				}
 			}
 		}
-	});
+
+	}
+	
 	elapsedTime += timeStep;
 
 }
@@ -201,9 +207,15 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 
 	//TODO - Quick filter on possible separation
 	switch (MOIDtype) {
-	case 0: minSeperation = objectPair.CalculateMinimumSeparation();
-	case 1: minSeperation = objectPair.CalculateMinimumSeparation_DL();
-	case 2: minSeperation = objectPair.CalculateMinimumSeparation_MOID();
+	case 0: 
+		minSeperation = objectPair.CalculateMinimumSeparation();
+		break;
+	case 1: 
+		minSeperation = objectPair.CalculateMinimumSeparation_DL();
+		break;
+	case 2: 
+		minSeperation = objectPair.CalculateMinimumSeparation_MOID();
+		break;
 	}
 	
 
