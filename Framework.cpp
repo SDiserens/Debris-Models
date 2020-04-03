@@ -50,8 +50,7 @@ int main(int argc, char** argv)
 
 	collisionType = config["CollsionAlgorithm"].asString();
 	collisionConfig = config["CollisionConfig"];
-	int moid = 0;
-
+	int moid = collisionConfig["MOIDtype"].asInt();
 	// ----------------------------
 	// Parse command line arguments
 	// ----------------------------
@@ -255,9 +254,7 @@ int main(int argc, char** argv)
 		}
 		simulationLog.clear();
 
-		collisionModel->SetMOID(++moid);
-		//collisionModel->SwitchParallelGPU();
-
+		//collisionModel->SetMOID(++moid);
 	}
 
     return 0;

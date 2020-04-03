@@ -82,7 +82,7 @@ bool CollisionAlgorithm::PerigeeApogeeTest(CollisionPair& objectPair)
 	maxPerigee = max(objectPair.primaryElements.GetPerigee(), objectPair.secondaryElements.GetPerigee());
 	minApogee = min(objectPair.primaryElements.GetApogee(), objectPair.secondaryElements.GetApogee());
 
-	return (maxPerigee - minApogee) <= pAThreshold;
+	return (maxPerigee - minApogee) <= max(pAThreshold, objectPair.GetBoundingRadii());
 }
 
 double CollisionAlgorithm::CollisionCrossSection(CollisionPair& objectPair)

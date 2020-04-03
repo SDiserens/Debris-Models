@@ -248,8 +248,17 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	*/
 	thrust::host_vector<CollisionPair> outList(pairList.begin(), pairList.end());
 	concurrency::parallel_for_each(outList.begin(), outList.end(), [&](CollisionPair& objectPair)
-	{
-		objectPair.minSeperation = objectPair.CalculateMinimumSeparation();
+	{	switch (MOIDtype) {
+			case 0:
+				objectPair.minSeperation = objectPair.CalculateMinimumSeparation();
+				break;
+			case 1:
+				objectPair.minSeperation = objectPair.CalculateMinimumSeparation_DL();
+				break;
+			case 2:
+				objectPair.minSeperation = objectPair.CalculateMinimumSeparation_MOID();
+				break;
+			}
 	});
 
 	pairList = thrust::device_vector<CollisionPair>(outList.begin(), outList.end());

@@ -99,7 +99,7 @@ private:
 		// Read OT config
 		bool probabilities = config["Verbose"].asBool();
 		double threshold = config["ConjunctionThreshold"].asDouble();
-		int MOIDtype = config["MOID"].asInt();
+		int MOIDtype = config["MOIDtype"].asInt();
 
 		return make_unique<OrbitTrace>( probabilities, threshold, MOIDtype);
 	};

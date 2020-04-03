@@ -15,7 +15,7 @@ OrbitTrace::OrbitTrace(bool probabilities, double threshold, int moid)
 {
 	outputProbabilities = probabilities;
 	pAThreshold = threshold;
-	MOIDtype = 0;
+	MOIDtype = moid;
 }
 
 
