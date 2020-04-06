@@ -21,7 +21,8 @@ public:
 
 protected:
 	double CollisionRate(CollisionPair &objectPair);
-	thrust::host_vector<CollisionPair> CreatePairList_GPU(DebrisPopulation & population);
+	thrust::device_vector<CollisionPair> CreatePairList_GPU(DebrisPopulation & population);
+	thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_CPU(DebrisPopulation & population);
 	/*
 	double CalculateSpatialDensity(DebrisObject object, double radius, double latitude);
 	double CalculateRadialSpatialDensity(DebrisObject object, double radius);

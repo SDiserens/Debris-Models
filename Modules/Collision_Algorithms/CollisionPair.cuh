@@ -19,6 +19,7 @@ public:
 	CUDA_CALLABLE_MEMBER CollisionPair(DebrisObject& objectI, DebrisObject& objectJ);
 	CUDA_CALLABLE_MEMBER CollisionPair(long IDI, long IDJ);
 	CUDA_CALLABLE_MEMBER double GetRelativeInclination();
+	CUDA_CALLABLE_MEMBER void SetCollisionPair(DebrisObject objectI, DebrisObject objectJ);
 	vector<double>  CalculateAngularWindowPrimary(double distance);
 	vector<double>  CalculateAngularWindowSecondary(double distance);
 	vector3D GetPrimaryPositionAtTime(double timeFromEpoch);

@@ -7,7 +7,7 @@ CollisionPair::CollisionPair()
 {
 }
 
-CollisionPair::CollisionPair(DebrisObject & objectI, DebrisObject & objectJ)
+CollisionPair::CollisionPair(DebrisObject& objectI, DebrisObject& objectJ)
 {
 	primaryElements = objectI.GetElements();
 	secondaryElements = objectJ.GetElements();
@@ -34,6 +34,25 @@ CollisionPair::CollisionPair(long IDI, long IDJ)
 double CollisionPair::GetRelativeInclination()
 {
 	return relativeInclination;
+}
+
+CUDA_CALLABLE_MEMBER void CollisionPair::SetCollisionPair(DebrisObject objectI, DebrisObject objectJ)
+{
+
+	primaryElements = objectI.GetElements();
+	secondaryElements = objectJ.GetElements();
+	primaryID = objectI.GetID();
+	secondaryID = objectJ.GetID();
+	primaryAnomaly = objectI.GetEpochAnomaly();
+	secondaryAnomaly = objectJ.GetEpochAnomaly();
+	primaryMass = objectI.GetMass();
+	secondaryMass = objectJ.GetMass();
+	//CalculateRelativeInclination();
+	//CalculateArgumenstOfIntersection();
+	boundingRadii = (objectI.GetRadius() + objectJ.GetRadius()) * 0.001;
+	overlapCount = 1;
+
+	CalculateRelativeInclination();
 }
 
 vector<double> CollisionPair::CalculateAngularWindowPrimary(double distance)

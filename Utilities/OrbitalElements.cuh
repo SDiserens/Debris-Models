@@ -22,8 +22,8 @@ public:
 	CUDA_CALLABLE_MEMBER vector3D GetPosition();
 	CUDA_CALLABLE_MEMBER vector3D GetVelocity();
 	CUDA_CALLABLE_MEMBER vector3D GetNormalVector();
-	double GetPerigee();
-	double GetApogee();
+	CUDA_CALLABLE_MEMBER double GetPerigee();
+	CUDA_CALLABLE_MEMBER double GetApogee();
 	CUDA_CALLABLE_MEMBER double GetRadialPosition();
 	CUDA_CALLABLE_MEMBER double GetRadialPosition(double trueAnomaly);
 	CUDA_CALLABLE_MEMBER double CalculatePeriod();

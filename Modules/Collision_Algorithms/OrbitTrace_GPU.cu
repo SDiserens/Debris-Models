@@ -31,9 +31,72 @@ void computeGridSize(unsigned int n, unsigned int blockSize, unsigned int  &numB
 	numBlocks = iDivUp(n, numThreads);
 }
 
-__host__ thrust::host_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(DebrisPopulation & population)
+
+struct PairKernel {
+	int n;
+	DebrisObject * population;
+	PairKernel(int numObjects, DebrisObject *_data) {
+		n = numObjects;
+		population = _data;
+	}
+	template <typename Tuple>
+	__device__ void operator()(Tuple t) {
+		int x, y, z, i;
+		i = thrust::get<0>(t);
+		z = n - 1;
+		x = 1;
+		while (i > z) {
+			i -= z;
+			--z;
+			++x;
+		}
+		y = x + i;
+
+		thrust::get<1>(t).SetCollisionPair(population[x], population[y]);
+	}
+};
+
+struct PAKernel {
+	double pAThreshold;
+	PAKernel(double threshold) {
+		pAThreshold = threshold;
+	}
+	__device__ bool operator()(CollisionPair objectPair) {
+		double maxPerigee, minApogee;
+		// Perigee Apogee Test
+		maxPerigee = max(objectPair.primaryElements.GetPerigee(), objectPair.secondaryElements.GetPerigee());
+		minApogee = min(objectPair.primaryElements.GetApogee(), objectPair.secondaryElements.GetApogee());
+
+		return (maxPerigee - minApogee) <= max(pAThreshold, objectPair.GetBoundingRadii());
+	}
+};
+
+__host__ thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(DebrisPopulation & population)
 {
-	thrust::host_vector<CollisionPair> pairList;
+	int n = population.GetPopulationSize();
+	int N = n*(n - 1) / 2;
+	thrust::device_vector<CollisionPair> pairList(N);
+	thrust::device_vector<DebrisObject> populationList;
+	
+	for_each(population.population.begin(), population.population.end(), [&](pair<long, DebrisObject> object) {
+		populationList.push_back(object.second);
+	});
+
+	thrust::counting_iterator<int> first(0);
+	thrust::counting_iterator<int> last = first + N;
+	// TODO - GPU code for creating pairList
+	thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(first, pairList.begin())), thrust::make_zip_iterator(thrust::make_tuple(last, pairList.end())), PairKernel(n, thrust::raw_pointer_cast(populationList.data())));
+
+	int p = thrust::copy_if(thrust::device, pairList.begin(), pairList.end(), pairList.begin(), PAKernel(pAThreshold)) - pairList.begin();
+	pairList.resize(p);
+
+	return pairList;
+}
+
+__host__ thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_CPU(DebrisPopulation & population)
+{
+
+	thrust::device_vector<CollisionPair> pairList;
 	// TODO - GPU code for creating pairList
 	//Talk to Pete about i, j where i < j < N
 	mutex mtx;
@@ -55,7 +118,6 @@ __host__ thrust::host_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(Debri
 	});
 	return pairList;
 }
-
 /*
 //TODO - add device function  to operate on each collision pair
 __device__ void OrbitTraceAlgorithm(list<CollisionPair>& pairList) {
@@ -217,15 +279,13 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 {
 	double mass, tempProbability, epoch = population.GetEpoch();
 	Event tempEvent;
-	thrust::host_vector<CollisionPair> hostList(0);
 
 	// Filter Cube List
-	hostList = CreatePairList_GPU(population);
+	thrust::device_vector<CollisionPair> pairListIn = CreatePairList_CPU(population);
 	timeStep = timestep;
 	//unsigned int numThreads, numBlocks;
 	//computeGridSize(pairList.size(), 256, numBlocks, numThreads);
 	//TODO - Add code for GPU use
-	thrust::device_vector<CollisionPair> pairListIn(hostList.begin(), hostList.end());
 	size_t n = pairListIn.size();
 	thrust::device_vector<CollisionPair> pairList(n);
 	thrust::for_each(thrust::device, pairListIn.begin(), pairListIn.end(), CollisionFilterKernel(timestep));
