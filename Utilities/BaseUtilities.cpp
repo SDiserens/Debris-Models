@@ -201,7 +201,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 				definedEvent = objectParameters["definedEvent"];
 				if (!definedEvent.isMember("CollisionID")) {
 					// Load explosion
-					Event tempEvent(definedEvent["epoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
+					Event tempEvent(epoch + definedEvent["fromEpoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
 					population.AddDefinedEvent(tempEvent);
 				}
 				else {
@@ -210,7 +210,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 					if (definedCollisions.count(collisionID) > 0) {
 						// Check if other collision object exists yet
 						mass = tempObject.GetMass() + population.GetObject(definedCollisions[collisionID]).GetMass();
-						Event tempEvent(definedEvent["epoch"].asDouble(), definedCollisions[collisionID], tempObject.GetID(), definedEvent["RelativeVelocity"].asDouble(), mass, definedEvent["Altitude"].asDouble());
+						Event tempEvent(epoch + definedEvent["fromEpoch"].asDouble(), definedCollisions[collisionID], tempObject.GetID(), definedEvent["RelativeVelocity"].asDouble(), mass, 0.0);
 						population.AddDefinedEvent(tempEvent);
 					}
 					else

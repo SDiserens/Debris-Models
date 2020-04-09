@@ -97,6 +97,16 @@ vector3D CollisionPair::GetSecondaryVelocityAtTime(double timeFromEpoch)
 	return secondaryElements.GetVelocity();
 }
 
+void CollisionPair::GenerateArgumenstOfIntersection()
+{
+	CalculateRelativeInclination();
+	coplanar = (relativeInclination <= (2 * asin(boundingRadii / (primaryElements.semiMajorAxis + secondaryElements.semiMajorAxis))));
+	if (coplanar)
+		CalculateArgumenstOfIntersectionCoplanar();
+	else
+		CalculateArgumenstOfIntersection();
+}
+
 double CollisionPair::CalculateMinimumSeparation_MOID()
 {
 	moid_data_t mdata;

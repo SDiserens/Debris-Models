@@ -1,6 +1,18 @@
-﻿  Compiling CUDA source file Modules\Collision_Algorithms\OrbitTrace_GPU.cu...
+﻿  Compiling CUDA source file Modules\Collision_Algorithms\CollisionPair.cu...
+  Compiling CUDA source file Utilities\DebrisEvent.cu...
+  
+  E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\CollisionPair.cu.obj "E:\Work\Modelling Framework\Modules\Collision_Algorithms\CollisionPair.cu" 
+  
+  E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\DebrisEvent.cu.obj "E:\Work\Modelling Framework\Utilities\DebrisEvent.cu" 
+  Compiling CUDA source file Modules\Collision_Algorithms\OrbitTrace_GPU.cu...
   
   E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitTrace_GPU.cu.obj "E:\Work\Modelling Framework\Modules\Collision_Algorithms\OrbitTrace_GPU.cu" 
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+  DebrisEvent.cu
+  CollisionPair.cu
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
   
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
@@ -30,6 +42,101 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/iterator
               Incrementable=int
           ]
   E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(85): note: see reference to class template instantiation 'thrust::counting_iterator<int,thrust::use_default,thrust::use_default,thrust::use_default>' being compiled
+  stdafx.cpp
+  Framework.cpp
+Framework.cpp(194): warning C4267: '=': conversion from 'size_t' to 'volatile int', possible loss of data
+  CUBE.cpp
+  CollisionFunctions.cpp
+  HootsFilter.cpp
+  brentmin.cpp
+  distlink.cpp
+Modules\Collision_Algorithms\MOID\distlink.cpp(1272): warning C4099: 'SMOIDResult<float>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see declaration of 'SMOIDResult<float>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1272): warning C4099: 'SLCResult<float>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see declaration of 'SLCResult<float>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1273): warning C4099: 'SMOIDResult<double>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1273): note: see declaration of 'SMOIDResult<double>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1273): warning C4099: 'SLCResult<double>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1273): note: see declaration of 'SLCResult<double>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1274): warning C4099: 'SMOIDResult<long double>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1274): note: see declaration of 'SMOIDResult<long double>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(1274): warning C4099: 'SLCResult<long double>': type name first seen using 'struct' now seen using 'class'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1274): note: see declaration of 'SLCResult<long double>'
+Modules\Collision_Algorithms\MOID\distlink.cpp(111): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(111): note: while compiling class template member function 'CInitializer<21>::CInitializer(void)'
+  Modules\Collision_Algorithms\MOID\distlink.cpp(114): note: see reference to function template instantiation 'CInitializer<21>::CInitializer(void)' being compiled
+  Modules\Collision_Algorithms\MOID\distlink.cpp(114): note: see reference to class template instantiation 'CInitializer<21>' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(147): warning C4244: 'initializing': conversion from 'const double' to 'float', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'COrbitData<float>::COrbitData<double>(const COrbitData<double> &)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(147): warning C4244: 'initializing': conversion from 'const long double' to 'float', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'COrbitData<float>::COrbitData<long double>(const COrbitData<long double> &)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1055): warning C4101: 'iter_cnt': unreferenced local variable
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'SMOIDResult<float> MOID_fast<float>(const COrbitData<float> &,const COrbitData<float> &,float,float,float)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1218): warning C4244: '=': conversion from 'float' to 'unsigned int', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'SMOIDResult<float> MOID_direct_search<float>(const COrbitData<float> &,const COrbitData<float> &,const unsigned int [],float,float)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1218): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1273): note: see reference to function template instantiation 'SMOIDResult<double> MOID_direct_search<double>(const COrbitData<double> &,const COrbitData<double> &,const unsigned int [],double,double)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1218): warning C4244: '=': conversion from 'long double' to 'unsigned int', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1274): note: see reference to function template instantiation 'SMOIDResult<long double> MOID_direct_search<long double>(const COrbitData<long double> &,const COrbitData<long double> &,const unsigned int [],long double,long double)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(954): warning C4018: '<=': signed/unsigned mismatch
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1060): note: see reference to function template instantiation 'short Newton_sqdist<realfp>(const SAuxData<realfp> &,realfp &,realfp &,realfp &,realfp &,realfp &,realfp &,realfp,unsigned int &,int,realfp [],realfp [])' being compiled
+          with
+          [
+              realfp=float
+          ]
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'SMOIDResult<float> MOID_fast<float>(const COrbitData<float> &,const COrbitData<float> &,float,float,float)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(1111): warning C4018: '<=': signed/unsigned mismatch
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1223): note: see reference to function template instantiation 'int search_in_segment<realfp>(const SAuxData<realfp> &,realfp,realfp,unsigned int,realfp &)' being compiled
+          with
+          [
+              realfp=float
+          ]
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1272): note: see reference to function template instantiation 'SMOIDResult<float> MOID_direct_search<float>(const COrbitData<float> &,const COrbitData<float> &,const unsigned int [],float,float)' being compiled
+Modules\Collision_Algorithms\MOID\distlink.cpp(72): warning C4244: 'argument': conversion from 'int' to 'const std::complex<float>::_Ty', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(384): note: see reference to function template instantiation 'std::complex<float> operator *<float>(int,const std::complex<float> &)' being compiled
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1020): note: see reference to function template instantiation 'unsigned int polynomial_roots<float>(int,std::complex<float> [],std::complex<float> [],realfp,realfp)' being compiled
+          with
+          [
+              realfp=float
+          ]
+Modules\Collision_Algorithms\MOID\distlink.cpp(65): warning C4244: 'argument': conversion from 'int' to 'const std::complex<float>::_Ty', possible loss of data
+  Modules\Collision_Algorithms\MOID\distlink.cpp(385): note: see reference to function template instantiation 'std::complex<float> operator *<float>(const std::complex<float> &,int)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\include\xutility(2690): warning C4244: 'argument': conversion from 'const int' to 'const std::complex<float>::_Ty', possible loss of data
+  C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\include\xutility(2704): note: see reference to function template instantiation 'void std::_Fill_unchecked1<_FwdIt,_Ty>(_FwdIt,_FwdIt,const _Ty &,std::false_type)' being compiled
+          with
+          [
+              _FwdIt=std::complex<float> *,
+              _Ty=int
+          ]
+  C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\include\xutility(2712): note: see reference to function template instantiation 'void std::_Fill_unchecked<_Iter,_Ty>(_FwdIt,_FwdIt,const _Ty &)' being compiled
+          with
+          [
+              _Iter=std::complex<float> *,
+              _Ty=int,
+              _FwdIt=std::complex<float> *
+          ]
+  Modules\Collision_Algorithms\MOID\distlink.cpp(1004): note: see reference to function template instantiation 'void std::fill<std::complex<float>*,int>(_FwdIt,_FwdIt,const _Ty &)' being compiled
+          with
+          [
+              _FwdIt=std::complex<float> *,
+              _Ty=int
+          ]
+  moid.cpp
+  OrbitTrace.cpp
+Modules\Collision_Algorithms\OrbitTrace.cpp(39): warning C4101: 'collision': unreferenced local variable
+  FragmentCloud.cpp
+  FragmentationFunctions.cpp
+  NASAStdBrkUpMdl.cpp
+  Analytic_J2.cpp
+  Propagator.cpp
+  SGP4.cpp
+Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): warning C4477: 'sscanf_s' : format string '%1c' requires an argument of type 'unsigned int', but variadic argument 4 has type '::size_t'
+  Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): note: this argument is used as a buffer size
+Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): warning C4477: 'sscanf_s' : format string '%10s' requires an argument of type 'unsigned int', but variadic argument 6 has type 'unsigned __int64'
+  Modules\Propagators\SGP4\SGP4Code\SGP4.cpp(2223): note: this argument is used as a buffer size
+  SGP4wrap.cpp
+  BaseUtilities.cpp
+  DebrisPopulation.cpp
   
   E:\Work\Modelling Framework>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -dlink -o x64\Release\Framework.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MT " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"E:\Work\Modelling Framework\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\libs\x64\static\Release" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64" jsoncpp.lib "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\x64\cudart.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_30,code=sm_30  --machine 64 x64\Release\CollisionPair.cu.obj x64\Release\DebrisEvent.cu.obj x64\Release\DebrisObject.cu.obj x64\Release\OrbitalAnomalies.cu.obj x64\Release\OrbitalElements.cu.obj x64\Release\OrbitalUtilities.cu.obj x64\Release\OrbitTrace_GPU.cu.obj 
   jsoncpp.lib
@@ -54,8 +161,8 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/iterator
   OrbitalUtilities.cu.obj
   OrbitTrace_GPU.cu.obj
   Generating code
-  143 of 4389 functions ( 3.3%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    15 functions had inline decision re-evaluated but remain unchanged
+  275 of 4389 functions ( 6.3%) were compiled, the rest were copied from previous compilation.
+    55 functions were new in current compilation
+    23 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

@@ -55,6 +55,8 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 	{
 		explosion = false;
 		DebrisObject& projectileObject = population.GetObject(fragmentationEvent.secondaryID);
+		targetObject.SetTrueAnomaly(fragmentationEvent.primaryAnomaly);
+		projectileObject.SetTrueAnomaly(fragmentationEvent.secondaryAnomaly);
 		
 		// Simulate primary object breakup
 		NSBMFragmentCloud targetDebrisCloud(targetObject, projectileObject, minLength);

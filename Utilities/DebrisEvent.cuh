@@ -5,7 +5,7 @@ public:
 	static int eventSEQ;
 	long eventID, debrisGenerated, primaryID, secondaryID;
 	int eventType; // ( 0 : Explosion, 1 : Collision,  2 : Collision Avoidance,)
-	double eventEpoch, altitude, involvedMass, relativeVelocity, energyMassRatio;
+	double eventEpoch, altitude, involvedMass, relativeVelocity, energyMassRatio, primaryAnomaly, secondaryAnomaly;
 	bool catastrophic, momentumConserved;
 
 public:
@@ -18,6 +18,8 @@ public:
 	void SwapPrimarySecondary();
 	void SetEpoch(double epoch);
 	void SetEventID();
+	void SetAltitude(double alt);
+	void SetCollisionAnomalies(double pimaryM, double secondaryM);
 	void SetConservationMomentum(bool conservedFlag);
 	void SetCatastrophic(bool catastrophicFlag);
 	void SetEMR(double eMRatio);

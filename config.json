@@ -1,5 +1,5 @@
 {
-  "scenarioFilename": "Collisions_43900.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
+  "scenarioFilename": "Collisions_EventTest.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
   "StepSize": 0.05, // Size of default timestep (days)
   "MonteCarlo": 1,
   "logging": false,
@@ -11,9 +11,9 @@
   },
 
   //
-  "Fragmentation": null, // "NSBM",
+  "Fragmentation": "NSBM", // "NSBM",
   "FragmentationConfig": {
-    "minLength": 0.01, // Min fragment length in metres
+    "minLength": 0.1, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g
     "numberBuckets": 30, //number of buckets to split fragments sizes between
     "bridgingFucntion": "Weighted", // brdiign function to use between 8cm and 11cm : "Small", "Large", "Mean", "Weighted",
@@ -33,7 +33,7 @@
     "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.1, // inner threshold for Hoots
     "MOIDtype": 0, // {0: inbuilt Newton; 1: distlink; 2: MOID}
-    "Verbose": true, // Probability output / time output for different methods
+    "Verbose": false, // Probability output / time output for different methods
     "outputScaling": 5 // collision probabilities of the order of 10^(-outputScaling)
   },
   //

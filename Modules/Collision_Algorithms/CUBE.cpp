@@ -57,6 +57,7 @@ void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
 			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, collisionPair.GetRelativeVelocity(), mass, altitude);
+			tempEvent.SetCollisionAnomalies(collisionPair.primaryElements.GetTrueAnomaly(), collisionPair.secondaryElements.GetTrueAnomaly());
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities)
 			{
@@ -114,6 +115,7 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
 			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, collisionPair.GetRelativeVelocity(), mass, altitude);
+			tempEvent.SetCollisionAnomalies(collisionPair.primaryElements.GetTrueAnomaly(), collisionPair.secondaryElements.GetTrueAnomaly());
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities)
 			{

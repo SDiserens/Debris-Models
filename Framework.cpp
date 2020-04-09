@@ -167,8 +167,17 @@ int main(int argc, char** argv)
 
 			while (!definedList.empty()){
 				if (definedList[0].GetEventEpoch() < environmentPopulation.GetEpoch()) {
-					breakUp->mainBreakup(environmentPopulation, definedList[0]);
+					Event tempEvent = definedList[0];
+					if (tempEvent.GetEventType()) {
+						CollisionPair objectPair(environmentPopulation.GetObject(tempEvent.primaryID), environmentPopulation.GetObject(tempEvent.secondaryID));
+						objectPair.GenerateArgumenstOfIntersection();
+						tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
+						tempEvent.SetAltitude(objectPair.primaryElements.GetRadialPosition());
+						objectPair.~CollisionPair();
+					}
+					breakUp->mainBreakup(environmentPopulation, tempEvent);
 					definedList.erase(definedList.begin());
+					tempEvent.~Event();
 				}
 				else
 					break;

@@ -40,6 +40,17 @@ Event::Event(double epoch, long targetID, long projectileID, double relV, double
 	altitude = alt;
 }
 
+
+void Event::SetAltitude(double alt) {
+	altitude = alt;
+}
+
+void Event::SetCollisionAnomalies(double primaryV, double secondaryV)
+{
+	primaryAnomaly = primaryV;
+	secondaryAnomaly = secondaryV;
+}
+
 Event::~Event()
 {
 }

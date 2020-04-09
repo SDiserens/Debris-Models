@@ -52,7 +52,7 @@ struct PairKernel {
 		}
 		y = x + i;
 
-		thrust::get<1>(t).SetCollisionPair(population[x], population[y]);
+		thrust::get<1>(t).SetCollisionPair(population[--x], population[--y]);
 	}
 };
 
@@ -82,9 +82,9 @@ __host__ thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(Deb
 		populationList.push_back(object.second);
 	});
 
-	thrust::counting_iterator<int> first(0);
+	thrust::counting_iterator<int> first(1);
 	thrust::counting_iterator<int> last = first + N;
-	// TODO - GPU code for creating pairList
+
 	thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(first, pairList.begin())), thrust::make_zip_iterator(thrust::make_tuple(last, pairList.end())), PairKernel(n, thrust::raw_pointer_cast(populationList.data())));
 
 	int p = thrust::copy_if(thrust::device, pairList.begin(), pairList.end(), pairList.begin(), PAKernel(pAThreshold)) - pairList.begin();
@@ -97,8 +97,6 @@ __host__ thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_CPU(Deb
 {
 
 	thrust::device_vector<CollisionPair> pairList;
-	// TODO - GPU code for creating pairList
-	//Talk to Pete about i, j where i < j < N
 	mutex mtx;
 	concurrency::parallel_for_each(population.population.begin(), population.population.end(), [&](auto& it) {
 		auto jt = population.population.find(it.first);
@@ -118,13 +116,8 @@ __host__ thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_CPU(Deb
 	});
 	return pairList;
 }
-/*
-//TODO - add device function  to operate on each collision pair
-__device__ void OrbitTraceAlgorithm(list<CollisionPair>& pairList) {
-	int i = blockIdx.x * blockDim.x + threadIdx.x;
-	
-}
 
+/*
 __host__ void OrbitTrace::MainCollision_GPU_Cuda(DebrisPopulation & population, double timestep)
 {
 	double tempProbability, collisionRate, altitude, mass;
@@ -137,12 +130,13 @@ __host__ void OrbitTrace::MainCollision_GPU_Cuda(DebrisPopulation & population, 
 	timeStep = timestep;
 	unsigned int numThreads, numBlocks;
 	computeGridSize(pairList.size(), 256, numBlocks, numThreads);
-	//TODO - Add code for GPU use
+	//- Add code for GPU use
 		// 1D iteration over pairList
 		//int index = blockIdx.x * blockDim.x + threadIdx.x;
 
 }
 */
+
 __device__ bool HeadOnFilter(CollisionPair objectPair)
 {
 	bool headOn = false;
@@ -281,11 +275,10 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	Event tempEvent;
 
 	// Filter Cube List
-	thrust::device_vector<CollisionPair> pairListIn = CreatePairList_CPU(population);
+	thrust::device_vector<CollisionPair> pairListIn = CreatePairList_GPU(population);
 	timeStep = timestep;
 	//unsigned int numThreads, numBlocks;
 	//computeGridSize(pairList.size(), 256, numBlocks, numThreads);
-	//TODO - Add code for GPU use
 	size_t n = pairListIn.size();
 	thrust::device_vector<CollisionPair> pairList(n);
 	thrust::for_each(thrust::device, pairListIn.begin(), pairListIn.end(), CollisionFilterKernel(timestep));
@@ -336,6 +329,7 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 
 		mass = objectPair.primaryMass + objectPair.secondaryMass;
 		tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude());
+		tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
 		//	-- Determine if collision occurs through MC (random number generation)
 		if (outputProbabilities && tempProbability > 0)
 		{
