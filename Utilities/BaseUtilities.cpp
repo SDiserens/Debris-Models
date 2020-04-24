@@ -252,7 +252,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	scenarioFile.close();
 }
 
-void WriteCollisionData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, vector<tuple<int, double, pair<string, string>, double, double>> collisionLog)
+void WriteCollisionData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, vector<tuple<int, double, pair<string, string>, double, double, double>> collisionLog)
 {
 	char date[100];
 	int ID = 1;
@@ -309,11 +309,11 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	// Break data with line
 	outputFile << "\n";
 
-	outputFile << "\nSimulation Run, Simulation Elapsed Time (days), Object Pair, Collision Probability, Altitude (km)";
+	outputFile << "\nSimulation Run, Simulation Elapsed Time (days), Object Pair, Collision Probability, Altitude (km), Minimum Distance (km)";
 	for (auto logEntry : collisionLog) 
 	{
 		pairID = "'" + get<2>(logEntry).first + " - " + get<2>(logEntry).second;
-		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + to_string(get<1>(logEntry)) + "," + pairID + "," + to_string(scaling * get<3>(logEntry)) + "," + to_string(get<4>(logEntry));
+		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + to_string(get<1>(logEntry)) + "," + pairID + "," + to_string(scaling * get<3>(logEntry)) + "," + to_string(get<4>(logEntry)) + "," + to_string(get<5>(logEntry));
 	}
 	outputFile.close();
 	cout << "\n";

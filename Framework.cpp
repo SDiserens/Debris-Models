@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	// Data logs
 	vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog;
 		// (MC, #days, #objects, (upperstage, spacecraft, debris), #events, (Explosion, Collision, Collision Avoidance)) 
-	vector<tuple<int, double, pair<string, string>, double, double>> collisionLog;
+	vector<tuple<int, double, pair<string, string>, double, double, double>> collisionLog;
 		// (MC, #days, objectIDs, probability, altitude)
 	vector<Event> collisionList;
 	vector<Event> explosionList;
@@ -205,7 +205,7 @@ int main(int argc, char** argv)
 
 						collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collisionList[k].primaryID).GetNoradID()),
 							to_string(environmentPopulation.GetObject(collisionList[k].secondaryID).GetNoradID())),
-							collisionOutput[k], collisionList[k].altitude));
+							collisionOutput[k], collisionList[k].altitude, collisionList[k].minSeparation));
 					}
 					collisionOutput.clear();
 				

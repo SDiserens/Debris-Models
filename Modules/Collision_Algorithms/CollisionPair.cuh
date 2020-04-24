@@ -28,6 +28,7 @@ public:
 	vector3D GetSecondaryVelocityAtTime(double timeFromEpoch);
 	void GenerateArgumenstOfIntersection();
 	double CalculateSeparationAtTime(double timeFromEpoch);
+	double GetMinSeparation();
 	CUDA_CALLABLE_MEMBER double CalculateMinimumSeparation();
 	CUDA_HOST_MEMBER double CalculateMinimumSeparation_DL();
 	CUDA_HOST_MEMBER double CalculateMinimumSeparation_MOID();

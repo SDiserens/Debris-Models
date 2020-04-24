@@ -48,16 +48,15 @@ void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep
 		// For each conjunction (cohabiting pair)
 		concurrency::parallel_for_each(pairList.begin(), pairList.end(), [&](CollisionPair& collisionPairID)
 		{
-			pair<long, long> pairID(collisionPairID.primaryID, collisionPairID.secondaryID);
-			CollisionPair collisionPair(population.GetObject(pairID.first), population.GetObject(pairID.second));
+			CollisionPair collisionPair(population.GetObject(collisionPairID.primaryID), population.GetObject(collisionPairID.secondaryID));
 			//	-- Calculate collision rate in cube
 			collisionRate = CollisionRate(collisionPair);
 			tempProbability = adjustment * collisionRate;
 
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, collisionPair.GetRelativeVelocity(), mass, altitude);
-			tempEvent.SetCollisionAnomalies(collisionPair.primaryElements.GetTrueAnomaly(), collisionPair.secondaryElements.GetTrueAnomaly());
+			Event tempEvent(population.GetEpoch(), collisionPairID.primaryID, collisionPairID.secondaryID, collisionPair.GetRelativeVelocity(), mass, altitude, collisionPair.GetMinSeparation());
+			tempEvent.SetCollisionAnomalies(collisionPair.approachAnomalyP, collisionPair.approachAnomalyS);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities)
 			{
@@ -106,16 +105,15 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 		// For each conjunction (cohabiting pair)
 		for (CollisionPair &collisionPairID : pairList)
 		{
-			pair<long, long> pairID(collisionPairID.primaryID, collisionPairID.secondaryID);
-			CollisionPair collisionPair(population.GetObject(pairID.first), population.GetObject(pairID.second));
+			CollisionPair collisionPair(population.GetObject(collisionPairID.primaryID), population.GetObject(collisionPairID.secondaryID));
 			//	-- Calculate collision rate in cube
 			collisionRate = CollisionRate(collisionPair);
 			tempProbability = adjustment * collisionRate;
 
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, collisionPair.GetRelativeVelocity(), mass, altitude);
-			tempEvent.SetCollisionAnomalies(collisionPair.primaryElements.GetTrueAnomaly(), collisionPair.secondaryElements.GetTrueAnomaly());
+			Event tempEvent(population.GetEpoch(), collisionPairID.primaryID, collisionPairID.secondaryID, collisionPair.GetRelativeVelocity(), mass, altitude, collisionPair.GetMinSeparation());
+			tempEvent.SetCollisionAnomalies(collisionPair.approachAnomalyP, collisionPair.approachAnomalyS);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities)
 			{

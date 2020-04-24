@@ -25,11 +25,12 @@ Event::Event(double epoch, long objectID, bool consMomentum, bool catastr, doubl
 	involvedMass = mass;
 	primaryID = objectID;
 	secondaryID = -1;
+
 }
 
 
 
-Event::Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt)
+Event::Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt, double separation)
 {
 	eventEpoch = epoch;
 	eventType = 1;
@@ -38,6 +39,7 @@ Event::Event(double epoch, long targetID, long projectileID, double relV, double
 	primaryID = targetID;
 	secondaryID = projectileID;
 	altitude = alt;
+	minSeparation = separation;
 }
 
 

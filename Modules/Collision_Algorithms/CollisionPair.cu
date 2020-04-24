@@ -15,6 +15,8 @@ CollisionPair::CollisionPair(DebrisObject& objectI, DebrisObject& objectJ)
 	secondaryID = objectJ.GetID();
 	primaryAnomaly = objectI.GetEpochAnomaly();
 	secondaryAnomaly = objectJ.GetEpochAnomaly();
+	approachAnomalyP = primaryElements.GetTrueAnomaly();
+	approachAnomalyS = secondaryElements.GetTrueAnomaly();
 	primaryMass = objectI.GetMass();
 	secondaryMass = objectJ.GetMass();
 	//CalculateRelativeInclination();
@@ -347,6 +349,19 @@ double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)
 	double seperation;
 	vector3D positionP = GetPrimaryPositionAtTime(timeFromEpoch);
 	vector3D positionS = GetSecondaryPositionAtTime(timeFromEpoch);
+
+	//closest approach distance
+	seperation = positionP.CalculateRelativeVector(positionS).vectorNorm();
+	return seperation;
+}
+
+double CollisionPair::GetMinSeparation()
+{
+	double seperation;
+	primaryElements.SetTrueAnomaly(approachAnomalyP);
+	secondaryElements.SetTrueAnomaly(approachAnomalyS);
+	vector3D positionP = primaryElements.GetPosition();
+	vector3D positionS = secondaryElements.GetPosition();
 
 	//closest approach distance
 	seperation = positionP.CalculateRelativeVector(positionS).vectorNorm();

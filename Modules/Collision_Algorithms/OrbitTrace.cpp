@@ -83,7 +83,7 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 
 		altitude = objectPair.primaryElements.GetRadialPosition();
 		mass = objectPair.primaryMass + objectPair.secondaryMass;
-		Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
+		Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation());
 		tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
 		//	-- Determine if collision occurs through MC (random number generation)
 		if (outputProbabilities && tempProbability > 0)
@@ -148,7 +148,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 
 			altitude = objectPair.primaryElements.GetRadialPosition();
 			mass = objectPair.primaryMass + objectPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
+			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation());
 			tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
 			//	-- Determine if collision occurs through MC (random number generation)
 			if (outputProbabilities && tempProbability>0)
