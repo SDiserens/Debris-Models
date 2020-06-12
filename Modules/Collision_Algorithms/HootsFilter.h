@@ -26,7 +26,7 @@ protected:
 	bool GeometricFilter(CollisionPair& objectPair);
 	vector<double> TimeFilter(CollisionPair& objectPair, double timeStep);
 	vector<double> CoplanarFilter(CollisionPair& objectPair, double timeStep);
-	vector<double> DetermineCollisionTimes(CollisionPair& objectPair, vector<double> candidateTimeList);
+	vector<double> DetermineCollisionTimes(CollisionPair& objectPair, vector<double> candidateTimeList, vector<double>& altitudes);
 
 	//Secondary functions
 	vector<pair<double, double>> CalculateTimeWindows(pair<double,double> window, pair<double, double> window2, double period);

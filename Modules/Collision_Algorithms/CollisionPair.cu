@@ -352,6 +352,7 @@ double CollisionPair::CalculateSeparationAtTime(double timeFromEpoch)
 
 	//closest approach distance
 	seperation = positionP.CalculateRelativeVector(positionS).vectorNorm();
+	collisionAltitude = positionP.vectorNorm();
 	return seperation;
 }
 

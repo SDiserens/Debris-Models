@@ -56,23 +56,26 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 
 		if (candidateTimeList.size() > 0)
 		{
-			collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList);
+			vector<double> altitudes;
+			collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList, altitudes);
 			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
-
-			altitude = objectPair.primaryElements.GetRadialPosition();
 			mass = objectPair.primaryMass + objectPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude);
 			if (outputTimes)
 			{
-				//	-- Store collision probability
-				//collisionTimes.push_back(tempTime);
-				//collisionList.push_back(collisionPair);
-				newCollisionTimes.insert(newCollisionTimes.end(), collisionTimes.begin(), collisionTimes.end());
-				newCollisionList.push_back(tempEvent);
+				for (int i = 0; i < altitudes.size(); i++) {
+
+					Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitudes[i]);
+					//	-- Store collision probability
+					//collisionTimes.push_back(tempTime);
+					//collisionList.push_back(collisionPair);
+					newCollisionTimes.push_back(collisionTimes[i]);
+					newCollisionList.push_back(tempEvent);
+				}
 			}
 			else
 			{
 				// Store Collisions 
+				Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitudes[0]);
 				collisionList.push_back(tempEvent);
 				newCollisionList.push_back(tempEvent); // Note in this scenario only adds once regardless of number of # potential collisions for pair
 			}
@@ -253,17 +256,27 @@ vector<double> HootsFilter::CoplanarFilter(CollisionPair& objectPair, double tim
 	return candidateTimeList;
 }
 
-vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair& objectPair, vector<double> candidateTimeList)
+vector<double> HootsFilter::DetermineCollisionTimes(CollisionPair& objectPair, vector<double> candidateTimeList, vector<double>& altitudes)
 {
 	vector<double> collideTimeList;
 	double closeTime, closeApproach;
+	bool collide;
 	// Collision Times
 	for (double candidateTime : candidateTimeList)
 	{
 		closeTime = CalculateClosestApproachTime(objectPair, candidateTime);
 		closeApproach = objectPair.CalculateSeparationAtTime(closeTime);
-		if (closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold) )
+		collide = closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold);
+		if (outputTimes) {
+			collideTimeList.push_back(collide);
+			altitudes.push_back(objectPair.GetCollisionAltitude());
+		}
+		else if (closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold))
+		{
 			collideTimeList.push_back(closeTime);
+			altitudes.push_back(objectPair.GetCollisionAltitude());
+			break;
+		}
 	}
 	return collideTimeList;
 }
