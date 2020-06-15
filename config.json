@@ -1,5 +1,5 @@
 {
-  "scenarioFilename": "Collisions_EventTest.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
+  "scenarioFilename": "Collisions_42731.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
   "StepSize": 0.05, // Size of default timestep (days)
   "MonteCarlo": 1,
   "logging": false,
@@ -23,17 +23,17 @@
   },
 
   //
-  "CollsionAlgorithm": "OrbitTrace", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
+  "CollsionAlgorithm": "Hoots", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
-    "ParallelGPU": true, // takes priority over CPU
+    "ParallelGPU": false, // takes priority over CPU
     "ParallelCPU": true,
     "CubeDimension": 10.0, // Cube Size or threshold distance
     "CubeMC": 100, // Cube runs to do each step
     "OffsetCubes": false, // Use 1 cube or offset cubes
-    "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
+    "ConjunctionThreshold": 5.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.1, // inner threshold for Hoots
     "MOIDtype": 0, // {0: inbuilt Newton; 1: distlink; 2: MOID}
-    "Verbose": false, // Probability output / time output for different methods
+    "Verbose": true, // Probability output / time output for different methods
     "outputScaling": 5 // collision probabilities of the order of 10^(-outputScaling)
   },
   //

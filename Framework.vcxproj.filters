@@ -213,9 +213,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="Modules\Collision_Algorithms\OrbitTrace_GPU.cu">
-      <Filter>Source Files\04 Collisions</Filter>
-    </CudaCompile>
     <CudaCompile Include="Utilities\DebrisObject.cu">
       <Filter>Source Files\02 Utilities</Filter>
     </CudaCompile>
@@ -232,6 +229,12 @@
       <Filter>Source Files\02 Utilities</Filter>
     </CudaCompile>
     <CudaCompile Include="Modules\Collision_Algorithms\CollisionPair.cu">
+      <Filter>Source Files\04 Collisions</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Modules\Collision_Algorithms\HootsFilter_GPU.cu">
+      <Filter>Source Files\04 Collisions</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Modules\Collision_Algorithms\OrbitTrace_GPU.cu">
       <Filter>Source Files\04 Collisions</Filter>
     </CudaCompile>
   </ItemGroup>

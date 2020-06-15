@@ -20,6 +20,8 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 	vector<double> candidateTimeList, collisionTimes;
 	pair<long, long> pairID;
 	double altitude, mass;
+	double closeTime, closeApproach;
+	bool collide;
 	// Filter Cube List
 	pairList = CreatePairList(population);
 	timeStep = timestep;
@@ -56,10 +58,30 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 
 		if (candidateTimeList.size() > 0)
 		{
-			vector<double> altitudes;
-			collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList, altitudes);
+			//vector<double> altitudes;
+			//collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList, altitudes);
+
 			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 			mass = objectPair.primaryMass + objectPair.secondaryMass;
+			for (double candidateTime : candidateTimeList)
+			{
+				closeTime = CalculateClosestApproachTime(objectPair, candidateTime);
+				closeApproach = objectPair.CalculateSeparationAtTime(closeTime);
+				collide = closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold);
+				if (outputTimes) {
+
+					Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
+					newCollisionTimes.push_back(collide);
+					newCollisionList.push_back(tempEvent);
+				}
+				else if (collide)
+				{
+					Event tempEvent(population.GetEpoch()+closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
+					newCollisionList.push_back(tempEvent); // Note in this scenario only adds once regardless of number of # potential collisions for pair
+					break;
+				}
+			}
+			/*
 			if (outputTimes)
 			{
 				for (int i = 0; i < altitudes.size(); i++) {
@@ -79,6 +101,7 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 				collisionList.push_back(tempEvent);
 				newCollisionList.push_back(tempEvent); // Note in this scenario only adds once regardless of number of # potential collisions for pair
 			}
+			*/
 		}
 	}
 }

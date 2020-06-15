@@ -242,15 +242,14 @@
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Modules\Collision_Algorithms\CollisionPair.cu" />
+    <CudaCompile Include="Modules\Collision_Algorithms\HootsFilter_GPU.cu" />
+    <CudaCompile Include="Modules\Collision_Algorithms\OrbitTrace_GPU.cu" />
     <CudaCompile Include="Utilities\DebrisEvent.cu" />
     <CudaCompile Include="Utilities\DebrisObject.cu" />
     <CudaCompile Include="Utilities\OrbitalAnomalies.cu" />
     <CudaCompile Include="Utilities\OrbitalElements.cu" />
     <CudaCompile Include="Utilities\OrbitalUtilities.cu" />
     <None Include="config.json" />
-    <CudaCompile Include="Modules\Collision_Algorithms\OrbitTrace_GPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
     <None Include="packages.config" />
     <None Include="Scenarios\Collisions_39191.json" />
   </ItemGroup>

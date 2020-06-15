@@ -1,12 +1,17 @@
 #pragma once
 #include "stdafx.h"
 #include "Collisions.h"
+#include <thrust\device_vector.h>
 
 class HootsFilter :
 	public CollisionAlgorithm
 {
 	double conjunctionThreshold, collisionThreshold;
 	bool outputTimes;
+
+	//double deltaR, deltaB;
+	int MOIDtype = 0; // {0: inbuilt Newton; 1: distlink; 2: MOID}
+
 protected:
 	vector<double> newCollisionTimes;
 	vector<double> collisionTimes;
@@ -14,6 +19,7 @@ protected:
 public:
 	HootsFilter(bool times = false, double init_conjThreshold=10, double init_collThreshold=0.1);
 	void MainCollision(DebrisPopulation& population, double timestep);
+	void MainCollision_GPU(DebrisPopulation& population, double timestep);
 	void SetThreshold(double threshold);
 
 	void SetMOID(int moid);
@@ -23,6 +29,7 @@ public:
 protected:
 	//Primary functions
 	double CollisionRate(CollisionPair &objectPair);
+	thrust::device_vector<CollisionPair> CreatePairList_GPU(DebrisPopulation & population);
 	bool GeometricFilter(CollisionPair& objectPair);
 	vector<double> TimeFilter(CollisionPair& objectPair, double timeStep);
 	vector<double> CoplanarFilter(CollisionPair& objectPair, double timeStep);
