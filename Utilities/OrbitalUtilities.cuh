@@ -20,7 +20,7 @@ extern mt19937_64 * generator;
 #define muGravity 398576.0576
 
 
-							//unsigned int KISS();
+//unsigned int KISS();
 
 class NewtonConvergenceException : public exception
 {

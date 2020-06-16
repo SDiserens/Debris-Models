@@ -345,6 +345,7 @@ void DebrisObject::SetPosition(vector3D inputPosition) // Not Safe - invalid log
 {
 	position = vector3D(inputPosition);
 	elements.SetOrbitalElements(position, velocity);
+	meanAnomalyEpoch = elements.GetMeanAnomaly();
 	velocitySync = positionSync = true;
 	periodSync = false;
 }
@@ -355,6 +356,7 @@ void DebrisObject::SetStateVectors(vector3D inputPosition, vector3D inputVelocit
 	position = vector3D(inputPosition);
 	velocity = vector3D(inputVelocity);
 	elements.SetOrbitalElements(position, velocity);
+	meanAnomalyEpoch = elements.GetMeanAnomaly();
 	velocitySync = positionSync = true;
 	periodSync = false;
 }
