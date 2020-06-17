@@ -23,8 +23,8 @@ public:
 	void SetThreshold(double threshold);
 
 	void SetMOID(int moid);
-	vector<double> GetCollisionVerbose();
-	vector<double> GetNewCollisionVerbose();
+	//vector<double> GetCollisionVerbose();
+	//vector<double> GetNewCollisionVerbose();
 
 protected:
 	//Primary functions

@@ -71,7 +71,7 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 				if (outputTimes) {
 
 					Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
-					newCollisionTimes.push_back(collide);
+					newCollisionProbabilities.push_back(collide);
 					newCollisionList.push_back(tempEvent);
 				}
 				else if (collide)
@@ -109,7 +109,7 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 void HootsFilter::SetMOID(int moid)
 {
 }
-
+/*
 vector<double> HootsFilter::GetCollisionVerbose()
 {
 	return GetCollisionTimes();
@@ -119,7 +119,7 @@ vector<double> HootsFilter::GetNewCollisionVerbose()
 {
 	return GetNewCollisionTimes();
 }
-
+*/
 vector<double> HootsFilter::GetNewCollisionTimes()
 {
 	return newCollisionTimes;
@@ -207,16 +207,16 @@ vector<double> HootsFilter::TimeFilter(CollisionPair& objectPair, double timeSte
 	}
 
 	int i = 0;
-	if (timeWindowsS.size() > 0) {
-		for (pair<double, double> window : timeWindowsP)
+	for (pair<double, double> window : timeWindowsP)
 		{
+		if (timeWindowsS.size() > i) {
 			if ((window.first <= timeWindowsS[i].first) & (window.second > timeWindowsS[i].second))
 			{
 				candidateTime = timeWindowsS[i].first + (window.second - timeWindowsS[i].first) / 2;
 				timeList.push_back(candidateTime);
 				continue;
 			}
-
+		
 			// Loop up to matched point in list
 			while (window.first >= timeWindowsS[i].first)
 			{
@@ -241,10 +241,12 @@ vector<double> HootsFilter::TimeFilter(CollisionPair& objectPair, double timeSte
 				timeList.push_back(candidateTime);
 			}
 
-			else if ((i < timeWindowsS.size()) & (window.second > timeWindowsS[i].first))
-			{
-				candidateTime = timeWindowsS[i].first + (window.second - timeWindowsS[i].first) / 2;
-				timeList.push_back(candidateTime);
+			else if (i < timeWindowsS.size()) {
+				if (window.second > timeWindowsS[i].first)
+				{
+					candidateTime = timeWindowsS[i].first + (window.second - timeWindowsS[i].first) / 2;
+					timeList.push_back(candidateTime);
+				}
 			}
 		}
 	}
@@ -358,8 +360,8 @@ vector<pair<double, double>>  HootsFilter::CalculateTimeWindows(pair<double, dou
 double HootsFilter::CalculateClosestApproachTime(CollisionPair& objectPair, double candidateTime)
 {
 	int it = 0;
-	double approachTime, R, Rdot, h = 1.0;
-	float hOld = 1.0;
+	double approachTime, R, Rdot, h = 99999.0;
+	float hOld;
 	// Closest approach time
 	approachTime = candidateTime;
 
@@ -369,15 +371,19 @@ double HootsFilter::CalculateClosestApproachTime(CollisionPair& objectPair, doub
 		Rdot = CalculateSecondDerivativeSeparation(objectPair, approachTime);
 		hOld = h;
 		h = R / Rdot;
+		if (abs(h) > abs(hOld))
+			break;
+		if ((float)h == -hOld)
+			break;
 		approachTime -= h;
 		++it;
 
-		if ((float)h == -hOld)
-			break;
-	}
-	if (it == NEWTONMAXITERATIONS)
-		throw NewtonConvergenceException();
 
+	}
+	if (it == NEWTONMAXITERATIONS) {
+		approachTime = candidateTime;
+		//throw NewtonConvergenceException();
+	}
 	return approachTime;
 }
 
