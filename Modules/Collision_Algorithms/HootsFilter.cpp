@@ -43,6 +43,19 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 		candidateTimeList.clear();
 		collisionTimes.clear();
 
+
+		if (!CoplanarFilter(objectPair)) {
+			candidateTimeList = TimeFilter(objectPair, timeStep);
+		}
+		else {
+			candidateTimeList.push_back(-1.0);
+		}
+
+		if (!candidateTimeList.empty()) {
+			if (candidateTimeList[0] < 0)
+				candidateTimeList = CoplanarFilter(objectPair, timeStep);
+		}
+		/*
 		if (objectPair.GetRelativeInclination() == 0)
 			candidateTimeList.push_back(-1);
 		else
@@ -55,6 +68,7 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 			if (candidateTimeList[0] < 0)
 				candidateTimeList = CoplanarFilter(objectPair, timeStep);
 		}
+		*/
 
 		if (candidateTimeList.size() > 0)
 		{
@@ -66,9 +80,11 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 			for (double candidateTime : candidateTimeList)
 			{
 				closeTime = CalculateClosestApproachTime(objectPair, candidateTime);
+				if (closeTime == -1.0)
+					continue;
 				closeApproach = objectPair.CalculateSeparationAtTime(closeTime);
 				collide = closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold);
-				if (outputTimes) {
+				if (outputTimes && closeApproach < conjunctionThreshold) {
 
 					Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
 					newCollisionProbabilities.push_back(collide);
@@ -81,27 +97,7 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 					break;
 				}
 			}
-			/*
-			if (outputTimes)
-			{
-				for (int i = 0; i < altitudes.size(); i++) {
 
-					Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitudes[i]);
-					//	-- Store collision probability
-					//collisionTimes.push_back(tempTime);
-					//collisionList.push_back(collisionPair);
-					newCollisionTimes.push_back(collisionTimes[i]);
-					newCollisionList.push_back(tempEvent);
-				}
-			}
-			else
-			{
-				// Store Collisions 
-				Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitudes[0]);
-				collisionList.push_back(tempEvent);
-				newCollisionList.push_back(tempEvent); // Note in this scenario only adds once regardless of number of # potential collisions for pair
-			}
-			*/
 		}
 	}
 }
@@ -136,6 +132,15 @@ double HootsFilter::CollisionRate(CollisionPair &objectPair)
 }
 
 
+
+bool HootsFilter::CoplanarFilter(CollisionPair& objectPair)
+{
+	// Coplanar filter
+	double combinedSemiMajorAxis = objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis;
+	bool coplanar = objectPair.GetRelativeInclination() <= (2 * asin(objectPair.GetBoundingRadii() / combinedSemiMajorAxis));
+	objectPair.coplanar = coplanar;
+	return coplanar;
+}
 
 bool HootsFilter::GeometricFilter(CollisionPair& objectPair)
 {
@@ -371,17 +376,16 @@ double HootsFilter::CalculateClosestApproachTime(CollisionPair& objectPair, doub
 		Rdot = CalculateSecondDerivativeSeparation(objectPair, approachTime);
 		hOld = h;
 		h = R / Rdot;
-		if (abs(h) > abs(hOld))
-			break;
+	//	if (abs(h) > abs(hOld))
+	//		break;
 		if ((float)h == -hOld)
 			break;
 		approachTime -= h;
 		++it;
 
-
 	}
 	if (it == NEWTONMAXITERATIONS) {
-		approachTime = candidateTime;
+		approachTime = -1.0;
 		//throw NewtonConvergenceException();
 	}
 	return approachTime;

@@ -31,6 +31,7 @@ protected:
 	double CollisionRate(CollisionPair &objectPair);
 	thrust::device_vector<CollisionPair> CreatePairList_GPU(DebrisPopulation & population);
 	bool GeometricFilter(CollisionPair& objectPair);
+	bool CoplanarFilter(CollisionPair& objectPair);
 	vector<double> TimeFilter(CollisionPair& objectPair, double timeStep);
 	vector<double> CoplanarFilter(CollisionPair& objectPair, double timeStep);
 	vector<double> DetermineCollisionTimes(CollisionPair& objectPair, vector<double> candidateTimeList, vector<double>& altitudes);

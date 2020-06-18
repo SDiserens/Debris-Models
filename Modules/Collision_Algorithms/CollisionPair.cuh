@@ -1,6 +1,7 @@
 
 #include "MOID\distlink.h"
 #include "MOID\MOID.h"
+#include <thrust\device_vector.h>
 
 class CollisionPair
 {

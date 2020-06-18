@@ -12,6 +12,12 @@
 #endif 
 
 #ifdef __CUDACC__
+#define CUDA_CLASS thrust::
+#else
+#define CUDA_CLASS std::
+#endif 
+
+#ifdef __CUDACC__
 #define CUDA_HOST_MEMBER __host__
 #else
 #define CUDA_HOST_MEMBER

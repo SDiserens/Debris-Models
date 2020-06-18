@@ -14,7 +14,7 @@
 #include <thrust\execution_policy.h>
 #include <thrust\device_vector.h>
 #include <thrust\remove.h>
-
+#include <thrust/iterator/zip_iterator.h>
 
 struct PairKernel {
 	int n;
@@ -99,6 +99,15 @@ struct GeometricFilterKernel {
 	}
 };
 
+struct CoplanarFilterKernel {
+	double threshold;
+	__device__ void operator()(CollisionPair &objectPair) {
+		double combinedSemiMajorAxis = objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis;
+		bool coplanar = objectPair.GetRelativeInclination() <= (2 * asin(objectPair.GetBoundingRadii() / combinedSemiMajorAxis));
+		objectPair.coplanar = coplanar;
+	}
+};
+
 struct TimeFilterKernel {
 	double timeStep;
 	TimeFilterKernel(double timestep) {
@@ -114,7 +123,7 @@ struct TimeFilterKernel {
 
 void HootsFilter::MainCollision_GPU(DebrisPopulation & population, double timestep)
 {
-	double mass, tempProbability, epoch = population.GetEpoch();
+	double mass, epoch = population.GetEpoch();
 	Event tempEvent;
 	pair<long, long> pairID;
 	vector<double> candidateTimeList, collisionTimes;
@@ -149,23 +158,26 @@ void HootsFilter::MainCollision_GPU(DebrisPopulation & population, double timest
 	thrust::for_each(thrust::device, pairListIn.begin(), pairListIn.end(), GeometricFilterKernel(timestep));
 	n = thrust::copy_if(thrust::device, pairListIn.begin(), pairListIn.end(), pairList.begin(), Collision()) - pairList.begin();
 	pairList.resize(n);
+	thrust::for_each(thrust::device, pairListIn.begin(), pairListIn.end(), CoplanarFilterKernel());
 	outList = thrust::host_vector<CollisionPair>(pairList.begin(), pairList.end());
+	thrust::host_vector<list<pair<double, double>>> conjunctionList(n); // (time, separation)
 
-	for (int i = 0; i < outList.size(); i++) {
-		CollisionPair objectPair = outList[i];
+	concurrency::parallel_for(size_t (0), n, [&](size_t i)
+	{
+		CollisionPair& objectPair = outList[i];
+		list<pair<double, double>>& hootsConjunctions = conjunctionList[i];
 		candidateTimeList.clear();
 		collisionTimes.clear();
 
 		//TODO - ADD GPU code for time/coplanar filter
-		if (objectPair.GetRelativeInclination() == 0)
-			candidateTimeList.push_back(-1);
-		else
-		{
+		if (!objectPair.coplanar) {
 			candidateTimeList = TimeFilter(objectPair, timeStep);
 		}
+		else {
+			candidateTimeList.push_back(-1.0);
+		}
 
-		if (candidateTimeList.size() > 0)
-		{
+		if (!candidateTimeList.empty()) {
 			if (candidateTimeList[0] < 0)
 				candidateTimeList = CoplanarFilter(objectPair, timeStep);
 		}
@@ -175,14 +187,27 @@ void HootsFilter::MainCollision_GPU(DebrisPopulation & population, double timest
 			//vector<double> altitudes;
 			//collisionTimes = DetermineCollisionTimes(objectPair, candidateTimeList, altitudes);
 
-			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
-			mass = objectPair.primaryMass + objectPair.secondaryMass;
 			for (double candidateTime : candidateTimeList)
 			{
 				closeTime = CalculateClosestApproachTime(objectPair, candidateTime);
+				if (closeTime == -1.0)
+					continue;
 				closeApproach = objectPair.CalculateSeparationAtTime(closeTime);
+				hootsConjunctions.push_back(make_pair(closeTime, closeApproach));
+			}
+		}
+	});
+
+	for(int i = 0; i < outList.size(); i++) {
+			CollisionPair& objectPair = outList[i];
+			list<pair<double, double>>& hootsConjunctions = conjunctionList[i];
+			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
+			mass = objectPair.primaryMass + objectPair.secondaryMass;
+			for(pair<double, double> conjunction : hootsConjunctions){
+				closeApproach = conjunction.second;
+				closeTime = conjunction.first;
 				collide = closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold);
-				if (outputTimes) {
+				if (outputTimes && closeApproach < conjunctionThreshold) {
 
 					Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
 					newCollisionTimes.push_back(collide);
@@ -197,4 +222,3 @@ void HootsFilter::MainCollision_GPU(DebrisPopulation & population, double timest
 			}
 		}
 	}
-}
