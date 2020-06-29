@@ -193,7 +193,7 @@ struct Collision
 	__host__ __device__
 		bool operator()(CollisionPair objectPair)
 	{
-		return (objectPair.collision);
+		return (!objectPair.collision);
 	}
 };
 
@@ -275,31 +275,17 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	Event tempEvent;
 
 	// Filter Cube List
-	thrust::device_vector<CollisionPair> pairListIn = CreatePairList_GPU(population);
+	thrust::device_vector<CollisionPair> pairList = CreatePairList_GPU(population);
 	timeStep = timestep;
 	//unsigned int numThreads, numBlocks;
 	//computeGridSize(pairList.size(), 256, numBlocks, numThreads);
-	size_t n = pairListIn.size();
-	thrust::device_vector<CollisionPair> pairList(n);
-	thrust::for_each(thrust::device, pairListIn.begin(), pairListIn.end(), CollisionFilterKernel(timestep));
+	size_t n = pairList.size();
+	thrust::for_each(thrust::device, pairList.begin(), pairList.end(), CollisionFilterKernel(timestep));
 
-	n = thrust::copy_if(thrust::device, pairListIn.begin(), pairListIn.end(), pairList.begin(), Collision()) - pairList.begin();
-	pairList.resize(n);
-	
-	//thrust::device_vector<double> seperationList(n);
-	//thrust::transform(thrust::device, pairList.begin(), pairList.end(), seperationList.begin(), MinSeperation());
-	/*
-	for (dvit start = pairList.begin(); start < pairList.end(); start += CUDASTRIDE) {
-		dvit end = start + CUDASTRIDE;
-		if (end > pairList.end())
-			end = pairList.end();
-		thrust::for_each(thrust::device, start, end, MinSeperation());
-	}
-	
-	//TODO - consider bespoke min-seperation fucntions (run as different kernels for sep and altsep
-	thrust::for_each(thrust::device, pairList.begin(), collisionEnd, CollisionRateKernel(timestep, pAThreshold));
-	*/
 	thrust::host_vector<CollisionPair> outList(pairList.begin(), pairList.end());
+	n = std::remove_if(outList.begin(), outList.end(), Collision()) - outList.begin();
+	outList.resize(n);
+
 	concurrency::parallel_for_each(outList.begin(), outList.end(), [&](CollisionPair& objectPair)
 	{	switch (MOIDtype) {
 			case 0:

@@ -23,9 +23,9 @@
   },
 
   //
-  "CollsionAlgorithm": "Hoots", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
+  "CollsionAlgorithm": "OrbitTrace", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
-    "ParallelGPU": false, // takes priority over CPU
+    "ParallelGPU": true,// takes priority over CPU
     "ParallelCPU": true,
     "CubeDimension": 10.0, // Cube Size or threshold distance
     "CubeMC": 100, // Cube runs to do each step

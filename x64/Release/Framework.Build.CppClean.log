@@ -1,5 +1,7 @@
-e:\work\modelling framework\x64\release\framework.pch
 e:\work\modelling framework\x64\release\vc141.pdb
+e:\work\modelling framework\x64\release\hootsfilter.obj
+e:\work\modelling framework\x64\release\framework.obj
+e:\work\modelling framework\x64\release\framework.pch
 e:\work\modelling framework\x64\release\stdafx.obj
 e:\work\modelling framework\x64\release\debrispopulation.obj
 e:\work\modelling framework\x64\release\baseutilities.obj
@@ -14,17 +16,16 @@ e:\work\modelling framework\x64\release\orbittrace.obj
 e:\work\modelling framework\x64\release\moid.obj
 e:\work\modelling framework\x64\release\distlink.obj
 e:\work\modelling framework\x64\release\brentmin.obj
-e:\work\modelling framework\x64\release\hootsfilter.obj
 e:\work\modelling framework\x64\release\collisionfunctions.obj
 e:\work\modelling framework\x64\release\cube.obj
-e:\work\modelling framework\x64\release\framework.obj
 x64\release\collisionpair.cu.obj
+x64\release\hootsfilter_gpu.cu.obj
+x64\release\orbittrace_gpu.cu.obj
 x64\release\debrisevent.cu.obj
 x64\release\debrisobject.cu.obj
 x64\release\orbitalanomalies.cu.obj
 x64\release\orbitalelements.cu.obj
 x64\release\orbitalutilities.cu.obj
-x64\release\orbittrace_gpu.cu.obj
 e:\work\modelling framework\x64\release\framework.ipdb
 e:\work\modelling framework\x64\release\framework.iobj
 e:\work\modelling framework\x64\release\framework.exe
@@ -33,6 +34,7 @@ e:\work\modelling framework\x64\release\framework.res
 e:\work\modelling framework\x64\release\collisionpair.cu.cache
 e:\work\modelling framework\x64\release\debrisevent.cu.cache
 e:\work\modelling framework\x64\release\debrisobject.cu.cache
+e:\work\modelling framework\x64\release\hootsfilter_gpu.cu.cache
 e:\work\modelling framework\x64\release\orbitalanomalies.cu.cache
 e:\work\modelling framework\x64\release\orbitalelements.cu.cache
 e:\work\modelling framework\x64\release\orbitalutilities.cu.cache
@@ -41,6 +43,7 @@ e:\work\modelling framework\x64\release\collisionpair.cu.obj
 e:\work\modelling framework\x64\release\debrisevent.cu.obj
 e:\work\modelling framework\x64\release\debrisobject.cu.obj
 e:\work\modelling framework\x64\release\framework.device-link.obj
+e:\work\modelling framework\x64\release\hootsfilter_gpu.cu.obj
 e:\work\modelling framework\x64\release\orbitalanomalies.cu.obj
 e:\work\modelling framework\x64\release\orbitalelements.cu.obj
 e:\work\modelling framework\x64\release\orbitalutilities.cu.obj
