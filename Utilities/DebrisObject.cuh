@@ -90,6 +90,7 @@ public:
 	void SetInitEpoch(double epoch);
 	void SetEpoch(double epoch);
 	void SetRadius(double radii);
+	void SetMass(double newMass);
 
 	void SetVelocity(double vX, double vY, double vZ);
 	void SetVelocity(vector3D inputVelocity);

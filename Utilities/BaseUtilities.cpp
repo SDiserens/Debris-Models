@@ -55,11 +55,14 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 
 	case 2:
 
-		radius = parsedObject["radius"].asDouble();
+		radius = parsedObject["radius"].asDouble(); 
+
 		debris = DebrisObject(parsedObject["TLELine1"].asString(),
 							  parsedObject["TLELine2"].asString(),
 							  parsedObject["TLELine3"].asString());
 		debris.SetRadius(radius);
+		if (parsedObject.isMember("mass"))
+			debris.SetMass(parsedObject["mass"].asDouble());
 		break;
 	}
 

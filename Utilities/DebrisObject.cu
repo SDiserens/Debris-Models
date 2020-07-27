@@ -20,7 +20,7 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	CalculateAreaToMass();
 	mass = init_mass;
 	length = init_length;
-	elements = OrbitalElements(semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly);
+	elements = OrbitalElements(semiMajorAxis, eccentricity, inclination, TauRange(rightAscension), TauRange(argPerigee), TauRange(init_meanAnomaly));
 	meanAnomalyEpoch = init_meanAnomaly;
 	nFrag = 1;
 	objectType = type;
@@ -478,6 +478,11 @@ void DebrisObject::UpdateEpoch(double epochStep)
 void DebrisObject::SetRadius(double radii)
 {
 	radius = radii;
+}
+
+void DebrisObject::SetMass(double newMass)
+{
+	mass = newMass;
 }
 
 OrbitalAnomalies DebrisObject::GetAnomalies()
