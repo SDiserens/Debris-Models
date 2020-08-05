@@ -52,9 +52,13 @@ void Propagator::RemovePopulation()
 
 double Propagator::CalculateBStar(DebrisObject & object)
 {
-	double ballisticC;
-
-	ballisticC = object.GetCDrag() * object.GetAreaToMass();
-
-	return rhoZero / 2 * ballisticC;
+	double ballisticC, bStar;
+	if (object.IsActive())
+		bStar = 0;
+	else
+	{
+		ballisticC = object.GetCDrag() * object.GetAreaToMass();
+		bStar = rhoZero / 2 * ballisticC;
+	}
+	return bStar;
 }

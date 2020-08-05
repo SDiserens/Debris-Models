@@ -17,8 +17,8 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	parentID = 0;
 	radius = init_radius;
 	area = Pi * radius * radius;
-	CalculateAreaToMass();
 	mass = init_mass;
+	CalculateAreaToMass();
 	length = init_length;
 	elements = OrbitalElements(semiMajorAxis, eccentricity, inclination, TauRange(rightAscension), TauRange(argPerigee), TauRange(init_meanAnomaly));
 	meanAnomalyEpoch = init_meanAnomaly;
@@ -44,7 +44,7 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 		explosionProbability = satelliteExplosionProbability;
 		avoidanceSucess = 1;
 
-		lifetime = 7 * 365.25;
+		lifetime = 50 * 365.25;
 		break;
 		//TODO - update lifetime to be object dependent
 	case 2:
@@ -470,6 +470,7 @@ void DebrisObject::UpdateEpoch(double epochStep)
 	if (currEpoch >= initEpoch + lifetime)
 	{
 		isActive = false;
+		bStar = NAN;
 		isPassive = (pmdSuccess > randomNumber());
 		//TODO - include PMD disposal orbit
 	}

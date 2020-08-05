@@ -15,7 +15,7 @@ protected:
 	char name[100];
 	long parentID, sourceID, objectID;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
-	int sourceType, objectType; // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively. //TODO distinguish between active/inactive?
+	int sourceType, objectType; // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively. 
 	int removeEvent; // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
 	int nFrag, noradID;
 	vector3D velocity, position;

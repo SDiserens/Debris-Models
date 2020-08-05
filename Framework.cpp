@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 	Json::Value config, propagatorConfig, fragmentationConfig, collisionConfig;
 
 	// Variable
-	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName;
+	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName, backgroundFilename;
 	double timeStep, stepDays, elapsedDays, simulationDays, threshold, avoidanceProbability=0;
 	bool  logging = true, setThreshold = false;
 	int mcRuns, i;
@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 	LoadConfigFile(config);
 
 	populationFilename = config["scenarioFilename"].asString();
+	backgroundFilename = config["BackgroundPop"].asString();
 	mcRuns = config["MonteCarlo"].asInt();
 	logging = config["logging"].asBool();
 
@@ -132,6 +133,8 @@ int main(int argc, char** argv)
 
 	cout << "Reading Population File : " + populationFilename + "...\n";
 	LoadScenario(initPopulation, populationFilename);
+	cout << "Reading Background File : " + backgroundFilename + "...\n";
+	LoadBackground(initPopulation, backgroundFilename);
 	populationFilename = populationFilename.substr(0, populationFilename.find("."));
 	simulationDays = initPopulation.GetDuration();
 

@@ -9,6 +9,8 @@ vector<DebrisObject> GenerateLaunchTraffic(Json::Value & launches);
 void LoadConfigFile(Json::Value& config);
 
 void LoadScenario(DebrisPopulation & population, string scenarioFilename);
+void LoadBackground(DebrisPopulation & population, string backgroundFilename);
+void LoadObjects(DebrisPopulation & population, Json::Value scenario);
 
 void WriteCollisionData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, vector<tuple<int, double, pair<string, string>, double, double, double>> collisionLog);
 

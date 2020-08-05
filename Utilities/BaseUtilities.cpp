@@ -156,14 +156,10 @@ void LoadConfigFile(Json::Value & config)
 void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 {
 	population.Clear();
-	Json::Value config, scenario, parsedObject, definedEvent;
+	Json::Value scenario;
 	Json::Reader reader;
-	int nObjects, collisionID;
-	double averageSemiMajorAxis = 0;
-	double epoch, mass;
+	double epoch;
 	string date;
-	DebrisObject tempObject;
-	map<int, long> definedCollisions;
 
 	// Read scenario file
 
@@ -192,7 +188,49 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	epoch = DateToEpoch(date);
 	population.InitialiseEpoch(epoch);
 	population.SetDuration(scenario["Duration"].asDouble());
+
+	LoadObjects(population, scenario);
+
+	double launchCyle = scenario["LaunchCycle"].asDouble();	
+	population.AddLaunchTraffic(GenerateLaunchTraffic(scenario["launches"]), launchCyle);
+
+			
+	// Close File
+	cout << " Closing Scenario File...\n" << endl;
+	scenarioFile.close();
+}
+
+void LoadBackground(DebrisPopulation & population, string backgroundFilename) {
+	Json::Value scenario;
+	Json::Reader reader;
+
+	ifstream backgroundFile("Scenarios\\" + backgroundFilename);
+	if (!backgroundFile.good())
+	{
+		cout << "Background file failed to load";
+		throw std::runtime_error("Background file failed to load");
+	}
+
+	// Parse scenario file to identify object characteristics
+	reader.parse(backgroundFile, scenario);
+
+
+	LoadObjects(population, scenario);
+	cout << " Closing Background File...\n" << endl;
+	backgroundFile.close();
+}
+
+void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
+	DebrisObject tempObject;
+	Json::Value parsedObject, definedEvent;
+	double averageSemiMajorAxis = 0;
+	int nObjects, collisionID;
+	map<int, long> definedCollisions;
+	double epoch, mass;
+	epoch = population.GetEpoch();
+
 	if (scenario["objects"].isArray()) {
+
 		for (Json::Value objectParameters : scenario["objects"])
 		{
 			tempObject = GenerateDebrisObject(objectParameters, epoch);
@@ -220,8 +258,6 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 						// Store object ID for later
 						definedCollisions[collisionID] = tempObject.GetID();
 				}
-
-
 			}
 		}
 	}
@@ -242,17 +278,8 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 			}
 		}
 	}
-
-
-	double launchCyle = scenario["LaunchCycle"].asDouble();	
-	population.AddLaunchTraffic(GenerateLaunchTraffic(scenario["launches"]), launchCyle);
-
 	nObjects = scenario["objects"].size();
 	population.SetAverageSMA(averageSemiMajorAxis / nObjects);
-			
-	// Close File
-	cout << " Closing Scenario File...\n" << endl;
-	scenarioFile.close();
 }
 
 void WriteCollisionData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, vector<tuple<int, double, pair<string, string>, double, double, double>> collisionLog)
