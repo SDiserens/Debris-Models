@@ -29,6 +29,7 @@ public:
 	double GetNextInitEpoch();
 	double GetTimeToNextInitEpoch();
 	double GetEpoch();
+	double GetStartEpoch();
 	int GetPopulationSize();
 	int GetScalingPower();
 	double GetAverageSMA();

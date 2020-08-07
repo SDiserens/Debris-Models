@@ -103,3 +103,4 @@ CUDA_CALLABLE_MEMBER double PiRange(double n);
 
 double DateToEpoch(int year, int month, int day, int hour, int minute, double second);
 double DateToEpoch(string date);
+string EpochToDate(double epoch);

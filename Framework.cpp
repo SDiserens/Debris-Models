@@ -21,7 +21,6 @@ int main(int argc, char** argv)
 	bool  logging = true, setThreshold = false;
 	int mcRuns, i;
 	volatile int n;
-	DebrisObject target, projectile;
 
 	// Data logs
 	vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog;
@@ -31,7 +30,6 @@ int main(int argc, char** argv)
 	vector<Event> collisionList;
 	vector<Event> explosionList;
 	vector<Event> definedList;
-	vector<double> collisionOutput;
 	
 	// ----------------------------
 	// - Parsing config variables -
@@ -52,6 +50,14 @@ int main(int argc, char** argv)
 	collisionType = config["CollsionAlgorithm"].asString();
 	collisionConfig = config["CollisionConfig"];
 	int moid = collisionConfig["MOIDtype"].asInt();
+
+	//Set explosion probabilities
+	rocketBodyExplosionProbability = config["RB_Explosion"].asDouble();
+	satelliteExplosionProbability = config["Satllite_Explosion"].asDouble();
+	manoeuvreThreshold = config["CA_Manoeuvre_Threshold"].asDouble();
+
+	//Set pmd success
+	pmdSuccess = config["PMD_SuccessRate"].asDouble();
 	// ----------------------------
 	// Parse command line arguments
 	// ----------------------------
@@ -199,35 +205,36 @@ int main(int argc, char** argv)
 			n = collisionList.size();
 			// if extra output requested
 			if ((collisionConfig["Verbose"].asBool()) && (n > 0)) {
-
-					// Retrieve collision output
-					collisionOutput = collisionModel->GetNewCollisionVerbose();
-
 					// Log data
-					for (int k = 0; k < n; k++) {
-
-						collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collisionList[k].primaryID).GetNoradID()),
-							to_string(environmentPopulation.GetObject(collisionList[k].secondaryID).GetNoradID())),
-							collisionOutput[k], collisionList[k].altitude, collisionList[k].minSeparation));
+					for (Event collision : collisionList) {
+						collisionLog.push_back(make_tuple(j, elapsedDays, make_pair(to_string(environmentPopulation.GetObject(collision.primaryID).GetNoradID()),
+							to_string(environmentPopulation.GetObject(collision.secondaryID).GetNoradID())),
+							collision.collisionProbability, collision.altitude, collision.minSeparation));
 					}
-					collisionOutput.clear();
-				
 			}
 
+			// Simulate Breakups and collision avoidance
 			if (breakUp) {
 				// For each pair in collision list
 				for (Event collision : collisionList) {
-					target = environmentPopulation.GetObject(collision.primaryID);
-					projectile = environmentPopulation.GetObject(collision.secondaryID);
+					DebrisObject& target = environmentPopulation.GetObject(collision.primaryID);
+					DebrisObject& projectile = environmentPopulation.GetObject(collision.secondaryID);
+					target.UpdateCollisionProbability(collision.collisionProbability);
+					projectile.UpdateCollisionProbability(collision.collisionProbability);
 
 					// determine if collision avoidance occurs
 					avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
-					if (collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) {
+					if ((collision.collisionProbability >= manoeuvreThreshold) & (collisionModel->DetermineCollisionAvoidance(avoidanceProbability))) {
 						// Update and Log
 						collision.CollisionAvoidance();
+						collision.SetDebrisCount(0);
+						collision.SetCatastrophic(false);
+						collision.SetConservationMomentum(false);
+						collision.SetEMR(0);
 						environmentPopulation.AddDebrisEvent(collision);
 					}
-					else {
+
+					else if (collisionModel->DetermineCollision(collision.collisionProbability)) {
 						// Simulate Fragmentations
 						breakUp->mainBreakup(environmentPopulation, collision);
 					}
@@ -261,8 +268,9 @@ int main(int argc, char** argv)
 			collisionLog.clear();
 		}
 		if (logging) {
-			WriteEventData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, environmentPopulation.GetEventLog());
-			WriteSimulationData(ouputName, config, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
+			WriteEventData(ouputName, config, environmentPopulation.GetStartEpoch(), collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, environmentPopulation.GetEventLog());
+			WriteSimulationData(ouputName, config, environmentPopulation.GetStartEpoch(), collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig, simulationLog);
+			WritePopulationData(ouputName, config, environmentPopulation, collisionType, collisionConfig, propagatorType, propagatorConfig, breakUpType, fragmentationConfig);
 		}
 		simulationLog.clear();
 

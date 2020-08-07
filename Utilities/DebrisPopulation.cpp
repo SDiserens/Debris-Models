@@ -66,6 +66,11 @@ double DebrisPopulation::GetEpoch()
 	return currentEpoch;
 }
 
+double DebrisPopulation::GetStartEpoch()
+{
+	return startEpoch;
+}
+
 int DebrisPopulation::GetPopulationSize()
 {
 	return populationCount;

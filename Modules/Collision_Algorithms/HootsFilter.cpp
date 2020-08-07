@@ -84,18 +84,8 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 					continue;
 				closeApproach = objectPair.CalculateSeparationAtTime(closeTime);
 				collide = closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold);
-				if (outputTimes && closeApproach < conjunctionThreshold) {
-
-					Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
-					newCollisionProbabilities.push_back(collide);
-					newCollisionList.push_back(tempEvent);
-				}
-				else if (collide)
-				{
-					Event tempEvent(population.GetEpoch()+closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
-					newCollisionList.push_back(tempEvent); // Note in this scenario only adds once regardless of number of # potential collisions for pair
-					break;
-				}
+				Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach, collide);
+				newCollisionList.push_back(tempEvent);
 			}
 
 		}

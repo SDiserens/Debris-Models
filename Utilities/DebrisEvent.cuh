@@ -5,14 +5,14 @@ public:
 	static int eventSEQ;
 	long eventID, debrisGenerated, primaryID, secondaryID;
 	int eventType; // ( 0 : Explosion, 1 : Collision,  2 : Collision Avoidance,)
-	double eventEpoch, altitude, involvedMass, relativeVelocity, energyMassRatio, primaryAnomaly, secondaryAnomaly, minSeparation;
+	double eventEpoch, altitude, involvedMass, relativeVelocity, energyMassRatio, primaryAnomaly, secondaryAnomaly, minSeparation, collisionProbability;
 	bool catastrophic, momentumConserved;
 
 public:
 	CUDA_CALLABLE_MEMBER Event();
 	CUDA_CALLABLE_MEMBER Event(double epoch, long objectID, double mass);
 	CUDA_CALLABLE_MEMBER Event(double epoch, long objectID, bool consMomentum, bool catastr, double mass, long debrisCount);
-	CUDA_CALLABLE_MEMBER Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt, double separation);
+	CUDA_CALLABLE_MEMBER Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt, double separation, double probability);
 	CUDA_CALLABLE_MEMBER ~Event();
 	void CollisionAvoidance();
 	void SwapPrimarySecondary();

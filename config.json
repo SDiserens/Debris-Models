@@ -1,9 +1,16 @@
 {
-  "scenarioFilename": "Simulation_StarlinkFull.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
+  "scenarioFilename": "Simulation_StarlinkFull.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
   "BackgroundPop": "Background_StarlinkOver1kg.json",
   "StepSize": 5, // Size of default timestep (days)
   "MonteCarlo": 10,
   "logging": true,
+
+  // Run config
+  "RB_Explosion": 0, // Probabiltiy of explosion for upper stages : 0 to 1
+  "Satllite_Explosion": 0, // Probabiltiy of explosion for payloads : 0 to 1
+  "CA_Manoeuvre_Threshold": 0.0001, // Probabiltiy of collision required for cam : 0 to 1
+  "PMD_SuccessRate": 0, // Probabiltiy of successful pmd : 0 to 1
+
   //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
   "PropagatorConfig": {
@@ -19,7 +26,7 @@
     "numberBuckets": 30, //number of buckets to split fragments sizes between
     "bridgingFucntion": "Weighted", // brdiign function to use between 8cm and 11cm : "Small", "Large", "Mean", "Weighted",
     "explosionScaling": 1, //Value to use for scaling number of explosion fragments
-    "representativeFragmentThreshold": 0.02, // Fragment size in metres below which represetntative fragmnets should be used
+    "representativeFragmentThreshold": 0.1, // Fragment size in metres below which represetntative fragmnets should be used
     "representativeFragmentNumber": 10 // Max number of fragments to be respresented by a single object
   },
 
@@ -32,7 +39,7 @@
     "CubeMC": 100, // Cube runs to do each step
     "ConjunctionThreshold": 5.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.0, // inner threshold for Hoots
-    "Verbose": false,// Probability output / time output for different methods
+    "Verbose": false, // Probability output / time output for different methods
     "outputScaling": 5 // collision probabilities of the order of 10^(-outputScaling)
   }
 }

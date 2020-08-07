@@ -30,7 +30,7 @@ Event::Event(double epoch, long objectID, bool consMomentum, bool catastr, doubl
 
 
 
-Event::Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt, double separation)
+Event::Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt, double separation, double probability)
 {
 	eventEpoch = epoch;
 	eventType = 1;
@@ -40,6 +40,7 @@ Event::Event(double epoch, long targetID, long projectileID, double relV, double
 	secondaryID = projectileID;
 	altitude = alt;
 	minSeparation = separation;
+	collisionProbability = probability;
 }
 
 

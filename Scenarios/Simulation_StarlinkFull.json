@@ -1,6 +1,6 @@
 { 
   "EpochDate": "2021-01-01", // Date of simulation start (YYYY-MM-DD)
-  "Duration": 18262, // Length of simulation (days)
+  "Duration": 1825, // Length of simulation (days)
   "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter
   "objects": [
     { "dataType": 0, // 0: Orbital elements, 1: state vector, 2: TLEs

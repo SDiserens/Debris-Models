@@ -207,18 +207,9 @@ void HootsFilter::MainCollision_GPU(DebrisPopulation & population, double timest
 				closeApproach = conjunction.second;
 				closeTime = conjunction.first;
 				collide = closeApproach < (objectPair.GetBoundingRadii() + collisionThreshold);
-				if (outputTimes && closeApproach < conjunctionThreshold) {
+				Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach, collide);
+				newCollisionList.push_back(tempEvent);
 
-					Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
-					newCollisionTimes.push_back(collide);
-					newCollisionList.push_back(tempEvent);
-				}
-				else if (collide)
-				{
-					Event tempEvent(population.GetEpoch() + closeTime, pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), closeApproach);
-					newCollisionList.push_back(tempEvent); // Note in this scenario only adds once regardless of number of # potential collisions for pair
-					break;
-				}
 			}
 		}
 	}

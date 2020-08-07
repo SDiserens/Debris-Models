@@ -18,7 +18,6 @@ protected:
 	vector<double> newCollisionProbabilities;
 	vector<double> newCollisionAltitudes;
 	vector<Event> newCollisionList;
-	bool DetermineCollision(double collisionProbability);
 	double CollisionCrossSection(CollisionPair &objectPair);
 	//double CalculateClosestApproach(CollisionPair objectPair);
 
@@ -48,6 +47,7 @@ public:
 	vector<double> GetNewCollisionVerbose();
 	vector<double> GetNewCollisionAltitudes();
 
+	bool DetermineCollision(double collisionProbability);
 	bool DetermineCollisionAvoidance(double avoidanceProbability);
 	bool UseGPU();
 	bool UseParallel();

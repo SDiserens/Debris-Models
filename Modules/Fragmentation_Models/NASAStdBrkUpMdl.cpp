@@ -225,6 +225,7 @@ void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, doub
 		// Single large fragment
 		tempFragmentCloud.numFrag = 1;
 		NSBMDebrisFragment tempFragment(upperLength, remainingMass, explosion, targetObject.GetType());
+		tempFragment.SetName(targetObject.GetName() + "-F");
 
 		tempFragment.SetPosition(targetObject.GetPosition());
 		tempFragment.SetVelocity(targetObject.GetVelocity());
@@ -306,6 +307,7 @@ void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 			i = numFrag;
 		}
 
+		tempFragment.SetName(targetObject.GetName() + "-F");
 		tempFragment.SetSourceID(targetObject.GetSourceID());
 		tempFragment.SetParentID(targetObject.GetID());
 		// Identify updated orbital elements

@@ -55,30 +55,14 @@ void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep
 
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), collisionPairID.primaryID, collisionPairID.secondaryID, collisionPair.GetRelativeVelocity(), mass, altitude, collisionPair.GetMinSeparation());
+			Event tempEvent(population.GetEpoch(), collisionPairID.primaryID, collisionPairID.secondaryID, collisionPair.GetRelativeVelocity(), mass, altitude, collisionPair.GetMinSeparation(), tempProbability);
 			tempEvent.SetCollisionAnomalies(collisionPair.approachAnomalyP, collisionPair.approachAnomalyS);
-			//	-- Determine if collision occurs through MC (random number generation)
-			if (outputProbabilities)
-			{
-				//	-- Store collision probability
-				//collisionProbabilities.push_back(tempProbability);
-				//collisionList.push_back(collisionPair);
-				mtx.lock();
-				newCollisionProbabilities.push_back(tempProbability);
-				newCollisionList.push_back(tempEvent);
-				mtx.unlock();
-			}
-			else
-			{
-				if (DetermineCollision(tempProbability))
-				{
-					// Store Collisions 
-					//collisionList.push_back(tempEvent);
-					mtx.lock();
-					newCollisionList.push_back(tempEvent);
-					mtx.unlock();
-				}
-			}
+			// Store Collisions 
+			//collisionList.push_back(tempEvent);
+			mtx.lock();
+			newCollisionList.push_back(tempEvent);
+			mtx.unlock();
+			
 		});
 	}
 	elapsedTime += timeStep;
@@ -112,26 +96,11 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), collisionPairID.primaryID, collisionPairID.secondaryID, collisionPair.GetRelativeVelocity(), mass, altitude, collisionPair.GetMinSeparation());
+			Event tempEvent(population.GetEpoch(), collisionPairID.primaryID, collisionPairID.secondaryID, collisionPair.GetRelativeVelocity(), mass, altitude, collisionPair.GetMinSeparation(), tempProbability);
 			tempEvent.SetCollisionAnomalies(collisionPair.approachAnomalyP, collisionPair.approachAnomalyS);
-			//	-- Determine if collision occurs through MC (random number generation)
-			if (outputProbabilities)
-			{
-				//	-- Store collision probability
-				//collisionProbabilities.push_back(tempProbability);
-				//collisionList.push_back(collisionPair);
-				newCollisionProbabilities.push_back(tempProbability);
-				newCollisionList.push_back(tempEvent);
-			}
-			else
-			{
-				if (DetermineCollision(tempProbability))
-				{
-					// Store Collisions 
-					//collisionList.push_back(tempEvent);
-					newCollisionList.push_back(tempEvent);
-				}
-			}
+			// Store Collisions 
+			//collisionList.push_back(tempEvent);
+			newCollisionList.push_back(tempEvent);
 		}
 	}
 	elapsedTime += timeStep;

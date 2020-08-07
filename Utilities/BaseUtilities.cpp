@@ -173,12 +173,6 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	// Parse scenario file to identify object characteristics
 	reader.parse(scenarioFile, scenario);
 
-	//Set explosion probabilities
-	rocketBodyExplosionProbability = scenario["RB_Explosion"].asDouble();
-	satelliteExplosionProbability = scenario["Satllite_Explosion"].asDouble();
-
-	//Set pmd success
-	pmdSuccess = scenario["PMD_SuccessRate"].asDouble();
 
 	cout << " Parsing Scenario...\n";
 	//SetCentralBody(scenario["centralBody"].asInt());
@@ -349,7 +343,7 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 	cout << "\n";
 }
 
-void WriteSimulationData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType,
+void WriteSimulationData(string scenario, Json::Value & config, double epoch, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType,
 						Json::Value & fragmentationConfig, vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog)
 {
 	char date[100];
@@ -382,7 +376,7 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 	// Write data into file
 	cout << "  Writing to Data File...";
 
-	outputFile << "Scenario File:," + scenario + "\n";
+	outputFile << "Scenario File:," + scenario + ", ," + EpochToDate(epoch) + "\n";
 	//outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
 
 	outputFile << "Propagator:," + propagatorType + ", ,";
@@ -411,7 +405,7 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 	{
 		eventSplit = get<5>(logEntry);
 		objectSplit = get<3>(logEntry);
-		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + to_string(get<1>(logEntry)) + ",";
+		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + to_string(get<1>(logEntry) - epoch) + ",";
 		outputFile << to_string(get<2>(logEntry)) + "," + to_string(get<0>(objectSplit)) + "," + to_string(get<1>(objectSplit)) + "," + to_string(get<2>(objectSplit)) + ",";
 		outputFile << to_string(get<4>(logEntry)) + "," + to_string(get<0>(eventSplit)) + "," + to_string(get<1>(eventSplit)) + "," + to_string(get<2>(eventSplit));
 	}
@@ -419,7 +413,7 @@ void WriteSimulationData(string scenario, Json::Value & config, string collision
 	cout << "\n";
 }
 
-void WriteEventData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType, Json::Value & fragmentationConfig, vector<Event> eventLog)
+void WriteEventData(string scenario, Json::Value & config, double epoch, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType, Json::Value & fragmentationConfig, vector<Event> eventLog)
 {
 	char date[100];
 	int ID = 1;
@@ -449,7 +443,7 @@ void WriteEventData(string scenario, Json::Value & config, string collisionModel
 	// Write data into file
 	cout << "  Writing to Data File...";
 
-	outputFile << "Scenario File:," + scenario + "\n";
+	outputFile << "Scenario File:," + scenario + ", ," + EpochToDate(epoch) + "\n";
 	//outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
 
 	outputFile << "Propagator:," + propagatorType + ", ,";
@@ -476,11 +470,109 @@ void WriteEventData(string scenario, Json::Value & config, string collisionModel
 	outputFile << "\nEvent ID, Simulation Elapsed Time (days), Event Type ID, Event Type, Primary Object, Secondary Object, Debris Count, Altitude, Involved Mass, Relative Velocity, Catastrophic, Momentum Conserved"; // (MC, #days, #objects, (), #events, (Explosion, Collision, Collision Avoidance))
 	for (auto logEntry : eventLog)
 	{
-		outputFile << "\n" + to_string(logEntry.eventID) + "," + to_string(logEntry.GetEventEpoch()) + "," + to_string(logEntry.GetEventType()) + "," + logEntry.GetEventTypeString() + ",";
+		outputFile << "\n" + to_string(logEntry.eventID) + "," + to_string(logEntry.GetEventEpoch() - epoch) + "," + to_string(logEntry.GetEventType()) + "," + logEntry.GetEventTypeString() + ",";
 		outputFile << to_string(logEntry.GetPrimary()) + "," + to_string(logEntry.GetSecondary()) + "," + to_string(logEntry.debrisGenerated) + "," + to_string(logEntry.altitude) + ",";
 		outputFile << to_string(logEntry.involvedMass) + "," +  to_string(logEntry.relativeVelocity) + "," + to_string(logEntry.catastrophic) + "," + to_string(logEntry.momentumConserved);
 	}
 
 	outputFile.close();
 	cout << "\n";
+}
+
+void WritePopulationData(string scenario, Json::Value & config, DebrisPopulation & population, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType,
+	Json::Value & fragmentationConfig)
+{
+	char date[100];
+	int ID = 1;
+	string outputFilename, pairID, mcRun;
+	tuple<int, int, int> eventSplit;
+	// Store data
+	double scaling;
+	time_t dateTime = time(NULL);
+	struct tm currtime;
+	localtime_s(&currtime, &dateTime);
+	strftime(date, sizeof(date), "%F", &currtime);
+	double epoch = population.GetStartEpoch();
+	DebrisObject tempDebris;
+
+	mcRun = scenario.substr(scenario.find("#") - 1, scenario.find("."));
+	scenario = scenario.substr(0, scenario.find("#") - 1);
+
+	outputFilename = "Output\\" + string(date) + "_" + scenario + "_PopulationData" + mcRun + ".csv";
+	while (fileExists(outputFilename))
+	{
+		++ID;
+		outputFilename = "Output\\" + string(date) + "_" + scenario + "_" + to_string(ID) + "_PopulationData" + mcRun + ".csv";
+	}
+
+	cout << "- Creating Data File : " + outputFilename + "...";
+	// Create Output file
+	ofstream outputFile;
+	outputFile.open(outputFilename, ofstream::out);
+
+	// Write data into file
+	cout << "  Writing to Data File...";
+
+	outputFile << "Scenario File:," + scenario + ", ," + EpochToDate(epoch) + "\n";
+	//outputFile << "Duration:," + config["Duration"].asString() + ",Days" + ", ,"; // Length of simulation (days)
+
+	outputFile << "Propagator:," + propagatorType + ", ,";
+	outputFile << "Step Length:," + config["StepSize"].asString() + ",Days" + "\n";
+
+	outputFile << "Collision Model:," + collisionModel + ", ,";
+
+	if (collisionModel == "Cube")
+		outputFile << "Cube Dimension (km):," + to_string(collisionConfig["CubeDimension"].asDouble()) + "\n";
+	if (collisionModel == "OrbitTrace")
+		outputFile << "Threshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble()) + "\n";
+	if (collisionModel == "Hoots")
+	{
+		outputFile << "Conjunction Threshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble()) + ", ,";
+		outputFile << "Collision Threshold (km):," + to_string(collisionConfig["CollisionThreshold"].asDouble()) + "\n";
+	}	
+
+	outputFile << "Fragmentation Model:," + breakUpType + ", ,";
+	outputFile << "Minimum Fragment Size (m):," + to_string(fragmentationConfig["minLength"].asDouble());
+
+	// Break data with line
+	outputFile << "\n";
+
+	outputFile << "\nObject ID, Name, Object Type, Source Event, Mass, Remove Event, Remove Epoch, ParentID, SourceID,  Source Type, Fragments Represented, State, Lifetime Collision Probability";
+		for (auto object : population.removedPopulation) {
+			tempDebris = object.second;
+			outputFile << "\n" + to_string(object.first) + "," + tempDebris.GetName() + "," + to_string(tempDebris.GetType()) + "," + to_string(tempDebris.GetSourceEvent()) +","+to_string(tempDebris.GetMass());
+			outputFile << "," + to_string(tempDebris.GetRemoveEvent()) + "," + to_string(tempDebris.GetRemoveEpoch() - epoch);
+			outputFile << "," + to_string(tempDebris.GetParentID()) + "," + to_string(tempDebris.GetSourceID()) + "," + to_string(tempDebris.GetSourceType()) + "," + to_string(tempDebris.GetNFrag());
+			if (tempDebris.GetType() == 2)
+				outputFile << ",Debris";
+			else if (tempDebris.IsActive())
+				outputFile << ",Active";
+			else if (tempDebris.IsPassive())
+				outputFile << ",Inactive - Passivated";
+			else if (tempDebris.IsIntact())
+				outputFile << ",Inactive - Not Passivated";
+			else
+				outputFile << ",Inactive-Damaged";
+			outputFile << "," + to_string(tempDebris.GetCollisionProbability());
+		}
+		for (auto object : population.population) {
+			tempDebris = object.second;
+			outputFile << "\n" + to_string(object.first) + "," + tempDebris.GetName() + "," + to_string(tempDebris.GetType()) + "," + to_string(tempDebris.GetSourceEvent()) + "," + to_string(tempDebris.GetMass());
+			outputFile << ", , ";
+			outputFile << "," + to_string(tempDebris.GetParentID()) + "," + to_string(tempDebris.GetSourceID()) + "," + to_string(tempDebris.GetSourceType()) + "," + to_string(tempDebris.GetNFrag());
+			if (tempDebris.GetType() == 2)
+				outputFile << ",Debris";
+			else if(tempDebris.IsActive())
+				outputFile << ",Active";
+			else if (tempDebris.IsPassive())
+				outputFile << ",Inactive - Passivated";
+			else if (tempDebris.IsIntact())
+				outputFile << ",Inactive - Not Passivated";
+			else
+				outputFile << ",Inactive-Damaged";
+			outputFile << "," + to_string(tempDebris.GetCollisionProbability());
+		}
+
+		outputFile.close();
+		cout << "\n";
 }

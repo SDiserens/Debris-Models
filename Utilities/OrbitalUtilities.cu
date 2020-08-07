@@ -106,6 +106,33 @@ double DateToEpoch(int year, int month, int day, int hour, int minute, double se
 	return julianDay + dayFrac - 2436115.5; // Julian date adjusted to space age epoch
 }
 
+string EpochToDate(double epoch)
+{
+	double julianDay, dayFrac;
+	int day, month, year, Z, W, X, A, B, C, D, E, F;
+	dayFrac = remainder(epoch, 1.0);
+	julianDay = floor(epoch) + 2436115.5; // Julian date adjusted to space age epoch
+
+	Z = julianDay + 0.5;
+	W = (Z - 1867216.25) / 36524.25;
+	X = W / 4;
+	A = Z + 1 + W - X;
+	B = A + 1524;
+	C = (B - 122.1) / 365.25;
+	D = 365.25*C;
+	E = (B - D) / 30.6001;
+	F = 30.6001*E;
+	day = B - D - F;
+	month = E - 1;
+	if (month > 12)
+		month = month - 12;
+	year = C - 4715;
+	if (month > 2)
+		year -= 1;
+
+	return to_string(year)+"-"+to_string(month)+"-"+to_string(day);
+}
+
 double DateToEpoch(string date)
 {
 	int yr, mon, day;
@@ -115,6 +142,9 @@ double DateToEpoch(string date)
 
 	return DateToEpoch(yr, mon, day, 0, 0, 0.0);
 }
+
+
+
 
 double randomNumberTau()
 {

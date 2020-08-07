@@ -5,13 +5,14 @@
 static double rocketBodyExplosionProbability = 0;
 static double satelliteExplosionProbability = 0;
 static double pmdSuccess = 0;
+static double manoeuvreThreshold = 0.0001;
 
 class DebrisObject
 {
 protected:
 	OrbitalElements elements; // semi-major axis, eccentricity, inclination, right ascension of ascending node, arguement of perigee, anomalies
 	static int objectSEQ;
-	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag, initEpoch, lifetime, bStar, currEpoch, avoidanceSucess = 0, explosionProbability = 0;
+	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag, initEpoch, lifetime, bStar, currEpoch, avoidanceSucess = 0, explosionProbability = 0, collisionProbability=0;
 	char name[100];
 	long parentID, sourceID, objectID;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
@@ -40,6 +41,8 @@ public:
 	int GetSourceType();
 	int GetSourceEvent();
 	void RemoveObject(int removeType, double epoch); // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
+	int GetRemoveEvent();
+	double GetRemoveEpoch();
 
 	void SetName(string init_name);
 	string GetName();
@@ -59,8 +62,10 @@ public:
 	double GetBStar();
 	double GetAvoidanceSuccess();
 	double GetExplosionProbability();
+	double GetCollisionProbability();
 	bool IsIntact();
 	bool IsActive();
+	bool IsPassive();
 	CUDA_CALLABLE_MEMBER vector3D GetVelocity();
 	vector3D GetPosition();
 	vector<double> GetStateVector();
@@ -82,6 +87,7 @@ public:
 	void UpdateOrbitalElements(OrbitalElements newElements);
 	void UpdateOrbitalElements(vector3D position, vector3D velocity);
 	void UpdateEpoch(double epochStep);
+	void UpdateCollisionProbability(double probability);
 
 	void SetSourceID(long ID);
 	void SetParentID(long ID);

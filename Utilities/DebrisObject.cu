@@ -166,6 +166,16 @@ void DebrisObject::RemoveObject(int removeType, double epoch) // (0, 1, 2) = (De
 	isIntact = false;
 }
 
+int DebrisObject::GetRemoveEvent()
+{
+	return removeEvent;
+}
+
+double DebrisObject::GetRemoveEpoch()
+{
+	return removeEpoch;
+}
+
 void DebrisObject::SetName(string init_name)
 {
 	strcpy(name, init_name.c_str());
@@ -256,6 +266,11 @@ double DebrisObject::GetExplosionProbability()
 	return explosionProbability * modifier;
 }
 
+double DebrisObject::GetCollisionProbability()
+{
+	return collisionProbability;
+}
+
 bool DebrisObject::IsIntact()
 {
 	return isIntact;
@@ -264,6 +279,11 @@ bool DebrisObject::IsIntact()
 bool DebrisObject::IsActive()
 {
 	return isActive;
+}
+
+bool DebrisObject::IsPassive()
+{
+	return isPassive;
 }
 
 vector3D DebrisObject::GetVelocity()
@@ -474,6 +494,16 @@ void DebrisObject::UpdateEpoch(double epochStep)
 		isPassive = (pmdSuccess > randomNumber());
 		//TODO - include PMD disposal orbit
 	}
+}
+
+void DebrisObject::UpdateCollisionProbability(double probability)
+{
+	double inverseProbability;
+
+	inverseProbability = 1.0 - collisionProbability;
+	inverseProbability = inverseProbability * (1.0 - probability);
+
+	collisionProbability = 1.0 - inverseProbability;
 }
 
 void DebrisObject::SetRadius(double radii)

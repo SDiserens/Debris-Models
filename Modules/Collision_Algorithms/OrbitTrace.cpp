@@ -83,24 +83,11 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 
 		altitude = objectPair.primaryElements.GetRadialPosition();
 		mass = objectPair.primaryMass + objectPair.secondaryMass;
-		Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation());
+		Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation(), tempProbability);
 		tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
-		//	-- Determine if collision occurs through MC (random number generation)
-		if (outputProbabilities && tempProbability > 0)
-		{
-			//	-- Store collision probability
-			newCollisionProbabilities.push_back(tempProbability);
-			newCollisionList.push_back(tempEvent);
-		}
-		else
-		{
-			if (DetermineCollision(tempProbability))
-			{
-				// Store Collisions 
-				newCollisionList.push_back(tempEvent);
-			}
-		}
 
+		// Store Collisions 
+		newCollisionList.push_back(tempEvent);
 	}
 	
 	elapsedTime += timeStep;
@@ -148,27 +135,12 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 
 			altitude = objectPair.primaryElements.GetRadialPosition();
 			mass = objectPair.primaryMass + objectPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation());
+			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation(), tempProbability);
 			tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
-			//	-- Determine if collision occurs through MC (random number generation)
-			if (outputProbabilities && tempProbability>0)
-			{
-				
-				//	-- Store collision probability
-				//collisionProbabilities.push_back(tempProbability);
-				//collisionList.push_back(collisionPair);
-				newCollisionProbabilities.push_back(tempProbability);
-				newCollisionList.push_back(tempEvent);
-			}
-			else
-			{
-				if (DetermineCollision(tempProbability))
-				{
-					// Store Collisions 
-					//collisionList.push_back(tempEvent);
-					newCollisionList.push_back(tempEvent);
-				}
-			}
+			// Store Collisions 
+			//collisionList.push_back(tempEvent);
+			newCollisionList.push_back(tempEvent);
+
 		}
 	}
 	elapsedTime += timeStep;
