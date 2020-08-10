@@ -77,6 +77,7 @@ public:
 	bool SGP4Initialised();
 	elsetrec& GetSGP4SatRec();
 
+	void RemoveNFrag();
 	void UpdateRAAN(double rightAscension);
 	void UpdateArgP(double argPerigee);
 	void RandomiseMeanAnomaly();
@@ -97,6 +98,8 @@ public:
 	void SetEpoch(double epoch);
 	void SetRadius(double radii);
 	void SetMass(double newMass);
+	void SetNFrag(int n);
+	void SetNewObjectID();
 
 	void SetVelocity(double vX, double vY, double vZ);
 	void SetVelocity(vector3D inputVelocity);

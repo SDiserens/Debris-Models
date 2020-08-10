@@ -1,7 +1,6 @@
 // OrbitTrace.cpp : Defines the entry point for the console application.
 //
 
-
 #include "stdafx.h"
 #include "Modules\Collision_Algorithms\OrbitTrace.h"
 
@@ -88,6 +87,10 @@ int main(int argc, char** argv)
 
 	// Create OT object
 	OrbitTrace collisionModel(probabilityOutput);
+	if (config["ParallelGPU"].asBool())
+		collisionModel.SwitchParallelGPU();
+	if (config["ParallelCPU"].asBool())
+		collisionModel.SwitchParallelCPU();
 	if (relativeGravity)
 		collisionModel.SwitchGravityComponent();
 
@@ -129,13 +132,12 @@ int main(int argc, char** argv)
 			progress.DisplayProgress(eval * evaluationSteps + step);
 		}
 		// Store collision data
-		collisionProbabilities = collisionModel.GetNewCollisionVerbose();
 		collisionList = collisionModel.GetNewCollisionList();
 
-		for (k = 0; k < collisionProbabilities.size(); k++)
+		for (Event collision : collisionList)
 		{
-			tempCollisionRate = scaling * collisionProbabilities[k] * blockRatio;
-			pairID = collisionList[k].GetCollisionPair();
+			tempCollisionRate = scaling * collision.collisionProbability * blockRatio;
+			pairID = collision.GetCollisionPair();
 			totalCollisionRates[pairID] = totalCollisionRates[pairID] + tempCollisionRate;
 			totalCollisionCount[pairID] = totalCollisionCount[pairID] + 1;
 			collisionRates[eval][pairID] = collisionRates[eval][pairID] + tempCollisionRate;

@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 
 	// Variable
 	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName, backgroundFilename;
-	double timeStep, stepDays, elapsedDays, simulationDays, threshold, avoidanceProbability=0;
+	double timeStep, stepDays, elapsedDays, simulationDays, threshold, tempProbability, avoidanceProbability=0;
 	bool  logging = true, setThreshold = false;
 	int mcRuns, i;
 	volatile int n;
@@ -219,8 +219,10 @@ int main(int argc, char** argv)
 				for (Event collision : collisionList) {
 					DebrisObject& target = environmentPopulation.GetObject(collision.primaryID);
 					DebrisObject& projectile = environmentPopulation.GetObject(collision.secondaryID);
-					target.UpdateCollisionProbability(collision.collisionProbability);
-					projectile.UpdateCollisionProbability(collision.collisionProbability);
+					tempProbability = collision.collisionProbability* target.GetNFrag() * projectile.GetNFrag();
+					collision.collisionProbability = tempProbability;
+					target.UpdateCollisionProbability(tempProbability);
+					projectile.UpdateCollisionProbability(tempProbability);
 
 					// determine if collision avoidance occurs
 					avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
@@ -234,7 +236,7 @@ int main(int argc, char** argv)
 						environmentPopulation.AddDebrisEvent(collision);
 					}
 
-					else if (collisionModel->DetermineCollision(collision.collisionProbability)) {
+					else if (collisionModel->DetermineCollision(tempProbability)) {
 						// Simulate Fragmentations
 						breakUp->mainBreakup(environmentPopulation, collision);
 					}

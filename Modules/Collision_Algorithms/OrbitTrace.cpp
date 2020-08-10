@@ -5,12 +5,6 @@
 #include "OrbitTrace.h"
 
 
-OrbitTrace::OrbitTrace(bool probabilities, double threshold)
-{
-	outputProbabilities = probabilities;
-	pAThreshold = threshold;
-}
-
 OrbitTrace::OrbitTrace(bool probabilities, double threshold, int moid)
 {
 	outputProbabilities = probabilities;
@@ -36,7 +30,6 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 	list<CollisionPair> pairList;
 	list<CollisionPair>::iterator listEnd;
 	pair<long, long> pairID;
-	bool collision;
 	mutex mtx;
 	// Filter Cube List
 	pairList = CreatePairList_P(population);

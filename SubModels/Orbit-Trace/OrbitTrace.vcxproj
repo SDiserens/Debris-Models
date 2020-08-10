@@ -54,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.2.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -83,7 +84,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..;$(CudaToolkitIncludeDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(CudaToolkitLibDir);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -139,33 +141,59 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(CudaToolkitLibDir)\cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CudaToolkitLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <CudaCompile>
+      <Include>$(CudaToolkitIncludeDir);%(Include)</Include>
+    </CudaCompile>
+    <CudaCompile>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+    </CudaCompile>
+    <CudaLink>
+      <AdditionalLibraryDirectories>$(CudaToolkitLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </CudaLink>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\CollisionPair.cuh" >
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\Modules\Collision_Algorithms\Collisions.h" />
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\brentmin.h" />
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\distlink.h" />
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\MOID.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\OrbitTrace.h" />
     <ClInclude Include="..\..\Utilities\BaseUtilities.h" />
-    <ClInclude Include="..\..\Utilities\DebrisObject.h" />
-    <ClInclude Include="..\..\Utilities\DebrisPopulation.h" />
-    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.h" />
-    <ClInclude Include="..\..\Utilities\OrbitalElements.h" />
-    <ClInclude Include="..\..\Utilities\OrbitalUtilities.h" />
+    <ClInclude Include="..\..\Utilities\DebrisEvent.cuh" >
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\DebrisObject.cuh" >
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\DebrisPopulation.h" >
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalElements.cuh" >
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.cuh" >
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CollisionFunctions.cpp" />
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\brentmin.cpp" />
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\distlink.cpp" />
+    <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\moid.cpp" />
     <ClCompile Include="..\..\Modules\Collision_Algorithms\OrbitTrace.cpp" />
     <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp" />
     <ClCompile Include="..\..\Utilities\BaseUtilities.cpp" />
-    <ClCompile Include="..\..\Utilities\DebrisObject.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp" />
-    <ClCompile Include="..\..\Utilities\OrbitalAnomalies.cpp" />
-    <ClCompile Include="..\..\Utilities\OrbitalElements.cpp" />
-    <ClCompile Include="..\..\Utilities\OrbitalUtilities.cpp" />
     <ClCompile Include="OrbitTraceWrapper.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -175,11 +203,21 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="..\..\Modules\Collision_Algorithms\CollisionPair.cu" />
+    <CudaCompile Include="..\..\Utilities\DebrisObject.cu" />
+    <CudaCompile Include="..\..\Utilities\OrbitalAnomalies.cu" />
+    <CudaCompile Include="..\..\Utilities\OrbitalElements.cu" />
+    <CudaCompile Include="..\..\Utilities\OrbitalUtilities.cu" />
+    <CudaCompile Include="..\..\Modules\Collision_Algorithms\OrbitTrace_GPU.cu"/>
+    <CudaCompile Include="..\..\Utilities\DebrisEvent.cu" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\jsoncpp-vc140-static-32_64.targets" Condition="Exists('packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\jsoncpp-vc140-static-32_64.targets')" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.2.targets" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

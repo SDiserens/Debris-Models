@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "CollisionPair.cuh"
-#include "Utilities\OrbitalElements.cuh"
-#include "Utilities\DebrisObject.cuh"
 
 CollisionPair::CollisionPair()
 {

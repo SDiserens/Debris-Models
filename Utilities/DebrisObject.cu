@@ -516,6 +516,16 @@ void DebrisObject::SetMass(double newMass)
 	mass = newMass;
 }
 
+void DebrisObject::SetNFrag(int n)
+{
+	nFrag = 1;
+}
+
+void DebrisObject::SetNewObjectID()
+{
+	objectID = ++objectSEQ;
+}
+
 OrbitalAnomalies DebrisObject::GetAnomalies()
 {
 	return elements.GetAnomalies();
@@ -539,6 +549,11 @@ elsetrec & DebrisObject::GetSGP4SatRec()
 		sgp4Initialised = true;
 	}
 	return sgp4Sat;
+}
+
+void DebrisObject::RemoveNFrag()
+{
+	--nFrag;
 }
 
 void DebrisObject::UpdateRAAN(double rightAscension)

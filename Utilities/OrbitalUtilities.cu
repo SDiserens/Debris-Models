@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Utilities\OrbitalUtilities.cuh"
 
 #include "math.h"
 uniform_real_distribution<double> uniformDistribution(0, 1);

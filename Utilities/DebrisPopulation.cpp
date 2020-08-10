@@ -142,17 +142,17 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 	{
 		debris.SetInitEpoch(currentEpoch);
 		population.emplace(ID, debris);
-		++populationCount;
-		totalMass += debris.GetMass();
+		populationCount += debris.GetNFrag();
+		totalMass += debris.GetMass() * debris.GetNFrag();
 		switch (debris.GetType()) {
 		case 0: 
-			++upperStageCount;
+			upperStageCount += debris.GetNFrag();
 			break;
 		case 1: 
-			++spacecraftCount;
+			spacecraftCount += debris.GetNFrag();
 			break;
 		case 2: 
-			++debrisCount;
+			debrisCount += debris.GetNFrag();
 			break;
 		}
 	}
@@ -160,16 +160,16 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 	{
 		population.emplace(ID, debris);
 		++populationCount;
-		totalMass += debris.GetMass();
+		totalMass += debris.GetMass() * debris.GetNFrag();
 		switch (debris.GetType()) {
-		case 0: 
-			++upperStageCount;
+		case 0:
+			upperStageCount += debris.GetNFrag();
 			break;
-		case 1: 
-			++spacecraftCount;
+		case 1:
+			spacecraftCount += debris.GetNFrag();
 			break;
-		case 2: 
-			++debrisCount;
+		case 2:
+			debrisCount += debris.GetNFrag();
 			break;
 		}
 	}
@@ -214,17 +214,17 @@ void DebrisPopulation::LoadPopulation()
 			DebrisObject tempObject(loadingPopulation[ID.second]);
 			loadingPopulation.erase(ID.second);
 			population.emplace(ID.second, tempObject);
-			++populationCount;
-			totalMass += tempObject.GetMass();
+			populationCount += tempObject.GetNFrag();
+			totalMass += tempObject.GetMass() * tempObject.GetNFrag();
 			switch (tempObject.GetType()) {
-			case 0: 
-				++upperStageCount;
+			case 0:
+				upperStageCount += tempObject.GetNFrag();
 				break;
-			case 1: 
-				++spacecraftCount;
+			case 1:
+				spacecraftCount += tempObject.GetNFrag();
 				break;
-			case 2: 
-				++debrisCount;
+			case 2:
+				debrisCount += tempObject.GetNFrag();
 				break;
 			}
 			if (initEpochs.size() == 0)
@@ -285,27 +285,37 @@ void DebrisPopulation::DecayObject(long ID)
 	population.erase(ID);
 	tempObject.RemoveObject(0, currentEpoch);
 	removedPopulation.emplace(ID, tempObject);
-	totalMass -= tempObject.GetMass();
-	populationCount--;
+	totalMass -= tempObject.GetMass() * tempObject.GetNFrag();
+	populationCount -= tempObject.GetNFrag();
 	switch (tempObject.GetType()) {
 		case 0: 
-			upperStageCount--;
+			upperStageCount -= tempObject.GetNFrag();
 			break;
 		case 1: 
-			spacecraftCount--;
+			spacecraftCount -= tempObject.GetNFrag();
 			break;
 		case 2: 
-			debrisCount--;
+			debrisCount -= tempObject.GetNFrag();
 			break;
 	}
 }
 
 void DebrisPopulation::ExplodeObject(long ID)
 {
-	DebrisObject tempObject(population[ID]);
-	population.erase(ID);
-	tempObject.RemoveObject(1, currentEpoch);
-	removedPopulation.emplace(ID, tempObject);
+	DebrisObject& tempObject(population[ID]);
+	DebrisObject newObject(tempObject);
+	newObject.RemoveObject(1, currentEpoch);
+	if (tempObject.GetNFrag() > 1)
+	{
+		tempObject.RemoveNFrag();
+		newObject.SetNFrag(1);
+		newObject.SetNewObjectID();
+	}
+	else {
+		population.erase(ID);
+		newObject.RemoveObject(1, currentEpoch);
+	}
+	removedPopulation.emplace(newObject.GetID(), newObject);
 	totalMass -= tempObject.GetMass();
 	populationCount--;
 	switch (tempObject.GetType()) {
@@ -323,10 +333,20 @@ void DebrisPopulation::ExplodeObject(long ID)
 
 void DebrisPopulation::CollideObject(long ID)
 {
-	DebrisObject tempObject(population[ID]);
-	population.erase(ID);
-	tempObject.RemoveObject(2, currentEpoch);
-	removedPopulation.emplace(ID, tempObject);
+	DebrisObject& tempObject(population[ID]);
+	DebrisObject newObject(tempObject);
+	newObject.RemoveObject(2, currentEpoch);
+	if (tempObject.GetNFrag() > 1)
+	{
+		tempObject.RemoveNFrag();
+		newObject.SetNFrag(1);
+		newObject.SetNewObjectID();
+	}
+	else {
+		population.erase(ID);
+		newObject.RemoveObject(1, currentEpoch);
+	}
+	removedPopulation.emplace(newObject.GetID(), newObject);
 	totalMass -= tempObject.GetMass();
 	populationCount--;
 	switch (tempObject.GetType()) {
