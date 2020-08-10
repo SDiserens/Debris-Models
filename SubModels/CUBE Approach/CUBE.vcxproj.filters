@@ -36,19 +36,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Utilities\DebrisObject.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Utilities\DebrisPopulation.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Utilities\OrbitalElements.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Utilities\OrbitalUtilities.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -75,24 +63,30 @@
     <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\MOID.h">
       <Filter>Header Files\CUBE\MOID</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Utilities\DebrisEvent.cuh">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\DebrisObject.cuh">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.cuh">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalElements.cuh">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalUtilities.cuh">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\CollisionPair.cuh">
+      <Filter>Header Files\CUBE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files\CUBE</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Utilities\DebrisObject.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Utilities\OrbitalAnomalies.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Utilities\OrbitalElements.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Utilities\OrbitalUtilities.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Modules\Collision_Algorithms\CollisionFunctions.cpp">
@@ -131,5 +125,25 @@
     <None Include="Scenarios\Asteroids.json">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="..\..\Utilities\DebrisEvent.cu">
+      <Filter>Source Files\Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\Utilities\DebrisObject.cu">
+      <Filter>Source Files\Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\Utilities\OrbitalAnomalies.cu">
+      <Filter>Source Files\Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\Utilities\OrbitalElements.cu">
+      <Filter>Source Files\Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\Utilities\OrbitalUtilities.cu">
+      <Filter>Source Files\Utilities</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\Modules\Collision_Algorithms\CollisionPair.cu">
+      <Filter>Source Files\CUBE</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>

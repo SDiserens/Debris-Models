@@ -55,6 +55,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.2.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -84,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..;$(IncludePath)</IncludePath>
+    <IncludePath>$(CudaToolkitIncludeDir);$(ProjectDir)..\..;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -138,23 +139,32 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(CudaToolkitLibDir)\cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CudaCompile>
+      <Include>$(CudaToolkitIncludeDir);%(Include)</Include>
+    </CudaCompile>
+    <CudaLink>
+      <AdditionalLibraryDirectories>$(CudaToolkitLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </CudaLink>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\CollisionPair.cuh" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\Collisions.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\CUBE.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\brentmin.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\distlink.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\MOID.h" />
     <ClInclude Include="..\..\Utilities\BaseUtilities.h" />
-    <ClInclude Include="..\..\Utilities\DebrisObject.h" />
+    <ClInclude Include="..\..\Utilities\DebrisEvent.cuh" />
+    <ClInclude Include="..\..\Utilities\DebrisObject.cuh" />
     <ClInclude Include="..\..\Utilities\DebrisPopulation.h" />
-    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.h" />
-    <ClInclude Include="..\..\Utilities\OrbitalElements.h" />
-    <ClInclude Include="..\..\Utilities\OrbitalUtilities.h" />
+    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.cuh" />
+    <ClInclude Include="..\..\Utilities\OrbitalElements.cuh" />
+    <ClInclude Include="..\..\Utilities\OrbitalUtilities.cuh" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -166,11 +176,7 @@
     <ClCompile Include="..\..\Modules\Collision_Algorithms\MOID\moid.cpp" />
     <ClCompile Include="..\..\Modules\Propagators\SGP4\SGP4Code\SGP4.cpp" />
     <ClCompile Include="..\..\Utilities\BaseUtilities.cpp" />
-    <ClCompile Include="..\..\Utilities\DebrisObject.cpp" />
     <ClCompile Include="..\..\Utilities\DebrisPopulation.cpp" />
-    <ClCompile Include="..\..\Utilities\OrbitalAnomalies.cpp" />
-    <ClCompile Include="..\..\Utilities\OrbitalElements.cpp" />
-    <ClCompile Include="..\..\Utilities\OrbitalUtilities.cpp" />
     <ClCompile Include="CUBE_Approach.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -185,9 +191,18 @@
     <None Include="Scenarios\Asteroids.json" />
     <None Include="Scenarios\JovianMoons.json" />
   </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="..\..\Modules\Collision_Algorithms\CollisionPair.cu" />
+    <CudaCompile Include="..\..\Utilities\DebrisEvent.cu" />
+    <CudaCompile Include="..\..\Utilities\DebrisObject.cu" />
+    <CudaCompile Include="..\..\Utilities\OrbitalAnomalies.cu" />
+    <CudaCompile Include="..\..\Utilities\OrbitalElements.cu" />
+    <CudaCompile Include="..\..\Utilities\OrbitalUtilities.cu" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\jsoncpp-vc140-static-32_64.targets" Condition="Exists('packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\jsoncpp-vc140-static-32_64.targets')" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.2.targets" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

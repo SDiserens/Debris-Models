@@ -80,7 +80,10 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 		tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
 
 		// Store Collisions 
+		mtx.lock();
 		newCollisionList.push_back(tempEvent);
+		mtx.unlock();
+
 	}
 	
 	elapsedTime += timeStep;

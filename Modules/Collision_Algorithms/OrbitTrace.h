@@ -16,7 +16,7 @@ public:
 	//void MainCollision_GPU_Cuda(DebrisPopulation& population, double timestep);
 	void SetThreshold(double threshold);
 	void SetMOID(int moid);
-	OrbitTrace(bool probabilities = false, double threshold = 10, int moid = 0);
+	OrbitTrace(bool probabilities = false, double threshold = 0, int moid = 0);
 
 protected:
 	double CollisionRate(CollisionPair &objectPair);

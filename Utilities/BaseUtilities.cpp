@@ -159,6 +159,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	Json::Value scenario;
 	Json::Reader reader;
 	double epoch;
+	int body;
 	string date;
 
 	// Read scenario file
@@ -218,16 +219,19 @@ void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
 	DebrisObject tempObject;
 	Json::Value parsedObject, definedEvent;
 	double averageSemiMajorAxis = 0;
-	int nObjects, collisionID;
+	int nObjects, collisionID, body;
 	map<int, long> definedCollisions;
 	double epoch, mass;
+
 	epoch = population.GetEpoch();
 
+	body = scenario["centralBody"].asInt();
 	if (scenario["objects"].isArray()) {
 
 		for (Json::Value objectParameters : scenario["objects"])
 		{
 			tempObject = GenerateDebrisObject(objectParameters, epoch);
+			tempObject.SetCentralBody(body);
 			averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
 			population.AddDebrisObject(tempObject);
 

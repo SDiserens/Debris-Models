@@ -57,6 +57,12 @@
     <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\MOID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalUtilities.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -92,9 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="..\..\Utilities\OrbitalAnomalies.cuh">
-      <Filter>Header Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="..\..\Modules\Collision_Algorithms\CollisionPair.cu">

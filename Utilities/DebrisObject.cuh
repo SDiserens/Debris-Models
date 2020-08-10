@@ -91,6 +91,7 @@ public:
 	void UpdateCollisionProbability(double probability);
 
 	void SetSourceID(long ID);
+	void SetCentralBody(int c);
 	void SetParentID(long ID);
 	void SetCDrag(double cDrag);
 	void SetBStar(double bStar);

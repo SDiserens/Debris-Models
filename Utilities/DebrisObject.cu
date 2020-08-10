@@ -457,6 +457,11 @@ void DebrisObject::SetSourceID(long ID)
 	sourceID = ID;
 }
 
+void DebrisObject::SetCentralBody(int c)
+{
+	elements.centralBody = c;
+}
+
 void DebrisObject::SetParentID(long ID)
 {
 	parentID = ID;

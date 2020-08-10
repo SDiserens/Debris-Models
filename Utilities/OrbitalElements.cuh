@@ -5,6 +5,7 @@ public:
 	double semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee;
 	OrbitalAnomalies anomalies; // mean anomaly, eccentric anomaly, true anomaly
 	bool anomaliesSynced;
+	int centralBody = 3; //(0,3,5) = (Sol, Earth, Jupiter) respectively
 
 public:
 	CUDA_CALLABLE_MEMBER OrbitalElements();

@@ -158,7 +158,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Modules\Collision_Algorithms\CollisionPair.cuh" >
+    <ClInclude Include="..\..\Modules\Collision_Algorithms\CollisionPair.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\Modules\Collision_Algorithms\Collisions.h" />
@@ -167,21 +167,22 @@
     <ClInclude Include="..\..\Modules\Collision_Algorithms\MOID\MOID.h" />
     <ClInclude Include="..\..\Modules\Collision_Algorithms\OrbitTrace.h" />
     <ClInclude Include="..\..\Utilities\BaseUtilities.h" />
-    <ClInclude Include="..\..\Utilities\DebrisEvent.cuh" >
+    <ClInclude Include="..\..\Utilities\DebrisEvent.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\Utilities\DebrisObject.cuh" >
+    <ClInclude Include="..\..\Utilities\DebrisObject.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\Utilities\DebrisPopulation.h" >
+    <ClInclude Include="..\..\Utilities\DebrisPopulation.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\Utilities\OrbitalElements.cuh" >
+    <ClInclude Include="..\..\Utilities\OrbitalElements.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.cuh" >
+    <ClInclude Include="..\..\Utilities\OrbitalAnomalies.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\Utilities\OrbitalUtilities.cuh" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -210,7 +211,7 @@
     <CudaCompile Include="..\..\Utilities\OrbitalAnomalies.cu" />
     <CudaCompile Include="..\..\Utilities\OrbitalElements.cu" />
     <CudaCompile Include="..\..\Utilities\OrbitalUtilities.cu" />
-    <CudaCompile Include="..\..\Modules\Collision_Algorithms\OrbitTrace_GPU.cu"/>
+    <CudaCompile Include="..\..\Modules\Collision_Algorithms\OrbitTrace_GPU.cu" />
     <CudaCompile Include="..\..\Utilities\DebrisEvent.cu" />
     <None Include="packages.config" />
   </ItemGroup>

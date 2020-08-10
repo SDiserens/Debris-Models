@@ -126,7 +126,12 @@ int main(int argc, char** argv)
 			if (randomiseOrbits)
 				RandomiseOrbitOrientations(objectPopulation);
 			//Call Collision check
-			collisionModel.MainCollision(objectPopulation, timeStep);
+			if (collisionModel.UseGPU())
+				collisionModel.MainCollision_GPU(objectPopulation, timeStep);
+			else if (collisionModel.UseParallel())
+				collisionModel.MainCollision_P(objectPopulation, timeStep);
+			else
+				collisionModel.MainCollision(objectPopulation, timeStep);
 			end = std::chrono::system_clock::now();
 			timeDiff += end - start;
 			progress.DisplayProgress(eval * evaluationSteps + step);

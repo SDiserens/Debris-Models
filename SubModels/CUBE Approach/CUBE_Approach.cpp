@@ -110,6 +110,9 @@ int main(int argc, char** argv)
 	if (relativeGravity)
 		collisionCube.SwitchGravityComponent();
 
+	if (config["ParallelCPU"].asBool())
+		collisionCube.SwitchParallelCPU();
+
 	int step, eval, k;
 	double tempCollisionRate, blockRatio;
 	vector<double> collisionProbabilities;
@@ -142,19 +145,21 @@ int main(int argc, char** argv)
 			if (randomiseOrbits)
 				RandomiseOrbitOrientations(objectPopulation);
 			//Call Collision check
-			collisionCube.MainCollision(objectPopulation, timeStep);
+			if (collisionCube.UseParallel())
+				collisionCube.MainCollision_P(objectPopulation, timeStep);
+			else
+				collisionCube.MainCollision(objectPopulation, timeStep);
 			end = std::chrono::system_clock::now();
 			timeDiff += end - start;
 			progress.DisplayProgress(eval * evaluationSteps + step);
 		}
 		// Store collision data
-		collisionProbabilities = collisionCube.GetNewCollisionVerbose();
 		collisionList = collisionCube.GetNewCollisionList();
 
-		for (k = 0; k < collisionProbabilities.size(); k++)
+		for (Event collision : collisionList)
 		{
-			tempCollisionRate = scaling * collisionProbabilities[k] * blockRatio;
-			pairID = collisionList[k].GetCollisionPair();
+			tempCollisionRate = scaling * collision.collisionProbability * blockRatio;
+			pairID = collision.GetCollisionPair();
 			totalCollisionRates[pairID] = totalCollisionRates[pairID] + tempCollisionRate;
 			totalCollisionCount[pairID] = totalCollisionCount[pairID] + 1;
 			collisionRates[eval][pairID] = collisionRates[eval][pairID] + tempCollisionRate;
