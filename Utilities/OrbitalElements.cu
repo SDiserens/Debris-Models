@@ -22,8 +22,19 @@ OrbitalElements::OrbitalElements(vector3D &position, vector3D &velocity)
 	vector3D angularMomentum = position.VectorCrossProduct(velocity);
 	vector3D node(-1 * angularMomentum.y, angularMomentum.x, 0.0);
 	vector3D eccentricityVector = CalculateEccentricityVector(position, velocity, angularMomentum);
-
-	semiMajorAxis = 1 / (2 / position.vectorNorm() - velocity.vectorNorm2() / muGravity);
+	double mu;
+	switch (centralBody) {
+	case 0:
+		mu = muSol;
+		break;
+	case 3:
+		mu = muGravity;
+		break;
+	case 5:
+		mu = muJov;
+		break;
+	}
+	semiMajorAxis = 1 / (2 / position.vectorNorm() - velocity.vectorNorm2() / mu);
 
 	eccentricity = eccentricityVector.vectorNorm();
 
@@ -49,8 +60,20 @@ vector3D OrbitalElements::CalculateEccentricityVector(vector3D& position, vector
 {
 	vector3D eccentricityVector;
 	double velocitySquared = velocity.vectorNorm2();
-	double radialPosition = position.vectorNorm();
-	eccentricityVector = (position * (velocitySquared - muGravity / radialPosition) - velocity * (position.VectorDotProduct(velocity))) / muGravity;
+	double radialPosition = position.vectorNorm();	
+	double mu;
+	switch (centralBody) {
+	case 0:
+		mu = muSol;
+		break;
+	case 3:
+		mu = muGravity;
+		break;
+	case 5:
+		mu = muJov;
+		break;
+	}
+	eccentricityVector = (position * (velocitySquared - mu / radialPosition) - velocity * (position.VectorDotProduct(velocity))) / mu;
 	return eccentricityVector;
 }
 
@@ -96,8 +119,19 @@ void OrbitalElements::SetOrbitalElements(vector3D & position, vector3D & velocit
 	vector3D angularMomentum = position.VectorCrossProduct(velocity);
 	vector3D node(-1 * angularMomentum.y, angularMomentum.x, 0.0);
 	vector3D eccentricityVector = CalculateEccentricityVector(position, velocity, angularMomentum);
-
-	semiMajorAxis = 1 / (2 / position.vectorNorm() - velocity.vectorNorm2() / muGravity);
+	double mu;
+	switch (centralBody) {
+	case 0:
+		mu = muSol;
+		break;
+	case 3:
+		mu = muGravity;
+		break;
+	case 5:
+		mu = muJov;
+		break;
+	}
+	semiMajorAxis = 1 / (2 / position.vectorNorm() - velocity.vectorNorm2() / mu);
 
 	eccentricity = eccentricityVector.vectorNorm();
 
@@ -197,6 +231,18 @@ vector3D OrbitalElements::GetVelocity()
 {
 	double radius, trueAnomaly, p, h, A, B, x, y, z, vX, vY, vZ;
 	double sinRA, cosRA, sinI, cosI, sinU, cosU;
+	double mu;
+	switch (centralBody) {
+	case 0:
+		mu = muSol;
+		break;
+	case 3:
+		mu = muGravity;
+		break;
+	case 5:
+		mu = muJov;
+		break;
+	}
 
 	radius = GetRadialPosition();
 	trueAnomaly = anomalies.GetTrueAnomaly(eccentricity);
@@ -209,7 +255,7 @@ vector3D OrbitalElements::GetVelocity()
 	cosU = cos(argPerigee + trueAnomaly);
 
 	p = semiMajorAxis * (1 - eccentricity * eccentricity);
-	h = sqrt(muGravity * p);
+	h = sqrt(mu * p);
 
 	A = sin(trueAnomaly) * h * eccentricity / p;
 	B = h / radius;
@@ -265,4 +311,23 @@ void OrbitalElements::SetEccentricAnomaly(double E)
 {
 	anomalies.SetEccentricAnomaly(E);
 	anomaliesSynced = false;
+}
+
+vector3D OrbitalElements::CalculateAcceleration()
+{
+	vector3D position = GetPosition();
+	double mu;
+	switch (centralBody) {
+	case 0:
+		mu = muSol;
+		break;
+	case 3:
+		mu = muGravity;
+		break;
+	case 5:
+		mu = muJov;
+		break;
+	}
+	double rMagnitude = position.vectorNorm();
+	return position * -mu / (rMagnitude * rMagnitude * rMagnitude);
 }

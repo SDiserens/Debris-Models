@@ -219,7 +219,7 @@ int main(int argc, char** argv)
 				for (Event collision : collisionList) {
 					DebrisObject& target = environmentPopulation.GetObject(collision.primaryID);
 					DebrisObject& projectile = environmentPopulation.GetObject(collision.secondaryID);
-					tempProbability = collision.collisionProbability* target.GetNFrag() * projectile.GetNFrag();
+					tempProbability = 1.0 - pow((1.0 - collision.collisionProbability), (target.GetNFrag() * projectile.GetNFrag())); // adjust probabiltiy for representative fragments
 					collision.collisionProbability = tempProbability;
 					target.UpdateCollisionProbability(tempProbability);
 					projectile.UpdateCollisionProbability(tempProbability);

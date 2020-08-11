@@ -19,7 +19,7 @@ void HootsFilter::MainCollision(DebrisPopulation & population, double timestep)
 	list<CollisionPair> pairList;
 	vector<double> candidateTimeList, collisionTimes;
 	pair<long, long> pairID;
-	double altitude, mass;
+	double mass;
 	double closeTime, closeApproach;
 	bool collide;
 	// Filter Cube List
@@ -408,8 +408,8 @@ double HootsFilter::CalculateSecondDerivativeSeparation(CollisionPair& objectPai
 	velocityP = objectPair.GetPrimaryVelocityAtTime(candidateTime);
 	velocityS = objectPair.GetSecondaryVelocityAtTime(candidateTime);
 
-	accelerationP = CalculateAcceleration(positionP);
-	accelerationS = CalculateAcceleration(positionS);
+	accelerationP = objectPair.primaryElements.CalculateAcceleration();
+	accelerationS = objectPair.secondaryElements.CalculateAcceleration();
 
 	/*
 	rDotDot = velocityP.vectorNorm2() + positionP.vectorNorm() * accelerationP.vectorNorm() + velocityS.vectorNorm2() + positionS.vectorNorm() * accelerationS.vectorNorm()

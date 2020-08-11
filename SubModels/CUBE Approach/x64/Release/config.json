@@ -3,13 +3,13 @@
   "probabilityOutput": 1, // Boolian 0 or 1 to switch probability output on/off
   "relativeGravity": 1, // Boolian 0 or 1 to swithc use of relative gravity between objects
   "randomiseOrbits": 1, // Boolian 0 or 1 to switch randomisation of RAAN and ArgP
-  "outputPrinting": true, // true or false to print output rates
-  "individualOutput": true, // true or false to store pair specific collision rates
+  "outputPrinting": false, // true or false to print output rates
+  "individualOutput": false, // true or false to store pair specific collision rates
   "saveOutput": true, // true or false to save to output file
   "cubeDimension": 0.01, // As fraction of average semiMajor Axis
   "stepSize": 1, // size of timestep in days
   "randomSeed": null, // integer seed value or null to use system time
-  "numberEvaluations": 1e5, // Number of timesteps to be evaluated
+  "numberEvaluations": 1e4, // Number of timesteps to be evaluated
   "stepsPerEvaluation": 365, // Number of evaluations per section - sensible size is 365
   "ParallelCPU": true
 }

@@ -1,16 +1,50 @@
-﻿  Compiling CUDA source file ..\..\Utilities\DebrisObject.cu...
+﻿  Compiling CUDA source file ..\..\Utilities\OrbitalAnomalies.cu...
+  Compiling CUDA source file ..\..\Utilities\OrbitalUtilities.cu...
+  Compiling CUDA source file ..\..\Modules\Collision_Algorithms\CollisionPair.cu...
   Compiling CUDA source file ..\..\Utilities\OrbitalElements.cu...
+  Compiling CUDA source file ..\..\Utilities\DebrisEvent.cu...
+  Compiling CUDA source file ..\..\Utilities\DebrisObject.cu...
+  
+  E:\Work\Modelling Framework\SubModels\CUBE Approach>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\CUBE Approach\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitalUtilities.cu.obj "E:\Work\Modelling Framework\Utilities\OrbitalUtilities.cu" 
+  
+  E:\Work\Modelling Framework\SubModels\CUBE Approach>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\CUBE Approach\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitalAnomalies.cu.obj "E:\Work\Modelling Framework\Utilities\OrbitalAnomalies.cu" 
+  
+  E:\Work\Modelling Framework\SubModels\CUBE Approach>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\CUBE Approach\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitalElements.cu.obj "E:\Work\Modelling Framework\Utilities\OrbitalElements.cu" 
+  
+  E:\Work\Modelling Framework\SubModels\CUBE Approach>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\CUBE Approach\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\DebrisEvent.cu.obj "E:\Work\Modelling Framework\Utilities\DebrisEvent.cu" 
   
   E:\Work\Modelling Framework\SubModels\CUBE Approach>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\CUBE Approach\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\DebrisObject.cu.obj "E:\Work\Modelling Framework\Utilities\DebrisObject.cu" 
   
-  E:\Work\Modelling Framework\SubModels\CUBE Approach>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\CUBE Approach\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitalElements.cu.obj "E:\Work\Modelling Framework\Utilities\OrbitalElements.cu" 
+  E:\Work\Modelling Framework\SubModels\CUBE Approach>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\CUBE Approach\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\CollisionPair.cu.obj "E:\Work\Modelling Framework\Modules\Collision_Algorithms\CollisionPair.cu" 
+E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(112): warning : variable "dayFrac" was set but never used
+  
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
   
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+  OrbitalAnomalies.cu
+  OrbitalUtilities.cu
   OrbitalElements.cu
+  DebrisEvent.cu
   DebrisObject.cu
+E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(117): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(118): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(122): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(123): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(124): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(125): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  CollisionPair.cu
   stdafx.cpp
-  CUBE.cpp
   CollisionFunctions.cpp
+  CUBE.cpp
   brentmin.cpp
   distlink.cpp
 ..\..\Modules\Collision_Algorithms\MOID\distlink.cpp(1272): warning C4099: 'SMOIDResult<float>': type name first seen using 'struct' now seen using 'class'
@@ -101,8 +135,6 @@ CUBE_Approach.cpp(154): warning C4244: 'argument': conversion from 'uint64_t' to
 CUBE_Approach.cpp(170): warning C4244: 'argument': conversion from 'uint64_t' to 'double', possible loss of data
 CUBE_Approach.cpp(116): warning C4101: 'k': unreferenced local variable
   Generating code
-  42 of 3451 functions ( 1.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    6 functions had inline decision re-evaluated but remain unchanged
+  All 3451 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   CUBE.vcxproj -> E:\Work\Modelling Framework\SubModels\CUBE Approach\x64\Release\CUBE_Approach.exe

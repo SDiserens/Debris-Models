@@ -90,7 +90,6 @@ public:
 void SeedRNG(uint64_t seed);
 //void SetCentralBody(int centralBody = 3);
 
-vector3D CalculateAcceleration(vector3D& position);
 double CalculateKineticEnergy(vector3D& relativeVelocity, double mass);
 double CalculateKineticEnergy(double speed, double mass);
 double DegToRad(double angle);

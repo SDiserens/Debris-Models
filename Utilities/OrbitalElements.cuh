@@ -28,6 +28,8 @@ public:
 	CUDA_CALLABLE_MEMBER double GetRadialPosition();
 	CUDA_CALLABLE_MEMBER double GetRadialPosition(double trueAnomaly);
 	CUDA_CALLABLE_MEMBER double CalculatePeriod();
+
+	vector3D CalculateAcceleration();
 	double GetMeanMotion();
 
 	CUDA_CALLABLE_MEMBER OrbitalAnomalies GetAnomalies();
