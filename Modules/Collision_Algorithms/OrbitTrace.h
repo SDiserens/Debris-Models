@@ -8,6 +8,7 @@ class OrbitTrace : public CollisionAlgorithm
 {
 	//double deltaR, deltaB;
 	int MOIDtype = 0; // {0: inbuilt Newton; 1: distlink; 2: MOID}
+	bool filters = true;
 
 public:
 	void MainCollision(DebrisPopulation& population, double timestep);
@@ -16,6 +17,7 @@ public:
 	//void MainCollision_GPU_Cuda(DebrisPopulation& population, double timestep);
 	void SetThreshold(double threshold);
 	void SetMOID(int moid);
+	void SwitchFilters();
 	OrbitTrace(bool probabilities = false, double threshold = 0, int moid = 0);
 
 protected:

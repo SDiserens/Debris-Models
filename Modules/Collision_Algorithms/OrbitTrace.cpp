@@ -45,14 +45,18 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 		{
 			// Calculate orbit intersections for coplanar
 			objectPair.CalculateArgumenstOfIntersectionCoplanar();
-			if (HeadOnFilter(objectPair) || !SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
+			if (!filters)
+				objectPair.collision = true;
+			else if (HeadOnFilter(objectPair) || !SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
 				objectPair.collision = true;
 		}
 		else
 		{
 			// Calculate intersections for non coplanar
 			objectPair.CalculateArgumenstOfIntersection();
-			if (!SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
+			if (!filters)
+				objectPair.collision = true;
+			else if (!SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
 				objectPair.collision = true;
 		}
 
@@ -112,14 +116,18 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 		{
 			// Calculate orbit intersections for coplanar
 			objectPair.CalculateArgumenstOfIntersectionCoplanar();
-			if (HeadOnFilter(objectPair) || !SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
+			if (!filters)
+				collision = true;
+			else if (HeadOnFilter(objectPair) || !SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
 				collision = true;
 		}
 		else
 		{
 			// Calculate intersections for non coplanar
 			objectPair.CalculateArgumenstOfIntersection();
-			if (!SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
+			if (!filters)
+				collision = true;
+			else if (!SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
 				collision = true;
 		}
 
@@ -266,6 +274,11 @@ bool OrbitTrace::ProximityFilter(CollisionPair objectPair)
 	deltaMLinear = deltaMAngle * combinedSemiMajorAxis;
 
 	return (deltaMLinear <= objectPair.GetBoundingRadii());
+}
+
+void OrbitTrace::SwitchFilters()
+{
+	filters = !filters;
 }
 
 /*

@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 	unsigned long evaluationBlocks, evaluationSteps;
 	uint64_t seed, argseed = -1;
 	int scalingPower;
-	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits;
+	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits, OTfilters;
 	double timeStepDays, timeStep, scaling;
 
 	char date[100];
@@ -38,6 +38,7 @@ int main(int argc, char** argv)
 	timeStepDays = config["stepSize"].asDouble();
 	printing = config["outputPrinting"].asBool();
 	individualOutput = config["individualOutput"].asBool();
+	OTfilters = config["filters"].asBool();
 	timeStep = timeStepDays * secondsDay;
 
 	// Parse command line arguments
@@ -93,6 +94,8 @@ int main(int argc, char** argv)
 		collisionModel.SwitchParallelCPU();
 	if (relativeGravity)
 		collisionModel.SwitchGravityComponent();
+	if (!OTfilters)
+		collisionModel.SwitchFilters();
 
 	unsigned int step, eval, k;
 	double tempCollisionRate, blockRatio;
