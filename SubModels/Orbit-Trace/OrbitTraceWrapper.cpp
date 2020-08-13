@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 	uint64_t seed, argseed = -1;
 	int scalingPower;
 	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits, OTfilters;
-	double timeStepDays, timeStep, scaling;
+	double timeStepDays, timeStep, scaling, threshold;
 
 	char date[100];
 	int ID = 1;
@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 	printing = config["outputPrinting"].asBool();
 	individualOutput = config["individualOutput"].asBool();
 	OTfilters = config["filters"].asBool();
+	threshold = config["ConjunctionThreshold"].asDouble();
 	timeStep = timeStepDays * secondsDay;
 
 	// Parse command line arguments
@@ -56,9 +57,9 @@ int main(int argc, char** argv)
 		{
 			evaluationSteps = stoi(argv[++i]);
 		}
-		else if ((arg == "-t") || (arg == "--time"))
+		else if ((arg == "-t") || (arg == "--threshold"))
 		{
-			timeStepDays = atof(argv[++i]);
+			threshold = stod(argv[++i]);
 		}
 		else if ((arg == "-v") || (arg == "--verbose"))
 		{
@@ -87,7 +88,7 @@ int main(int argc, char** argv)
 	}
 
 	// Create OT object
-	OrbitTrace collisionModel(probabilityOutput);
+	OrbitTrace collisionModel(probabilityOutput, threshold);
 	if (config["ParallelGPU"].asBool())
 		collisionModel.SwitchParallelGPU();
 	if (config["ParallelCPU"].asBool())

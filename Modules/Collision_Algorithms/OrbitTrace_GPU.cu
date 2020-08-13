@@ -244,9 +244,9 @@ struct CollisionRateKernel {
 		}
 		__device__ double operator()(CollisionPair &objectPair) {
 
-			double collisionRate, boundingRadii, relativeVelocity;
+			double collisionRate, boundingRadii, relativeVelocity, scaling;
 			
-			boundingRadii = max(pAThreshold, objectPair.GetBoundingRadii());
+			boundingRadii = objectPair.GetBoundingRadii();
 			vector3D velocityI, velocityJ;
 			velocityI = objectPair.primaryElements.GetVelocity();
 			velocityJ = objectPair.secondaryElements.GetVelocity();
@@ -255,8 +255,13 @@ struct CollisionRateKernel {
 			objectPair.SetRelativeVelocity(relativeVelocity);
 			//sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
 
+			if (boundingRadii < pAThreshold) {
+				scaling = pow(boundingRadii / pAThreshold, 2);
+			}
+			else
+				scaling = 1;
 			// OT collision rate
-			if (boundingRadii > objectPair.minSeperation) {
+			if (objectPair.minSeperation < max(pAThreshold, boundingRadii)) {
 				collisionRate = Pi * boundingRadii * relativeVelocity /
 					(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
 			}
@@ -264,7 +269,7 @@ struct CollisionRateKernel {
 				collisionRate = 0;
 				objectPair.collision = false;
 			}
-			objectPair.probability = timeStep * collisionRate;
+			objectPair.probability = scaling * timeStep * collisionRate;
 			return objectPair.probability;
 		}
 };
