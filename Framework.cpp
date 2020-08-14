@@ -226,13 +226,14 @@ int main(int argc, char** argv)
 
 					// determine if collision avoidance occurs
 					avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
-					if ((collision.collisionProbability >= manoeuvreThreshold) & (collisionModel->DetermineCollisionAvoidance(avoidanceProbability))) {
+
+					if (collisionModel->CheckValidCollision()) {
+						collision.InvalidCollision();
+						environmentPopulation.AddDebrisEvent(collision);
+					}
+					else if ((collision.collisionProbability >= manoeuvreThreshold) & (collisionModel->DetermineCollisionAvoidance(avoidanceProbability))) {
 						// Update and Log
 						collision.CollisionAvoidance();
-						collision.SetDebrisCount(0);
-						collision.SetCatastrophic(false);
-						collision.SetConservationMomentum(false);
-						collision.SetEMR(0);
 						environmentPopulation.AddDebrisEvent(collision);
 					}
 

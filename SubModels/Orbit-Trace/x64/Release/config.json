@@ -3,13 +3,13 @@
   "probabilityOutput": 1, // Boolian 0 or 1 to switch probability output on/off
   "relativeGravity": 1, // Boolian 0 or 1 to swithc use of relative gravity between objects
   "randomiseOrbits": 1, // Boolian 0 or 1 to switch randomisation of RAAN and ArgP
-  "outputPrinting": true, // true or false to print output rates
-  "individualOutput": true, // true or false to store pair specific collision rates
+  "outputPrinting": false, // true or false to print output rates
+  "individualOutput": false, // true or false to store pair specific collision rates
   "filters": false, //true or false to apply OT filters
   "stepSize": 1, // size of timestep in days
   "randomSeed": null, // integer seed value or null to use system time
   "numberEvaluations": 1000, // Number of timesteps to be evaluated
   "stepsPerEvaluation": 100, // Number of evaluations per section - sensible size is 365
   "ParallelCPU": true,
-  "ParallelGPU": false
+  "ParallelGPU": true
 }

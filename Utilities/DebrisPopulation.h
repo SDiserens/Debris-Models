@@ -8,7 +8,7 @@ protected:
 	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis, durationDays, launchCycle;
 	unordered_map<long, DebrisObject> loadingPopulation;
 	vector<pair<double, long>> initEpochs;
-	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount;
+	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount, falseCollisionCount;
 	int upperStageCount, spacecraftCount, debrisCount;
 	vector<Event> eventLog;
 	vector<Event> definedEvents;

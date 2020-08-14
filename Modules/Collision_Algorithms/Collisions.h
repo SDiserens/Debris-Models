@@ -49,6 +49,7 @@ public:
 
 	bool DetermineCollision(double collisionProbability);
 	bool DetermineCollisionAvoidance(double avoidanceProbability);
+	bool CheckValidCollision(DebrisObject target, DebrisObject projectile);
 	bool UseGPU();
 	bool UseParallel();
 };

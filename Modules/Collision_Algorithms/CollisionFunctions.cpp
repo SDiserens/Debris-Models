@@ -134,6 +134,13 @@ bool CollisionAlgorithm::DetermineCollisionAvoidance(double avoidanceProbability
 	return randomNumber() < avoidanceProbability;
 }
 
+bool CollisionAlgorithm::CheckValidCollision(DebrisObject target, DebrisObject projectile)
+{
+	bool valid = true;
+	//TODO - logic for invalid collision
+	return valid;
+}
+
 bool CollisionAlgorithm::UseGPU()
 {
 	return GPU;

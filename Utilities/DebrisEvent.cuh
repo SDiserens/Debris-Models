@@ -6,7 +6,7 @@ class Event
 public:
 	static int eventSEQ;
 	long eventID, debrisGenerated, primaryID, secondaryID;
-	int eventType; // ( 0 : Explosion, 1 : Collision,  2 : Collision Avoidance,)
+	int eventType; // ( 0 : Explosion, 1 : Collision,  2 : Collision Avoidance, 3 : False Event)
 	double eventEpoch, altitude, involvedMass, relativeVelocity, energyMassRatio, primaryAnomaly, secondaryAnomaly, minSeparation, collisionProbability;
 	bool catastrophic, momentumConserved;
 
@@ -17,6 +17,7 @@ public:
 	CUDA_CALLABLE_MEMBER Event(double epoch, long targetID, long projectileID, double relV, double mass, double alt, double separation, double probability);
 	CUDA_CALLABLE_MEMBER ~Event();
 	void CollisionAvoidance();
+	void InvalidCollision();
 	void SwapPrimarySecondary();
 	void SetEpoch(double epoch);
 	void SetEventID();

@@ -14,6 +14,7 @@ DebrisPopulation::DebrisPopulation()
 	explosionCount = 0; 
 	collisionCount = 0;
 	collisionAvoidanceCount = 0;
+	falseCollisionCount = 0;
 }
 
 
@@ -41,6 +42,7 @@ void DebrisPopulation::Clear()
 	explosionCount = 0;
 	collisionCount = 0;
 	collisionAvoidanceCount = 0;
+	falseCollisionCount = 0;
 }
 
 double DebrisPopulation::GetNextInitEpoch()
@@ -247,6 +249,8 @@ void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 		++collisionCount;
 	else if (type == 2)
 		++collisionAvoidanceCount;
+	else if (type == 2)
+		++falseCollisionCount;
 }
 
 DebrisObject& DebrisPopulation::GetObject(long ID)

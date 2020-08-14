@@ -180,7 +180,7 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 
 double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 {
-	double collisionRate, boundingRadii, minSeperation, relativeVelocity, scaling;
+	double collisionRate, boundingRadii, minSeperation, relativeVelocity, scaling, threshold;
 	vector3D velocityI, velocityJ;
 
 	//TODO - Quick filter on possible separation
@@ -201,17 +201,19 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 
 	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
 	boundingRadii =  objectPair.GetBoundingRadii();
+	threshold = max(pAThreshold, boundingRadii);
 	objectPair.SetRelativeVelocity(relativeVelocity);
 	//sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
 
 	if (boundingRadii < pAThreshold) {
-		scaling = pow(boundingRadii / pAThreshold, 2);
+		scaling = boundingRadii / pAThreshold;
+		scaling = scaling * scaling;
 	}
 	else
 		scaling = 1;
 	// OT collision rate
-	if (minSeperation < max(pAThreshold, boundingRadii))
-		collisionRate = Pi * boundingRadii * relativeVelocity /
+	if (minSeperation < threshold)
+		collisionRate = Pi * threshold * relativeVelocity /
 						(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
 	else
 		collisionRate = 0;

@@ -61,6 +61,19 @@ Event::~Event()
 void Event::CollisionAvoidance()
 {
 	eventType = 2;
+	SetDebrisCount(0);
+	SetCatastrophic(false);
+	SetConservationMomentum(false);
+	SetEMR(0);
+}
+
+void Event::InvalidCollision()
+{
+	eventType = 3;
+	SetDebrisCount(0);
+	SetCatastrophic(false);
+	SetConservationMomentum(false);
+	SetEMR(0);
 }
 
 void Event::SwapPrimarySecondary()
