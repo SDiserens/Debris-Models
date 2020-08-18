@@ -159,7 +159,6 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	Json::Value scenario;
 	Json::Reader reader;
 	double epoch;
-	int body;
 	string date;
 
 	// Read scenario file
@@ -232,6 +231,8 @@ void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
 		{
 			tempObject = GenerateDebrisObject(objectParameters, epoch);
 			tempObject.SetCentralBody(body);
+			if (objectParameters.isMember("constellationID"))
+				tempObject.SetConstellationID(objectParameters["constellationID"].asInt());
 			averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
 			population.AddDebrisObject(tempObject);
 
@@ -491,7 +492,6 @@ void WritePopulationData(string scenario, Json::Value & config, DebrisPopulation
 	string outputFilename, pairID, mcRun;
 	tuple<int, int, int> eventSplit;
 	// Store data
-	double scaling;
 	time_t dateTime = time(NULL);
 	struct tm currtime;
 	localtime_s(&currtime, &dateTime);

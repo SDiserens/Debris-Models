@@ -227,7 +227,7 @@ int main(int argc, char** argv)
 					// determine if collision avoidance occurs
 					avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
 
-					if (collisionModel->CheckValidCollision()) {
+					if (collisionModel->CheckValidCollision(target, projectile)) {
 						collision.InvalidCollision();
 						environmentPopulation.AddDebrisEvent(collision);
 					}

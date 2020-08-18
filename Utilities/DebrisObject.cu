@@ -136,6 +136,11 @@ long DebrisObject::GetParentID()
 	return parentID;
 }
 
+int DebrisObject::GetConstellationID()
+{
+	return constellationId;
+}
+
 int DebrisObject::GetNoradID()
 {
 	if (noradID != -1)
@@ -529,6 +534,11 @@ void DebrisObject::SetNFrag(int n)
 void DebrisObject::SetNewObjectID()
 {
 	objectID = ++objectSEQ;
+}
+
+void DebrisObject::SetConstellationID(int id)
+{
+	constellationId = id;
 }
 
 OrbitalAnomalies DebrisObject::GetAnomalies()

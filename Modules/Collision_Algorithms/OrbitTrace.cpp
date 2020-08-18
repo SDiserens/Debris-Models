@@ -180,7 +180,7 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 
 double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 {
-	double collisionRate, boundingRadii, minSeperation, relativeVelocity, scaling, threshold;
+	double collisionRate, boundingRadii, minSeperation, relativeVelocity, scaling, threshold, escapeVelocity2, gravitationalPerturbation;
 	vector3D velocityI, velocityJ;
 
 	//TODO - Quick filter on possible separation
@@ -211,9 +211,18 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	}
 	else
 		scaling = 1;
+
+	if (relativeGravity)
+	{
+		escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
+		gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity* relativeVelocity));
+	}
+	else
+		gravitationalPerturbation = 1;
+
 	// OT collision rate
 	if (minSeperation < threshold)
-		collisionRate = Pi * threshold * relativeVelocity /
+		collisionRate = gravitationalPerturbation * Pi * threshold * relativeVelocity /
 						(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
 	else
 		collisionRate = 0;

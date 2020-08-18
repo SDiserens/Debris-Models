@@ -1,0 +1,43 @@
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.pch
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\vc141.pdb
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\vc141.idb
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\stdafx.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\collisionfunctions.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\brentmin.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\distlink.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\moid.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\sgp4.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\baseutilities.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\debrispopulation.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittracewrapper.obj
+x64\debug\collisionpair.cu.obj
+x64\debug\debrisobject.cu.obj
+x64\debug\orbitalanomalies.cu.obj
+x64\debug\orbitalelements.cu.obj
+x64\debug\orbitalutilities.cu.obj
+x64\debug\orbittrace_gpu.cu.obj
+x64\debug\debrisevent.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\collisionpair.cu.cache
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\debrisevent.cu.cache
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\debrisobject.cu.cache
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbitalanomalies.cu.cache
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbitalelements.cu.cache
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbitalutilities.cu.cache
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace_gpu.cu.cache
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\collisionpair.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\debrisevent.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\debrisobject.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbitalanomalies.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbitalelements.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbitalutilities.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.device-link.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace_gpu.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.tlog\cl.command.1.tlog
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.tlog\cl.read.1.tlog
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.tlog\cl.write.1.tlog
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.tlog\cudacompile.read.1u.tlog
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.tlog\cudacompile.write.1u.tlog
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.tlog\link.command.1.tlog
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.tlog\link.read.1.tlog
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.tlog\link.write.1.tlog

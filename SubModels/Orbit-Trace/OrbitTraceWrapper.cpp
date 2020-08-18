@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include "Modules\Collision_Algorithms\OrbitTrace.h"
 
+//#define VLD_FORCE_ENABLE
+//#include <vld.h>
+
 void RandomiseOrbitOrientations(DebrisPopulation& population);
 void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
 	vector<map<pair<long, long>, double>>& collisionRates, vector<map<pair<long, long>, int>>& collisionCount, int scalingPower);
@@ -13,20 +16,17 @@ void WriteSystemCollisionData(ofstream & dataFile, string metaData, DebrisPopula
 
 int main(int argc, char** argv)
 {
-
 	string arg, scenarioFilename, outputFilename, eventType, metaData;
 	unsigned long evaluationBlocks, evaluationSteps;
 	uint64_t seed, argseed = -1;
 	int scalingPower;
 	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits, OTfilters;
 	double timeStepDays, timeStep, scaling, threshold;
-
 	char date[100];
 	int ID = 1;
 	Json::Value config, scenario, parsedObject;
 
 	LoadConfigFile(config);
-
 
 	// Identify config variables
 	scenarioFilename = config["scenarioFilename"].asString();
@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 	if (!OTfilters)
 		collisionModel.SwitchFilters();
 
-	unsigned int step, eval, k;
+	unsigned int step, eval;
 	double tempCollisionRate, blockRatio;
 	vector<double> collisionProbabilities;
 	vector<Event> collisionList;
@@ -212,6 +212,7 @@ int main(int argc, char** argv)
 	outputFile.close();
 
 	// END
+	return 0;
 }
 
 void RandomiseOrbitOrientations(DebrisPopulation& population)

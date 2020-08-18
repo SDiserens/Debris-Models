@@ -1,7 +1,5 @@
-e:\work\modelling framework\x64\release\vc141.pdb
-e:\work\modelling framework\x64\release\orbittrace.obj
-e:\work\modelling framework\x64\release\framework.obj
 e:\work\modelling framework\x64\release\framework.pch
+e:\work\modelling framework\x64\release\vc141.pdb
 e:\work\modelling framework\x64\release\stdafx.obj
 e:\work\modelling framework\x64\release\debrispopulation.obj
 e:\work\modelling framework\x64\release\baseutilities.obj
@@ -12,12 +10,14 @@ e:\work\modelling framework\x64\release\analytic_j2.obj
 e:\work\modelling framework\x64\release\nasastdbrkupmdl.obj
 e:\work\modelling framework\x64\release\fragmentationfunctions.obj
 e:\work\modelling framework\x64\release\fragmentcloud.obj
+e:\work\modelling framework\x64\release\orbittrace.obj
 e:\work\modelling framework\x64\release\moid.obj
 e:\work\modelling framework\x64\release\distlink.obj
 e:\work\modelling framework\x64\release\brentmin.obj
 e:\work\modelling framework\x64\release\hootsfilter.obj
-e:\work\modelling framework\x64\release\collisionfunctions.obj
 e:\work\modelling framework\x64\release\cube.obj
+e:\work\modelling framework\x64\release\framework.obj
+e:\work\modelling framework\x64\release\collisionfunctions.obj
 x64\release\collisionpair.cu.obj
 x64\release\hootsfilter_gpu.cu.obj
 x64\release\orbittrace_gpu.cu.obj

@@ -15,6 +15,7 @@ protected:
 	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag, initEpoch, lifetime, bStar, currEpoch, avoidanceSucess = 0, explosionProbability = 0, collisionProbability=0;
 	char name[100];
 	long parentID, sourceID, objectID;
+	int constellationId=-1;
 	int sourceEvent; // (0, 1, 2) = (Launch, Explosion, Collision) respectively.
 	int sourceType, objectType; // (0, 1, 2) = (UpperStage, Spacecraft, Debris) respectively. 
 	int removeEvent; // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
@@ -36,6 +37,7 @@ public:
 	CUDA_CALLABLE_MEMBER long GetID();
 	long GetSourceID();
 	long GetParentID();
+	int GetConstellationID();
 	int GetNoradID();
 	int GetType();
 	int GetSourceType();
@@ -101,6 +103,7 @@ public:
 	void SetMass(double newMass);
 	void SetNFrag(int n);
 	void SetNewObjectID();
+	void SetConstellationID(int id);
 
 	void SetVelocity(double vX, double vY, double vZ);
 	void SetVelocity(vector3D inputVelocity);

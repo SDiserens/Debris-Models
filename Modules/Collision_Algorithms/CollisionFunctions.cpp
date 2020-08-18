@@ -138,6 +138,23 @@ bool CollisionAlgorithm::CheckValidCollision(DebrisObject target, DebrisObject p
 {
 	bool valid = true;
 	//TODO - logic for invalid collision
+	if (projectile.GetConstellationID() == target.GetConstellationID() && projectile.IsActive() && target.IsActive()) 
+	{
+		valid = false;
+	}
+	else if(abs(target.GetPeriod() - projectile.GetPeriod())/ target.GetPeriod() < 0.01)
+	{
+		vector3D hP = target.GetElements().GetNormalVector();
+		vector3D hS = projectile.GetElements().GetNormalVector();
+		double k = hP.VectorCrossProduct(hS).vectorNorm();
+
+		double relativeInclination = asin(k);
+		double combinedSemiMajorAxis = target.GetElements().semiMajorAxis + projectile.GetElements().semiMajorAxis;
+		bool coplanar = relativeInclination <= (2 * asin((target.GetRadius() + projectile.GetRadius()) / (1000 * combinedSemiMajorAxis)));
+		if (coplanar) {
+			valid = false;
+		}
+	}
 	return valid;
 }
 
