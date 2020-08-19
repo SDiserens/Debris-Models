@@ -339,12 +339,13 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	for (int i = 0; i < outList.size(); i++) {
 		CollisionPair objectPair = outList[i];
 		tempProbability = pList[i];
-
-		mass = objectPair.primaryMass + objectPair.secondaryMass;
-		tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), objectPair.GetMinSeparation(), tempProbability);
-		tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
-		// Store Collisions 
-		newCollisionList.push_back(tempEvent);
+		if (tempProbability > 0) {
+			mass = objectPair.primaryMass + objectPair.secondaryMass;
+			tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), objectPair.GetMinSeparation(), tempProbability);
+			tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
+			// Store Collisions 
+			newCollisionList.push_back(tempEvent);
+		}
 	}
 	outList.clear();
 	outList.shrink_to_fit();

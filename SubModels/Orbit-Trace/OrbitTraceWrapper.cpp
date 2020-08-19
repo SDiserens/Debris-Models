@@ -5,7 +5,7 @@
 #include "Modules\Collision_Algorithms\OrbitTrace.h"
 
 //#define VLD_FORCE_ENABLE
-//#include <vld.h>
+#include <vld.h>
 
 void RandomiseOrbitOrientations(DebrisPopulation& population);
 void WriteCollisionData(ofstream & dataFile, string metaData, DebrisPopulation & objectPopulation, map<pair<long, long>, double>& totalCollisionRates,
@@ -100,7 +100,6 @@ int main(int argc, char** argv)
 
 	unsigned int step, eval;
 	double tempCollisionRate, blockRatio;
-	vector<double> collisionProbabilities;
 	vector<Event> collisionList;
 	pair<long, long> pairID;
 	map<pair<long, long>, double> totalCollisionRates;
@@ -152,6 +151,8 @@ int main(int argc, char** argv)
 			collisionRates[eval][pairID] = collisionRates[eval][pairID] + tempCollisionRate;
 			collisionCount[eval][pairID] = collisionCount[eval][pairID] + 1;
 		}
+		collisionList.clear();
+		collisionList.shrink_to_fit();
 	}
 
 	progress.DisplayProgress(evaluationBlocks * evaluationSteps); cout << "\n" << flush;

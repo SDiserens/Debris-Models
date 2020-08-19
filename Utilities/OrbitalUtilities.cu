@@ -109,9 +109,8 @@ double DateToEpoch(int year, int month, int day, int hour, int minute, double se
 
 string EpochToDate(double epoch)
 {
-	double julianDay, dayFrac;
+	double julianDay;
 	int day, month, year, Z, W, X, A, B, C, D, E, F;
-	dayFrac = remainder(epoch, 1.0);
 	julianDay = floor(epoch) + 2436115.5; // Julian date adjusted to space age epoch
 
 	Z = julianDay + 0.5;

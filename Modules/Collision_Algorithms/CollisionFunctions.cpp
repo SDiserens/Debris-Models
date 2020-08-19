@@ -6,23 +6,6 @@ double CollisionAlgorithm::GetElapsedTime()
 	return elapsedTime;
 }
 
-vector<double> CollisionAlgorithm::GetCollisionVerbose()
-{
-	return GetCollisionProbabilities();
-}
-
-vector<double> CollisionAlgorithm::GetNewCollisionVerbose()
-{
-	return GetNewCollisionProbabilities();
-}
-
-vector<double> CollisionAlgorithm::GetNewCollisionAltitudes()
-{
-	vector<double> newList(newCollisionAltitudes);
-	newCollisionAltitudes.clear();
-	return newList;
-}
-
 list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & population)
 {
 	list<CollisionPair> pairList;
@@ -105,27 +88,11 @@ double CollisionAlgorithm::CollisionCrossSection(CollisionPair& objectPair)
 	return gravitationalPerturbation * Pi * boundingRadii * boundingRadii;
 }
 
-vector<Event> CollisionAlgorithm::GetCollisionList()
-{
-	return collisionList;
-}
-
-vector<double> CollisionAlgorithm::GetCollisionProbabilities()
-{
-	return collisionProbabilities;
-}
-
 vector<Event> CollisionAlgorithm::GetNewCollisionList()
 {
 	vector<Event> newList(newCollisionList);
 	newCollisionList.clear();
-	return newList;
-}
-
-vector<double> CollisionAlgorithm::GetNewCollisionProbabilities()
-{
-	vector<double> newList(newCollisionProbabilities);
-	newCollisionProbabilities.clear();
+	newCollisionList.shrink_to_fit();
 	return newList;
 }
 

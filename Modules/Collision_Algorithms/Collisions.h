@@ -13,10 +13,6 @@ protected:
 
 protected:
 	bool PerigeeApogeeTest(CollisionPair & objectPair);
-	vector<double> collisionProbabilities;
-	vector<Event> collisionList;
-	vector<double> newCollisionProbabilities;
-	vector<double> newCollisionAltitudes;
 	vector<Event> newCollisionList;
 	double CollisionCrossSection(CollisionPair &objectPair);
 	//double CalculateClosestApproach(CollisionPair objectPair);
@@ -25,9 +21,6 @@ protected:
 	virtual double CollisionRate(CollisionPair &objectPair) = 0;
 	virtual list<CollisionPair> CreatePairList(DebrisPopulation& population);
 	virtual list<CollisionPair> CreatePairList_P(DebrisPopulation& population);
-
-	vector<double> GetCollisionProbabilities();
-	vector<double> GetNewCollisionProbabilities();
 
 public:
 	virtual void MainCollision(DebrisPopulation& population, double timeStep) = 0;
@@ -39,14 +32,9 @@ public:
 	void SwitchGravityComponent();
 	void SwitchParallelGPU();
 	void SwitchParallelCPU();
-	vector<Event> GetCollisionList();
 	vector<Event> GetNewCollisionList();
 	double GetElapsedTime();
-
-	vector<double> GetCollisionVerbose();
-	vector<double> GetNewCollisionVerbose();
-	vector<double> GetNewCollisionAltitudes();
-
+	
 	bool DetermineCollision(double collisionProbability);
 	bool DetermineCollisionAvoidance(double avoidanceProbability);
 	bool CheckValidCollision(DebrisObject target, DebrisObject projectile);

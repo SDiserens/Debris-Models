@@ -135,16 +135,17 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 		{
 			collisionRate = CollisionRate(objectPair);
 			tempProbability = timeStep * collisionRate;
-			pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
+			if (tempProbability > 0) {
+				pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 
-			altitude = objectPair.primaryElements.GetRadialPosition();
-			mass = objectPair.primaryMass + objectPair.secondaryMass;
-			Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation(), tempProbability);
-			tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
-			// Store Collisions 
-			//collisionList.push_back(tempEvent);
-			newCollisionList.push_back(tempEvent);
-
+				altitude = objectPair.primaryElements.GetRadialPosition();
+				mass = objectPair.primaryMass + objectPair.secondaryMass;
+				Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation(), tempProbability);
+				tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
+				// Store Collisions 
+				//collisionList.push_back(tempEvent);
+				newCollisionList.push_back(tempEvent);
+			}
 		}
 	}
 	elapsedTime += timeStep;

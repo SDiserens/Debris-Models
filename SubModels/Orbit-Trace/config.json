@@ -1,5 +1,5 @@
 {
-  "scenarioFilename": "Planetesimals_N128.json", // "JovianMoons.json", "Asteroids.json", "Planetesimals.json", "SimpleSatellites.json", 
+  "scenarioFilename": "Planetesimals_N1024.json", // "JovianMoons.json", "Asteroids.json", "Planetesimals.json", "SimpleSatellites.json", 
   "probabilityOutput": 1, // Boolian 0 or 1 to switch probability output on/off
   "relativeGravity": 1, // Boolian 0 or 1 to swithc use of relative gravity between objects
   "randomiseOrbits": 1, // Boolian 0 or 1 to switch randomisation of RAAN and ArgP
@@ -10,6 +10,6 @@
   "randomSeed": null, // integer seed value or null to use system time
   "numberEvaluations": 100, // Number of timesteps to be evaluated
   "stepsPerEvaluation": 10, // Number of evaluations per section - sensible size is 365
-"ParallelCPU": true,
-"ParallelGPU": false
+  "ParallelCPU": true,
+  "ParallelGPU": true
 }

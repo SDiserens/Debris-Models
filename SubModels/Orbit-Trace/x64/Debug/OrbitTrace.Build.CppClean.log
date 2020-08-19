@@ -18,6 +18,9 @@ x64\debug\orbitalelements.cu.obj
 x64\debug\orbitalutilities.cu.obj
 x64\debug\orbittrace_gpu.cu.obj
 x64\debug\debrisevent.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.ilk
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.exe
+e:\work\modelling framework\submodels\orbit-trace\x64\debug\orbittrace.pdb
 e:\work\modelling framework\submodels\orbit-trace\x64\debug\collisionpair.cu.cache
 e:\work\modelling framework\submodels\orbit-trace\x64\debug\debrisevent.cu.cache
 e:\work\modelling framework\submodels\orbit-trace\x64\debug\debrisobject.cu.cache

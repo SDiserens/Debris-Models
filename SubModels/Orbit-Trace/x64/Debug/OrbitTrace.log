@@ -1,6 +1,2 @@
-﻿  OrbitTraceWrapper.cpp
-e:\work\modelling framework\submodels\orbit-trace\orbittracewrapper.cpp(101): warning C4101: 'k': unreferenced local variable
-jsoncpp.lib(json_reader.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_reader.obj)' or at 'E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_value.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_value.obj)' or at 'E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_writer.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_writer.obj)' or at 'E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
+﻿  CollisionFunctions.cpp
   OrbitTrace.vcxproj -> E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Debug\OrbitTrace.exe
