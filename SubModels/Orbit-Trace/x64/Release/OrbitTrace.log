@@ -1,20 +1,37 @@
-﻿  Compiling CUDA source file ..\..\Modules\Collision_Algorithms\OrbitTrace_GPU.cu...
-  Compiling CUDA source file ..\..\Utilities\OrbitalUtilities.cu...
+﻿  Compiling CUDA source file ..\..\Modules\Collision_Algorithms\CollisionPair.cu...
+  Compiling CUDA source file ..\..\Utilities\DebrisEvent.cu...
+  Compiling CUDA source file ..\..\Utilities\OrbitalElements.cu...
+  Compiling CUDA source file ..\..\Modules\Collision_Algorithms\OrbitTrace_GPU.cu...
+  Compiling CUDA source file ..\..\Utilities\OrbitalAnomalies.cu...
   Compiling CUDA source file ..\..\Utilities\DebrisObject.cu...
+  Compiling CUDA source file ..\..\Utilities\OrbitalUtilities.cu...
+  
+  E:\Work\Modelling Framework\SubModels\Orbit-Trace>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\Orbit-Trace\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\DebrisEvent.cu.obj "E:\Work\Modelling Framework\Utilities\DebrisEvent.cu" 
+  
+  E:\Work\Modelling Framework\SubModels\Orbit-Trace>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\Orbit-Trace\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitalElements.cu.obj "E:\Work\Modelling Framework\Utilities\OrbitalElements.cu" 
   
   E:\Work\Modelling Framework\SubModels\Orbit-Trace>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\Orbit-Trace\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitTrace_GPU.cu.obj "E:\Work\Modelling Framework\Modules\Collision_Algorithms\OrbitTrace_GPU.cu" 
   
   E:\Work\Modelling Framework\SubModels\Orbit-Trace>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\Orbit-Trace\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\DebrisObject.cu.obj "E:\Work\Modelling Framework\Utilities\DebrisObject.cu" 
   
   E:\Work\Modelling Framework\SubModels\Orbit-Trace>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\Orbit-Trace\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitalUtilities.cu.obj "E:\Work\Modelling Framework\Utilities\OrbitalUtilities.cu" 
+  
+  E:\Work\Modelling Framework\SubModels\Orbit-Trace>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\Orbit-Trace\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\OrbitalAnomalies.cu.obj "E:\Work\Modelling Framework\Utilities\OrbitalAnomalies.cu" 
+  
+  E:\Work\Modelling Framework\SubModels\Orbit-Trace>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64" -x cu -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"E:\Work\Modelling Framework\SubModels\Orbit-Trace\packages\jsoncpp-vc140-static-32_64.1.8.0\build\native\..\..\lib\native\include\\" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc141.pdb /FS /Zi  /MT " -o x64\Release\CollisionPair.cu.obj "E:\Work\Modelling Framework\Modules\Collision_Algorithms\CollisionPair.cu" 
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
   
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
   
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
   
-  OrbitalUtilities.cu
+CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
+  
+  DebrisEvent.cu
   DebrisObject.cu
+  OrbitalUtilities.cu
+  OrbitalElements.cu
+  OrbitalAnomalies.cu
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
   
 CUDACOMPILE : warning : 'long double' is treated as 'double' in device code
@@ -31,6 +48,7 @@ E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(121): warning C4244: '
 E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(122): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(123): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 E:/Work/Modelling Framework/Utilities/OrbitalUtilities.cu(124): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  CollisionPair.cu
   OrbitTrace_GPU.cu
 E:/Work/Modelling Framework/Modules/Collision_Algorithms/OrbitTrace_GPU.cu(90): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include\thrust/iterator/iterator_adaptor.h(204): warning C4244: '+=': conversion from '__int64' to 'int', possible loss of data
@@ -1465,8 +1483,6 @@ C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.
   OrbitTrace_GPU.cu.obj
   DebrisEvent.cu.obj
   Generating code
-  218 of 2547 functions ( 8.6%) were compiled, the rest were copied from previous compilation.
-    3 functions were new in current compilation
-    74 functions had inline decision re-evaluated but remain unchanged
+  All 2601 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   OrbitTrace.vcxproj -> E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Release\OrbitTrace.exe

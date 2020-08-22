@@ -8,12 +8,12 @@ class CollisionPair
 public:
 	OrbitalElements primaryElements, secondaryElements;
 	long primaryID, secondaryID;
-	double approachAnomalyP, approachAnomalyS, probability=0, minSeperation, primaryAnomaly, secondaryAnomaly, primaryMass, secondaryMass;
+	double approachAnomalyP, approachAnomalyS, approachAnomalyP2, approachAnomalyS2, probability=0, minSeperation, minSeperation2, primaryAnomaly, secondaryAnomaly, primaryMass, secondaryMass;
 	bool coplanar, collision;
 	int overlapCount;
-	double relativeInclination, boundingRadii;
+	double relativeVelocity, relativeVelocity2, relativeInclination, boundingRadii;
 protected:
-	double relativeVelocity, deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, collisionAltitude;
+	double  deltaPrimary, deltaSecondary, deltaPrimary2, deltaSecondary2, collisionAltitude;
 
 public:
 	CUDA_CALLABLE_MEMBER CollisionPair();

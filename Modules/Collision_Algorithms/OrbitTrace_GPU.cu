@@ -88,9 +88,12 @@ __host__ thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(Deb
 	thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(first, pairList.begin())), thrust::make_zip_iterator(thrust::make_tuple(last, pairList.end())), PairKernel(n, thrust::raw_pointer_cast(populationList.data())));
 
 	int p = thrust::copy_if(thrust::device, pairList.begin(), pairList.end(), pairList.begin(), PAKernel(pAThreshold)) - pairList.begin();
+
 	populationList.clear();
 	populationList.shrink_to_fit();
+
 	pairList.resize(p);
+	pairList.shrink_to_fit();
 
 	return pairList;
 }
@@ -232,7 +235,7 @@ struct CollisionFilterKernel {
 struct MinSeperation {
 	MinSeperation() {};
 	__device__ void operator()(CollisionPair &objectPair) {
-		objectPair.minSeperation = objectPair.CalculateMinimumSeparation();
+		double sep = objectPair.CalculateMinimumSeparation();
 
 		//return objectPair.minSeperation;
 	}
@@ -248,52 +251,75 @@ struct CollisionRateKernel {
 		}
 		__device__ double operator()(CollisionPair &objectPair) {
 
-			double collisionRate, boundingRadii, relativeVelocity, scaling, escapeVelocity2, gravitationalPerturbation;
+			double collisionRate, threshold, boundingRadii, relativeVelocity, scaling, escapeVelocity2, gravitationalPerturbation, collisionRate2;
 			
 			boundingRadii = objectPair.GetBoundingRadii();
 			vector3D velocityI, velocityJ;
-			velocityI = objectPair.primaryElements.GetVelocity();
-			velocityJ = objectPair.secondaryElements.GetVelocity();
-
-			relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
-			objectPair.SetRelativeVelocity(relativeVelocity);
+			boundingRadii = objectPair.GetBoundingRadii();
+			threshold = max(pAThreshold, boundingRadii);
 			//sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
-
+			scaling = 1;
 			if (boundingRadii < pAThreshold) {
-				scaling = pow(boundingRadii / pAThreshold, 2);
+				scaling = boundingRadii / pAThreshold;
+				scaling = scaling * scaling;
 			}
-			else
-				scaling = 1;
-
-			if (relativeGravity)
-			{
-				escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
-				gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity* relativeVelocity));
-			}
-			else
-				gravitationalPerturbation = 1;
 
 			// OT collision rate
-			if (objectPair.minSeperation < max(pAThreshold, boundingRadii)) {
-				collisionRate = gravitationalPerturbation * Pi * boundingRadii * relativeVelocity /
+			if (objectPair.minSeperation < threshold)
+			{
+				objectPair.primaryElements.SetTrueAnomaly(objectPair.approachAnomalyP);
+				objectPair.secondaryElements.SetTrueAnomaly(objectPair.approachAnomalyS);
+				velocityI = objectPair.primaryElements.GetVelocity();
+				velocityJ = objectPair.secondaryElements.GetVelocity();
+				relativeVelocity = objectPair.relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
+				if (relativeGravity)
+				{
+					escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
+					gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity * relativeVelocity));
+				}
+				else
+					gravitationalPerturbation = 1;
+
+				collisionRate = gravitationalPerturbation * Pi * threshold * relativeVelocity /
 					(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
 			}
-			else {
+			else
 				collisionRate = 0;
-				objectPair.collision = false;
+
+			if (objectPair.minSeperation2 < threshold)
+			{
+
+				objectPair.primaryElements.SetTrueAnomaly(objectPair.approachAnomalyP2);
+				objectPair.secondaryElements.SetTrueAnomaly(objectPair.approachAnomalyS2);
+				velocityI = objectPair.primaryElements.GetVelocity();
+				velocityJ = objectPair.secondaryElements.GetVelocity();
+				relativeVelocity = objectPair.relativeVelocity2 = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
+				if (relativeGravity)
+				{
+					escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
+					gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity * relativeVelocity));
+				}
+				else
+					gravitationalPerturbation = 1;
+
+				collisionRate2 = gravitationalPerturbation * Pi * threshold * relativeVelocity /
+					(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
 			}
-			objectPair.probability = scaling * timeStep * collisionRate;
+			else
+				collisionRate2 = 0;
+ 
+			objectPair.probability = timeStep * scaling * (collisionRate + collisionRate2);
 			return objectPair.probability;
 		}
 };
 
 __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, double timestep)
 {
-	double mass, tempProbability, epoch = population.GetEpoch();
+	double mass, tempProbability, epoch = population.GetEpoch(), sep;
 	Event tempEvent;
 
 	// Filter Cube List
-	thrust::device_vector<CollisionPair> pairList = CreatePairList_GPU(population);
+	thrust::device_vector<CollisionPair> pairList = CreatePairList_CPU(population);
 	timeStep = timestep;
 	//unsigned int numThreads, numBlocks;
 	//computeGridSize(pairList.size(), 256, numBlocks, numThreads);
@@ -302,6 +328,7 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	
 	n = thrust::remove_if(pairList.begin(), pairList.end(), Collision()) - pairList.begin();
 	pairList.resize(n);
+	
 	thrust::host_vector<CollisionPair> outList(pairList.begin(), pairList.end());
 	pairList.clear();
 	pairList.shrink_to_fit();
@@ -311,7 +338,7 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	concurrency::parallel_for_each(outList.begin(), outList.end(), [&](CollisionPair& objectPair)
 	{	switch (MOIDtype) {
 			case 0:
-				objectPair.minSeperation = objectPair.CalculateMinimumSeparation();
+				sep = objectPair.CalculateMinimumSeparation();
 				break;
 			case 1:
 				objectPair.minSeperation = objectPair.CalculateMinimumSeparation_DL();
@@ -323,12 +350,16 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	});
 
 	pairList = thrust::device_vector<CollisionPair>(outList.begin(), outList.end());
+	
+	//thrust::for_each(thrust::device, pairList.begin(), pairList.end(), MinSeperation());
+
 	thrust::device_vector<double> probabilityList(n);
 	thrust::transform(thrust::device, pairList.begin(), pairList.end(), probabilityList.begin(), CollisionRateKernel(timestep, pAThreshold, relativeGravity));
 
 	//dvit collisionEnd = thrust::remove_if(thrust::device, pairList.begin(), pairList.end(), NotCollision());
 
 	outList = thrust::host_vector<CollisionPair>(pairList.begin(), pairList.end());
+	//thrust::host_vector<CollisionPair> outList(pairList.begin(), pairList.end());
 	thrust::host_vector<double> pList(probabilityList.begin(), probabilityList.end());
 	pairList.clear();
 	pairList.shrink_to_fit();

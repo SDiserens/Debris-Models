@@ -73,7 +73,9 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 	});
 	pairList.erase(listEnd, pairList.end());
 
-	for (CollisionPair objectPair : pairList) {
+
+	concurrency::parallel_for_each(pairList.begin(), pairList.end(), [&](CollisionPair& objectPair){
+	//for (CollisionPair objectPair : pairList) {
 
 		tempProbability = timeStep * objectPair.probability;
 		pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
@@ -89,6 +91,7 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 		mtx.unlock();
 
 	}
+	);
 	
 	elapsedTime += timeStep;
 
@@ -111,7 +114,6 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 		collision = false;
 
 		objectPair.CalculateRelativeInclination();
-
 		if (CoplanarFilter(objectPair))
 		{
 			// Calculate orbit intersections for coplanar
@@ -181,58 +183,81 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 
 double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 {
-	double collisionRate, boundingRadii, minSeperation, relativeVelocity, scaling, threshold, escapeVelocity2, gravitationalPerturbation;
+	double collisionRate, collisionRate2, boundingRadii, minSeperation, scaling, relativeVelocity, threshold, escapeVelocity2, gravitationalPerturbation;
 	vector3D velocityI, velocityJ;
 
 	//TODO - Quick filter on possible separation
-	switch (MOIDtype) {
-	case 0: 
-		minSeperation = objectPair.CalculateMinimumSeparation();
-		break;
-	case 1: 
-		minSeperation = objectPair.CalculateMinimumSeparation_DL();
-		break;
-	case 2: 
-		minSeperation = objectPair.CalculateMinimumSeparation_MOID();
-		break;
-	}
-	
-	velocityI = objectPair.primaryElements.GetVelocity();
-	velocityJ = objectPair.secondaryElements.GetVelocity();
+	//switch (MOIDtype) {
+	//case 0: 
+	//	minSeperation = objectPair.CalculateMinimumSeparation();
+	//	break;
+	//case 1: 
+	//	minSeperation = objectPair.CalculateMinimumSeparation_DL();
+	//	break;
+	//case 2: 
+	//	minSeperation = objectPair.CalculateMinimumSeparation_MOID();
+	//	break;
+	//}
+	minSeperation = objectPair.CalculateMinimumSeparation();
 
-	relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
-	boundingRadii =  objectPair.GetBoundingRadii();
+	boundingRadii = objectPair.GetBoundingRadii();
 	threshold = max(pAThreshold, boundingRadii);
-	objectPair.SetRelativeVelocity(relativeVelocity);
 	//sinAngle = velocityI.VectorCrossProduct(velocityJ).vectorNorm() / (velocityI.vectorNorm() * velocityJ.vectorNorm());
-
+	scaling = 1;
 	if (boundingRadii < pAThreshold) {
 		scaling = boundingRadii / pAThreshold;
 		scaling = scaling * scaling;
 	}
-	else
-		scaling = 1;
-
-	if (relativeGravity)
-	{
-		escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
-		gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity* relativeVelocity));
-	}
-	else
-		gravitationalPerturbation = 1;
-
+	
 	// OT collision rate
-	if (minSeperation < threshold)
+	if (objectPair.minSeperation < threshold)
+	{	
+		objectPair.primaryElements.SetTrueAnomaly(objectPair.approachAnomalyP);
+		objectPair.secondaryElements.SetTrueAnomaly(objectPair.approachAnomalyS);
+		velocityI = objectPair.primaryElements.GetVelocity();
+		velocityJ = objectPair.secondaryElements.GetVelocity();
+		relativeVelocity = objectPair.relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
+		if (relativeGravity)
+		{
+			escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
+			gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity * relativeVelocity));
+		}
+		else
+			gravitationalPerturbation = 1;
+
 		collisionRate = gravitationalPerturbation * Pi * threshold * relativeVelocity /
-						(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
+			(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
+	}
 	else
 		collisionRate = 0;
 
-	return scaling * collisionRate;
+	if (objectPair.minSeperation2 < threshold)
+	{
+
+		objectPair.primaryElements.SetTrueAnomaly(objectPair.approachAnomalyP2);
+		objectPair.secondaryElements.SetTrueAnomaly(objectPair.approachAnomalyS2);
+		velocityI = objectPair.primaryElements.GetVelocity();
+		velocityJ = objectPair.secondaryElements.GetVelocity();
+		relativeVelocity = objectPair.relativeVelocity2 = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
+		if (relativeGravity)
+		{
+			escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
+			gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity * relativeVelocity));
+		}
+		else
+			gravitationalPerturbation = 1;
+
+		collisionRate2 = gravitationalPerturbation * Pi * threshold * relativeVelocity /
+			(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
+	}
+	else
+		collisionRate2 = 0;
+
+	return scaling * (collisionRate + collisionRate2);
 }
 
 
-bool OrbitTrace::CoplanarFilter(CollisionPair objectPair)
+bool OrbitTrace::CoplanarFilter(CollisionPair& objectPair)
 {
 	// Coplanar filter
 	double combinedSemiMajorAxis = objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis;

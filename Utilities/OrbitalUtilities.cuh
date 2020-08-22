@@ -2,7 +2,7 @@
 extern mt19937_64 * generator;
 //extern mt19937 * generator;
 
-#define NEWTONMAXITERATIONS 100
+#define NEWTONMAXITERATIONS 500
 #define NEWTONTOLERANCE 1e-10
 
 #define Pi _Pi

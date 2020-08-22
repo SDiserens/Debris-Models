@@ -30,7 +30,7 @@ protected:
 	double CalculateLatitudinalSpatialDensityRatio(DebrisObject object, double latitude);
 	double CalculateVolumeElement(double radius, double latitude);
 	*/
-	bool CoplanarFilter(CollisionPair objectPair);
+	bool CoplanarFilter(CollisionPair& objectPair);
 	bool HeadOnFilter(CollisionPair objectPair);
 	bool SynchronizedFilter(CollisionPair objectPair);
 	bool ProximityFilter(CollisionPair objectPair);
