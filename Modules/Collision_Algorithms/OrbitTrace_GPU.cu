@@ -333,7 +333,7 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	Event tempEvent;
 
 	// Filter Cube List
-	thrust::device_vector<CollisionPair> pairList = CreatePairList_CPU(population);
+	thrust::device_vector<CollisionPair> pairList = CreatePairList_GPU(population);
 	timeStep = timestep;
 	//unsigned int numThreads, numBlocks;
 	//computeGridSize(pairList.size(), 256, numBlocks, numThreads);
