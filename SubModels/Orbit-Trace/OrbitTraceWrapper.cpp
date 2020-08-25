@@ -19,8 +19,8 @@ int main(int argc, char** argv)
 	string arg, scenarioFilename, outputFilename, eventType, metaData;
 	unsigned long evaluationBlocks, evaluationSteps;
 	uint64_t seed, argseed = -1;
-	int scalingPower;
-	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits, OTfilters;
+	int scalingPower, MOID=0;
+	bool probabilityOutput, relativeGravity, printing, individualOutput, randomiseOrbits, OTfilters, GPU, CPU;
 	double timeStepDays, timeStep, scaling, threshold;
 	char date[100];
 	int ID = 1;
@@ -41,6 +41,9 @@ int main(int argc, char** argv)
 	OTfilters = config["filters"].asBool();
 	threshold = config["ConjunctionThreshold"].asDouble();
 	timeStep = timeStepDays * secondsDay;
+	GPU = config["ParallelGPU"].asBool();
+	CPU = config["ParallelCPU"].asBool();
+	MOID = config["MOID"].asInt();
 
 	// Parse command line arguments
 	for (int i = 1; i < argc; ++i) {
@@ -69,6 +72,14 @@ int main(int argc, char** argv)
 		{
 			argseed = stoi(argv[++i]);
 		}
+		else if (arg == "--CPU")
+		{
+			CPU = true;
+		}
+		else if (arg == "--GPU")
+		{
+			GPU = true;
+		}
 	}
 
 
@@ -88,10 +99,10 @@ int main(int argc, char** argv)
 	}
 
 	// Create OT object
-	OrbitTrace collisionModel(probabilityOutput, threshold);
-	if (config["ParallelGPU"].asBool())
+	OrbitTrace collisionModel(probabilityOutput, threshold, MOID);
+	if (GPU)
 		collisionModel.SwitchParallelGPU();
-	if (config["ParallelCPU"].asBool())
+	if (CPU)
 		collisionModel.SwitchParallelCPU();
 	if (relativeGravity)
 		collisionModel.SwitchGravityComponent();

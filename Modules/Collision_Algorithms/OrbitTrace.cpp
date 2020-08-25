@@ -10,6 +10,10 @@ OrbitTrace::OrbitTrace(bool probabilities, double threshold, int moid)
 	outputProbabilities = probabilities;
 	pAThreshold = threshold;
 	MOIDtype = moid;
+
+	if (MOIDtype == 1){
+		detect_suitable_options(max_root_error, min_root_error, max_anom_error);
+	}
 }
 
 
@@ -58,6 +62,13 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 				objectPair.collision = true;
 			else if (!SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
 				objectPair.collision = true;
+
+			if (objectPair.collision) {
+				if (objectPair.CalculateLowerBoundSeparation() > max(pAThreshold, objectPair.boundingRadii))
+				{
+					objectPair.collision = false;
+				}
+			}
 		}
 
 		if (objectPair.collision)
@@ -100,7 +111,7 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 
 void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 {
-	double tempProbability, collisionRate, altitude, mass;
+	double tempProbability, collisionRate, altitude, mass, lowerbound;
 	list<CollisionPair> pairList;
 	pair<long, long> pairID;
 	bool collision;
@@ -131,6 +142,14 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 				collision = true;
 			else if (!SynchronizedFilter(objectPair) || ProximityFilter(objectPair))
 				collision = true;
+
+			if (objectPair.collision) {
+				lowerbound = objectPair.CalculateLowerBoundSeparation();
+				if (lowerbound > max(pAThreshold, objectPair.boundingRadii))
+				{
+					objectPair.collision = false;
+				}
+			}
 		}
 
 		if (collision)
@@ -187,18 +206,18 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	vector3D velocityI, velocityJ;
 
 	//TODO - Quick filter on possible separation
-	//switch (MOIDtype) {
-	//case 0: 
-	//	minSeperation = objectPair.CalculateMinimumSeparation();
-	//	break;
-	//case 1: 
-	//	minSeperation = objectPair.CalculateMinimumSeparation_DL();
-	//	break;
-	//case 2: 
-	//	minSeperation = objectPair.CalculateMinimumSeparation_MOID();
-	//	break;
-	//}
-	minSeperation = objectPair.CalculateMinimumSeparation();
+	switch (MOIDtype) {
+	case 0: 
+		minSeperation = objectPair.CalculateMinimumSeparation();
+		break;
+	case 1: 
+		minSeperation = objectPair.CalculateMinimumSeparation_DL(max_root_error, min_root_error, max_anom_error);
+		break;
+	case 2: 
+		minSeperation = objectPair.CalculateMinimumSeparation_MOID();
+		break;
+	}
+	//minSeperation = objectPair.CalculateMinimumSeparation();
 
 	boundingRadii = objectPair.GetBoundingRadii();
 	threshold = max(pAThreshold, boundingRadii);
@@ -208,7 +227,12 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 		scaling = boundingRadii / pAThreshold;
 		scaling = scaling * scaling;
 	}
-	
+
+	if (relativeGravity)
+	{
+		escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
+	}
+
 	// OT collision rate
 	if (objectPair.minSeperation < threshold)
 	{	
@@ -219,7 +243,6 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 		relativeVelocity = objectPair.relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
 		if (relativeGravity)
 		{
-			escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
 			gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity * relativeVelocity));
 		}
 		else
@@ -241,7 +264,6 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 		relativeVelocity = objectPair.relativeVelocity2 = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
 		if (relativeGravity)
 		{
-			escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
 			gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity * relativeVelocity));
 		}
 		else

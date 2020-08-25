@@ -976,7 +976,7 @@ short int Newton_sqdist(const SAuxData<realfp>& data,
 }
 
 template<typename realfp>
-SMOIDResult<realfp>::SMOIDResult(): good(true), distance(-1), time(0),
+SMOIDResult<realfp>::SMOIDResult(): good(true), distance(-1), distance2(-1), time(0),
                             distance_error(0), u1_error(0), min_delta(-1),
                             root_count(0), iter_count(0), iter_count_2D(0) {}
 
@@ -1039,11 +1039,21 @@ SMOIDResult<realfp> MOID_fast(const COrbitData<realfp>& O1, const COrbitData<rea
 
     if(dst>=0 && ((result.distance)<0 || dst<(result.distance)))
     {
+	 result.distance2 = result.distance;
      result.distance = dst;
+	 result.u1_2 = result.u1;
+	 result.u2_2 = result.u2;
      result.u1 = u1;
      result.u2 = u2;
      root_index = i;
     }
+	else if (dst >= 0 && ((result.distance2) < 0 || dst < (result.distance2)))
+	{
+
+		result.distance2 = dst;
+		result.u1_2 = u1;
+		result.u2_2 = u2;
+	}
    }
   }
   if(!(meticulous || dlt<3) && ((result.min_delta)<0 || dlt<(result.min_delta)))
@@ -1054,10 +1064,17 @@ SMOIDResult<realfp> MOID_fast(const COrbitData<realfp>& O1, const COrbitData<rea
  realfp H[3];
  int iter_cnt;
  realfp du1=result.u1, du2=result.u2;
+ const short int Hsign2 = Newton_sqdist(data,
+	 result.u1_2, result.u2_2, result.u1_error, result.u2_error,
+	 result.distance2, result.distance_error,
+	 minrooterr, result.iter_count_2D, 30, g, H);
+
  const short int Hsign = Newton_sqdist(data,
                                        result.u1,result.u2,result.u1_error,result.u2_error,
                                        result.distance,result.distance_error,
                                        minrooterr,result.iter_count_2D,30,g,H);
+
+
  du1-=result.u1; if(fabs(du1)<pi<realfp>()) du1=angle_wrap(du1);
  du2-=result.u2; if(fabs(du2)<pi<realfp>()) du2=angle_wrap(du2);
  const realfp du = hypot(du1,du2);
@@ -1084,9 +1101,11 @@ SMOIDResult<realfp> MOID_fast(const COrbitData<realfp>& O1, const COrbitData<rea
  result.distance_error += eigenval_max/2*(sqr(angerr)+sqr(graderr)/detH);
 
  result.distance *= tmp;
+ result.distance2 *= tmp;
  result.distance_error *= tmp;
 
  result.distance = sqrt(result.distance);
+ result.distance2 = sqrt(result.distance2);
  result.distance_error += 2*result.distance*raderr+sqr(raderr);
  result.distance_error /= sqrt(sqr(result.distance)+result.distance_error/2);
 

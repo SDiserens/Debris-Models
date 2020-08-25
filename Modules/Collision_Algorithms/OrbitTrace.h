@@ -10,6 +10,8 @@ class OrbitTrace : public CollisionAlgorithm
 	int MOIDtype = 0; // {0: inbuilt Newton; 1: distlink; 2: MOID}
 	bool filters = true;
 
+	double max_root_error, min_root_error, max_anom_error;
+
 public:
 	void MainCollision(DebrisPopulation& population, double timestep);
 	void MainCollision_P(DebrisPopulation& population, double timestep);

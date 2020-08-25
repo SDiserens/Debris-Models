@@ -123,13 +123,12 @@ double CollisionPair::CalculateMinimumSeparation_MOID()
 	return distance;
 }
 
-double CollisionPair::CalculateMinimumSeparation_DL()
+double CollisionPair::CalculateMinimumSeparation_DL(double max_root_error, double min_root_error, double max_anom_error)
 {
 	COrbitData<double> object1(primaryElements.semiMajorAxis, primaryElements.eccentricity, primaryElements.inclination, primaryElements.rightAscension, primaryElements.argPerigee);
 	COrbitData<double> object2(secondaryElements.semiMajorAxis, secondaryElements.eccentricity, secondaryElements.inclination, secondaryElements.rightAscension, secondaryElements.argPerigee);
 
-	double max_root_error, min_root_error, max_anom_error;
-	detect_suitable_options(max_root_error, min_root_error, max_anom_error);
+
 	SMOIDResult<double> result = MOID_fast(object1, object2, max_root_error, min_root_error);
 
 	if (!result.good) {
@@ -140,16 +139,52 @@ double CollisionPair::CalculateMinimumSeparation_DL()
 			result = MOID_direct_search(object1, object2, densities, 0.01, max_anom_error);
 		}
 	}
-	primaryElements.SetEccentricAnomaly(result.u1);
-	secondaryElements.SetEccentricAnomaly(result.u2);
+
+	primaryElements.SetEccentricAnomaly(TauRange(result.u1_2));
+	secondaryElements.SetEccentricAnomaly(TauRange(result.u2_2));
+	approachAnomalyP2 = primaryElements.GetTrueAnomaly();
+	approachAnomalyS2 = secondaryElements.GetTrueAnomaly();
+	minSeperation2 = result.distance2;
+
+	primaryElements.SetEccentricAnomaly(TauRange(result.u1));
+	secondaryElements.SetEccentricAnomaly(TauRange(result.u2));
 
 	approachAnomalyP = primaryElements.GetTrueAnomaly();
 	approachAnomalyS = secondaryElements.GetTrueAnomaly();
 	SetCollisionAltitude(primaryElements.GetRadialPosition());
+	minSeperation = result.distance;
 
 	return result.distance;
 }
 
+double CollisionPair::CalculateLowerBoundSeparation()
+{
+	double tau, C2, sigma, eP, eS, sinRI, cosRI, A, sigma1, sigma2, sigma3, sigma4;
+
+	eP = primaryElements.eccentricity;
+	eS = secondaryElements.eccentricity;
+	sinRI = sin(relativeInclination);
+	cosRI = cos(relativeInclination);
+	A = (1 - eP)*(1 - eS) * sinRI* sinRI;
+	primaryElements.SetTrueAnomaly(approachAnomalyP);
+	secondaryElements.SetTrueAnomaly(approachAnomalyS);
+	sigma1 = (primaryElements.GetPosition() - secondaryElements.GetPosition()).vectorNorm();
+
+	secondaryElements.SetTrueAnomaly(approachAnomalyS2);
+	sigma2 = (primaryElements.GetPosition() - secondaryElements.GetPosition()).vectorNorm();
+
+	primaryElements.SetTrueAnomaly(approachAnomalyP2);
+	sigma3 = (primaryElements.GetPosition() - secondaryElements.GetPosition()).vectorNorm();
+
+	secondaryElements.SetTrueAnomaly(approachAnomalyS);
+	sigma4 = (primaryElements.GetPosition() - secondaryElements.GetPosition()).vectorNorm();
+
+	C2 = A / (A + 2*(1 + abs(cosRI) * sqrt((1 - eP*eP)*(1-eS*eS)) - eP*eS) );
+	sigma = min(min(sigma1, sigma2), min(sigma3, sigma4));
+
+	tau = sqrt(C2) * sigma;
+	return tau;
+}
 
 double CollisionPair::CalculateMinimumSeparation()
 {
@@ -430,6 +465,8 @@ void CollisionPair::CalculateArgumenstOfIntersection()
 
 	approachAnomalyP = TauRange(deltaPrimary - primaryElements.argPerigee);
 	approachAnomalyS = TauRange(deltaSecondary - secondaryElements.argPerigee);
+	approachAnomalyP2 = TauRange(deltaPrimary2 - primaryElements.argPerigee);
+	approachAnomalyS2 = TauRange(deltaSecondary2 - secondaryElements.argPerigee);
 }
 
 void CollisionPair::CalculateArgumenstOfIntersectionCoplanar()

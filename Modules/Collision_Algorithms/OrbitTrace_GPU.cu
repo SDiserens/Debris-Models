@@ -207,7 +207,7 @@ struct CollisionFilterKernel {
 	CollisionFilterKernel(double timestep) {
 		timeStep = timestep;
 	}
-	__device__ bool operator()(CollisionPair &objectPair) {
+	__device__ void operator()(CollisionPair &objectPair) {
 		objectPair.collision = false;
 
 		double combinedSemiMajorAxis = objectPair.primaryElements.semiMajorAxis + objectPair.secondaryElements.semiMajorAxis;
@@ -227,11 +227,23 @@ struct CollisionFilterKernel {
 			objectPair.CalculateArgumenstOfIntersection();
 			if (!SynchronizedFilter(objectPair, timeStep) || ProximityFilter(objectPair))
 				objectPair.collision = true;
+			if (objectPair.collision) {
+			}
 		}
-		return objectPair.collision;
 	}
 };
-
+struct LowerBoundFilter {
+	double pAThreshold;
+	LowerBoundFilter(double threshold) {
+		pAThreshold = threshold;
+	}
+	__device__ void operator()(CollisionPair &objectPair) {
+		if (objectPair.CalculateLowerBoundSeparation() > max(pAThreshold, objectPair.boundingRadii))
+		{
+			objectPair.collision = false;
+		}
+	}
+};
 struct MinSeperation {
 	MinSeperation() {};
 	__device__ void operator()(CollisionPair &objectPair) {
@@ -263,6 +275,10 @@ struct CollisionRateKernel {
 				scaling = boundingRadii / pAThreshold;
 				scaling = scaling * scaling;
 			}
+			if (relativeGravity)
+			{
+				escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
+			}
 
 			// OT collision rate
 			if (objectPair.minSeperation < threshold)
@@ -274,7 +290,6 @@ struct CollisionRateKernel {
 				relativeVelocity = objectPair.relativeVelocity = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
 				if (relativeGravity)
 				{
-					escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
 					gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity * relativeVelocity));
 				}
 				else
@@ -296,7 +311,6 @@ struct CollisionRateKernel {
 				relativeVelocity = objectPair.relativeVelocity2 = velocityI.CalculateRelativeVector(velocityJ).vectorNorm();
 				if (relativeGravity)
 				{
-					escapeVelocity2 = 2 * (objectPair.primaryMass + objectPair.secondaryMass) * GravitationalConstant / boundingRadii;
 					gravitationalPerturbation = (1 + escapeVelocity2 / (relativeVelocity * relativeVelocity));
 				}
 				else
@@ -328,7 +342,11 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	
 	n = thrust::remove_if(pairList.begin(), pairList.end(), Collision()) - pairList.begin();
 	pairList.resize(n);
-	
+
+	thrust::for_each(thrust::device, pairList.begin(), pairList.end(), LowerBoundFilter(pAThreshold));
+	n = thrust::remove_if(pairList.begin(), pairList.end(), Collision()) - pairList.begin();
+	pairList.resize(n);
+
 	thrust::host_vector<CollisionPair> outList(pairList.begin(), pairList.end());
 	pairList.clear();
 	pairList.shrink_to_fit();
@@ -336,17 +354,18 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 	//outList.resize(n);
 
 	concurrency::parallel_for_each(outList.begin(), outList.end(), [&](CollisionPair& objectPair)
-	{	switch (MOIDtype) {
-			case 0:
-				sep = objectPair.CalculateMinimumSeparation();
-				break;
-			case 1:
-				objectPair.minSeperation = objectPair.CalculateMinimumSeparation_DL();
-				break;
-			case 2:
-				objectPair.minSeperation = objectPair.CalculateMinimumSeparation_MOID();
-				break;
-			}
+	{	
+		switch (MOIDtype) {
+		case 0:
+			sep = objectPair.CalculateMinimumSeparation();
+			break;
+		case 1:
+			sep = objectPair.CalculateMinimumSeparation_DL(max_root_error, min_root_error, max_anom_error);
+			break;
+		case 2:
+			sep = objectPair.CalculateMinimumSeparation_MOID();
+			break;
+		}
 	});
 
 	pairList = thrust::device_vector<CollisionPair>(outList.begin(), outList.end());

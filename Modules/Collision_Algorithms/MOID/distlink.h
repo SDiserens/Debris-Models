@@ -106,10 +106,13 @@ struct SMOIDResult
 {
  bool good;                   //true if the result is reliable
  realfp distance;             //minimum distance between orbits
+ realfp distance2;             //minimum distance between orbits
  realfp distance_error;       //numeric uncertainty of the distance
  realfp u1;                   //eccentric anomaly on the first orbit
+ realfp u1_2;                 //eccentric anomaly on the first orbit
  realfp u1_error;             //its numeric uncertainty
  realfp u2;                   //eccentric anomaly on the second orbit
+ realfp u2_2;                   //eccentric anomaly on the first orbit
  realfp u2_error;             //its numeric uncertainty
  unsigned short root_count;   //number of real roots of the function g(u1)
  realfp min_delta;            //the minimum quantity delta among all non-real roots - see description in the paper

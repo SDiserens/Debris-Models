@@ -30,8 +30,9 @@ public:
 	void GenerateArgumenstOfIntersection();
 	double CalculateSeparationAtTime(double timeFromEpoch);
 	double GetMinSeparation();
+	CUDA_CALLABLE_MEMBER double CalculateLowerBoundSeparation();
 	CUDA_CALLABLE_MEMBER double CalculateMinimumSeparation();
-	CUDA_HOST_MEMBER double CalculateMinimumSeparation_DL();
+	CUDA_HOST_MEMBER double CalculateMinimumSeparation_DL(double max_root_error, double min_root_error, double max_anom_error);
 	CUDA_HOST_MEMBER double CalculateMinimumSeparation_MOID();
 	CUDA_CALLABLE_MEMBER void CalculateArgumenstOfIntersection();
 	CUDA_CALLABLE_MEMBER void CalculateArgumenstOfIntersectionCoplanar();
