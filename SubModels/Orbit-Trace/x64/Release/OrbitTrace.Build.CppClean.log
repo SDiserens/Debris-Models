@@ -17,8 +17,6 @@ x64\release\orbitalelements.cu.obj
 x64\release\orbitalutilities.cu.obj
 x64\release\orbittrace_gpu.cu.obj
 x64\release\debrisevent.cu.obj
-e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.exe
-e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.pdb
 e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.ipdb
 e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.iobj
 e:\work\modelling framework\submodels\orbit-trace\x64\release\collisionpair.cu.cache
@@ -36,6 +34,8 @@ e:\work\modelling framework\submodels\orbit-trace\x64\release\orbitalelements.cu
 e:\work\modelling framework\submodels\orbit-trace\x64\release\orbitalutilities.cu.obj
 e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.device-link.obj
 e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace_gpu.cu.obj
+e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.pdb
+e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.exe
 e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.tlog\cl.command.1.tlog
 e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.tlog\cl.read.1.tlog
 e:\work\modelling framework\submodels\orbit-trace\x64\release\orbittrace.tlog\cl.write.1.tlog

@@ -125,8 +125,8 @@ double CollisionPair::CalculateMinimumSeparation_MOID()
 
 double CollisionPair::CalculateMinimumSeparation_DL(double max_root_error, double min_root_error, double max_anom_error)
 {
-	COrbitData<double> object1(primaryElements.semiMajorAxis, primaryElements.eccentricity, primaryElements.inclination, primaryElements.rightAscension, primaryElements.argPerigee);
-	COrbitData<double> object2(secondaryElements.semiMajorAxis, secondaryElements.eccentricity, secondaryElements.inclination, secondaryElements.rightAscension, secondaryElements.argPerigee);
+	COrbitData<double> object1(primaryElements.semiMajorAxis*1000, primaryElements.eccentricity, primaryElements.inclination, primaryElements.rightAscension, primaryElements.argPerigee);
+	COrbitData<double> object2(secondaryElements.semiMajorAxis*10000, secondaryElements.eccentricity, secondaryElements.inclination, secondaryElements.rightAscension, secondaryElements.argPerigee);
 
 
 	SMOIDResult<double> result = MOID_fast(object1, object2, max_root_error, min_root_error);
@@ -144,7 +144,7 @@ double CollisionPair::CalculateMinimumSeparation_DL(double max_root_error, doubl
 	secondaryElements.SetEccentricAnomaly(TauRange(result.u2_2));
 	approachAnomalyP2 = primaryElements.GetTrueAnomaly();
 	approachAnomalyS2 = secondaryElements.GetTrueAnomaly();
-	minSeperation2 = result.distance2;
+	minSeperation2 = result.distance2 / 1000;
 
 	primaryElements.SetEccentricAnomaly(TauRange(result.u1));
 	secondaryElements.SetEccentricAnomaly(TauRange(result.u2));
@@ -152,7 +152,7 @@ double CollisionPair::CalculateMinimumSeparation_DL(double max_root_error, doubl
 	approachAnomalyP = primaryElements.GetTrueAnomaly();
 	approachAnomalyS = secondaryElements.GetTrueAnomaly();
 	SetCollisionAltitude(primaryElements.GetRadialPosition());
-	minSeperation = result.distance;
+	minSeperation = result.distance / 1000;
 
 	return result.distance;
 }
@@ -276,8 +276,8 @@ double CollisionPair::CalculateMinimumSeparation()
 			//	}
 
 				// Update values
-				tempAnomalyP = TauRange(tempAnomalyP - h);
-				tempAnomalyS = TauRange(tempAnomalyS - k);
+				tempAnomalyP = TauRange(tempAnomalyP + h);
+				tempAnomalyS = TauRange(tempAnomalyS + k);
 				++it;
 			}
 			//TODO Handle case where iterations reached
@@ -289,7 +289,10 @@ double CollisionPair::CalculateMinimumSeparation()
 				trueS = tempAnomalyS;
 			}
 			if (it == NEWTONMAXITERATIONS)
-				return 1;
+				if (abs(F) < 1 && abs(G) < 1)
+					return 1;
+				else
+					return 2;
 			else
 				return 0;
 		};
@@ -297,11 +300,19 @@ double CollisionPair::CalculateMinimumSeparation()
 		altTrueAnomalyP1 = trueAnomalyP;
 		altTrueAnomalyS1 = trueAnomalyS;
 		error1 = NewtonSeperation(altTrueAnomalyP1, altTrueAnomalyS1);
+		if (error1 == 2) {
+			altTrueAnomalyP1 = trueAnomalyP + Pi;
+			altTrueAnomalyS1 = trueAnomalyS + Pi;
+			error1 = NewtonSeperation(altTrueAnomalyP1, altTrueAnomalyS1);
+		}
+		else if (error1 == 1)
+			error1 = NewtonSeperation(altTrueAnomalyP1, altTrueAnomalyS1);
+
 		primaryElements.SetTrueAnomaly(altTrueAnomalyP1);
 		secondaryElements.SetTrueAnomaly(altTrueAnomalyS1);
 		
 		seperation1 = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
-		if (!error1 && seperation1 < seperation)
+		if (seperation1 < seperation)
 		{
 			seperation = seperation1;
 			trueAnomalyP = altTrueAnomalyP1;
@@ -332,11 +343,19 @@ double CollisionPair::CalculateMinimumSeparation()
 		altTrueAnomalyP2 = trueAnomalyP;
 		altTrueAnomalyS2 = trueAnomalyS;
 		error2 = NewtonSeperation(altTrueAnomalyP2, altTrueAnomalyS2);
+		if (error2 == 2) {
+			altTrueAnomalyP2 = trueAnomalyP + Pi;
+			altTrueAnomalyS2 = trueAnomalyS + Pi;
+			error2 = NewtonSeperation(altTrueAnomalyP2, altTrueAnomalyS2);
+		}
+		else if (error2 == 1)
+			error2 = NewtonSeperation(altTrueAnomalyP2, altTrueAnomalyS2);
+
 		primaryElements.SetTrueAnomaly(altTrueAnomalyP2);
 		secondaryElements.SetTrueAnomaly(altTrueAnomalyS2);
 		altSeperation2 = primaryElements.GetPosition().CalculateRelativeVector(secondaryElements.GetPosition()).vectorNorm();
 
-		if (!error2 && altSeperation2 < seperation2)
+		if (altSeperation2 < seperation2)
 		{
 			seperation2 = altSeperation2;
 			trueAnomalyP = altTrueAnomalyP2;

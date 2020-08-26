@@ -275,7 +275,12 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	else
 		collisionRate2 = 0;
 
-	return scaling * (collisionRate + collisionRate2);
+	if (abs(objectPair.approachAnomalyP2 - objectPair.approachAnomalyP) > 0.01)
+		collisionRate += collisionRate2;
+	else
+		collisionRate = max(collisionRate, collisionRate2);
+
+	return scaling * collisionRate;
 }
 
 

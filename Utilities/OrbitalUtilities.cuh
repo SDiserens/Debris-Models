@@ -2,8 +2,8 @@
 extern mt19937_64 * generator;
 //extern mt19937 * generator;
 
-#define NEWTONMAXITERATIONS 20
-#define NEWTONTOLERANCE 1e-10
+#define NEWTONMAXITERATIONS 25
+#define NEWTONTOLERANCE 1e-8
 
 #define Pi _Pi
 #define Tau (2*_Pi)
