@@ -1037,19 +1037,20 @@ SMOIDResult<realfp> MOID_fast(const COrbitData<realfp>& O1, const COrbitData<rea
 
     const realfp dst = fabs(min_distance_for(data,u1,u2));
 
-    if(dst>=0 && ((result.distance)<0 || dst<(result.distance)))
-    {
-	 result.distance2 = result.distance;
-     result.distance = dst;
-	 result.u1_2 = result.u1;
-	 result.u2_2 = result.u2;
+	if (dst >= 0 && ((result.distance) < 0 || dst < (result.distance)))
+	{
+	if (abs(u1 - result.u1) > 0.5) {
+		result.distance2 = result.distance;
+		result.u1_2 = result.u1;
+		result.u2_2 = result.u2;
+		}
+	 result.distance = dst;
      result.u1 = u1;
      result.u2 = u2;
      root_index = i;
     }
-	else if (dst >= 0 && ((result.distance2) < 0 || dst < (result.distance2)))
+	else if (dst >= 0 && (abs(u1 - result.u1) > 0.5) && ((result.distance2) < 0 || dst < (result.distance2)))
 	{
-
 		result.distance2 = dst;
 		result.u1_2 = u1;
 		result.u2_2 = u2;
@@ -1065,9 +1066,9 @@ SMOIDResult<realfp> MOID_fast(const COrbitData<realfp>& O1, const COrbitData<rea
  int iter_cnt;
  realfp du1=result.u1, du2=result.u2;
  const short int Hsign2 = Newton_sqdist(data,
-	 result.u1_2, result.u2_2, result.u1_error, result.u2_error,
-	 result.distance2, result.distance_error,
-	 minrooterr, result.iter_count_2D, 30, g, H);
+										result.u1_2, result.u2_2, result.u1_error, result.u2_error,
+										result.distance2, result.distance_error,
+										 minrooterr, result.iter_count_2D, 30, g, H);
 
  const short int Hsign = Newton_sqdist(data,
                                        result.u1,result.u2,result.u1_error,result.u2_error,

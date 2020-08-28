@@ -1,2 +1,73 @@
-﻿  OrbitTrace.cpp
+﻿  distlink.cpp
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): warning C4099: 'SMOIDResult<float>': type name first seen using 'struct' now seen using 'class'
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): note: see declaration of 'SMOIDResult<float>'
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): warning C4099: 'SLCResult<float>': type name first seen using 'struct' now seen using 'class'
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): note: see declaration of 'SLCResult<float>'
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1293): warning C4099: 'SMOIDResult<double>': type name first seen using 'struct' now seen using 'class'
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1293): note: see declaration of 'SMOIDResult<double>'
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1293): warning C4099: 'SLCResult<double>': type name first seen using 'struct' now seen using 'class'
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1293): note: see declaration of 'SLCResult<double>'
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1294): warning C4099: 'SMOIDResult<long double>': type name first seen using 'struct' now seen using 'class'
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1294): note: see declaration of 'SMOIDResult<long double>'
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1294): warning C4099: 'SLCResult<long double>': type name first seen using 'struct' now seen using 'class'
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1294): note: see declaration of 'SLCResult<long double>'
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(111): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(111): note: while compiling class template member function 'CInitializer<21>::CInitializer(void)'
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(114): note: see reference to function template instantiation 'CInitializer<21>::CInitializer(void)' being compiled
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(114): note: see reference to class template instantiation 'CInitializer<21>' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(147): warning C4244: 'initializing': conversion from 'const double' to 'float', possible loss of data
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): note: see reference to function template instantiation 'COrbitData<float>::COrbitData<double>(const COrbitData<double> &)' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(147): warning C4244: 'initializing': conversion from 'const long double' to 'float', possible loss of data
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): note: see reference to function template instantiation 'COrbitData<float>::COrbitData<long double>(const COrbitData<long double> &)' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1066): warning C4101: 'iter_cnt': unreferenced local variable
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): note: see reference to function template instantiation 'SMOIDResult<float> MOID_fast<float>(const COrbitData<float> &,const COrbitData<float> &,float,float,float)' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1238): warning C4244: '=': conversion from 'float' to 'unsigned int', possible loss of data
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): note: see reference to function template instantiation 'SMOIDResult<float> MOID_direct_search<float>(const COrbitData<float> &,const COrbitData<float> &,const unsigned int [],float,float)' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1238): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1293): note: see reference to function template instantiation 'SMOIDResult<double> MOID_direct_search<double>(const COrbitData<double> &,const COrbitData<double> &,const unsigned int [],double,double)' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1238): warning C4244: '=': conversion from 'long double' to 'unsigned int', possible loss of data
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1294): note: see reference to function template instantiation 'SMOIDResult<long double> MOID_direct_search<long double>(const COrbitData<long double> &,const COrbitData<long double> &,const unsigned int [],long double,long double)' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(954): warning C4018: '<=': signed/unsigned mismatch
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1071): note: see reference to function template instantiation 'short Newton_sqdist<realfp>(const SAuxData<realfp> &,realfp &,realfp &,realfp &,realfp &,realfp &,realfp &,realfp,unsigned int &,int,realfp [],realfp [])' being compiled
+          with
+          [
+              realfp=float
+          ]
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): note: see reference to function template instantiation 'SMOIDResult<float> MOID_fast<float>(const COrbitData<float> &,const COrbitData<float> &,float,float,float)' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1131): warning C4018: '<=': signed/unsigned mismatch
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1243): note: see reference to function template instantiation 'int search_in_segment<realfp>(const SAuxData<realfp> &,realfp,realfp,unsigned int,realfp &)' being compiled
+          with
+          [
+              realfp=float
+          ]
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1292): note: see reference to function template instantiation 'SMOIDResult<float> MOID_direct_search<float>(const COrbitData<float> &,const COrbitData<float> &,const unsigned int [],float,float)' being compiled
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(72): warning C4244: 'argument': conversion from 'int' to 'const std::complex<float>::_Ty', possible loss of data
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(384): note: see reference to function template instantiation 'std::complex<float> operator *<float>(int,const std::complex<float> &)' being compiled
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1020): note: see reference to function template instantiation 'unsigned int polynomial_roots<float>(int,std::complex<float> [],std::complex<float> [],realfp,realfp)' being compiled
+          with
+          [
+              realfp=float
+          ]
+e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(65): warning C4244: 'argument': conversion from 'int' to 'const std::complex<float>::_Ty', possible loss of data
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(385): note: see reference to function template instantiation 'std::complex<float> operator *<float>(const std::complex<float> &,int)' being compiled
+c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.10.25017\include\xutility(2690): warning C4244: 'argument': conversion from 'const int' to 'const std::complex<float>::_Ty', possible loss of data
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.10.25017\include\xutility(2704): note: see reference to function template instantiation 'void std::_Fill_unchecked1<_FwdIt,_Ty>(_FwdIt,_FwdIt,const _Ty &,std::false_type)' being compiled
+          with
+          [
+              _FwdIt=std::complex<float> *,
+              _Ty=int
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.10.25017\include\xutility(2712): note: see reference to function template instantiation 'void std::_Fill_unchecked<_Iter,_Ty>(_FwdIt,_FwdIt,const _Ty &)' being compiled
+          with
+          [
+              _Iter=std::complex<float> *,
+              _Ty=int,
+              _FwdIt=std::complex<float> *
+          ]
+  e:\work\modelling framework\modules\collision_algorithms\moid\distlink.cpp(1004): note: see reference to function template instantiation 'void std::fill<std::complex<float>*,int>(_FwdIt,_FwdIt,const _Ty &)' being compiled
+          with
+          [
+              _FwdIt=std::complex<float> *,
+              _Ty=int
+          ]
   OrbitTrace.vcxproj -> E:\Work\Modelling Framework\SubModels\Orbit-Trace\x64\Debug\OrbitTrace.exe

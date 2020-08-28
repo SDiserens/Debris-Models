@@ -271,14 +271,14 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 
 		collisionRate2 = gravitationalPerturbation * Pi * threshold * relativeVelocity /
 			(2 * velocityI.VectorCrossProduct(velocityJ).vectorNorm()  * objectPair.primaryElements.CalculatePeriod() * objectPair.secondaryElements.CalculatePeriod());
+
+		if (abs(objectPair.approachAnomalyP2 - objectPair.approachAnomalyP) * objectPair.primaryElements.semiMajorAxis > boundingRadii)
+			collisionRate += collisionRate2;
+		else
+			collisionRate = max(collisionRate, collisionRate2);
 	}
 	else
 		collisionRate2 = 0;
-
-	if (abs(objectPair.approachAnomalyP2 - objectPair.approachAnomalyP) > 0.01)
-		collisionRate += collisionRate2;
-	else
-		collisionRate = max(collisionRate, collisionRate2);
 
 	return scaling * collisionRate;
 }
