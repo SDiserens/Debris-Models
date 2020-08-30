@@ -17,27 +17,28 @@ int main(int argc, char** argv)
 
 	// Variable
 	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName, backgroundFilename;
-	double timeStep, stepDays, elapsedDays, simulationDays, threshold, tempProbability, avoidanceProbability=0;
+	double timeStep, stepDays, elapsedDays, simulationDays, threshold, tempProbability, avoidanceProbability = 0;
 	bool  logging = true, setThreshold = false;
 	int mcRuns, i;
 	volatile int n;
 
 	// Data logs
 	vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog;
-		// (MC, #days, #objects, (upperstage, spacecraft, debris), #events, (Explosion, Collision, Collision Avoidance)) 
+	// (MC, #days, #objects, (upperstage, spacecraft, debris), #events, (Explosion, Collision, Collision Avoidance)) 
 	vector<tuple<int, double, pair<string, string>, double, double, double>> collisionLog;
-		// (MC, #days, objectIDs, probability, altitude)
+	// (MC, #days, objectIDs, probability, altitude)
 	vector<Event> collisionList;
 	vector<Event> explosionList;
 	vector<Event> definedList;
-	
+
 	// ----------------------------
 	// - Parsing config variables -
 	// ----------------------------
 	LoadConfigFile(config);
 
 	populationFilename = config["scenarioFilename"].asString();
-	backgroundFilename = config["BackgroundPop"].asString();
+	if (config.isMember("BackgroundPop")) 
+		backgroundFilename = config["BackgroundPop"].asString();
 	mcRuns = config["MonteCarlo"].asInt();
 	logging = config["logging"].asBool();
 
@@ -139,8 +140,10 @@ int main(int argc, char** argv)
 
 	cout << "Reading Population File : " + populationFilename + "...\n";
 	LoadScenario(initPopulation, populationFilename);
-	cout << "Reading Background File : " + backgroundFilename + "...\n";
-	LoadBackground(initPopulation, backgroundFilename);
+	if (config.isMember("BackgroundPop")) {
+		cout << "Reading Background File : " + backgroundFilename + "...\n";
+		LoadBackground(initPopulation, backgroundFilename);
+	}
 	populationFilename = populationFilename.substr(0, populationFilename.find("."));
 	simulationDays = initPopulation.GetDuration();
 

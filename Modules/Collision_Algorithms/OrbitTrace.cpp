@@ -93,7 +93,7 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 
 		altitude = objectPair.primaryElements.GetRadialPosition();
 		mass = objectPair.primaryMass + objectPair.secondaryMass;
-		Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation(), tempProbability);
+		Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.minSeperation, tempProbability);
 		tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
 
 		// Store Collisions 
@@ -161,7 +161,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 
 				altitude = objectPair.primaryElements.GetRadialPosition();
 				mass = objectPair.primaryMass + objectPair.secondaryMass;
-				Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.GetMinSeparation(), tempProbability);
+				Event tempEvent(population.GetEpoch(), pairID.first, pairID.second, objectPair.GetRelativeVelocity(), mass, altitude, objectPair.minSeperation, tempProbability);
 				tempEvent.SetCollisionAnomalies(objectPair.approachAnomalyP, objectPair.approachAnomalyS);
 				// Store Collisions 
 				//collisionList.push_back(tempEvent);
@@ -254,7 +254,7 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	else
 		collisionRate = 0;
 
-	if (objectPair.minSeperation2 < threshold)
+	if (objectPair.minSeperation2 < threshold && objectPair.minSeperation2 >= 0)
 	{
 
 		objectPair.primaryElements.SetTrueAnomaly(objectPair.approachAnomalyP2);

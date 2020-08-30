@@ -87,10 +87,10 @@ __host__ thrust::device_vector<CollisionPair> OrbitTrace::CreatePairList_GPU(Deb
 
 	thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(first, pairList.begin())), thrust::make_zip_iterator(thrust::make_tuple(last, pairList.end())), PairKernel(n, thrust::raw_pointer_cast(populationList.data())));
 
-	int p = thrust::copy_if(thrust::device, pairList.begin(), pairList.end(), pairList.begin(), PAKernel(pAThreshold)) - pairList.begin();
-
 	populationList.clear();
 	populationList.shrink_to_fit();
+
+	int p = thrust::copy_if(thrust::device, pairList.begin(), pairList.end(), pairList.begin(), PAKernel(pAThreshold)) - pairList.begin();
 
 	pairList.resize(p);
 	pairList.shrink_to_fit();

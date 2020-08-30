@@ -127,7 +127,7 @@ void HootsFilter::MainCollision_GPU(DebrisPopulation & population, double timest
 	Event tempEvent;
 	pair<long, long> pairID;
 	vector<double> candidateTimeList, collisionTimes;
-	double closeTime, closeApproach;
+	double closeTime, closeApproach, sep;
 	bool collide;
 
 	// Filter Cube List
@@ -145,7 +145,7 @@ void HootsFilter::MainCollision_GPU(DebrisPopulation & population, double timest
 		objectPair.minSeperation = objectPair.CalculateMinimumSeparation();
 		break;
 	case 1:
-		objectPair.minSeperation = objectPair.CalculateMinimumSeparation_DL();
+		sep = objectPair.CalculateMinimumSeparation_DL(max_root_error, min_root_error, max_anom_error);
 		break;
 	case 2:
 		objectPair.minSeperation = objectPair.CalculateMinimumSeparation_MOID();

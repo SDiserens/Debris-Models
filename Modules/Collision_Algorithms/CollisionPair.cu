@@ -219,7 +219,7 @@ double CollisionPair::CalculateMinimumSeparation()
 			double uRP, uRS, A, B, C, D, axP, ayP, axS, ayS;
 			double rP, rS, sinURP, sinURS, cosURP, cosURS, EP, ES, sinVP, cosVP, sinVS, cosVS;
 			double tempAnomalyP, tempAnomalyS, cosRI;
-			double hOld, kOld, k = 2.0, h = 2.0;
+			double k = 2.0, h = 2.0;
 			double base;
 
 			tempAnomalyP = trueP;

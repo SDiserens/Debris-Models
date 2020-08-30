@@ -7,6 +7,10 @@ HootsFilter::HootsFilter(bool times, double init_conjThreshold, double init_coll
 	conjunctionThreshold = pAThreshold = init_conjThreshold;
 	collisionThreshold = init_collThreshold;
 	outputTimes = times;
+
+	if (MOIDtype == 1) {
+		detect_suitable_options(max_root_error, min_root_error, max_anom_error);
+	}
 }
 
 void HootsFilter::SetThreshold(double threshold)

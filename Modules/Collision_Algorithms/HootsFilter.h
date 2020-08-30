@@ -11,6 +11,7 @@ class HootsFilter :
 
 	//double deltaR, deltaB;
 	int MOIDtype = 0; // {0: inbuilt Newton; 1: distlink; 2: MOID}
+	double max_root_error, min_root_error, max_anom_error;
 
 protected:
 	vector<double> newCollisionTimes;
