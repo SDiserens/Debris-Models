@@ -477,9 +477,9 @@ void DebrisObject::SetCDrag(double cDrag)
 	coefficientDrag = cDrag;
 }
 
-void DebrisObject::SetBStar(double bStar)
+void DebrisObject::SetBStar(double b)
 {
-	bStar = bStar;
+	bStar = b;
 }
 
 void DebrisObject::SetInitEpoch(double epoch)

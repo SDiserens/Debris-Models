@@ -234,7 +234,7 @@ double OrbitTrace::CollisionRate(CollisionPair &objectPair)
 	}
 
 	// OT collision rate
-	if (objectPair.minSeperation < threshold)
+	if (objectPair.minSeperation < threshold && objectPair.minSeperation >= 0)
 	{	
 		objectPair.primaryElements.SetTrueAnomaly(objectPair.approachAnomalyP);
 		objectPair.secondaryElements.SetTrueAnomaly(objectPair.approachAnomalyS);

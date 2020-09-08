@@ -70,20 +70,40 @@ double OrbitalAnomalies::TrueToMeanAnomaly(double tA, double eccentricity)
 double OrbitalAnomalies::MeanToEccentricAnomaly(double mA, double eccentricity)
 {
 	int it = 0;
-	double f, fPrime;
+	double f, fPrime, M_new;
 	double tempAnomaly = mA;
 	double h = 1.0;
-	while ((abs(h) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
-	{
-		f = tempAnomaly - eccentricity * sin(tempAnomaly) - mA;
-		fPrime = 1 - eccentricity * cos(tempAnomaly);
+	if (eccentricity < 0.995) {
+		while ((abs(h) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
+		{
+			f = tempAnomaly - eccentricity * sin(tempAnomaly) - mA;
+			fPrime = 1 - eccentricity * cos(tempAnomaly);
 
-		h = f / fPrime;
-		tempAnomaly -= h;
+			h = f / fPrime;
+			tempAnomaly -= h;
 
-		++it;
+			++it;
+		}
 	}
-	return TauRange(tempAnomaly);
+	else {
+		f = eccentricity / 2;
+		tempAnomaly = mA + h;
+
+		while (h > NEWTONTOLERANCE) {
+			M_new = tempAnomaly - eccentricity*sin(tempAnomaly);
+			h = mA - M_new;
+			if (h > 0)
+				tempAnomaly = tempAnomaly + f;
+			else if (h < 0)
+				tempAnomaly = tempAnomaly - f;
+			else
+				break;
+			f = f / 2;
+			++it;
+		}
+	}
+	tempAnomaly = TauRange(tempAnomaly);
+	return tempAnomaly;
 }
 
 double OrbitalAnomalies::MeanToTrueAnomaly(double mA, double eccentricity)

@@ -184,7 +184,7 @@ double OrbitalElements::GetRadialPosition(double trueAnomaly)
 
 double OrbitalElements::CalculatePeriod()
 {
-	double mu;
+	double mu, period;
 	switch(centralBody){
 	case 0: 
 		mu = muSol;
@@ -196,7 +196,8 @@ double OrbitalElements::CalculatePeriod()
 		mu = muJov;
 		break;
 	}
-	return Tau * sqrt(semiMajorAxis * semiMajorAxis * semiMajorAxis / mu);
+	period = Tau * sqrt(semiMajorAxis * semiMajorAxis * semiMajorAxis / mu);
+	return period;
 }
 
 double OrbitalElements::GetMeanMotion()

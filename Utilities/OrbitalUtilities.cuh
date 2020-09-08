@@ -17,7 +17,7 @@ extern mt19937_64 * generator;
 #define radiusEarth 6378137 // in m
 #define GravitationalConstant 6.67408e-20    // Gravitational constant(km ^ 3 kg^-1 s^-2)
 
-#define muGravity 398576.0576
+#define muGravity 398600.5
 #define muSol 132747451200
 #define muJov 126674038.4
 

@@ -96,7 +96,7 @@ public:
 	void SetCentralBody(int c);
 	void SetParentID(long ID);
 	void SetCDrag(double cDrag);
-	void SetBStar(double bStar);
+	void SetBStar(double b);
 	void SetInitEpoch(double epoch);
 	void SetEpoch(double epoch);
 	void SetRadius(double radii);

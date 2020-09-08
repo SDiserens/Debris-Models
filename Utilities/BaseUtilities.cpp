@@ -47,6 +47,7 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 		debris = DebrisObject(radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type);
 		debris.SetName(name);
 		debris.SetInitEpoch(epoch);
+		debris.SetEpoch(epoch);
 		break;
 
 	case 1:
@@ -223,8 +224,10 @@ void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
 	double epoch, mass;
 
 	epoch = population.GetEpoch();
-
-	body = scenario["centralBody"].asInt();
+	if (scenario.isMember("centralBody"))
+		body = scenario["centralBody"].asInt();
+	else
+		body = 3;
 	if (scenario["objects"].isArray()) {
 
 		for (Json::Value objectParameters : scenario["objects"])
