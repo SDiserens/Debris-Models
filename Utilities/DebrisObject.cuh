@@ -100,6 +100,7 @@ public:
 	void SetInitEpoch(double epoch);
 	void SetEpoch(double epoch);
 	void SetRadius(double radii);
+	void SetArea(double xsection);
 	void SetMass(double newMass);
 	void SetNFrag(int n);
 	void SetNewObjectID();

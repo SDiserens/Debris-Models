@@ -41,6 +41,7 @@ int main(int argc, char** argv)
 		backgroundFilename = config["BackgroundPop"].asString();
 	mcRuns = config["MonteCarlo"].asInt();
 	logging = config["logging"].asBool();
+	stepDays = config["StepSize"].asDouble();
 
 	propagatorType = config["Propagator"].asString();
 	propagatorConfig = config["PropagatorConfig"];
@@ -102,6 +103,10 @@ int main(int argc, char** argv)
 		{
 			setThreshold = true;
 			threshold = stod(argv[++i]);
+		}		
+		if ((arg == "-s") || (arg == "--stepsize"))
+		{
+			stepDays = stod(argv[++i]);
 		}
 		if ((arg == "-l") || (arg == "--logging"))
 		{
@@ -136,7 +141,6 @@ int main(int argc, char** argv)
 	// Load Environment Parameters
 	// ----------------------------
 	elapsedDays = 0;
-	stepDays = config["StepSize"].asDouble();
 
 	cout << "Reading Population File : " + populationFilename + "...\n";
 	LoadScenario(initPopulation, populationFilename);
@@ -234,7 +238,8 @@ int main(int argc, char** argv)
 						collision.InvalidCollision();
 						environmentPopulation.AddDebrisEvent(collision);
 					}
-					else if ((collision.collisionProbability >= manoeuvreThreshold) & (collisionModel->DetermineCollisionAvoidance(avoidanceProbability))) {
+					else if ((collision.collisionProbability >= manoeuvreThreshold) & (collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) 
+						      & (target.GetLength() > 0.1)& (projectile.GetLength() > 0.1)) {
 						// Update and Log
 						collision.CollisionAvoidance();
 						environmentPopulation.AddDebrisEvent(collision);

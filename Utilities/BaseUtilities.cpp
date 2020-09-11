@@ -17,7 +17,7 @@ bool fileExists(const string& name)
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 {
 	Json::Value elements;
-	double radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly;
+	double radius, area, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly;
 	int type, dataType;
 	string name;
 	DebrisObject debris;
@@ -45,6 +45,8 @@ DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 		name = parsedObject["name"].asString();
 		// Generate Object - Possible issue with reconstruction
 		debris = DebrisObject(radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly, type);
+		if (parsedObject.isMember("area"))
+			debris.SetArea(parsedObject["area"].asDouble());
 		debris.SetName(name);
 		debris.SetInitEpoch(epoch);
 		debris.SetEpoch(epoch);

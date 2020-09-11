@@ -521,6 +521,12 @@ void DebrisObject::SetRadius(double radii)
 	radius = radii;
 }
 
+void DebrisObject::SetArea(double xsection)
+{
+	area = xsection;
+	CalculateAreaToMass();
+}
+
 void DebrisObject::SetMass(double newMass)
 {
 	mass = newMass;
