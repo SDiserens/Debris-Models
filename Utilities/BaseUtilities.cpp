@@ -189,7 +189,7 @@ void LoadScenario(DebrisPopulation & population, string scenarioFilename)
 	LoadObjects(population, scenario);
 
 	double launchCyle = scenario["LaunchCycle"].asDouble();	
-	population.AddLaunchTraffic(GenerateLaunchTraffic(scenario["launches"]), launchCyle);
+	//population.AddLaunchTraffic(GenerateLaunchTraffic(scenario["launches"]), launchCyle);
 
 			
 	// Close File
@@ -218,12 +218,20 @@ void LoadBackground(DebrisPopulation & population, string backgroundFilename) {
 }
 
 void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
-	DebrisObject tempObject;
+	DebrisObject tempObject, newObject;
 	Json::Value parsedObject, definedEvent;
-	double averageSemiMajorAxis = 0;
-	int nObjects, collisionID, body;
+	double cycle, averageSemiMajorAxis = 0;
+	int nObjects, collisionID, body, i;
 	map<int, long> definedCollisions;
-	double epoch, mass;
+	double epoch, mass, start;
+	vector<DebrisObject> launches;
+
+	if (scenario.isMember("launchCycle")) {
+		cycle = scenario["launchCycle"].asDouble() * 365.25;
+	}
+	else {
+		cycle = 8 * 365.25;
+	}
 
 	epoch = population.GetEpoch();
 	if (scenario.isMember("centralBody"))
@@ -239,6 +247,23 @@ void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
 			if (objectParameters.isMember("constellationID"))
 				tempObject.SetConstellationID(objectParameters["constellationID"].asInt());
 			averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
+
+			// Load laucnh objects
+			if (objectParameters.isMember("LaunchDate")) {
+				tempObject.SetLaunchCycle(cycle);
+				newObject = CopyDebrisObject(tempObject);
+				start = DateToEpoch(objectParameters["LaunchDate"].asDouble());
+				i = 0;
+				while (start < population.GetStartEpoch()) {
+					start += cycle;
+					i = 1;
+				}
+				start = start - i*cycle;
+				tempObject.SetInitEpoch(start);
+				newObject.SetInitEpoch(start + cycle);
+				launches.push_back(newObject);
+			}
+
 			population.AddDebrisObject(tempObject);
 
 			// Load any pre-defined events
@@ -284,6 +309,7 @@ void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
 	}
 	nObjects = scenario["objects"].size();
 	population.SetAverageSMA(averageSemiMajorAxis / nObjects);
+	population.AddLaunchTraffic(launches);
 }
 
 void WriteCollisionData(string scenario, Json::Value & config, string collisionModel, Json::Value & collisionConfig, vector<tuple<int, double, pair<string, string>, double, double, double>> collisionLog)

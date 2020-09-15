@@ -143,6 +143,35 @@ double DateToEpoch(string date)
 	return DateToEpoch(yr, mon, day, 0, 0, 0.0);
 }
 
+double DateToEpoch(double year)
+{
+	int yr, mon, day, leap, md;
+	double frac;
+	int monthDays[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	yr = floor(year);
+	if (yr % 4 == 0)
+		leap = 1;
+	else
+		leap = 0;
+
+	frac = year - yr;
+	day = floor(frac * (365 + leap));
+	mon = 1;
+	md = monthDays[mon];
+	while (day > md + 1) {
+		++mon;
+		day -= md;
+		md = monthDays[mon];
+		if (mon == 2)
+			md += leap;
+	}
+
+
+	return DateToEpoch(yr, mon, day, 0, 0, 0.0);
+}
+
+
 
 
 

@@ -248,6 +248,11 @@ double DebrisObject::GetBStar()
 	return bStar;
 }
 
+double DebrisObject::GetLaunchCycle()
+{
+	return launchCycle;
+}
+
 double DebrisObject::GetAvoidanceSuccess()
 {
 	if (isActive)
@@ -545,6 +550,11 @@ void DebrisObject::SetNewObjectID()
 void DebrisObject::SetConstellationID(int id)
 {
 	constellationId = id;
+}
+
+void DebrisObject::SetLaunchCycle(double cycle)
+{
+	launchCycle = cycle;
 }
 
 OrbitalAnomalies DebrisObject::GetAnomalies()

@@ -47,8 +47,8 @@ void DebrisPopulation::Clear()
 
 double DebrisPopulation::GetNextInitEpoch()
 {
-	if (initEpochs.size() == 0)
-		LoadLaunchTraffic();
+	if (initEpochs.size() < 100)
+		LoadLaunchTraffic(100 - initEpochs.size());
 	if (initEpochs.size() == 0)
 		return NAN;
 	else
@@ -56,8 +56,8 @@ double DebrisPopulation::GetNextInitEpoch()
 }
 double DebrisPopulation::GetTimeToNextInitEpoch()
 {
-	if (initEpochs.size() == 0)
-		LoadLaunchTraffic();
+	if (initEpochs.size() < 100)
+		LoadLaunchTraffic(100 - initEpochs.size());
 	if (initEpochs.size() == 0)
 		return NAN;
 	else
@@ -108,16 +108,21 @@ void DebrisPopulation::SetScalingPower(int power)
 	scalingPower = power;
 }
 
+void DebrisPopulation::SetLaunches(bool launch)
+{
+	launches = launch;
+}
+
 void DebrisPopulation::InitialiseEpoch(double epoch)
 {
 	currentEpoch = epoch;
 	startEpoch = epoch;
 }
 
-void DebrisPopulation::LoadLaunchTraffic()
+void DebrisPopulation::LoadLaunchTraffic(int n)
 { 
 	DebrisObject tempObject, newObject;
-	int loadCount = min(100, (int) launchTraffic.size());
+	int loadCount = min(n, (int) launchTraffic.size());
 
 	for (int i=0; i < loadCount; i++) {
 		tempObject = launchTraffic[0];
@@ -125,7 +130,7 @@ void DebrisPopulation::LoadLaunchTraffic()
 		launchTraffic.erase(launchTraffic.begin());
 
 		newObject = CopyDebrisObject(tempObject);
-		newObject.SetInitEpoch(newObject.GetInitEpoch() + launchCycle);
+		newObject.SetInitEpoch(newObject.GetInitEpoch() + newObject.GetLaunchCycle());
 		launchTraffic.push_back(newObject);
 	}
 }
@@ -197,15 +202,18 @@ void DebrisPopulation::AddDefinedEvent(Event breakup)
 		definedEvents.push_back(breakup);
 }
 
-void DebrisPopulation::AddLaunchTraffic(vector<DebrisObject> launch, double cycle)
+void DebrisPopulation::AddLaunchTraffic(vector<DebrisObject> launch)
 {
-	launchCycle = cycle;
-	launchTraffic = launch;
+	launchTraffic.insert(launchTraffic.end(), launch.begin(), launch.end());
+	sort(launchTraffic.begin(), launchTraffic.end(), [](DebrisObject primary, DebrisObject secondary) {
+		return (primary.GetInitEpoch() < secondary.GetInitEpoch());
+	});
 }
-
 
 void DebrisPopulation::LoadPopulation()
 {
+	if (launches && (initEpochs.size() < 100))
+		LoadLaunchTraffic(100 - initEpochs.size());
 	if (initEpochs.size() != 0)
 	{
 		pair<double, long> ID;

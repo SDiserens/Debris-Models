@@ -4,6 +4,7 @@
   "StepSize": 1, // Size of default timestep (days)
   "MonteCarlo": 10,
   "logging": true,
+  "launches": false,
   //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
   "PropagatorConfig": {
@@ -27,10 +28,10 @@
   "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
     "ParallelGPU": false, // takes priority over CPU
-    "ParallelCPU": false,
+    "ParallelCPU": true,
     "CubeDimension": 10.0, // Cube Size or threshold distance
-    "CubeMC": 1, // Cube runs to do each step
-    "ConjunctionThreshold": 5.0, //Threshold for orbit-trace and hoots
+    "CubeMC": 10, // Cube runs to do each step
+    "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.0, // inner threshold for Hoots
     "Verbose": true,// Probability output / time output for different methods
     "outputScaling": 5, // collision probabilities of the order of 10^(-outputScaling)

@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 	// Variable
 	string arg, populationFilename, propagatorType, breakUpType, collisionType, ouputName, backgroundFilename;
 	double timeStep, stepDays, elapsedDays, simulationDays, threshold, tempProbability, avoidanceProbability = 0;
-	bool  logging = true, setThreshold = false;
+	bool  launches = false, logging = true, setThreshold = false;
 	int mcRuns, i;
 	volatile int n;
 
@@ -42,6 +42,7 @@ int main(int argc, char** argv)
 	mcRuns = config["MonteCarlo"].asInt();
 	logging = config["logging"].asBool();
 	stepDays = config["StepSize"].asDouble();
+	launches = config["launches"].asBool();
 
 	propagatorType = config["Propagator"].asString();
 	propagatorConfig = config["PropagatorConfig"];
@@ -150,6 +151,7 @@ int main(int argc, char** argv)
 	}
 	populationFilename = populationFilename.substr(0, populationFilename.find("."));
 	simulationDays = initPopulation.GetDuration();
+	initPopulation.SetLaunches(launches);
 
 	// ----------------------------
 	//  Simulate Environment Runs  
@@ -227,9 +229,9 @@ int main(int argc, char** argv)
 					DebrisObject& target = environmentPopulation.GetObject(collision.primaryID);
 					DebrisObject& projectile = environmentPopulation.GetObject(collision.secondaryID);
 					tempProbability = 1.0 - pow((1.0 - collision.collisionProbability), (target.GetNFrag() * projectile.GetNFrag())); // adjust probabiltiy for representative fragments
+					if (isnan(tempProbability))
+						tempProbability = 0;
 					collision.collisionProbability = tempProbability;
-					target.UpdateCollisionProbability(tempProbability);
-					projectile.UpdateCollisionProbability(tempProbability);
 
 					// determine if collision avoidance occurs
 					avoidanceProbability = 1 - (1 - target.GetAvoidanceSuccess()) * (1 - projectile.GetAvoidanceSuccess());
@@ -238,16 +240,21 @@ int main(int argc, char** argv)
 						collision.InvalidCollision();
 						environmentPopulation.AddDebrisEvent(collision);
 					}
-					else if ((collision.collisionProbability >= manoeuvreThreshold) & (collisionModel->DetermineCollisionAvoidance(avoidanceProbability)) 
-						      & (target.GetLength() > 0.1)& (projectile.GetLength() > 0.1)) {
-						// Update and Log
-						collision.CollisionAvoidance();
-						environmentPopulation.AddDebrisEvent(collision);
-					}
+					else {
+						target.UpdateCollisionProbability(tempProbability);
+						projectile.UpdateCollisionProbability(tempProbability);
 
-					else if (collisionModel->DetermineCollision(tempProbability)) {
-						// Simulate Fragmentations
-						breakUp->mainBreakup(environmentPopulation, collision);
+						if ((collision.collisionProbability >= manoeuvreThreshold) & (collisionModel->DetermineCollisionAvoidance(avoidanceProbability))
+							& (target.GetLength() > 0.1)& (projectile.GetLength() > 0.1)) {
+							// Update and Log
+							collision.CollisionAvoidance();
+							environmentPopulation.AddDebrisEvent(collision);
+						}
+
+						else if (collisionModel->DetermineCollision(tempProbability)) {
+							// Simulate Fragmentations
+							breakUp->mainBreakup(environmentPopulation, collision);
+						}
 					}
 				}
 

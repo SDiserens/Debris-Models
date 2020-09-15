@@ -1,5 +1,6 @@
 {
-  "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter
+  "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter	
+  "launchCycle": 8, // launch cycle in years
   "objects": [{
       "name": "0 Background 1 (RB)",
       "mass": 1000,

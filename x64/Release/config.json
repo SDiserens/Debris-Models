@@ -4,6 +4,7 @@
   "StepSize": 1, // Size of default timestep (days)
   "MonteCarlo": 10,
   "logging": true,
+  "launches": false,
   //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
   "PropagatorConfig": {

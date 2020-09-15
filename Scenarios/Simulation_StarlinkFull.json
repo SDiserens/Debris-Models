@@ -1,7 +1,8 @@
 { 
-  "EpochDate": "2021-01-01", // Date of simulation start (YYYY-MM-DD)
-  "Duration": 18262, // Length of simulation (days)
+  "EpochDate": "2018-01-01", // Date of simulation start (YYYY-MM-DD)
+  "Duration": 9131, // Length of simulation (days) - 50 years
   "centralBody": 3, // 0: Sol, 3: Earth, 5: Jupiter
+  "launchCycle": 8, // launch cycle in years
   "objects": [
     { "dataType": 0, // 0: Orbital elements, 1: state vector, 2: TLEs
       "name": "0 Starlink 1-1",

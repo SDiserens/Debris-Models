@@ -137,14 +137,15 @@ void OrbitalElements::SetOrbitalElements(vector3D & position, vector3D & velocit
 
 	inclination = acos(angularMomentum.z / angularMomentum.vectorNorm()); // Returns on [0,PI] range which is correct
 
-	rightAscension = acos(node.x / node.vectorNorm()); // Returns on [0,PI] range which is incorrect
-	if (node.y < 0)
-		rightAscension = Tau - rightAscension; // Corrected to [0,Tau] range
+	if (node.vectorNorm() != 0) {
+		rightAscension = acos(node.x / node.vectorNorm()); // Returns on [0,PI] range which is incorrect
+		if (node.y < 0)
+			rightAscension = Tau - rightAscension; // Corrected to [0,Tau] range
 
-	argPerigee = acos(node.VectorDotProduct(eccentricityVector) / (node.vectorNorm() * eccentricity)); // Returns on [0,PI] range which is incorrect
-	if (eccentricityVector.z < 0)
-		argPerigee = Tau - argPerigee; // Corrected to [0,Tau] range
-
+		argPerigee = acos(node.VectorDotProduct(eccentricityVector) / (node.vectorNorm() * eccentricity)); // Returns on [0,PI] range which is incorrect
+		if (eccentricityVector.z < 0)
+			argPerigee = Tau - argPerigee; // Corrected to [0,Tau] range
+	}
 	trueAnomaly = acos(eccentricityVector.VectorDotProduct(position) / (eccentricity * position.vectorNorm())); // Returns on [0,PI] range which is incorrect
 	if (position.VectorDotProduct(velocity) < 0)
 		trueAnomaly = Tau - trueAnomaly; // Corrected to [0,Tau] range
