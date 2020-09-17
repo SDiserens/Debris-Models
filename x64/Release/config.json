@@ -13,7 +13,7 @@
   },
 
   //
-  "Fragmentation": "NSBM",// "NSBM",
+  "Fragmentation": "NSBM",// "NSBM", "NSBM-new",
   "FragmentationConfig": {
     "minLength": 0.01, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g

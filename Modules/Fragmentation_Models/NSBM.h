@@ -11,6 +11,7 @@ protected:
 	int numFragBuckets;
 	string bridgingFunction;
 	double scaling;
+	bool newSpace = false;
 
 public:
 
@@ -18,6 +19,7 @@ public:
 	NASABreakupModel(double mL);
 	NASABreakupModel(double mL, double cT, int nFB = 30, string bF = "Weighted", double sc=1, double rFT=0.02, int rFN=10);
 	void mainBreakup(DebrisPopulation& population, Event& fragmentationEvent);
+	void SetNewSpaceParameters();
 
 };
 
@@ -62,19 +64,23 @@ public:
 	bool maxBucket;
 	double impactMass, nFragExponent, nFragCoefficient;
 	int numFrag;
+	bool newSpace = false;
 	//std::default_random_engine generator;
 
 public:
 	// -- Constructors
 	NSBMFragmentCloud(); // Default contructor
-	NSBMFragmentCloud(DebrisObject& targetObject, double init_minLength); // Explosion contructor
-	NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double init_minLength); // Collision Constructor
+	NSBMFragmentCloud(DebrisObject& targetObject, double init_minLength, bool newS); // Explosion contructor
+	NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double init_minLength, bool newS); // Collision Constructor
 	NSBMFragmentCloud(bool init_explosion, double init_minLength, double init_maxLength, int numFrag, double init_mass); // Bucket Constructor
 
 	// -- Functions for breakup parameters
 	void SetNumberFragmentParametersExplosion();
 	void SetNumberFragmentParametersCollision();
 	void SetNumberFragmentParametersCatastrophicCollision();
+
+	void SetNumberFragmentParametersExplosionNS(bool type, double a2m);
+	void SetNumberFragmentParametersCatastrophicCollisionNS(double kE);
 
 	// -- Functions For number of fragments
 	int CalculateNumberOfFragments(double length);

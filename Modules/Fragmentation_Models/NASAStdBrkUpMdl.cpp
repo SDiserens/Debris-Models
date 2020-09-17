@@ -47,7 +47,7 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 	{
 		explosion = true;
 		// Simulate primary object breakup
-		NSBMFragmentCloud targetDebrisCloud(targetObject, minLength);
+		NSBMFragmentCloud targetDebrisCloud(targetObject, minLength, newSpace);
 		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent);
 	}
 
@@ -59,11 +59,11 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 		projectileObject.SetTrueAnomaly(fragmentationEvent.secondaryAnomaly);
 		
 		// Simulate primary object breakup
-		NSBMFragmentCloud targetDebrisCloud(targetObject, projectileObject, minLength);
+		NSBMFragmentCloud targetDebrisCloud(targetObject, projectileObject, minLength, newSpace);
 		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent);
 
 		// Simulate secondary object breakup
-		NSBMFragmentCloud projectileDebrisCloud(projectileObject, targetObject, minLength);
+		NSBMFragmentCloud projectileDebrisCloud(projectileObject, targetObject, minLength, newSpace);
 		Event tempEvent(fragmentationEvent);
 		tempEvent.SwapPrimarySecondary();
 		MergeFragmentPopulations(population, projectileDebrisCloud, tempEvent);
@@ -71,21 +71,30 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 
 }
 
+void NASABreakupModel::SetNewSpaceParameters()
+{
+	newSpace = true;
+}
+
 
 NSBMFragmentCloud::NSBMFragmentCloud() // DEfault Constructor
 {
 }
 
-NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double init_minLength) //Create an explosion Cloud
+NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double init_minLength, bool newS) //Create an explosion Cloud
 {
 	// Identify key variables
 	explosion = true;
 	minLength = init_minLength;
 	totalMass = targetObject.GetMass();
 	maxLength = targetObject.GetLength();
+	newSpace = newS;
 
 	// Set parameters for computing fragment distribution
-	SetNumberFragmentParametersExplosion();
+	if (newSpace)
+		SetNumberFragmentParametersExplosionNS(targetObject.GetType(), targetObject.GetAreaToMass());
+	else
+		SetNumberFragmentParametersExplosion();
 
 	// Create Fragment Buckets
 	GenerateFragmentBuckets(targetObject);
@@ -93,7 +102,7 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, double init_min
 	projectileID = -1;
 }
 
-NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double init_minLength) //Create a collision Cloud
+NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& projectileObject, double init_minLength, bool newS) //Create a collision Cloud
 {
 	double collisionKineticEnergy;
 
@@ -107,10 +116,14 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 	relativeVelocity = vector3D(velocity.CalculateRelativeVector(projectileObject.GetVelocity()));
 	collisionKineticEnergy = CalculateKineticEnergy(relativeVelocity, projectileObject.GetMass());
 	energyMassRatio = CalculateEnergyToMass(collisionKineticEnergy, totalMass);
+	newSpace = newS;
 
 	// Set parameters for computing fragment distribution
 	if (energyMassRatio > catastrophicThreshold)
-		SetNumberFragmentParametersCatastrophicCollision();
+		if (newSpace)
+			SetNumberFragmentParametersCatastrophicCollisionNS(collisionKineticEnergy);
+		else
+			SetNumberFragmentParametersCatastrophicCollision();
 	else
 		SetNumberFragmentParametersCollision();
 
@@ -413,10 +426,29 @@ void NSBMFragmentCloud::SetNumberFragmentParametersCollision()
 
 void NSBMFragmentCloud::SetNumberFragmentParametersCatastrophicCollision()
 {
-
 	double ejectaMass = totalMass;
 	nFragCoefficient = 0.1 * pow(ejectaMass, 0.75);
 	nFragExponent = -1.71;
+}
+
+void NSBMFragmentCloud::SetNumberFragmentParametersExplosionNS(bool type, double a2m)
+{
+	if (type == 1) {
+		nFragExponent = -2 - 0.1/sqrt(a2m);
+		nFragCoefficient = 0.1 * totalMass/800;
+	}
+
+	else {
+		nFragExponent = -1.6;
+		nFragCoefficient = scaling * 6;
+	}
+}
+
+void NSBMFragmentCloud::SetNumberFragmentParametersCatastrophicCollisionNS(double kE)
+{
+	double ejectaMass = totalMass;
+	nFragCoefficient = 0.02 * pow(ejectaMass, 0.75);
+	nFragExponent = -1 - 10000/sqrt(kE);
 }
 
 void NSBMFragmentCloud::SetNumberOfFragments(int nFrag)

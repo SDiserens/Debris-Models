@@ -58,6 +58,8 @@ public:
 	static unique_ptr<BreakupModel> CreateBreakupModel(string breakupType, Json::Value & config) {
 		if (breakupType == "NSBM")
 			return CreateNSBMInstance(config);
+		else if (breakupType == "NSBM-new")
+			return CreateNSBMNewInstance(config);
 		else if (breakupType.empty())
 			return nullptr;
 		else
@@ -125,5 +127,20 @@ private:
 		int representativeFragmentNumber = config["representativeFragmentNumber"].asInt();
 
 		return make_unique<NASABreakupModel>(minLength, catastrophicThreshold, numberBuckets, bridgingFucntion, explosionScaling, representativeFragmentThreshold, representativeFragmentNumber);
+	};	
+
+	static unique_ptr<NASABreakupModel> CreateNSBMNewInstance(Json::Value & config) {
+		// Read NSBM config
+		double minLength = config["minLength"].asDouble();
+		double catastrophicThreshold = config["catastrophicThreshold"].asDouble();
+		int numberBuckets = config["numberBuckets"].asInt();
+		string bridgingFucntion = config["bridgingFucntion"].asString();
+		double explosionScaling = config["explosionScaling"].asDouble();
+		double representativeFragmentThreshold = config["representativeFragmentThreshold"].asDouble();
+		int representativeFragmentNumber = config["representativeFragmentNumber"].asInt();
+
+		unique_ptr<NASABreakupModel> model = make_unique<NASABreakupModel>(minLength, catastrophicThreshold, numberBuckets, bridgingFucntion, explosionScaling, representativeFragmentThreshold, representativeFragmentNumber);
+		model->SetNewSpaceParameters();
+		return model;
 	};
 };
