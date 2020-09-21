@@ -269,23 +269,24 @@ void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
 			// Load any pre-defined events
 			if (objectParameters.isMember("definedEvent")) {
 				definedEvent = objectParameters["definedEvent"];
-				if (!definedEvent.isMember("CollisionID")) {
-					// Load explosion
-					Event tempEvent(epoch + definedEvent["fromEpoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
-					population.AddDefinedEvent(tempEvent);
-				}
-				else {
+				if (definedEvent.isMember("CollisionID"))
+				{
 					// Store collision data
 					collisionID = definedEvent["CollisionID"].asInt();
 					if (definedCollisions.count(collisionID) > 0) {
 						// Check if other collision object exists yet
 						mass = tempObject.GetMass() + population.GetObject(definedCollisions[collisionID]).GetMass();
-						Event tempEvent(epoch + definedEvent["fromEpoch"].asDouble(), definedCollisions[collisionID], tempObject.GetID(), definedEvent["RelativeVelocity"].asDouble(), mass, 0.0);
+						Event tempEvent(epoch + definedEvent["fromEpoch"].asDouble(), definedCollisions[collisionID], tempObject.GetID(), definedEvent["RelativeVelocity"].asDouble(), mass, 0.0, 0.0, 1.0);
 						population.AddDefinedEvent(tempEvent);
 					}
 					else
 						// Store object ID for later
 						definedCollisions[collisionID] = tempObject.GetID();
+				}
+				else {
+					Event tempEvent(epoch + definedEvent["fromEpoch"].asDouble(), tempObject.GetID(), tempObject.GetMass());
+					population.AddDefinedEvent(tempEvent);
+
 				}
 			}
 		}

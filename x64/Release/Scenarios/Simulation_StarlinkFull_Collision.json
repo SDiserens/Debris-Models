@@ -8,7 +8,7 @@
       "name": "0 Aeolus Analogue1",
       "definedEvent": {
         "CollisionID": 1,
-        "RelativeVelocity": 10
+        "RelativeVelocity": 10,
         "fromEpoch": 1826
       },
       "mass": 1366,
@@ -28,7 +28,7 @@
       "name": "0 Starlink 2-1286",
       "definedEvent": {
         "CollisionID": 1,
-        "RelativeVelocity": 10
+        "RelativeVelocity": 10,
         "fromEpoch": 1826
       },
       "mass": 260,  
