@@ -240,9 +240,8 @@ void NSBMFragmentCloud::CreateTopFragmentBucket(DebrisObject& targetObject, doub
 		NSBMDebrisFragment tempFragment(upperLength, remainingMass, explosion, targetObject.GetType());
 		tempFragment.SetName(targetObject.GetName() + "-F");
 
-		tempFragment.SetPosition(targetObject.GetPosition());
-		tempFragment.SetVelocity(targetObject.GetVelocity());
-		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
+		tempFragment.SetStateVectors(targetObject.GetPosition(), targetObject.GetVelocity() + tempFragment.deltaV);
+		//tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
 		tempFragment.SetSourceID(targetObject.GetSourceID());
 		tempFragment.SetParentID(targetObject.GetID());
 
@@ -324,9 +323,8 @@ void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 		tempFragment.SetSourceID(targetObject.GetSourceID());
 		tempFragment.SetParentID(targetObject.GetID());
 		// Identify updated orbital elements
-		tempFragment.SetPosition(targetObject.GetPosition());
-		tempFragment.SetVelocity(targetObject.GetVelocity());
-		tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
+		tempFragment.SetStateVectors(targetObject.GetPosition(), targetObject.GetVelocity() + tempFragment.deltaV);
+		//tempFragment.UpdateOrbitalElements(tempFragment.deltaV);
 		tempFragment.SetInitEpoch(NAN);
 
 		// Update FragmentCloud variables for bucket

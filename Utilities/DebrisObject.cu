@@ -387,6 +387,8 @@ void DebrisObject::SetStateVectors(vector3D inputPosition, vector3D inputVelocit
 	velocity = vector3D(inputVelocity);
 	elements.SetOrbitalElements(position, velocity);
 	meanAnomalyEpoch = elements.GetMeanAnomaly();
+	if (isnan(meanAnomalyEpoch))
+		meanAnomalyEpoch = 0;
 	velocitySync = positionSync = true;
 	periodSync = false;
 }

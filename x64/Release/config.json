@@ -18,7 +18,7 @@
     "minLength": 0.01, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g
     "numberBuckets": 30, //number of buckets to split fragments sizes between
-    "bridgingFucntion": "Weighted", // brdiign function to use between 8cm and 11cm : "Small", "Large", "Mean", "Weighted",
+    "bridgingFunction": "Weighted", // brdiign function to use between 8cm and 11cm : "Small", "Large", "Mean", "Weighted",
     "explosionScaling": 1, //Value to use for scaling number of explosion fragments
     "representativeFragmentThreshold": 0.02, // Fragment size in metres below which represetntative fragmnets should be used
     "representativeFragmentNumber": 10 // Max number of fragments to be respresented by a single object

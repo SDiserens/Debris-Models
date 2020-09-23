@@ -24,7 +24,8 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 	{
 		for(auto & debris : bucketCloud.fragments)
 		{
-			currentPopulation.AddDebrisObject(debris);
+			if(debris.GetElements().eccentricity < 1)
+				currentPopulation.AddDebrisObject(debris);
 		}
 	}
 }

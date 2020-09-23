@@ -73,7 +73,7 @@ double OrbitalAnomalies::MeanToEccentricAnomaly(double mA, double eccentricity)
 	double f, fPrime, M_new;
 	double tempAnomaly = mA;
 	double h = 1.0;
-	if (eccentricity < 0.995) {
+	if (eccentricity < 0.67) {
 		while ((abs(h) >= NEWTONTOLERANCE) && (it < NEWTONMAXITERATIONS))
 		{
 			f = tempAnomaly - eccentricity * sin(tempAnomaly) - mA;
