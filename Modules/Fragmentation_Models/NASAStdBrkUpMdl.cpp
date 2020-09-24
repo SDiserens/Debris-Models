@@ -121,7 +121,7 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 	// Set parameters for computing fragment distribution
 	if (energyMassRatio > catastrophicThreshold)
 		if (newSpace)
-			SetNumberFragmentParametersCatastrophicCollisionNS(collisionKineticEnergy);
+			SetNumberFragmentParametersCatastrophicCollisionNS(energyMassRatio);
 		else
 			SetNumberFragmentParametersCatastrophicCollision();
 	else
@@ -442,11 +442,11 @@ void NSBMFragmentCloud::SetNumberFragmentParametersExplosionNS(bool type, double
 	}
 }
 
-void NSBMFragmentCloud::SetNumberFragmentParametersCatastrophicCollisionNS(double kE)
+void NSBMFragmentCloud::SetNumberFragmentParametersCatastrophicCollisionNS(double eMr)
 {
 	double ejectaMass = totalMass;
 	nFragCoefficient = 0.02 * pow(ejectaMass, 0.75);
-	nFragExponent = -1 - 10000/sqrt(kE);
+	nFragExponent = -2.2 - 100/sqrt(eMr);
 }
 
 void NSBMFragmentCloud::SetNumberOfFragments(int nFrag)

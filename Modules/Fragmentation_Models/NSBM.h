@@ -80,7 +80,7 @@ public:
 	void SetNumberFragmentParametersCatastrophicCollision();
 
 	void SetNumberFragmentParametersExplosionNS(bool type, double a2m);
-	void SetNumberFragmentParametersCatastrophicCollisionNS(double kE);
+	void SetNumberFragmentParametersCatastrophicCollisionNS(double eMr);
 
 	// -- Functions For number of fragments
 	int CalculateNumberOfFragments(double length);
