@@ -10,6 +10,8 @@ class CollisionAlgorithm
 protected:
 	bool relativeGravity = false, outputProbabilities;
 	double elapsedTime, timeStep, pAThreshold;
+	bool newSpace = false;
+	double newSpaceCorrection=1;
 
 protected:
 	bool PerigeeApogeeTest(CollisionPair & objectPair);
@@ -29,6 +31,7 @@ public:
 	virtual void SetThreshold(double threshold) = 0;
 	virtual void SetMOID(int moid) = 0;
 
+	void SetNewSpaceParameters(double correction);
 	void SwitchGravityComponent();
 	void SwitchParallelGPU();
 	void SwitchParallelCPU();

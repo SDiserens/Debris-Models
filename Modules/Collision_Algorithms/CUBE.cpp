@@ -51,7 +51,7 @@ void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep
 			CollisionPair collisionPair(population.GetObject(collisionPairID.primaryID), population.GetObject(collisionPairID.secondaryID));
 			//	-- Calculate collision rate in cube
 			collisionRate = CollisionRate(collisionPair);
-			tempProbability = adjustment * collisionRate;
+			tempProbability = adjustment * collisionRate * newSpaceCorrection;
 
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
@@ -92,7 +92,7 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			CollisionPair collisionPair(population.GetObject(collisionPairID.primaryID), population.GetObject(collisionPairID.secondaryID));
 			//	-- Calculate collision rate in cube
 			collisionRate = CollisionRate(collisionPair);
-			tempProbability = adjustment * collisionRate;
+			tempProbability = adjustment * collisionRate * newSpaceCorrection;
 
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;

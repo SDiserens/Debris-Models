@@ -88,7 +88,7 @@ void OrbitTrace::MainCollision_P(DebrisPopulation& population, double timestep)
 	concurrency::parallel_for_each(pairList.begin(), pairList.end(), [&](CollisionPair& objectPair){
 	//for (CollisionPair objectPair : pairList) {
 
-		tempProbability = timeStep * objectPair.probability;
+		tempProbability = timeStep * objectPair.probability * newSpaceCorrection;
 		pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 
 		altitude = objectPair.primaryElements.GetRadialPosition();
@@ -155,7 +155,7 @@ void OrbitTrace::MainCollision(DebrisPopulation& population, double timestep)
 		if (collision)
 		{
 			collisionRate = CollisionRate(objectPair);
-			tempProbability = timeStep * collisionRate;
+			tempProbability = timeStep * collisionRate * newSpaceCorrection;
 			if (tempProbability > 0) {
 				pairID = make_pair(objectPair.primaryID, objectPair.secondaryID);
 

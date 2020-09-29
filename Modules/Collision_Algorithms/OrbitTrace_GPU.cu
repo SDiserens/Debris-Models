@@ -388,7 +388,7 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 
 	for (int i = 0; i < outList.size(); i++) {
 		CollisionPair objectPair = outList[i];
-		tempProbability = pList[i];
+		tempProbability = pList[i] * newSpaceCorrection;
 		if (tempProbability > 0) {
 			mass = objectPair.primaryMass + objectPair.secondaryMass;
 			tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), objectPair.GetMinSeparation(), tempProbability);

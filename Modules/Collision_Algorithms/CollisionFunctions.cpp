@@ -33,7 +33,10 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popula
 
 list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & population)
 {
-	list<CollisionPair> pairList;
+	size_t n = population.GetPopulationSize();
+	size_t N = n * (n - 1) / 2.0;
+	vector<long> keys;
+	list<CollisionPair> pairList(N);
 	// For each object in population - parallelised
 	
 	mutex mtx;
@@ -49,10 +52,29 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & popu
 				pairList.push_back(pair);
 				mtx.unlock();
 			}
-		else
-			pair.~CollisionPair();
+			else
+				pair.~CollisionPair();
 		}
-		});
+	});
+
+	/*
+
+	for_each(population.population.begin(), population.population.end(), [&](auto& it) {
+		keys.push_back(it.first);
+	});
+
+	concurrency::parallel_for_each(size_t(0), N, [&](size_t i) {
+		size_t z = n - 1;
+		size_t x = 1;
+		while (i > z) {
+			i -= z;
+			--z;
+			++x;
+		}
+		size_t y = x + i;
+		pairList[i] = CollisionPair(population.GetObject(keys.at(--x)), population.GetObject(keys.at(--y)));
+	});
+	*/
 	return pairList;
 }
 
@@ -104,7 +126,7 @@ bool CollisionAlgorithm::DetermineCollisionAvoidance(double avoidanceProbability
 bool CollisionAlgorithm::CheckValidCollision(DebrisObject target, DebrisObject projectile)
 {
 	bool valid = true;
-	//TODO - logic for invalid collision
+	//logic for invalid collision
 	if (projectile.GetConstellationID() == target.GetConstellationID() && projectile.IsActive() && target.IsActive()) 
 	{
 		valid = false;
@@ -156,6 +178,13 @@ void CollisionAlgorithm::MainCollision_P(DebrisPopulation & population, double t
 void CollisionAlgorithm::MainCollision_GPU(DebrisPopulation & population, double timeStep)
 {
 	MainCollision(population, timeStep);
+}
+
+void CollisionAlgorithm::SetNewSpaceParameters(double correction)
+{
+	newSpace = true;
+	newSpaceCorrection = correction;
+
 }
 
 void CollisionAlgorithm::SwitchGravityComponent()

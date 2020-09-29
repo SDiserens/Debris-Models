@@ -241,24 +241,24 @@ void DebrisPopulation::LoadPopulation()
 				break;
 		}
 	}
-	
-
 }
 
 void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 {
 	int type = debrisEvent.GetEventType();
-	debrisEvent.SetEventID();
-	eventLog.push_back(debrisEvent);
 	++eventCount;
-	if (type == 0)
-		++explosionCount;
-	else if (type == 1)
-		++collisionCount;
-	else if (type == 2)
-		++collisionAvoidanceCount;
-	else if (type == 2)
-		++falseCollisionCount;
+	if (type != 3) {
+		debrisEvent.SetEventID();
+		eventLog.push_back(debrisEvent);
+		if (type == 0)
+			++explosionCount;
+		else if (type == 1)
+			++collisionCount;
+		else if (type == 2)
+			++collisionAvoidanceCount;
+	}
+	else
+		++falseCollisionCount;	
 }
 
 DebrisObject& DebrisPopulation::GetObject(long ID)

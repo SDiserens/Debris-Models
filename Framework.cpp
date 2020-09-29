@@ -229,8 +229,8 @@ int main(int argc, char** argv)
 					DebrisObject& target = environmentPopulation.GetObject(collision.primaryID);
 					DebrisObject& projectile = environmentPopulation.GetObject(collision.secondaryID);
 					tempProbability = 1.0 - pow((1.0 - collision.collisionProbability), (target.GetNFrag() * projectile.GetNFrag())); // adjust probabiltiy for representative fragments
-					if (isnan(tempProbability))
-						tempProbability = 0;
+					//if (isnan(tempProbability))
+					//	tempProbability = 0;
 					collision.collisionProbability = tempProbability;
 
 					// determine if collision avoidance occurs

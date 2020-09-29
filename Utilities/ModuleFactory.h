@@ -36,8 +36,12 @@ public:
 			return CreateCubeInstance(config, false);
 		if (collisionType == "Cube-offset")
 			return CreateCubeInstance(config, true);
+		if (collisionType == "Cube-new")
+			return CreateCubeNewInstance(config, false);
 		if (collisionType == "OrbitTrace")
 			return CreateOTInstance(config);
+		if (collisionType == "OrbitTrace-new")
+			return CreateOTNewInstance(config);
 		if (collisionType ==  "Hoots")
 			return CreateHootsInstance(config);
 		else
@@ -87,6 +91,20 @@ private:
 	};
 
 	// Collision Factories
+	static unique_ptr<CUBEApproach> CreateCubeNewInstance(Json::Value & config, bool offsetCubes) {
+		// Read Cube config
+		bool probabilities = config["Verbose"].asBool();
+		double dimension = config["CubeDimension"].asDouble();
+		int mcRuns = config["CubeMC"].asInt();
+		bool offset = offsetCubes;
+		double correctionFactor = config["NewSpaceCorrection"].asDouble();
+
+		unique_ptr<CUBEApproach> model = make_unique<CUBEApproach>(probabilities, dimension, mcRuns, offset);
+		model->SetNewSpaceParameters(correctionFactor);
+		return model;
+	};
+
+
 	static unique_ptr<CUBEApproach> CreateCubeInstance(Json::Value & config, bool offsetCubes) {
 		// Read Cube config
 		bool probabilities = config["Verbose"].asBool();
@@ -104,6 +122,19 @@ private:
 		int MOIDtype = config["MOIDtype"].asInt();
 
 		return make_unique<OrbitTrace>( probabilities, threshold, MOIDtype);
+	};
+
+
+	static unique_ptr<OrbitTrace> CreateOTNewInstance(Json::Value & config) {
+		// Read OT config
+		bool probabilities = config["Verbose"].asBool();
+		double threshold = config["ConjunctionThreshold"].asDouble();
+		int MOIDtype = config["MOIDtype"].asInt();
+		double correctionFactor = config["NewSpaceCorrection"].asDouble();
+		
+		unique_ptr<OrbitTrace> model  = make_unique<OrbitTrace>(probabilities, threshold, MOIDtype);
+		model->SetNewSpaceParameters(correctionFactor);
+		return model;
 	};
 
 	static unique_ptr<HootsFilter> CreateHootsInstance(Json::Value & config) {

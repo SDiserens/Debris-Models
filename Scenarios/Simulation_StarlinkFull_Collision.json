@@ -44,7 +44,7 @@
         "om": 5.04403085701182
       },
       "meanAnomaly": 2.85654577191085
-    }
+    },
     { "dataType": 0, // 0: Orbital elements, 1: state vector, 2: TLEs
       "name": "0 Starlink 1-1",
       "mass": 260,  
