@@ -30,7 +30,8 @@
     "ParallelGPU": false, // takes priority over CPU
     "ParallelCPU": true,
     "CubeDimension": 10.0, // Cube Size or threshold distance
-    "NewSpaceCorrection": 1 // Correction factor applied /day
+    "CubeCorrection": 4.652, // NewSpace Correction factor applie (specific to primary scenario)
+    "OTCorrection": 3.362, // NewSpace Correction factor applied (specific to primary scenario)
     "CubeMC": 100, // Cube runs to do each step
     "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.0, // inner threshold for Hoots

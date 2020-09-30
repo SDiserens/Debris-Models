@@ -329,7 +329,7 @@ struct CollisionRateKernel {
 
 __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, double timestep)
 {
-	double mass, tempProbability, epoch = population.GetEpoch(), sep;
+	double mass, tempProbability, epoch = population.GetEpoch(), sep, correction;
 	Event tempEvent;
 
 	// Filter Cube List
@@ -388,7 +388,11 @@ __host__ void OrbitTrace::MainCollision_GPU(DebrisPopulation & population, doubl
 
 	for (int i = 0; i < outList.size(); i++) {
 		CollisionPair objectPair = outList[i];
-		tempProbability = pList[i] * newSpaceCorrection;
+		if (objectPair.constellation < 0)
+			correction = 1;
+		else
+			correction = newSpaceCorrection;
+		tempProbability = pList[i] * correction;
 		if (tempProbability > 0) {
 			mass = objectPair.primaryMass + objectPair.secondaryMass;
 			tempEvent = Event(epoch, objectPair.primaryID, objectPair.secondaryID, objectPair.GetRelativeVelocity(), mass, objectPair.GetCollisionAltitude(), objectPair.GetMinSeparation(), tempProbability);

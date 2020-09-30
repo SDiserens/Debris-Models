@@ -97,7 +97,7 @@ private:
 		double dimension = config["CubeDimension"].asDouble();
 		int mcRuns = config["CubeMC"].asInt();
 		bool offset = offsetCubes;
-		double correctionFactor = config["NewSpaceCorrection"].asDouble();
+		double correctionFactor = config["CubeCorrection"].asDouble();
 
 		unique_ptr<CUBEApproach> model = make_unique<CUBEApproach>(probabilities, dimension, mcRuns, offset);
 		model->SetNewSpaceParameters(correctionFactor);
@@ -130,7 +130,7 @@ private:
 		bool probabilities = config["Verbose"].asBool();
 		double threshold = config["ConjunctionThreshold"].asDouble();
 		int MOIDtype = config["MOIDtype"].asInt();
-		double correctionFactor = config["NewSpaceCorrection"].asDouble();
+		double correctionFactor = config["OTCorrection"].asDouble();
 		
 		unique_ptr<OrbitTrace> model  = make_unique<OrbitTrace>(probabilities, threshold, MOIDtype);
 		model->SetNewSpaceParameters(correctionFactor);

@@ -1,39 +1,40 @@
 {
-  "scenarioFilename": "Simulation_StarlinkFull_Collision.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
+  "scenarioFilename": "Simulation_StarlinkFull.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
   "BackgroundPop": "Background_StarlinkOver1kg.json",
-  "StepSize": 5, // Size of default timestep (days)
-  "MonteCarlo": 1,
+  "StepSize": 1, // Size of default timestep (days)
+  "MonteCarlo": 10,
   "logging": true,
   "launches": false,
   //
   "Propagator": "SGP4", // "SGP4", "SimpleJ2"
   "PropagatorConfig": {
     "opsMode": "i", // operation mode of the SGP4, either i (improved) or a (afspc).
-    "gravModel": "wgs84" // which set of constants to use  wgs72, wgs84
+    "gravModel": "wgs72" // which set of constants to use  wgs72, wgs84
   },
 
   //
-  "Fragmentation": "NSBM", // "NSBM",
+  "Fragmentation": "NSBM",// "NSBM", "NSBM-new",
   "FragmentationConfig": {
     "minLength": 0.01, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g
     "numberBuckets": 30, //number of buckets to split fragments sizes between
-    "bridgingFucntion": "Weighted", // brdiign function to use between 8cm and 11cm : "Small", "Large", "Mean", "Weighted",
+    "bridgingFunction": "Weighted", // brdiign function to use between 8cm and 11cm : "Small", "Large", "Mean", "Weighted",
     "explosionScaling": 1, //Value to use for scaling number of explosion fragments
-    "representativeFragmentThreshold": 0.1, // Fragment size in metres below which represetntative fragmnets should be used
-    "representativeFragmentNumber": 10 // Max number of fragments to be respresented by a single object
+    "representativeFragmentThreshold": 0.05, // Fragment size in metres below which represetntative fragmnets should be used
+    "representativeFragmentNumber": 100 // Max number of fragments to be respresented by a single object
   },
 
   //
-  "CollsionAlgorithm": "OrbitTrace", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
+  "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
     "ParallelGPU": false, // takes priority over CPU
     "ParallelCPU": true,
     "CubeDimension": 10.0, // Cube Size or threshold distance
+    "NewSpaceCorrection": 1, // Correction factor applied /day
     "CubeMC": 100, // Cube runs to do each step
     "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.0, // inner threshold for Hoots
-    "Verbose": true, // Probability output / time output for different methods
+    "Verbose": false, // Probability output / time output for different methods
     "outputScaling": 5, // collision probabilities of the order of 10^(-outputScaling)
     "MOIDtype": 1
   }

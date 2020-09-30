@@ -9,7 +9,7 @@ public:
 	OrbitalElements primaryElements, secondaryElements;
 	long primaryID, secondaryID;
 	double approachAnomalyP, approachAnomalyS, approachAnomalyP2, approachAnomalyS2, probability=0, minSeperation, minSeperation2, primaryAnomaly, secondaryAnomaly, primaryMass, secondaryMass;
-	bool coplanar, collision;
+	bool coplanar, collision, constellation;
 	int overlapCount;
 	double relativeVelocity, relativeVelocity2, relativeInclination, boundingRadii;
 protected:

@@ -30,6 +30,7 @@ void CUBEApproach::SetMOID(int moid)
 void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep)
 {
 	double tempProbability, collisionRate, altitude, mass, adjustment;
+	double correction;
 	list<CollisionPair> pairList;
 	mutex mtx;
 	// Filter Cube List
@@ -51,7 +52,11 @@ void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep
 			CollisionPair collisionPair(population.GetObject(collisionPairID.primaryID), population.GetObject(collisionPairID.secondaryID));
 			//	-- Calculate collision rate in cube
 			collisionRate = CollisionRate(collisionPair);
-			tempProbability = adjustment * collisionRate * newSpaceCorrection;
+			if (collisionPair.constellation < 0)
+				correction = 1;
+			else
+				correction = newSpaceCorrection;
+			tempProbability = adjustment * collisionRate * correction;
 
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;
@@ -71,7 +76,7 @@ void CUBEApproach::MainCollision_P(DebrisPopulation& population, double timeStep
 
 void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 {
-	double tempProbability, collisionRate, altitude, mass, adjustment;
+	double tempProbability, collisionRate, altitude, mass, adjustment, correction;
 	list<CollisionPair> pairList;
 	// Filter Cube List
 	for (int j = 0; j < mcRuns; j++)
@@ -92,7 +97,11 @@ void CUBEApproach::MainCollision(DebrisPopulation& population, double timeStep)
 			CollisionPair collisionPair(population.GetObject(collisionPairID.primaryID), population.GetObject(collisionPairID.secondaryID));
 			//	-- Calculate collision rate in cube
 			collisionRate = CollisionRate(collisionPair);
-			tempProbability = adjustment * collisionRate * newSpaceCorrection;
+			if (collisionPair.constellation < 0)
+				correction = 1;
+			else
+				correction = newSpaceCorrection;
+			tempProbability = adjustment * collisionRate * correction;
 
 			altitude = collisionPair.primaryElements.GetRadialPosition();
 			mass = collisionPair.primaryMass + collisionPair.secondaryMass;

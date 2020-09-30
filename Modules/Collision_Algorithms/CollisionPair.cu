@@ -21,7 +21,7 @@ CollisionPair::CollisionPair(DebrisObject& objectI, DebrisObject& objectJ)
 	//CalculateArgumenstOfIntersection();
 	boundingRadii = (objectI.GetRadius() + objectJ.GetRadius()) * 0.001;
 	overlapCount = 1;
-
+	constellation = objectI.GetConstellationID() + objectJ.GetConstellationID();
 	CalculateRelativeInclination();
 }
 
