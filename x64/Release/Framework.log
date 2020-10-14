@@ -1,8 +1,7 @@
-﻿  Framework.cpp
-Framework.cpp(214): warning C4267: '=': conversion from 'size_t' to 'volatile int', possible loss of data
+﻿  NASAStdBrkUpMdl.cpp
   Generating code
-  154 of 4514 functions ( 3.4%) were compiled, the rest were copied from previous compilation.
+  152 of 4628 functions ( 3.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    22 functions had inline decision re-evaluated but remain unchanged
+    21 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

@@ -1,5 +1,5 @@
 {
-  "scenarioFilename": "Simulation_StarlinkFull.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
+  "scenarioFilename": "Simulation_StarlinkFull_Collision.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
   "BackgroundPop": "Background_StarlinkOver1kg.json",
   "StepSize": 1, // Size of default timestep (days)
   "MonteCarlo": 10,
@@ -13,7 +13,7 @@
   },
 
   //
-  "Fragmentation": "NSBM",// "NSBM", "NSBM-new",
+  "Fragmentation": "NSBM-new",// "NSBM", "NSBM-new",
   "FragmentationConfig": {
     "minLength": 0.01, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g

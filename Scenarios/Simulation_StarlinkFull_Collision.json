@@ -9,7 +9,7 @@
       "definedEvent": {
         "CollisionID": 1,
         "RelativeVelocity": 10,
-        "fromEpoch": 50
+        "fromEpoch": 5
       },
       "mass": 1366,
       "radius": 1.414213,
@@ -29,7 +29,7 @@
       "definedEvent": {
         "CollisionID": 1,
         "RelativeVelocity": 10,
-        "fromEpoch": 50
+        "fromEpoch": 5
       },
       "mass": 260,  
       "constellationID": 1,

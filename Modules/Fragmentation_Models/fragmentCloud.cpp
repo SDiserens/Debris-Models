@@ -25,12 +25,29 @@ void FragmentCloud::AddFragment(DebrisObject fragment)
 {
 	fragments.push_back(fragment);
 	++debrisCount;
-	totalMass += fragment.GetMass();
+	assignedMass += fragment.GetMass();
 }
 
 void FragmentCloud::AddCloud(FragmentCloud debrisCloud)
 {
 	fragmentBuckets.push_back(debrisCloud);
 	debrisCount += debrisCloud.debrisCount;
-	totalMass += debrisCloud.totalMass;
+	assignedMass += debrisCloud.totalMass;
+}
+
+void FragmentCloud::ScaleMass(double massScaling)
+{
+	for (auto& fragment : fragments) {
+		fragment.SetMass(fragment.GetMass() * massScaling);
+	}
+
+	assignedMass *= massScaling;
+	totalMomentum = totalMomentum * massScaling;
+	totalKineticEnergy *= massScaling;
+
+	averageMass *= massScaling;
+	averageDensity *= massScaling;
+	averageMomentum = averageMomentum * massScaling;
+	averageMomentumNorm *= massScaling;
+	averageKineticEnergy *= massScaling;
 }

@@ -537,6 +537,7 @@ void DebrisObject::SetArea(double xsection)
 void DebrisObject::SetMass(double newMass)
 {
 	mass = newMass;
+	CalculateAreaToMass();
 }
 
 void DebrisObject::SetNFrag(int n)

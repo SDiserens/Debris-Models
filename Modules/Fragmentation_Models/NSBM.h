@@ -45,7 +45,6 @@ public:
 	void CalculateRelativeVelocity();
 	void GenerateAreaToMassValue();
 	void CalculateVolume();
-
 	
 private:
 	void SetSmallAreaMassParameters();

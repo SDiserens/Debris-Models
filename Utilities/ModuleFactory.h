@@ -49,9 +49,9 @@ public:
 	};
 
 	static void  UpdateCollisionThreshold(string collisionType, Json::Value & config, double threshold) {
-		if (collisionType == "Cube" || collisionType == "Cube-offset")
+		if (collisionType == "Cube" || collisionType == "Cube-offset" || collisionType == "Cube-new")
 			config["CubeDimension"] = threshold;
-		else if (collisionType == "OrbitTrace")
+		else if (collisionType == "OrbitTrace" || collisionType == "OrbitTrace-new")
 			config["ConjunctionThreshold"] = threshold;
 		else if (collisionType == "Hoots")
 			config["ConjunctionThreshold"] = threshold;

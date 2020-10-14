@@ -224,8 +224,11 @@ int main(int argc, char** argv)
 
 			// Simulate Breakups and collision avoidance
 			if (breakUp) {
+				shuffle(collisionList.begin(), collisionList.end(), *generator);
 				// For each pair in collision list
 				for (Event collision : collisionList) {
+					if (!environmentPopulation.CheckObject(collision.primaryID) || !environmentPopulation.CheckObject(collision.secondaryID))
+						continue;
 					DebrisObject& target = environmentPopulation.GetObject(collision.primaryID);
 					DebrisObject& projectile = environmentPopulation.GetObject(collision.secondaryID);
 					tempProbability = 1.0 - pow((1.0 - collision.collisionProbability), (target.GetNFrag() * projectile.GetNFrag())); // adjust probabiltiy for representative fragments

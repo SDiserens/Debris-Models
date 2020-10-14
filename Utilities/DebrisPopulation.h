@@ -40,6 +40,7 @@ public:
 	int GetCAMCount();
 	double GetDuration();
 	DebrisObject& GetObject(long ID);
+	bool CheckObject(long ID);
 
 	void AddDebrisObject(DebrisObject debris);
 	void AddDefinedEvent(Event breakup);

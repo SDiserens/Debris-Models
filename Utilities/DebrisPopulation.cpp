@@ -272,6 +272,11 @@ DebrisObject& DebrisPopulation::GetObject(long ID)
 
 }
 
+bool DebrisPopulation::CheckObject(long ID)
+{
+	return (population.count(ID) > 0);
+}
+
 vector<Event> DebrisPopulation::GenerateExplosionList()
 {
 	vector<Event> explosionList;

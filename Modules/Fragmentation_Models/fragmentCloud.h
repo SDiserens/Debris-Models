@@ -23,8 +23,8 @@ public:
 	vector3D averageVelocity, totalMomentum, averageMomentum;
 
 	// Storage
-	std::vector<FragmentCloud> fragmentBuckets;
-	std::vector<DebrisObject> fragments;
+	std::list<FragmentCloud> fragmentBuckets;
+	std::list<DebrisObject> fragments;
 	
 	// Object Constructors
 	FragmentCloud();
@@ -34,5 +34,7 @@ public:
 	// Pre-define object functions
 	void AddFragment(DebrisObject fragment);
 	void AddCloud(FragmentCloud fragmentCloud);
+
+	void ScaleMass(double massScaling);
 };
 
