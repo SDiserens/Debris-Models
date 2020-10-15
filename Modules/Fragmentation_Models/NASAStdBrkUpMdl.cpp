@@ -302,10 +302,13 @@ void NSBMFragmentCloud::CreateFragmentBucket(DebrisObject& targetObject, double 
 
 void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 {
-	int repFrags, remainingFrags;
+	int repFrags, remainingFrags, representativeNumber=representativeFragmentNumber;
 	double tempLength;
 	double logMaxLength = log10(maxLength);
 	double logMinLength = log10(minLength);
+
+	if (numFrag > 100000)
+		representativeNumber = pow(10, floor(log10(numFrag) - 2));
 
 	for (int i = 0; i < numFrag; i)
 	{
@@ -319,8 +322,8 @@ void NSBMFragmentCloud::GenerateDebrisFragments(DebrisObject& targetObject)
 		else
 		{
 			remainingFrags = numFrag - i;
-			if (remainingFrags > representativeFragmentNumber)
-				repFrags = representativeFragmentNumber;
+			if (remainingFrags > representativeNumber)
+				repFrags = representativeNumber;
 			else
 				repFrags = remainingFrags;
 		}
