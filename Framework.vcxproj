@@ -220,6 +220,7 @@
     <ClCompile Include="Modules\Collision_Algorithms\MOID\distlink.cpp" />
     <ClCompile Include="Modules\Collision_Algorithms\MOID\moid.cpp" />
     <ClCompile Include="Modules\Collision_Algorithms\OrbitTrace.cpp" />
+    <ClCompile Include="Modules\Fragmentation_Models\fragmentation.cpp" />
     <ClCompile Include="Modules\Fragmentation_Models\FragmentationFunctions.cpp" />
     <ClCompile Include="Modules\Fragmentation_Models\FragmentCloud.cpp" />
     <ClCompile Include="Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp" />

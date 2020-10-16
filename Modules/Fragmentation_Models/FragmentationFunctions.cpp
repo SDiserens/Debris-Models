@@ -5,7 +5,7 @@
 
 double  catastrophicThreshold = 40;
 
-void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud& cloud, Event& fragmentationEvent)
+void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud& cloud, Event& fragmentationEvent, double massLimit)
 {
 	// Prevent accidental breakup of collision avoidance event
 	if (fragmentationEvent.GetEventType() >= 2) return;
@@ -24,7 +24,7 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 	{
 		for(auto & debris : bucketCloud.fragments)
 		{
-			if(debris.GetElements().eccentricity < 1)
+			if((debris.GetElements().eccentricity < 1) && (debris.GetMass() > massLimit))
 				currentPopulation.AddDebrisObject(debris);
 		}
 	}

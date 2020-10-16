@@ -7,16 +7,17 @@
 
 // Declaration of generic fragmentation functions - definition in FragmentationFunctions.cpp
 
-void MergeFragmentPopulations(DebrisPopulation& population, FragmentCloud& cloud, Event& fragmentationEvent);
+void MergeFragmentPopulations(DebrisPopulation& population, FragmentCloud& cloud, Event& fragmentationEvent, double massLimit);
 
 double CalculateEnergyToMass(double kineticEnergy, double mass);
 
 class BreakupModel
 {
 public:
-	double minLength, representativeFragmentThreshold, catastrophicThreshold;// J/g of target mass
+	double minLength, representativeFragmentThreshold, massLimit, catastrophicThreshold;// J/g of target mass
 	int representativeFragmentNumber;
 
 	virtual void mainBreakup(DebrisPopulation& population, Event& fragmentationEvent) = 0;
+	void SetMassLimit(double mass);
 	
 };

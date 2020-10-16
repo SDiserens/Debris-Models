@@ -157,7 +157,13 @@ private:
 		double representativeFragmentThreshold = config["representativeFragmentThreshold"].asDouble();
 		int representativeFragmentNumber = config["representativeFragmentNumber"].asInt();
 
-		return make_unique<NASABreakupModel>(minLength, catastrophicThreshold, numberBuckets, bridgingFucntion, explosionScaling, representativeFragmentThreshold, representativeFragmentNumber);
+		unique_ptr<NASABreakupModel> model = make_unique<NASABreakupModel>(minLength, catastrophicThreshold, numberBuckets, bridgingFucntion, explosionScaling, representativeFragmentThreshold, representativeFragmentNumber);
+
+		if (config.isMember("massLimit"))
+			model->SetMassLimit(config["massLimit"].asDouble());
+		else
+			model->SetMassLimit(0.001);
+		return model;
 	};	
 
 	static unique_ptr<NASABreakupModel> CreateNSBMNewInstance(Json::Value & config) {
@@ -172,6 +178,11 @@ private:
 
 		unique_ptr<NASABreakupModel> model = make_unique<NASABreakupModel>(minLength, catastrophicThreshold, numberBuckets, bridgingFucntion, explosionScaling, representativeFragmentThreshold, representativeFragmentNumber);
 		model->SetNewSpaceParameters();
+
+		if (config.isMember("massLimit"))
+			model->SetMassLimit(config["massLimit"].asDouble());
+		else
+			model->SetMassLimit(0.001);
 		return model;
 	};
 };

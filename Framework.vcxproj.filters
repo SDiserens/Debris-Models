@@ -197,6 +197,9 @@
     <ClCompile Include="Modules\Collision_Algorithms\MOID\brentmin.cpp">
       <Filter>Source Files\04 Collisions\MOID</Filter>
     </ClCompile>
+    <ClCompile Include="Modules\Fragmentation_Models\fragmentation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Framework.rc">

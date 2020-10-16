@@ -1,8 +1,8 @@
-﻿  NASAStdBrkUpMdl.cpp
-Modules\Fragmentation_Models\NASAStdBrkUpMdl.cpp(311): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+﻿  Framework.cpp
+Framework.cpp(215): warning C4267: '=': conversion from 'size_t' to 'volatile int', possible loss of data
   Generating code
-  155 of 4629 functions ( 3.3%) were compiled, the rest were copied from previous compilation.
+  157 of 4630 functions ( 3.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    19 functions had inline decision re-evaluated but remain unchanged
+    21 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Release\Framework.exe

@@ -13,7 +13,7 @@
   },
 
   //
-  "Fragmentation": "NSBM-new",// "NSBM", "NSBM-new",
+  "Fragmentation": "NSBM",// "NSBM", "NSBM-new",
   "FragmentationConfig": {
     "minLength": 0.01, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g
@@ -21,7 +21,8 @@
     "bridgingFunction": "Weighted", // brdiign function to use between 8cm and 11cm : "Small", "Large", "Mean", "Weighted",
     "explosionScaling": 1, //Value to use for scaling number of explosion fragments
     "representativeFragmentThreshold": 0.05, // Fragment size in metres below which represetntative fragmnets should be used
-    "representativeFragmentNumber": 100 // Max number of fragments to be respresented by a single object
+    "representativeFragmentNumber": 100, // Max number of fragments to be respresented by a single object
+    "massLimit": 0.01 // Mass limit of small fragments in Kg
   },
 
   //
@@ -30,7 +31,8 @@
     "ParallelGPU": false, // takes priority over CPU
     "ParallelCPU": true,
     "CubeDimension": 10.0, // Cube Size or threshold distance
-    "NewSpaceCorrection": 1, // Correction factor applied /day
+    "CubeCorrection": 4.652, // NewSpace Correction factor applie (specific to primary scenario)
+    "OTCorrection": 3.362, // NewSpace Correction factor applied (specific to primary scenario)
     "CubeMC": 100, // Cube runs to do each step
     "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.0, // inner threshold for Hoots

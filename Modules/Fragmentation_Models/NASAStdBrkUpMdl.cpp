@@ -17,6 +17,7 @@ NASABreakupModel::NASABreakupModel()
 	FragmentCloud::representativeFragmentNumber    = representativeFragmentNumber = 10;
 	NSBMFragmentCloud::scaling = scaling = 1;
 	NSBMDebrisFragment::bridgingFunction = bridgingFunction = "Weighted";
+	massLimit = 0.001;
 }
 
 NASABreakupModel::NASABreakupModel(double mL) : NASABreakupModel()
@@ -48,7 +49,7 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 		explosion = true;
 		// Simulate primary object breakup
 		NSBMFragmentCloud targetDebrisCloud(targetObject, minLength, newSpace);
-		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent);
+		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent, massLimit);
 	}
 
 	else
@@ -60,13 +61,13 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 		
 		// Simulate primary object breakup
 		NSBMFragmentCloud targetDebrisCloud(targetObject, projectileObject, minLength, newSpace);
-		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent);
+		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent, massLimit);
 
 		// Simulate secondary object breakup
 		NSBMFragmentCloud projectileDebrisCloud(projectileObject, targetObject, minLength, newSpace);
 		Event tempEvent(fragmentationEvent);
 		tempEvent.SwapPrimarySecondary();
-		MergeFragmentPopulations(population, projectileDebrisCloud, tempEvent);
+		MergeFragmentPopulations(population, projectileDebrisCloud, tempEvent, massLimit);
 	}
 
 }
