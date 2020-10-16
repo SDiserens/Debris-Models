@@ -120,7 +120,7 @@ NSBMFragmentCloud::NSBMFragmentCloud(DebrisObject& targetObject, DebrisObject& p
 
 	// Set parameters for computing fragment distribution
 	if (energyMassRatio > catastrophicThreshold)
-		if (newSpace)
+		if (newSpace && targetObject.IsIntact())
 			SetNumberFragmentParametersCatastrophicCollisionNS(energyMassRatio);
 		else
 			SetNumberFragmentParametersCatastrophicCollision();
