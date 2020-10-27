@@ -7,11 +7,13 @@ static double satelliteExplosionProbability = 0;
 static double pmdSuccess = 0;
 static double manoeuvreThreshold = 0.0001;
 
+static int objectSEQ = 0;
+
 class DebrisObject
 {
 protected:
 	OrbitalElements elements; // semi-major axis, eccentricity, inclination, right ascension of ascending node, arguement of perigee, anomalies
-	static int objectSEQ;
+
 	double meanAnomalyEpoch, radius, mass, length, area, areaToMass, removeEpoch, period, coefficientDrag, initEpoch, lifetime, bStar, currEpoch, launchCycle;
 	double avoidanceSucess = 0, explosionProbability = 0, collisionProbability=0;
 	char name[100];
@@ -122,6 +124,38 @@ protected:
 	void CalculateAreaToMass();
 };
 
+
+class RemovedObject {
+	//Object ID, Name, Object Type, Source Event, Mass, Remove Event, Remove Epoch, ParentID, SourceID, Source Type, Fragments Represented, State, Lifetime Collision Probability
+public:
+	long parentID, sourceID, objectID;
+	double mass, removeEpoch, collisionProbability;
+	bool isActive, isIntact, isPassive;
+	string name;
+	int sourceType, sourceEvent, removeEvent, objectType, nFrag;
+
+	RemovedObject();
+	RemovedObject(DebrisObject debris);
+	long GetID();
+	string GetName();
+	int GetRemoveEvent();
+	double GetRemoveEpoch();
+	double GetMass();
+	int	GetType();
+	long GetSourceID();
+	int GetSourceType();
+	int GetSourceEvent();
+	long GetParentID();
+	bool IsIntact();
+	bool IsActive();
+	bool IsPassive();
+	double GetCollisionProbability();
+	int GetNFrag();
+
+
+	void SetNewObjectID();
+	void RemoveObject(int removeType, double epoch); // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
+};
 
 DebrisObject CopyDebrisObject(DebrisObject & object);
 

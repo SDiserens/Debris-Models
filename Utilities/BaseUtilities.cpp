@@ -530,6 +530,7 @@ void WritePopulationData(string scenario, Json::Value & config, DebrisPopulation
 	strftime(date, sizeof(date), "%F", &currtime);
 	double epoch = population.GetStartEpoch();
 	DebrisObject tempDebris;
+	RemovedObject removeDebris;
 
 	mcRun = scenario.substr(scenario.find("#") - 1, scenario.find("."));
 	scenario = scenario.substr(0, scenario.find("#") - 1);
@@ -575,21 +576,21 @@ void WritePopulationData(string scenario, Json::Value & config, DebrisPopulation
 
 	outputFile << "\nObject ID, Name, Object Type, Source Event, Mass, Remove Event, Remove Epoch, ParentID, SourceID,  Source Type, Fragments Represented, State, Lifetime Collision Probability";
 		for (auto object : population.removedPopulation) {
-			tempDebris = object.second;
-			outputFile << "\n" + to_string(object.first) + "," + tempDebris.GetName() + "," + to_string(tempDebris.GetType()) + "," + to_string(tempDebris.GetSourceEvent()) +","+to_string(tempDebris.GetMass());
-			outputFile << "," + to_string(tempDebris.GetRemoveEvent()) + "," + to_string(tempDebris.GetRemoveEpoch() - epoch);
-			outputFile << "," + to_string(tempDebris.GetParentID()) + "," + to_string(tempDebris.GetSourceID()) + "," + to_string(tempDebris.GetSourceType()) + "," + to_string(tempDebris.GetNFrag());
-			if (tempDebris.GetType() == 2)
+			removeDebris = object.second;
+			outputFile << "\n" + to_string(object.first) + "," + removeDebris.GetName() + "," + to_string(removeDebris.GetType()) + "," + to_string(removeDebris.GetSourceEvent()) +","+to_string(removeDebris.GetMass());
+			outputFile << "," + to_string(removeDebris.GetRemoveEvent()) + "," + to_string(removeDebris.GetRemoveEpoch() - epoch);
+			outputFile << "," + to_string(removeDebris.GetParentID()) + "," + to_string(removeDebris.GetSourceID()) + "," + to_string(removeDebris.GetSourceType()) + "," + to_string(removeDebris.GetNFrag());
+			if (removeDebris.GetType() == 2)
 				outputFile << ",Debris";
-			else if (tempDebris.IsActive())
+			else if (removeDebris.IsActive())
 				outputFile << ",Active";
-			else if (tempDebris.IsPassive())
+			else if (removeDebris.IsPassive())
 				outputFile << ",Inactive - Passivated";
-			else if (tempDebris.IsIntact())
+			else if (removeDebris.IsIntact())
 				outputFile << ",Inactive - Not Passivated";
 			else
 				outputFile << ",Inactive-Damaged";
-			outputFile << "," + to_string(tempDebris.GetCollisionProbability());
+			outputFile << "," + to_string(removeDebris.GetCollisionProbability());
 		}
 		for (auto object : population.population) {
 			tempDebris = object.second;

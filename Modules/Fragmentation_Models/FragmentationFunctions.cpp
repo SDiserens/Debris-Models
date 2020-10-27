@@ -24,10 +24,14 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 	{
 		for(auto & debris : bucketCloud.fragments)
 		{
-			if((debris.GetElements().eccentricity < 1) && (debris.GetMass() > massLimit))
+			if ((debris.GetElements().eccentricity < 1) && (debris.GetMass() > massLimit))
 				currentPopulation.AddDebrisObject(debris);
+			else
+				debris.~DebrisObject();
 		}
 	}
+	cloud.ClearCloud();
+	//cloud.~FragmentCloud();
 }
 
 double CalculateEnergyToMass(double kineticEnergy, double mass) // Returns E/m ratio in J/g

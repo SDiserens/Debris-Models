@@ -1,8 +1,8 @@
 {
-  "scenarioFilename": "Simulation_StarlinkFull_Collision.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json", 
-  "BackgroundPop": "Background_StarlinkOver1kg.json",
-  "StepSize": 1, // Size of default timestep (days)
-  "MonteCarlo": 10,
+  "scenarioFilename": "Simulation_StarlinkFull_Collision.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
+  //"BackgroundPop": "Background_StarlinkOver1kg.json",
+  "StepSize": 5, // Size of default timestep (days)
+  "MonteCarlo": 1,
   "logging": true,
   "launches": false,
   //
@@ -13,7 +13,7 @@
   },
 
   //
-  "Fragmentation": "NSBM",// "NSBM", "NSBM-new",
+  "Fragmentation": "NSBM-new", // "NSBM", "NSBM-new",
   "FragmentationConfig": {
     "minLength": 0.01, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g
@@ -26,14 +26,14 @@
   },
 
   //
-  "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
+  "CollsionAlgorithm": "Cube-new", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
     "ParallelGPU": false, // takes priority over CPU
-    "ParallelCPU": true,
+    "ParallelCPU": false,
     "CubeDimension": 10.0, // Cube Size or threshold distance
     "CubeCorrection": 4.652, // NewSpace Correction factor applie (specific to primary scenario)
     "OTCorrection": 3.362, // NewSpace Correction factor applied (specific to primary scenario)
-    "CubeMC": 100, // Cube runs to do each step
+    "CubeMC": 1, // Cube runs to do each step
     "ConjunctionThreshold": 0.0, //Threshold for orbit-trace and hoots
     "CollisionThreshold": 0.0, // inner threshold for Hoots
     "Verbose": false, // Probability output / time output for different methods

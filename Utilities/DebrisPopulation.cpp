@@ -267,8 +267,8 @@ DebrisObject& DebrisPopulation::GetObject(long ID)
 		return population.at(ID);
 	else if (loadingPopulation.count(ID) > 0)
 		return loadingPopulation.at(ID);
-	else
-		return removedPopulation.at(ID);
+	//else
+		//return removedPopulation.at(ID);
 
 }
 
@@ -298,34 +298,39 @@ vector<Event> DebrisPopulation::GenerateDefinedEventList()
 
 void DebrisPopulation::DecayObject(long ID)
 {
-	DebrisObject tempObject(population[ID]);
+	RemovedObject tempObject;
+	tempObject = RemovedObject(population[ID]);
 	population.erase(ID);
 	tempObject.RemoveObject(0, currentEpoch);
 	removedPopulation.emplace(ID, tempObject);
-	totalMass -= tempObject.GetMass() * tempObject.GetNFrag();
-	populationCount -= tempObject.GetNFrag();
+
+	tempObject = RemovedObject(removedPopulation[ID]);
+	int nFrag = tempObject.GetNFrag();
+	totalMass -= tempObject.GetMass() * nFrag;
+	populationCount -= nFrag;
 	switch (tempObject.GetType()) {
 		case 0: 
-			upperStageCount -= tempObject.GetNFrag();
+			upperStageCount -= nFrag;
 			break;
 		case 1: 
-			spacecraftCount -= tempObject.GetNFrag();
+			spacecraftCount -= nFrag;
 			break;
 		case 2: 
-			debrisCount -= tempObject.GetNFrag();
+			debrisCount -= nFrag;
 			break;
 	}
+
 }
 
 void DebrisPopulation::ExplodeObject(long ID)
 {
 	DebrisObject& tempObject(population[ID]);
-	DebrisObject newObject(tempObject);
+	RemovedObject newObject(tempObject);
 	newObject.RemoveObject(1, currentEpoch);
 	if (tempObject.GetNFrag() > 1)
 	{
 		tempObject.RemoveNFrag();
-		newObject.SetNFrag(1);
+		newObject.nFrag = 1;
 		newObject.SetNewObjectID();
 	}
 	else {
@@ -351,12 +356,12 @@ void DebrisPopulation::ExplodeObject(long ID)
 void DebrisPopulation::CollideObject(long ID)
 {
 	DebrisObject& tempObject(population[ID]);
-	DebrisObject newObject(tempObject);
+	RemovedObject newObject(tempObject);
 	newObject.RemoveObject(2, currentEpoch);
 	if (tempObject.GetNFrag() > 1)
 	{
 		tempObject.RemoveNFrag();
-		newObject.SetNFrag(1);
+		newObject.nFrag = 1;
 		newObject.SetNewObjectID();
 	}
 	else {

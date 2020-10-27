@@ -1,5 +1,7 @@
-﻿  Framework.cpp
-e:\work\modelling framework\framework.cpp(215): warning C4267: '=': conversion from 'size_t' to 'volatile int', possible loss of data
+﻿  FragmentationFunctions.cpp
+jsoncpp.lib(json_reader.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_reader.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
+jsoncpp.lib(json_value.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_value.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
+jsoncpp.lib(json_writer.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_writer.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.exe
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.pdb (Partial PDB)
 BSCMAKE : warning BK4503: minor error in .SBR file 'x64\Debug\CUBE.sbr' ignored

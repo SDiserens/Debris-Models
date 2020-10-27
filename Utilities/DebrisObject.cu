@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-int DebrisObject::objectSEQ = 0;
+//int DebrisObject::objectSEQ = 0;
 
 DebrisObject::DebrisObject()
 {
@@ -526,6 +526,7 @@ void DebrisObject::UpdateCollisionProbability(double probability)
 void DebrisObject::SetRadius(double radii)
 {
 	radius = radii;
+	length = 2 * radii;
 }
 
 void DebrisObject::SetArea(double xsection)
@@ -637,4 +638,116 @@ DebrisObject CopyDebrisObject(DebrisObject & object)
 bool CompareInitEpochs(DebrisObject objectA, DebrisObject objectB)
 {
 	return objectA.GetInitEpoch() < objectB.GetInitEpoch();
+}
+
+RemovedObject::RemovedObject() {
+
+}
+
+RemovedObject::RemovedObject(DebrisObject debris) {
+	parentID = debris.GetParentID();
+	sourceID = debris.GetSourceID();
+	objectID = debris.GetID();
+	mass = debris.GetMass();
+	removeEpoch = debris.GetRemoveEpoch();
+	collisionProbability = debris.GetCollisionProbability();
+	isActive = debris.IsActive();
+	isIntact = debris.IsIntact();
+	isPassive = debris.IsPassive();
+	name = debris.GetName();
+	sourceType = GetSourceType();
+	sourceEvent = debris.GetSourceEvent();
+	removeEvent = debris.GetRemoveEvent();
+	objectType = debris.GetType();
+	nFrag = debris.GetNFrag();
+}
+
+long RemovedObject::GetID()
+{
+	return objectID;
+}
+
+double RemovedObject::GetMass()
+{
+	return mass;
+}
+string RemovedObject::GetName()
+{
+	string tempname(name);
+	if (tempname.size() > 0)
+		return tempname;
+	else
+		return to_string(objectID);
+}
+long RemovedObject::GetSourceID()
+{
+	return sourceID;
+}
+
+long RemovedObject::GetParentID()
+{
+	return parentID;
+}
+int RemovedObject::GetType()
+{
+	return objectType;
+}
+
+int RemovedObject::GetSourceType()
+{
+	return sourceType;
+}
+
+int RemovedObject::GetSourceEvent()
+{
+	return sourceEvent;
+}
+
+
+bool RemovedObject::IsIntact()
+{
+	return isIntact;
+}
+
+bool RemovedObject::IsActive()
+{
+	return isActive;
+}
+
+bool RemovedObject::IsPassive()
+{
+	return isPassive;
+}
+
+int RemovedObject::GetRemoveEvent()
+{
+	return removeEvent;
+}
+
+double RemovedObject::GetRemoveEpoch()
+{
+	return removeEpoch;
+}
+
+int RemovedObject::GetNFrag()
+{
+	return nFrag;
+}
+
+double RemovedObject::GetCollisionProbability()
+{
+	return collisionProbability;
+}
+
+
+void RemovedObject::RemoveObject(int removeType, double epoch) // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
+{
+	removeEpoch = epoch;
+	removeEvent = removeType;
+	isIntact = false;
+}
+
+void RemovedObject::SetNewObjectID()
+{
+	objectID = ++objectSEQ;
 }

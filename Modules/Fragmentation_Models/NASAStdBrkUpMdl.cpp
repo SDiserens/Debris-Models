@@ -462,7 +462,7 @@ void NSBMFragmentCloud::SetNumberFragmentParametersCatastrophicCollisionNS(doubl
 {
 	double ejectaMass = totalMass;
 	nFragCoefficient = 0.02 * pow(ejectaMass, 0.75);
-	nFragExponent = -2.2 - 100/sqrt(eMr);
+	nFragExponent = -2.0 - 4.0/log10(eMr);
 }
 
 void NSBMFragmentCloud::SetNumberOfFragments(int nFrag)

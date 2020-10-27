@@ -20,6 +20,11 @@ FragmentCloud::~FragmentCloud()
 {
 }
 
+void FragmentCloud::ClearCloud()
+{
+	fragmentBuckets.clear();
+	fragments.clear();
+}
 
 void FragmentCloud::AddFragment(DebrisObject fragment)
 {

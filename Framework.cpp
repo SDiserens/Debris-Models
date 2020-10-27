@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "Modules\Modules.h"
 #include "Utilities\ModuleFactory.h"
+//#define VLD_FORCE_ENABLE
+#include <vld.h>
 using namespace std;
 
 int main(int argc, char** argv)
@@ -118,7 +120,7 @@ int main(int argc, char** argv)
 	// ----------------------------
 	// --- Initialise population --
 	// ----------------------------
-	DebrisPopulation initPopulation, environmentPopulation;
+	DebrisPopulation environmentPopulation; //initPopulation, 
 
 	// Load population
 	auto& propagator = ModuleFactory::CreatePropagator(propagatorType, environmentPopulation, propagatorConfig);
@@ -138,29 +140,29 @@ int main(int argc, char** argv)
 
 	auto& breakUp = ModuleFactory::CreateBreakupModel(breakUpType, fragmentationConfig);
 
-
-	// ----------------------------
-	// Load Environment Parameters
-	// ----------------------------
-	elapsedDays = 0;
-
-	cout << "Reading Population File : " + populationFilename + "...\n";
-	LoadScenario(initPopulation, populationFilename);
-	if (config.isMember("BackgroundPop")) {
-		cout << "Reading Background File : " + backgroundFilename + "...\n";
-		LoadBackground(initPopulation, backgroundFilename);
-	}
-	populationFilename = populationFilename.substr(0, populationFilename.find("."));
-	simulationDays = initPopulation.GetDuration();
-	initPopulation.SetLaunches(launches);
-
 	// ----------------------------
 	//  Simulate Environment Runs  
 	// ----------------------------
 	cout << "Running " + to_string(mcRuns) + " simulations of " + to_string(simulationDays) + " days, using " + propagatorType + ", " + breakUpType + " and " + collisionType + "...\n";
 	for (int j = 0; j < mcRuns; j++)
 	{
-		environmentPopulation = DebrisPopulation(initPopulation);
+		// ----------------------------
+		// Load Environment Parameters
+		// ----------------------------
+		elapsedDays = 0;
+
+		cout << "Reading Population File : " + populationFilename + "...\n";
+		LoadScenario(environmentPopulation, populationFilename);
+		if (config.isMember("BackgroundPop")) {
+			cout << "Reading Background File : " + backgroundFilename + "...\n";
+			LoadBackground(environmentPopulation, backgroundFilename);
+		}
+		populationFilename = populationFilename.substr(0, populationFilename.find("."));
+		simulationDays = environmentPopulation.GetDuration();
+		environmentPopulation.SetLaunches(launches);
+
+	
+		//environmentPopulation = DebrisPopulation(initPopulation);
 		propagator->SyncPopulation();
 
 		// Check for Pre-specified Events

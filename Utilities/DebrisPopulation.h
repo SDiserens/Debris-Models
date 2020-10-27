@@ -16,7 +16,8 @@ protected:
 	vector<DebrisObject> launchTraffic;
 
 public:
-	unordered_map<long, DebrisObject> population, removedPopulation;
+	unordered_map<long, DebrisObject> population;
+	unordered_map<long, RemovedObject> removedPopulation;
 
 public:
 	DebrisPopulation();

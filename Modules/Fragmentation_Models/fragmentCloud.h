@@ -30,6 +30,7 @@ public:
 	FragmentCloud();
 	FragmentCloud(double minLength, double maxLength, int buckets);
 	~FragmentCloud();
+	void ClearCloud();
 
 	// Pre-define object functions
 	void AddFragment(DebrisObject fragment);
