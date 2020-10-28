@@ -28,6 +28,7 @@ DebrisObject::DebrisObject(double init_radius, double init_mass, double init_len
 	periodSync = false;
 	coefficientDrag = 2.2;
 	bStar = NAN;
+	sourceEvent = 0;
 
 	noradID = -1;
 	switch (type) {
@@ -68,6 +69,7 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 
 	objectID = ++objectSEQ;
 	sourceID = objectID;
+	sourceEvent = 0;
 	parentID = 0;
 	noradID = stoi(TLE3.substr(2, 5));
 
@@ -655,7 +657,7 @@ RemovedObject::RemovedObject(DebrisObject debris) {
 	isIntact = debris.IsIntact();
 	isPassive = debris.IsPassive();
 	name = debris.GetName();
-	sourceType = GetSourceType();
+	sourceType = debris.GetSourceType();
 	sourceEvent = debris.GetSourceEvent();
 	removeEvent = debris.GetRemoveEvent();
 	objectType = debris.GetType();

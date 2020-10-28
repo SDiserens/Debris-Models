@@ -366,7 +366,7 @@ void DebrisPopulation::CollideObject(long ID)
 	}
 	else {
 		population.erase(ID);
-		newObject.RemoveObject(1, currentEpoch);
+		newObject.RemoveObject(2, currentEpoch);
 	}
 	removedPopulation.emplace(newObject.GetID(), newObject);
 	totalMass -= tempObject.GetMass();
