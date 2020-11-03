@@ -33,20 +33,27 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList(DebrisPopulation & popula
 
 list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & population)
 {
-	size_t n = population.GetPopulationSize();
-	size_t N = n * (n - 1) / 2.0;
-	vector<long> keys;
-	list<CollisionPair> pairList(N);
+	size_t n = population.population.size();
+	//size_t N = n * (n - 1) / 2.0;
+	//vector<long> keys;
+	list<CollisionPair> pairList;
+
 	// For each object in population - parallelised
-	
 	mutex mtx;
-	concurrency::parallel_for_each(population.population.begin(), population.population.end(), [&](auto& it) {
-		auto jt = population.population.find(it.first);
-		for (++jt; jt != population.population.end(); ++jt)
+
+	auto popStart = population.population.begin();
+	auto popEnd = population.population.end();
+
+	concurrency::parallel_for(size_t(0), n-1, [&](size_t i) {
+		unordered_map<long, DebrisObject>::iterator jt, it = popStart;
+		advance(it, i);
+		for (int j=i+1; j < n; j++)
 		{
+			jt = popStart;
+			advance(jt, j);
 			/// Add pair to list
 			//DebrisObject& primaryObject(population.Ge), secondaryObject;
-			CollisionPair pair(it.second, jt->second);
+			CollisionPair pair(it->second, jt->second);
 			if (PerigeeApogeeTest(pair)) {
 				mtx.lock();
 				pairList.push_back(pair);
@@ -57,8 +64,8 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & popu
 		}
 	});
 
-	/*
-
+	
+/*
 	for_each(population.population.begin(), population.population.end(), [&](auto& it) {
 		keys.push_back(it.first);
 	});
@@ -72,9 +79,13 @@ list<CollisionPair> CollisionAlgorithm::CreatePairList_P(DebrisPopulation & popu
 			++x;
 		}
 		size_t y = x + i;
-		pairList[i] = CollisionPair(population.GetObject(keys.at(--x)), population.GetObject(keys.at(--y)));
-	});
-	*/
+		CollisionPair pair(population.GetObject(keys.at(--x)), population.GetObject(keys.at(--y)));
+
+		mtx.lock();
+		pairList.push_back(pair);
+		mtx.unlock();
+	});*/
+	
 	return pairList;
 }
 
