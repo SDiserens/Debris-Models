@@ -1,6 +1,6 @@
 {
-  "scenarioFilename": "Simulation_StarlinkFull.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
-  "BackgroundPop": "Background_StarlinkOver1kg.json",
+  "scenarioFilename": "Simulation_StarlinkFull_Explosion.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
+  //"BackgroundPop": "Background_StarlinkOver1kg.json",
   "StepSize": 5, // Size of default timestep (days)
   "MonteCarlo": 1,
   "logging": true,
@@ -13,7 +13,7 @@
   },
 
   //
-  "Fragmentation": "NSBM", // "NSBM", "NSBM-new",
+  "Fragmentation": "NSBM-new", // "NSBM", "NSBM-new",
   "FragmentationConfig": {
     "minLength": 0.01, // Min fragment length in metres
     "catastrophicThreshold": 40, // theshold for cat breakup in J/g
@@ -26,7 +26,7 @@
   },
 
   //
-  "CollsionAlgorithm": "OrbitTrace", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
+  "CollsionAlgorithm": "Cube", // "Cube", "OrbitTrace", "Hoots", "Cube-offset"
   "CollisionConfig": {
     "ParallelGPU": false, // takes priority over CPU
     "ParallelCPU": true,

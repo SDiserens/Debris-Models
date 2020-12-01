@@ -7,8 +7,6 @@ static double satelliteExplosionProbability = 0;
 static double pmdSuccess = 0;
 static double manoeuvreThreshold = 0.0001;
 
-static int objectSEQ = 0;
-
 class DebrisObject
 {
 protected:
@@ -35,7 +33,7 @@ public:
 	DebrisObject(string TLE1, string TLE2, string TLE3);
 	DebrisObject(string TLE2, string TLE3);
 	CUDA_CALLABLE_MEMBER ~DebrisObject();
-	void RegenerateID();
+	void RegenerateID(long ID);
 
 	CUDA_CALLABLE_MEMBER long GetID();
 	long GetSourceID();
@@ -96,6 +94,7 @@ public:
 	void UpdateEpoch(double epochStep);
 	void UpdateCollisionProbability(double probability);
 
+	void SetID(long ID);
 	void SetSourceID(long ID);
 	void SetCentralBody(int c);
 	void SetParentID(long ID);
@@ -107,7 +106,6 @@ public:
 	void SetArea(double xsection);
 	void SetMass(double newMass);
 	void SetNFrag(int n);
-	void SetNewObjectID();
 	void SetConstellationID(int id);
 	void SetLaunchCycle(double cycle);
 
@@ -153,10 +151,9 @@ public:
 	int GetNFrag();
 
 
-	void SetNewObjectID();
+	void SetNewObjectID(long ID);
 	void RemoveObject(int removeType, double epoch); // (0, 1, 2) = (Decay, Explosion, Collision) respectively.
 };
 
-DebrisObject CopyDebrisObject(DebrisObject & object);
 
 bool CompareInitEpochs(DebrisObject objectA, DebrisObject objectB);

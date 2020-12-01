@@ -474,7 +474,7 @@ void NSBMFragmentCloud::SetNumberOfFragments(int nFrag)
 // Debris Fragments
 NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion, int source, int numFrag)
 {
-	objectID = ++objectSEQ;
+	objectID = -1;
 	sourceType = source;
 	objectType = 2;
 	nFrag = numFrag;
@@ -524,7 +524,7 @@ NSBMDebrisFragment::NSBMDebrisFragment(double init_length, bool init_explosion, 
 
 NSBMDebrisFragment::NSBMDebrisFragment(double tempLength, double init_mass, bool init_explosion, int source, int numFrag)
 {
-	objectID = ++objectSEQ;
+	objectID = -1;
 	lambda = log10(tempLength);
 	mass = init_mass;
 	nFrag = numFrag;

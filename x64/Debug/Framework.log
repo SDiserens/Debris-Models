@@ -1,7 +1,8 @@
-﻿  FragmentationFunctions.cpp
-jsoncpp.lib(json_reader.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_reader.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_value.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_value.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
-jsoncpp.lib(json_writer.obj) : warning LNK4099: PDB 'jsoncpp_lib_static.pdb' was not found with 'jsoncpp.lib(json_writer.obj)' or at 'E:\Work\Modelling Framework\x64\Debug\jsoncpp_lib_static.pdb'; linking object as if no debug info
+﻿  DebrisPopulation.cpp
+e:\work\modelling framework\utilities\debrispopulation.cpp(51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+e:\work\modelling framework\utilities\debrispopulation.cpp(60): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+e:\work\modelling framework\utilities\debrispopulation.cpp(218): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+e:\work\modelling framework\utilities\debrispopulation.cpp(275): warning C4715: 'DebrisPopulation::GetObject': not all control paths return a value
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.exe
   Framework.vcxproj -> E:\Work\Modelling Framework\x64\Debug\Framework.pdb (Partial PDB)
 BSCMAKE : warning BK4503: minor error in .SBR file 'x64\Debug\CUBE.sbr' ignored

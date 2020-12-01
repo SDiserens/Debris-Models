@@ -1,5 +1,7 @@
 #pragma once
 
+static int objectSEQ = 0;
+
 class DebrisPopulation
 {
 protected:
@@ -43,7 +45,7 @@ public:
 	DebrisObject& GetObject(long ID);
 	bool CheckObject(long ID);
 
-	void AddDebrisObject(DebrisObject debris);
+	long AddDebrisObject(DebrisObject debris);
 	void AddDefinedEvent(Event breakup);
 	void AddLaunchTraffic(vector<DebrisObject> launchTraffic);
 	void AddDebrisEvent(Event debrisEvent);
@@ -63,3 +65,5 @@ public:
 	vector<Event> GetEventLog();
 };
 
+
+DebrisObject CopyDebrisObject(DebrisObject & object);

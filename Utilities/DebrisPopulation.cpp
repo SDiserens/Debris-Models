@@ -140,10 +140,11 @@ void DebrisPopulation::UpdateEpoch(double timeStep)
 	currentEpoch += timeStep;
 }
 
-void DebrisPopulation::AddDebrisObject(DebrisObject debris)
+long DebrisPopulation::AddDebrisObject(DebrisObject debris)
 {
 	double debEpoch = debris.GetInitEpoch();
-	long ID = debris.GetID();
+	long ID = ++objectSEQ;
+	debris.SetID(ID);
 
 	if (isnan(debEpoch))
 	{
@@ -186,6 +187,7 @@ void DebrisPopulation::AddDebrisObject(DebrisObject debris)
 		initEpochs.push_back(make_pair(debEpoch, ID));
 		sort(initEpochs.begin(), initEpochs.end());
 	}
+	return ID;
 }
 
 void DebrisPopulation::AddDefinedEvent(Event breakup)
@@ -331,7 +333,7 @@ void DebrisPopulation::ExplodeObject(long ID)
 	{
 		tempObject.RemoveNFrag();
 		newObject.nFrag = 1;
-		newObject.SetNewObjectID();
+		newObject.SetNewObjectID(++objectSEQ);
 	}
 	else {
 		population.erase(ID);
@@ -362,7 +364,7 @@ void DebrisPopulation::CollideObject(long ID)
 	{
 		tempObject.RemoveNFrag();
 		newObject.nFrag = 1;
-		newObject.SetNewObjectID();
+		newObject.SetNewObjectID(++objectSEQ);
 	}
 	else {
 		population.erase(ID);
@@ -424,3 +426,10 @@ vector<Event> DebrisPopulation::GetEventLog()
 	return eventLog;
 }
 
+
+DebrisObject CopyDebrisObject(DebrisObject & object)
+{
+	DebrisObject newObject = object;
+	newObject.RegenerateID(++objectSEQ);
+	return newObject;
+}

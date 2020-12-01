@@ -12,8 +12,8 @@ DebrisObject::DebrisObject()
 DebrisObject::DebrisObject(double init_radius, double init_mass, double init_length, double semiMajorAxis, double eccentricity, double inclination,
 	double rightAscension, double argPerigee, double init_meanAnomaly, int type)
 {
-	objectID = ++objectSEQ; // This should be generating a unique ID per object incl. when threading (needs revision for multi-thread)
-	sourceID = objectID;
+	objectID = -1; // This should be generating a unique ID per object incl. when threading (needs revision for multi-thread)
+	sourceID = -1;
 	parentID = 0;
 	radius = init_radius;
 	area = Pi * radius * radius;
@@ -67,8 +67,8 @@ DebrisObject::DebrisObject(string TLE2, string TLE3)
 	int epochYear;
 	double meanMotion, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, init_meanAnomaly, epochDay;
 
-	objectID = ++objectSEQ;
-	sourceID = objectID;
+	objectID = -1;
+	sourceID = -1;
 	sourceEvent = 0;
 	parentID = 0;
 	noradID = stoi(TLE3.substr(2, 5));
@@ -118,9 +118,9 @@ DebrisObject::~DebrisObject()
 {
 }
 
-void DebrisObject::RegenerateID()
+void DebrisObject::RegenerateID(long ID)
 {
-	objectID = ++objectSEQ;
+	objectID = ID;
 }
 
 long DebrisObject::GetID()
@@ -466,6 +466,11 @@ double DebrisObject::GetPerigee()
 }
 
 
+void DebrisObject::SetID(long ID)
+{
+	objectID = ID;
+}
+
 void DebrisObject::SetSourceID(long ID)
 {
 	sourceID = ID;
@@ -548,11 +553,6 @@ void DebrisObject::SetNFrag(int n)
 	nFrag = 1;
 }
 
-void DebrisObject::SetNewObjectID()
-{
-	objectID = ++objectSEQ;
-}
-
 void DebrisObject::SetConstellationID(int id)
 {
 	constellationId = id;
@@ -628,13 +628,6 @@ void DebrisObject::SetEccentricAnomaly(double E)
 {
 	elements.SetEccentricAnomaly(E);
 	positionSync = velocitySync = false;
-}
-
-DebrisObject CopyDebrisObject(DebrisObject & object)
-{
-	DebrisObject newObject = object;
-	newObject.RegenerateID();
-	return newObject;
 }
 
 bool CompareInitEpochs(DebrisObject objectA, DebrisObject objectB)
@@ -749,7 +742,7 @@ void RemovedObject::RemoveObject(int removeType, double epoch) // (0, 1, 2) = (D
 	isIntact = false;
 }
 
-void RemovedObject::SetNewObjectID()
+void RemovedObject::SetNewObjectID(long ID)
 {
-	objectID = ++objectSEQ;
+	objectID = ID;
 }
