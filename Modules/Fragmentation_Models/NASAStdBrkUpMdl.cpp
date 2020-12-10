@@ -61,10 +61,11 @@ void  NASABreakupModel::mainBreakup(DebrisPopulation& population, Event& fragmen
 		
 		// Simulate primary object breakup
 		NSBMFragmentCloud targetDebrisCloud(targetObject, projectileObject, minLength, newSpace);
-		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent, massLimit);
-
 		// Simulate secondary object breakup
 		NSBMFragmentCloud projectileDebrisCloud(projectileObject, targetObject, minLength, newSpace);
+
+		MergeFragmentPopulations(population, targetDebrisCloud, fragmentationEvent, massLimit);
+
 		Event tempEvent(fragmentationEvent);
 		tempEvent.SwapPrimarySecondary();
 		MergeFragmentPopulations(population, projectileDebrisCloud, tempEvent, massLimit);

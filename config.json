@@ -1,5 +1,5 @@
 {
-  "scenarioFilename": "Simulation_StarlinkFull_Explosion.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
+  "scenarioFilename": "Simulation_StarlinkFull_Collision.json", // "Collisions_39191.json", "Collisions_42731.json", "Collisions_43900.json",
   //"BackgroundPop": "Background_StarlinkOver1kg.json",
   "StepSize": 5, // Size of default timestep (days)
   "MonteCarlo": 1,

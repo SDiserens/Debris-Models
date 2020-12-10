@@ -281,7 +281,7 @@ void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
 					}
 					else
 						// Store object ID for later
-						definedCollisions[collisionID] = tempObject.GetID();
+						definedCollisions[collisionID] = ID;
 				}
 				else {
 					Event tempEvent(epoch + definedEvent["fromEpoch"].asDouble(), ID, tempObject.GetMass());
@@ -381,12 +381,13 @@ void WriteCollisionData(string scenario, Json::Value & config, string collisionM
 }
 
 void WriteSimulationData(string scenario, Json::Value & config, double epoch, string collisionModel, Json::Value & collisionConfig, string propagatorType, Json::Value & propagatorConfig, string breakUpType,
-						Json::Value & fragmentationConfig, vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog)
+						Json::Value & fragmentationConfig, vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int, int>>> simulationLog)
 {
 	char date[100];
 	int ID = 1;
 	string outputFilename, pairID, mcRun;
-	tuple<int, int, int> eventSplit, objectSplit;
+	tuple<int, int, int, int> eventSplit;
+	tuple<int, int, int> objectSplit;
 	// Store data
 	time_t dateTime = time(NULL);
 	struct tm currtime;
@@ -421,9 +422,9 @@ void WriteSimulationData(string scenario, Json::Value & config, double epoch, st
 
 	outputFile << "Collision Model:," + collisionModel + ", ,";
 
-	if (collisionModel == "Cube")
+	if (collisionModel == "Cube" || collisionModel == "Cube - new"	)
 		outputFile << "Cube Dimension (km):," + to_string(collisionConfig["CubeDimension"].asDouble()) + "\n";
-	if (collisionModel == "OrbitTrace")
+	if (collisionModel == "OrbitTrace" || collisionModel == "OrbitTrace - new")
 		outputFile << "Threshold (km):," + to_string(collisionConfig["ConjunctionThreshold"].asDouble()) + "\n";
 	if (collisionModel == "Hoots")
 	{
@@ -437,14 +438,14 @@ void WriteSimulationData(string scenario, Json::Value & config, double epoch, st
 	// Break data with line
 	outputFile << "\n";
 
-	outputFile << "\nSimulation Run, Simulation Elapsed Time (days), Object Count, -UpperStage Count, -Spacecraft Count, -Debris Count, Event Count, -Explosion Count, -Collision Count, -Collision Avoidance Count"; // (MC, #days, #objects, (), #events, (Explosion, Collision, Collision Avoidance))
+	outputFile << "\nSimulation Run, Simulation Elapsed Time (days), Object Count, -UpperStage Count, -Spacecraft Count, -Debris Count, Event Count, -Explosion Count, -Collision Count, -Collision Avoidance Count, (-Catastrophic Collision Count)"; // (MC, #days, #objects, (), #events, (Explosion, Collision, Collision Avoidance, Catastrophic collision))
 	for (auto logEntry : simulationLog)
 	{
 		eventSplit = get<5>(logEntry);
 		objectSplit = get<3>(logEntry);
 		outputFile << "\n" + to_string(get<0>(logEntry)) + "," + to_string(get<1>(logEntry) - epoch) + ",";
 		outputFile << to_string(get<2>(logEntry)) + "," + to_string(get<0>(objectSplit)) + "," + to_string(get<1>(objectSplit)) + "," + to_string(get<2>(objectSplit)) + ",";
-		outputFile << to_string(get<4>(logEntry)) + "," + to_string(get<0>(eventSplit)) + "," + to_string(get<1>(eventSplit)) + "," + to_string(get<2>(eventSplit));
+		outputFile << to_string(get<4>(logEntry)) + "," + to_string(get<0>(eventSplit)) + "," + to_string(get<1>(eventSplit)) + "," + to_string(get<2>(eventSplit)) + "," + to_string(get<3>(eventSplit));
 	}
 	outputFile.close();
 	cout << "\n";

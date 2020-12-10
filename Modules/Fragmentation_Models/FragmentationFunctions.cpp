@@ -9,14 +9,13 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 {
 	// Prevent accidental breakup of collision avoidance event
 	if (fragmentationEvent.GetEventType() >= 2) return;
-
+	int debrisCount = 0;
 	// Add event MetaData
-	fragmentationEvent.SetCatastrophic(cloud.energyMassRatio > catastrophicThreshold);
+	bool isIntact = currentPopulation.GetObject(fragmentationEvent.GetPrimary()).IsIntact();
+	fragmentationEvent.SetCatastrophic(isIntact * (cloud.energyMassRatio > catastrophicThreshold));
 	fragmentationEvent.SetConservationMomentum(cloud.consMomentumFlag);
 	fragmentationEvent.SetEMR(cloud.energyMassRatio);
-	fragmentationEvent.SetDebrisCount(cloud.debrisCount);
 
-	currentPopulation.AddDebrisEvent(fragmentationEvent);
 	currentPopulation.RemoveObject(fragmentationEvent.GetPrimary(), fragmentationEvent.GetEventType());
 
 	// Merge population
@@ -24,12 +23,17 @@ void MergeFragmentPopulations(DebrisPopulation& currentPopulation, FragmentCloud
 	{
 		for(auto & debris : bucketCloud.fragments)
 		{
-			if ((debris.GetElements().eccentricity < 1) && (debris.GetMass() > massLimit))
+			if ((debris.GetElements().eccentricity < 1) && (debris.GetMass() > massLimit)) {
 				currentPopulation.AddDebrisObject(debris);
+				++debrisCount;
+			}
 			else
 				debris.~DebrisObject();
 		}
 	}
+
+	fragmentationEvent.SetDebrisCount(debrisCount);
+	currentPopulation.AddDebrisEvent(fragmentationEvent);
 	cloud.ClearCloud();
 	//cloud.~FragmentCloud();
 }

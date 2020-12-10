@@ -13,6 +13,7 @@ DebrisPopulation::DebrisPopulation()
 	eventCount = 0;
 	explosionCount = 0; 
 	collisionCount = 0;
+	catCollisionCount = 0;
 	collisionAvoidanceCount = 0;
 	falseCollisionCount = 0;
 }
@@ -41,6 +42,7 @@ void DebrisPopulation::Clear()
 	eventCount = 0;
 	explosionCount = 0;
 	collisionCount = 0;
+	catCollisionCount = 0;
 	collisionAvoidanceCount = 0;
 	falseCollisionCount = 0;
 }
@@ -254,8 +256,11 @@ void DebrisPopulation::AddDebrisEvent(Event debrisEvent)
 		eventLog.push_back(debrisEvent);
 		if (type == 0)
 			++explosionCount;
-		else if (type == 1)
+		else if (type == 1) {
 			++collisionCount;
+			if (debrisEvent.catastrophic)
+				++catCollisionCount;
+		}
 		else if (type == 2)
 			++collisionAvoidanceCount;
 	}
@@ -411,14 +416,19 @@ int DebrisPopulation::GetCollsionCount()
 	return collisionCount;
 }
 
+int DebrisPopulation::GetCatCollsionCount()
+{
+	return catCollisionCount;
+}
+
 int DebrisPopulation::GetCAMCount()
 {
 	return collisionAvoidanceCount;
 }
 
-tuple<double, int, tuple<int, int, int>, int, tuple<int, int, int>> DebrisPopulation::GetPopulationState()
+tuple<double, int, tuple<int, int, int>, int, tuple<int, int, int, int>> DebrisPopulation::GetPopulationState()
 {
-	return make_tuple(currentEpoch, populationCount, make_tuple(upperStageCount, spacecraftCount, debrisCount) ,eventCount, make_tuple(explosionCount, collisionCount, collisionAvoidanceCount));
+	return make_tuple(currentEpoch, populationCount, make_tuple(upperStageCount, spacecraftCount, debrisCount) ,eventCount, make_tuple(explosionCount, collisionCount, collisionAvoidanceCount, catCollisionCount));
 }
 
 vector<Event> DebrisPopulation::GetEventLog()

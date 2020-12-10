@@ -25,8 +25,8 @@ int main(int argc, char** argv)
 	volatile int n;
 
 	// Data logs
-	vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int>>> simulationLog;
-	// (MC, #days, #objects, (upperstage, spacecraft, debris), #events, (Explosion, Collision, Collision Avoidance)) 
+	vector<tuple<int, double, int, tuple<int, int, int>, int, tuple<int, int, int, int>>> simulationLog;
+	// (MC, #days, #objects, (upperstage, spacecraft, debris), #events, (Explosion, Collision, Collision Avoidance, Catastrophic collision)) 
 	vector<tuple<int, double, pair<string, string>, double, double, double>> collisionLog;
 	// (MC, #days, objectIDs, probability, altitude)
 	vector<Event> collisionList;

@@ -10,7 +10,7 @@ protected:
 	double totalMass, currentEpoch, startEpoch, averageSemiMajorAxis, durationDays;
 	unordered_map<long, DebrisObject> loadingPopulation;
 	vector<pair<double, long>> initEpochs;
-	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount, falseCollisionCount;
+	int eventCount, explosionCount, collisionCount, collisionAvoidanceCount, falseCollisionCount, catCollisionCount;
 	int upperStageCount, spacecraftCount, debrisCount;
 	bool launches;
 	vector<Event> eventLog;
@@ -40,6 +40,7 @@ public:
 	int GetEventCount();
 	int GetExplosionCount();
 	int GetCollsionCount();
+	int GetCatCollsionCount();
 	int GetCAMCount();
 	double GetDuration();
 	DebrisObject& GetObject(long ID);
@@ -61,7 +62,7 @@ public:
 	void CollideObject(long ID);
 	void RemoveObject(long ID, int type); // type: (0 = explosion; 1 = collision; 2 = decay)
 
-	tuple<double, int, tuple<int, int, int>, int, tuple<int, int, int>> GetPopulationState();
+	tuple<double, int, tuple<int, int, int>, int, tuple<int, int, int, int>> GetPopulationState();
 	vector<Event> GetEventLog();
 };
 

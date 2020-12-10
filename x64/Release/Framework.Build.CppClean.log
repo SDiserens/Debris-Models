@@ -29,6 +29,8 @@ x64\release\orbitalelements.cu.obj
 x64\release\orbitalutilities.cu.obj
 e:\work\modelling framework\x64\release\framework.ipdb
 e:\work\modelling framework\x64\release\framework.iobj
+e:\work\modelling framework\x64\release\framework.exe
+e:\work\modelling framework\x64\release\framework.pdb
 e:\work\modelling framework\x64\release\framework.res
 e:\work\modelling framework\x64\release\collisionpair.cu.cache
 e:\work\modelling framework\x64\release\debrisevent.cu.cache
@@ -47,8 +49,6 @@ e:\work\modelling framework\x64\release\orbitalanomalies.cu.obj
 e:\work\modelling framework\x64\release\orbitalelements.cu.obj
 e:\work\modelling framework\x64\release\orbitalutilities.cu.obj
 e:\work\modelling framework\x64\release\orbittrace_gpu.cu.obj
-e:\work\modelling framework\x64\release\framework.pdb
-e:\work\modelling framework\x64\release\framework.exe
 e:\work\modelling framework\x64\release\framework.tlog\cl.command.1.tlog
 e:\work\modelling framework\x64\release\framework.tlog\cl.read.1.tlog
 e:\work\modelling framework\x64\release\framework.tlog\cl.write.1.tlog

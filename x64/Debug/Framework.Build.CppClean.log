@@ -30,13 +30,15 @@ e:\work\modelling framework\x64\debug\orbittrace.obj
 e:\work\modelling framework\x64\debug\fragmentationfunctions.obj
 e:\work\modelling framework\x64\debug\fragmentcloud.obj
 e:\work\modelling framework\x64\debug\nasastdbrkupmdl.obj
-e:\work\modelling framework\x64\debug\framework.obj
 e:\work\modelling framework\x64\debug\analytic_j2.obj
 e:\work\modelling framework\x64\debug\propagator.obj
 e:\work\modelling framework\x64\debug\sgp4wrap.obj
 e:\work\modelling framework\x64\debug\sgp4.obj
 e:\work\modelling framework\x64\debug\baseutilities.obj
 e:\work\modelling framework\x64\debug\debrispopulation.obj
+e:\work\modelling framework\x64\debug\framework.obj
+e:\work\modelling framework\x64\debug\fragmentation.sbr
+e:\work\modelling framework\x64\debug\fragmentation.obj
 x64\debug\collisionpair.cu.obj
 x64\debug\hootsfilter_gpu.cu.obj
 x64\debug\orbittrace_gpu.cu.obj
