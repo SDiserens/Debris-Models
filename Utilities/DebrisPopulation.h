@@ -45,6 +45,7 @@ public:
 	double GetDuration();
 	DebrisObject& GetObject(long ID);
 	bool CheckObject(long ID);
+	bool CheckLaunches();
 
 	long AddDebrisObject(DebrisObject debris);
 	void AddDefinedEvent(Event breakup);

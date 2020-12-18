@@ -17,7 +17,7 @@ bool fileExists(const string& name)
 DebrisObject GenerateDebrisObject(Json::Value & parsedObject, double epoch)
 {
 	Json::Value elements;
-	double radius, area, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly;
+	double radius, mass, length, semiMajorAxis, eccentricity, inclination, rightAscension, argPerigee, meanAnomaly;
 	int type, dataType;
 	string name;
 	DebrisObject debris;
@@ -249,7 +249,7 @@ void LoadObjects(DebrisPopulation & population, Json::Value scenario) {
 			averageSemiMajorAxis += tempObject.GetElements().semiMajorAxis;
 
 			// Load laucnh objects
-			if (objectParameters.isMember("LaunchDate")) {
+			if ((population.CheckLaunches()) && (objectParameters.isMember("LaunchDate"))) {
 				tempObject.SetLaunchCycle(cycle);
 				newObject = CopyDebrisObject(tempObject);
 				start = DateToEpoch(objectParameters["LaunchDate"].asDouble());
